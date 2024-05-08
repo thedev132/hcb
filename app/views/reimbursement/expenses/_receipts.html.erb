@@ -25,7 +25,7 @@
         <div class="flex flex-col p1" id="link_receipt__form">
           <% column_amount = [((expense.receipts.count - 1) / 2.to_f).ceil, expense.receipts.count == 2 ? 2 : 1].max %>
           <div class="receipts" style="grid-template-columns: 1fr repeat(<%= column_amount %>, 1fr)">
-            <% unless expense.report.locked? %>
+            <% if policy(expense).update? %>
               <label for="file_<%= expense.id %>" class="card card--sunken flex flex-col items-center justify-center flash info" style="cursor: pointer;">
                 <span class="flex items-center justify-center">
                   <h1 class="mt0 mb0 text-info add" id="upload-receipt-button"><b>+</b></h1>
@@ -35,7 +35,7 @@
             <%= render partial: "receipts/receipt", collection: expense.receipts.order(created_at: :desc), as: :receipt, locals: { hide_info: false, delete_on_hover: !expense.report.locked?, style: "margin: 0px; min-width: 150px; max-width: 300px; height: 100%; object-fit: cover;" } %>
           </div>
         </div>
-      <% else %>
+      <% elsif policy(expense).update? %>
         <div class="card card--sunken flex flex-col items-center justify-center g2 h-100" id="link_receipt__form">
           <span class="flex items-center justify-center flex-row flex-wrap" style="margin: -8px;">
             <label for="file_<%= expense.id %>" class="btn m1" id="upload-receipt-button">

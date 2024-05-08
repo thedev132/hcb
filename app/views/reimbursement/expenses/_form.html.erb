@@ -26,7 +26,7 @@
     </div>
     <%= form.text_area :description, placeholder: "This was for...", class: "w-100 fit", data: { "expense-form-target": "field" } %>
   </div>
-  <% if admin_signed_in? || expense.report.event.users.include?(current_user) %>
+  <% if policy(expense).approve? %>
     <% if !expense.approved? && expense.report.submitted? %>
       <%= link_to reimbursement_expense_approve_path(expense_id: expense.id), class: "btn bg-success", data: { turbo: true, "turbo-method": "post" } do %>
         <%= inline_icon "thumbsup" %>

@@ -88,6 +88,11 @@ class StaticPagesController < ApplicationController
         "View card expiration date": :member,
         "View card billing address": :member,
       },
+      Reimbursements: {
+        "Get reimbursed through HCB": :member,
+        "View reimbursement reports": :member,
+        "Review, approve, and reject reports": :manager,
+      },
       "Google Workspace": {
         "Create an account": :manager,
         "Suspend an account": :manager,

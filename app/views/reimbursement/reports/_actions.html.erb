@@ -1,3 +1,5 @@
+<% member_viewing = !OrganizerPosition.find_by(user: current_user, event: report.event)&.manager? && current_user != report.user %>
+
 <div style="display: flex; flex-direction: column-reverse;" id="action-wrapper">
   <%# Using a reverse column flex container, we can
       define the button hint next to the button states,
@@ -7,7 +9,7 @@
   <% button_hint = "The creator of this report has been reimbursed." if report.reimbursed? %>
   <% button_hint = "This report has been approved by #{@event.name}, but it's still pending approval from the HCB team." if report.reimbursement_requested? %>
 
-  <% unless report.closed? %>
+  <% unless report.closed? || member_viewing %>
     <div class="flex items-center justify-between mt2 mb3" style="gap: 1rem;" id="actions">
       <div style="flex-grow: 1;" class="flex justify-start">
         <% if !report.locked? %>
@@ -191,7 +193,7 @@
     </div>
   <% end %>
   <% if report.expenses.any? %>
-    <div class="card mt2 <%= "closed" if report.closed? %>" id="summary">
+    <div class="card mt2 <%= "closed" if report.closed? || member_viewing %>" id="summary">
       <div class="stat stat--small" style="flex-shrink: 0;">
         <span class="stat__label">Amount Requested</span>
         <span class="stat__value"><%= render_money report.amount_cents, unit: "" %></span>
