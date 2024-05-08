@@ -1,4 +1,4 @@
-<% member_viewing = !OrganizerPosition.find_by(user: current_user, event: report.event)&.manager? && current_user != report.user %>
+<% member_viewing = !OrganizerPosition.find_by(user: current_user, event: report.event)&.manager? && current_user != report.user && !admin_signed_in? %>
 
 <div style="display: flex; flex-direction: column-reverse;" id="action-wrapper">
   <%# Using a reverse column flex container, we can
