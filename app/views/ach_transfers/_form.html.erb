@@ -83,11 +83,9 @@
 
         <div
           class="field"
-          <% if Flipper.enabled?(:routing_number_validation, current_user) %>
-            data-controller="external-validation"
-            data-external-validation-url-value="<%= validate_routing_number_ach_transfers_path %>"
-          <% end %>>
-
+          data-controller="external-validation"
+          data-external-validation-url-value="<%= validate_routing_number_ach_transfers_path %>"
+        >
           <%= form.label :routing_number %>
           <%= form.text_field :routing_number, placeholder: "123456789", required: true, disabled:, class: "fs-mask", data: { action: "input->external-validation#validate" } %>
           <span class="muted" data-external-validation-target="hint"></span>

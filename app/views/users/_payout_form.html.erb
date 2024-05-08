@@ -88,11 +88,9 @@
     }">
     <%= form.fields_for :payout_method, user.payout_method.instance_of?(User::PayoutMethod::AchTransfer) ? user.payout_method : User::PayoutMethod::AchTransfer.new do |form| %>
       <div
-      class="field"
-      <% if Flipper.enabled?(:routing_number_validation, current_user) %>
+        class="field"
         data-controller="external-validation"
-        data-external-validation-url-value="<%= validate_routing_number_ach_transfers_path %>"
-      <% end %>>
+        data-external-validation-url-value="<%= validate_routing_number_ach_transfers_path %>">
         <%= form.label :routing_number, "Bank routing number" %>
         <%= form.text_field :routing_number,
                             placeholder: "123456789",
