@@ -564,11 +564,10 @@ class EventsController < ApplicationController
     # to `q`. This following line retains backwards compatibility.
     params[:q] ||= params[:search]
 
-    @transfers_enabled = Flipper.enabled?(:transfers_2022_04_21, current_user)
     @ach_transfers = @event.ach_transfers
     @checks = @event.checks.includes(:lob_address)
     @increase_checks = @event.increase_checks
-    @disbursements = @transfers_enabled ? @event.outgoing_disbursements.includes(:destination_event) : Disbursement.none
+    @disbursements = @event.outgoing_disbursements.includes(:destination_event)
     @card_grants = @event.card_grants.includes(:user, :subledger, :stripe_card)
 
     @disbursements = @disbursements.not_card_grant_related if Flipper.enabled?(:card_grants_2023_05_25, @event)
@@ -595,12 +594,10 @@ class EventsController < ApplicationController
 
     @card_grants = @card_grants.search_recipient(params[:q]) if params[:q].present?
 
-    if @transfers_enabled
-      @disbursements = @disbursements.reviewing_or_processing if params[:filter] == "in_transit"
-      @disbursements = @disbursements.fulfilled if params[:filter] == "deposited"
-      @disbursements = @disbursements.rejected if params[:filter] == "canceled"
-      @disbursements = @disbursements.search_name(params[:q]) if params[:q].present?
-    end
+    @disbursements = @disbursements.reviewing_or_processing if params[:filter] == "in_transit"
+    @disbursements = @disbursements.fulfilled if params[:filter] == "deposited"
+    @disbursements = @disbursements.rejected if params[:filter] == "canceled"
+    @disbursements = @disbursements.search_name(params[:q]) if params[:q].present?
 
     @transfers = Kaminari.paginate_array((@increase_checks + @checks + @ach_transfers + @disbursements + @card_grants).sort_by { |o| o.created_at }.reverse!).page(params[:page]).per(100)
 
