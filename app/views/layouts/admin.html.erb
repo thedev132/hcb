@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title>
-      <%= "#{@title} –" if !@title.nil? %>
+      <%= "#{yield(:title)} –" if content_for?(:title) %>
       HCB Admin
     </title>
 
