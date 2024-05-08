@@ -1,10 +1,11 @@
 <% title "Column Statements" %>
 
-<h1>Column Statements</h1>
-
-<%= paginate @statements %>
-
-<%= page_entries_info @statements %>
+<div class="flex items-center mb2">
+  <div class="flex-grow">
+    <%= page_entries_info @statements %>
+  </div>
+  <%= paginate @statements %>
+</div>
 
 <table>
   <thead>
