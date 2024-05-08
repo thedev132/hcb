@@ -1,14 +1,12 @@
 <%= turbo_frame_tag :donation do %>
-  <% if Flipper.enabled?(:recurring_donations_2023_02_07, @event) %>
-    <ul class="tab-container max-width-1 mx-auto <%= "mt7" if @event.donation_header_image.attached? && !@event.donation_page_message.present? %>">
-        <li class="<%= "active" unless @monthly %>">
-            <%= link_to "One-time", start_donation_donations_path(@event), data: { turbo: true } %>
-        </li>
-        <li class="<%= "active" if @monthly %>">
-            <%= link_to "Monthly", start_donation_donations_path(@event, monthly: true), data: { turbo: true } %>
-        </li>
-    </ul>
-  <% end %>
+  <ul class="tab-container max-width-1 mx-auto <%= "mt7" if @event.donation_header_image.attached? && !@event.donation_page_message.present? %>">
+      <li class="<%= "active" unless @monthly %>">
+          <%= link_to "One-time", start_donation_donations_path(@event), data: { turbo: true } %>
+      </li>
+      <li class="<%= "active" if @monthly %>">
+          <%= link_to "Monthly", start_donation_donations_path(@event, monthly: true), data: { turbo: true } %>
+      </li>
+  </ul>
 
   <%= form_with(model: @monthly ? [@event, @recurring_donation] : donation, local: true, url: (make_donation_donations_path unless @monthly),
                 class: "card mx-auto max-width-1 mb3", data: { turbo: true, turbo_action: "advance" }) do |form| %>
