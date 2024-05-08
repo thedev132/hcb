@@ -4,7 +4,6 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
   def notify_approved
     @cpt = CanonicalPendingTransaction.find(params[:canonical_pending_transaction_id])
     @user = @cpt.stripe_card.user
-    @receipt_upload_feature = Flipper.enabled?(:receipt_email_upload_2022_05_10, @cpt.stripe_card.user)
     @upload_url = Rails.application.routes.url_helpers.attach_receipt_hcb_code_url(
       id: @cpt.local_hcb_code.hashid,
       s: @cpt.local_hcb_code.signed_id(expires_in: 2.weeks, purpose: :receipt_upload)
@@ -12,11 +11,7 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
 
     to = @cpt.stripe_card.user.email_address_with_name
     subject = "#{@cpt.local_hcb_code.receipt_required? ? "Upload a receipt for your transaction" : "New transaction"} at #{@cpt.smart_memo}"
-    reply_to = if @receipt_upload_feature
-                 HcbCode.find_or_create_by(hcb_code: @cpt.hcb_code).receipt_upload_email
-               else
-                 to
-               end
+    reply_to = HcbCode.find_or_create_by(hcb_code: @cpt.hcb_code).receipt_upload_email
 
     mail to:, subject:, reply_to:
   end
@@ -25,7 +20,6 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
     @cpt = CanonicalPendingTransaction.find(params[:canonical_pending_transaction_id])
     @ct = CanonicalTransaction.find(params[:canonical_transaction_id])
     @user = @cpt.stripe_card.user
-    @receipt_upload_feature = Flipper.enabled?(:receipt_email_upload_2022_05_10, @cpt.stripe_card.user)
     @upload_url = Rails.application.routes.url_helpers.attach_receipt_hcb_code_url(
       id: @cpt.local_hcb_code.hashid,
       s: @cpt.local_hcb_code.signed_id(expires_in: 2.weeks, purpose: :receipt_upload)
@@ -33,11 +27,7 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
 
     to = @cpt.stripe_card.user.email_address_with_name
     subject = "#{@cpt.smart_memo} settled at #{ApplicationController.helpers.render_money(@cpt.amount)}."
-    reply_to = if @receipt_upload_feature
-                 HcbCode.find_or_create_by(hcb_code: @cpt.hcb_code).receipt_upload_email
-               else
-                 to
-               end
+    reply_to = HcbCode.find_or_create_by(hcb_code: @cpt.hcb_code).receipt_upload_email
 
     mail to:, subject:, reply_to:
   end
