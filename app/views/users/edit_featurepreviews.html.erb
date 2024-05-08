@@ -9,21 +9,21 @@
   <section>
     <h2 id="feature-previews">Feature previews</h2>
 
-    <%= render partial: "users/feature_preview", locals: {
+    <%= render partial: "features/preview", locals: {
           id: "command_bar",
           feature_flag: :command_bar_2024_02_05,
           name: "Command Bar (⌘+K)",
           description: "Looking to whizz around HCB's interface? Enable the command bar and use it to switch between different organizations and pages. It also features a search tool that allows you to search transactions, cards and events."
         } %>
 
-    <%= render partial: "users/feature_preview", locals: {
+    <%= render partial: "features/preview", locals: {
           id: "rename_on_homepage",
           feature_flag: :rename_on_homepage_2023_12_06,
           name: "Rename Transactions on the Ledger",
           description: "This feature flag enables you to directly rename transactions on your organization's home page. Try it out by clicking a transaction, typing out a new memo, and pressing enter!"
         } %>
 
-    <%= render partial: "users/feature_preview", locals: {
+    <%= render partial: "features/preview", locals: {
           id: "receipt-bin",
           feature_flag: :receipt_bin_2023_04_07,
           name: "Receipt Bin",
@@ -31,14 +31,14 @@
           footer: "We also now support uploading receipts to your Receipt Bin via emailing and texting!"
         } %>
 
-    <%= render partial: "users/feature_preview", locals: {
+    <%= render partial: "features/preview", locals: {
           id: "transaction-popovers",
           feature_flag: :hcb_code_popovers_2023_06_16,
           name: "Transaction Popovers",
           description: "This feature flag enables a popover allowing quick and easy access to transaction details from the organization's ledger."
         } %>
 
-    <%= render partial: "users/feature_preview", locals: {
+    <%= render partial: "features/preview", locals: {
           id: "sms-receipt-notification",
           classes: ["feature-sms-receipt-notification"],
           feature_flag: :sms_receipt_notifications_2022_11_23,
@@ -53,7 +53,7 @@
         <details>
           <summary class="mb2">Past feature previews</summary>
 
-          <%= render partial: "users/feature_preview", locals: {
+          <%= render partial: "features/preview", locals: {
                 id: "turbo",
                 classes: ["feature-turbo"],
                 fully_shipped: true,
@@ -67,7 +67,7 @@
                 footer: "This feature is an early tech preview and <strong>will have bugs</strong>. Please let us know when you encounter them!"
               } %>
 
-          <%= render partial: "users/feature_preview", locals: {
+          <%= render partial: "features/preview", locals: {
                 id: "weekly-receipt-email",
                 classes: ["feature-weekly-receipt-email", "feature-generic"],
                 fully_shipped: true,
@@ -76,7 +76,7 @@
                 footer: "Try #{link_to "triggering an email for yourself", trigger_receipt_report_path, method: :post}!"
               } %>
 
-          <%= render partial: "users/feature_preview", locals: {
+          <%= render partial: "features/preview", locals: {
                 id: "receipt-email-upload",
                 classes: ["feature-receipt-upload"],
                 fully_shipped: true,
@@ -88,7 +88,7 @@
             that email with your receipt attached to upload it."
               } %>
 
-          <%= render partial: "users/feature_preview", locals: {
+          <%= render partial: "features/preview", locals: {
                 id: "internal-transfers",
                 classes: ["feature-disbursements"],
                 fully_shipped: true,
@@ -102,7 +102,7 @@
             opt-in for access."
               } %>
 
-          <%= render partial: "users/feature_preview", locals: {
+          <%= render partial: "features/preview", locals: {
                 id: "suggested-memos",
                 classes: ["feature-disbursements"],
                 fully_shipped: true,

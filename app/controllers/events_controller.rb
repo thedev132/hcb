@@ -705,33 +705,6 @@ class EventsController < ApplicationController
     redirect_back fallback_location: edit_event_path(@event)
   end
 
-  def enable_feature
-    authorize @event
-    feature = params[:feature]
-    if Flipper.enable_actor(feature, @event)
-      flash[:success] = "Opted into beta"
-    else
-      flash[:error] = "Error while opting into beta"
-    end
-    redirect_to edit_event_path(@event)
-  end
-
-  def disable_feature
-    authorize @event
-    feature = params[:feature]
-    if Flipper.disable_actor(feature, @event)
-      # If it's the user permissions feature, make all the users & invites in the org managers.
-      if feature == "user_permissions_2024_03_09"
-        @event.organizer_positions.update_all(role: :manager)
-        @event.organizer_position_invites.pending.update_all(role: :manager)
-      end
-      flash[:success] = "Opted out of beta"
-    else
-      flash[:error] = "Error while opting out of beta"
-    end
-    redirect_to edit_event_path(@event)
-  end
-
   def toggle_event_tag
     @event_tag = EventTag.find(params[:event_tag_id])
 

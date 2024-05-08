@@ -252,47 +252,6 @@ class UsersController < ApplicationController
     redirect_to settings_previews_path
   end
 
-  FEATURES = { # the keys are current feature flags, the values are emojis that show when-enabled.
-    receipt_bin_2023_04_07: %w[🧾 🗑️ 💰],
-    sms_receipt_notifications_2022_11_23: %w[📱 🧾 🔔 💬],
-    hcb_code_popovers_2023_06_16: nil,
-    rename_on_homepage_2023_12_06: %w[🖊️ ⚡ ⌨️],
-    command_bar_2024_02_05: %w[🔍 🔎 ✨ 💸]
-  }.freeze
-
-  def enable_feature
-    @user = current_user
-    @feature = params[:feature]
-    authorize @user
-    if FEATURES.key?(@feature.to_sym) || @user.admin?
-      if Flipper.enable_actor(@feature, @user)
-        confetti!(emojis: FEATURES[@feature.to_sym])
-        flash[:success] = "Opted into beta"
-      else
-        flash[:error] = "Error while opting into beta"
-      end
-    else
-      flash[:error] = "Beta doesn't exist."
-    end
-    redirect_back fallback_location: settings_previews_path
-  end
-
-  def disable_feature
-    @user = current_user
-    @feature = params[:feature]
-    authorize @user
-    if FEATURES.key?(@feature.to_sym) || @user.admin?
-      if Flipper.disable_actor(@feature, @user)
-        flash[:success] = "Opted out of beta"
-      else
-        flash[:error] = "Error while opting out of beta"
-      end
-    else
-      flash[:error] = "Beta doesn't exist."
-    end
-    redirect_back fallback_location: settings_previews_path
-  end
-
   def edit
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     @onboarding = @user.onboarding?

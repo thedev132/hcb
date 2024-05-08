@@ -84,6 +84,10 @@ Rails.application.routes.draw do
 
   post "receiptable/:receiptable_type/:receiptable_id/mark_no_or_lost", to: "receiptables#mark_no_or_lost", as: :receiptable_mark_no_or_lost
 
+  # Feature-flags
+  post "enable_feature", to: "features#enable_feature"
+  post "disable_feature", to: "features#disable_feature"
+
   resources :reports, only: [] do
     member do
       get "fees", to: "reports#fees"
@@ -105,10 +109,6 @@ Rails.application.routes.draw do
       post "start_sms_auth_verification", to: "users#start_sms_auth_verification"
       post "complete_sms_auth_verification", to: "users#complete_sms_auth_verification"
       post "toggle_sms_auth", to: "users#toggle_sms_auth"
-
-      # Feature-flags
-      post "enable_feature", to: "users#enable_feature"
-      post "disable_feature", to: "users#disable_feature"
 
       # Logout
       delete "logout", to: "users#logout"
@@ -680,8 +680,6 @@ Rails.application.routes.draw do
 
 
     member do
-      post "disable_feature"
-      post "enable_feature"
       post "test_ach_payment"
       get "account-number", to: "events#account_number"
       post "toggle_event_tag/:event_tag_id", to: "events#toggle_event_tag", as: :toggle_event_tag
