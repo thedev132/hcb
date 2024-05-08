@@ -22,10 +22,8 @@
                             class: "bg-transparent fit",
                             style: "border-color: #338eda; min-height: 0; font-size: 1.5rem; padding: 0.125rem 0 0.125rem 4px; letter-spacing: -0.02em" %>
         <datalist id="custom-memos">
-          <% if Flipper.enabled?(:suggested_memo_2022_08_02, current_user) %>
-            <%= @suggested_memos.each do |s_memo| %>
-              <option><%= s_memo %></option>
-            <% end %>
+          <%= @suggested_memos.each do |s_memo| %>
+            <option><%= s_memo %></option>
           <% end %>
         </datalist>
       </div>
@@ -38,10 +36,8 @@
     <%= form.label :memo %>
     <%= form.text_field :memo, list: "custom-memos", autofocus: true, required: true %>
     <datalist id="custom-memos">
-      <% if Flipper.enabled?(:suggested_memo_2022_08_02, current_user) %>
-        <%= @suggested_memos.each do |s_memo| %>
-          <option><%= s_memo %></option>
-        <% end %>
+      <%= @suggested_memos.each do |s_memo| %>
+        <option><%= s_memo %></option>
       <% end %>
     </datalist>
   </div>
