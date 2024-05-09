@@ -130,6 +130,6 @@
 
 <% if new %>
   <script>
-    document.getElementById("<%= expense.expense_number.to_json %>").scrollIntoView()
+    document.getElementById("<%= expense.expense_number.to_json %>")?.scrollIntoView()
   </script>
 <% end %>
