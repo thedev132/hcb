@@ -164,7 +164,7 @@
             <%= inline_icon "reply" %>
             Mark As Draft
             <% button_hint = capture do %>
-              <span class="bold">Status:</span> your report is currently under review. To make further changes, mark it as a draft.
+              <span class="bold">Status:</span> your report is currently under review by the <%= report.event.name %> team. To make further changes, mark it as a draft.
             <% end %>
           <% end %>
         <% elsif current_user == report.user && !admin_signed_in? %>
