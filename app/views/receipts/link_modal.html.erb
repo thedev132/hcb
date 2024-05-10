@@ -20,7 +20,7 @@
 
       <ul class="grid grid--narrow left-align w-100 grid--spacious mt0 justify-center">
         <% @receipts.each do |receipt| %>
-          <li class="flex grid flex-col justify-between h-100 mx4 modal__<%= receipt.id %>">
+          <li class="flex grid flex-col justify-between h-100 mx4 modal__<%= receipt.id %>" id="modal_receipt_<%= receipt.id %>">
             <%= render partial: "receipts/receipt", locals: { receipt:, selectable: true, textual_content: true, pairing: @suggested_receipt_ids.include?(receipt.id), size: 169 } %>
           </li>
         <% end %>

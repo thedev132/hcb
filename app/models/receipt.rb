@@ -71,7 +71,9 @@ class Receipt < ApplicationRecord
     transfer_create_page: 12,
     expense_report: 13,
     expense_report_drag_and_drop: 14,
-    quick_expense: 15
+    quick_expense: 15,
+    transaction_popover: 16,
+    transaction_popover_drag_and_drop: 17,
   }
 
   scope :in_receipt_bin, -> { where(receiptable: nil) }

@@ -111,7 +111,7 @@
       </section>
     <% end %>
 
-    <% if defined?(receiptable) && receiptable.missing_receipt? %>
+    <% if defined?(receiptable) && receiptable&.missing_receipt? %>
       <div class="flex muted justify-end items-center mt1">
         <%= inline_icon "forbidden", size: 20 %>
         <%= link_to receiptable_mark_no_or_lost_path(receiptable_type: receiptable.class, receiptable_id: receiptable.id), method: :post do %>
@@ -130,6 +130,7 @@
       <section class="modal modal--huge modal--scroll bg-snow" data-behavior="modal" role="dialog" id="link_receipt_<%= instance %>">
         <%= modal_header "Select receipt" %>
         <%= async_frame_to link_modal_receipts_path(receiptable_type: receiptable.class, receiptable_id: receiptable.id, streams: defined?(turbo) ? turbo : "false"), as: :span do %>
+          <img style="display: none;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" onload="let e = this.parentElement; $.get($(e).data('src'), data => $(e).replaceWith(data));">  <!-- This inline JS is needed to load an async frame that enters the DOM after the initial page load. -->
           <strong>Loading...</strong>
         <% end %>
       </section>

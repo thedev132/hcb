@@ -170,15 +170,7 @@ $(document).keydown(function (e) {
 
 $(document).on('click', '[data-behavior~=toggle_theme]', () => BK.toggleDark())
 
-$(document).on('turbo:load', function () {
-  if (window.location !== window.parent.location) {
-    $('[data-behavior~=hide_iframe]').hide()
-  }
-
-  $('[data-behavior~=select_content]').on('click', e => e.target.select())
-
-  BK.s('autohide').hide()
-
+function loadAsyncFrames(){
   $.each(BK.s('async_frame'), (i, frame) => {
     const loadFrame = () => {
       $.get($(frame).data('src'), data => {
@@ -189,11 +181,23 @@ $(document).on('turbo:load', function () {
         $(frame).children('.shimmer').first().addClass('shimmer--error')
       })
     }
-
+  
     if ($(frame).data('loading') == "lazy") {
       whenViewed(frame, loadFrame);
     } else loadFrame();
   })
+}
+
+$(document).on('turbo:load', function () {
+  if (window.location !== window.parent.location) {
+    $('[data-behavior~=hide_iframe]').hide()
+  }
+
+  $('[data-behavior~=select_content]').on('click', e => e.target.select())
+
+  BK.s('autohide').hide()
+
+  loadAsyncFrames()
 
   if (BK.thereIs('login')) {
     let email
@@ -478,11 +482,16 @@ document.addEventListener("turbo:before-stream-render", ((event) => {
     if (streamElement.action == "refresh_link_modals") {
       const turboStreamElements = document.querySelectorAll('turbo-frame');
       turboStreamElements.forEach(element => {
-        if (element.id.startsWith('link_modal')) {
+        if (element.id.startsWith('link_modal') && window.location.pathname == "/my/inbox") {
           element.innerHTML = "<strong>Loading...</strong>"
           element.reload();
         }
       });
+    } else if (streamElement.action == "close_modal") {
+      $.modal.close().remove()
+      
+    } else if (streamElement.action == "load_new_async_frames") {
+      loadAsyncFrames()
     } else {
       fallbackToDefaultActions(streamElement)
     }
