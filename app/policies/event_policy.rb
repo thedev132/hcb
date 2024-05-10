@@ -93,10 +93,6 @@ class EventPolicy < ApplicationPolicy
     admin_or_manager? && !record.demo_mode?
   end
 
-  def receive_check?
-    is_public || admin_or_user?
-  end
-
   def sell_merch?
     is_public || admin_or_user?
   end

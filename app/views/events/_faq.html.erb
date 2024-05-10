@@ -133,40 +133,46 @@
       </details>
     </li>
 
-        <li class="mb3 group/item" id="paper-check">
+    <li class="mb3 group/item" id="paper-check">
       <details open>
-        <summary class="cursor-pointer relative group/summary">
-          <%= anchor_link "paper-check" %>
-          <h3 class="inline mb1 rounded-md px-1 group-target/item:dark:text-shadow group-target/item:bg-highlight">I need to deposit a paper check. What should I do?</h3>
+        <summary class="cursor-pointer relative">
+          <%= anchor_link "check" %>
+          <h3 class="inline mb1">I need to deposit a check. What should I do?</h3>
         </summary>
         <article>
           <p>
-            HCB accepts paper checks! Just mail the check to our
-            billing address:
+            HCB has two ways to deposit checks! You can deposit a check virtually using <%= link_to "HCB's Check Deposit tool", event_check_deposits_path(@event) %>. Alternatively, to have a check physically processed, please view the steps below.
           </p>
-          <code>
+
+          <p>
+            Please note: Checks must be made out to either <i>"The Hack Foundation"</i> or <i>"Hack Club"</i>. Our banking partners will, unfortunately, reject checks made out to any name besides those two.
+          </p>
+
+          <p>
+            Please see <a href="https://cloud-82tb02emf-hack-club-bot.vercel.app/0img_0601.jpg" target="_blank">here</a> for an example of how to write a check to be deposited into your organization's fund with HCB.
+          </p>
+
+          <p>
+            Depositing checks virtually is the best way to receive your funds! Simply go to the Check deposit tab, take a photo of the front and back of your check, write in the amount, and you're done!
+          </p>
+
+          <p>
+            To deposit a physical check, yourself or a donor can mail it to our physical address. To be transparent, checks sent to our physical address involve a lot of time from our operations team and will take longer to process. Because of this, we strongly recommend you deposit checks virtually.
+          </p>
+
+          <p>
+            For us to physically process a check, it has to be mailed to:
+          </p>
+
+               <code>
 <pre>
 The Hack Foundation
 8605 Santa Monica Blvd #86294
 West Hollywood, CA 90069
 </pre>
-          </code>
+              </code>
           <p>
-            Be sure that your organization's name is included either on the
-            check's memo or somewhere else in or on the envelope sent.
-            Without it, we can't properly route received funds.
-          </p>
-
-          <p>
-            <strong>Checks must be made out to either "The Hack Foundation"
-            or "Hack Club".</strong> Our banking partners will, unfortunately,
-            reject checks made out to any name besides those two.
-          </p>
-
-          <p>
-            Please <a href="https://cloud-82tb02emf-hack-club-bot.vercel.app/0img_0601.jpg" target="_blank">see here</a>
-            for an example of how to write a check to be deposited into your
-            organization's fund with HCB.
+            Be sure that your organization's name is included either on the check's memo or somewhere else in or on the envelope sent. Without it, we can't properly route received funds. After a check has been sent, please notify your operations contact or email us at <a href="mailto:hcb@hackclub.com">hcb@hackclub.com</a>.
           </p>
         </article>
       </details>

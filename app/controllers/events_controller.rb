@@ -409,15 +409,6 @@ class EventsController < ApplicationController
   end
 
   # (@msw) these pages are for the WIP resources page.
-  def receive_check
-    @event_name = @event.name
-    @document_title = "Receive Checks"
-    @document_subtitle = "Deposit checks into your HCB account"
-    @document_image = "https://cloud-9sk4no7es-hack-club-bot.vercel.app/0slaps-jpg-this-image-can-hold-so-many-pixels.avi.onion.gif.7zip.msw.jpg"
-    authorize @event
-  end
-
-  # (@msw) these pages are for the WIP resources page.
   def sell_merch
     event_name = @event.name
     @document_title = "Sell Merch with Redbubble"
