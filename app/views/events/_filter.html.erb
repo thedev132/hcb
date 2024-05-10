@@ -7,6 +7,26 @@
       <%= form.hidden_field :tag, value: @tag.label %>
     <% end %>
   <% end %>
+  <% admin_tool(@show_running_balance ? "" : "display-none") do %>
+    <div data-controller="menu" data-menu-append-to-value="turbo-frame#ledger" data-menu-placement-value="bottom-end">
+      <button
+        type="button"
+        class="btn btn-small bg-info menu__toggle menu__toggle--arrowless overflow-visible z1 mr1"
+        data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">
+        <%= inline_icon "list", size: 16, style: "margin: 0" %>
+        <span class="xs-hide sm-hide md-hide nowrap">Count</span>
+      </button>
+      <div class="menu__content menu__content--2 menu__content--compact h5" data-menu-target="content">
+        <% [10, 25, 50, 100, 200].each do |amount| %>
+          <div class="flex items-center">
+            <%= link_to({ per: amount, q: params[:q] }.compact, class: "flex-auto menu__action") do %>
+              <%= amount %> Transactions Per Page
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
   <div data-controller="menu" data-menu-append-to-value="turbo-frame#ledger" data-menu-placement-value="bottom-end">
     <button
       type="button"
