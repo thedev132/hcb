@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 source "https://rubygems.org"
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby File.read(File.join(File.dirname(__FILE__), ".ruby-version")).strip
 
@@ -36,7 +35,7 @@ gem "faraday" # web requests
 gem "increase", "~> 0.3.1"
 gem "stripe", "8.5.0"
 gem "plaid", "~> 26.0"
-gem "yellow_pages", git: "https://github.com/hackclub/yellow_pages", ref: "117d13e"
+gem "yellow_pages", github: "hackclub/yellow_pages", ref: "117d13e"
 
 gem "aws-sdk-s3", require: false
 

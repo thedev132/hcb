@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/hackclub/yellow_pages
+  remote: https://github.com/hackclub/yellow_pages.git
   revision: 117d13e5067c540e3ee2457a4aac070ca88f59c9
   ref: 117d13e
   specs:
