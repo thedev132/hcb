@@ -4,7 +4,7 @@ class ReimbursementMailer < ApplicationMailer
   def invitation
     @report = params[:report]
 
-    mail to: @report.user.email_address_with_name, subject: "Get reimbursed by #{@report.event.name} for #{@report.name}", from: hcb_email_with_name_of(@report.event)
+    mail to: @report.user.email_address_with_name, subject: "Get reimbursed by #{@report.event.name} for #{@report.name}", from: hcb_email_with_name_of(@report.event), reply_to: @report.user == @report.inviter ? nil : @report.inviter.email_address_with_name
   end
 
   def reimbursement_approved
