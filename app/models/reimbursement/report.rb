@@ -53,7 +53,7 @@ module Reimbursement
     has_many :expenses, foreign_key: "reimbursement_report_id", inverse_of: :report, dependent: :delete_all
     has_one :payout_holding, inverse_of: :report
     alias_attribute :report_name, :name
-    attribute :name, :string, default: "Expenses from #{Time.now.strftime("%B %e, %Y")}"
+    attribute :name, :string, default: -> { "Expenses from #{Time.now.strftime("%B %e, %Y")}" }
 
     scope :search, ->(q) { joins(:user).where("users.full_name ILIKE :query OR reimbursement_reports.name ILIKE :query", query: "%#{User.sanitize_sql_like(q)}%") }
     scope :pending, -> { where(aasm_state: ["draft", "submitted", "reimbursement_requested"]) }
