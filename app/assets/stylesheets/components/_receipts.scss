@@ -132,8 +132,9 @@
   display: none;
 }
 
-.modal--popover--receipt-expanded > :not(.receipt--expanded):not(header) {
-  display: none;
+.modal--popover--receipt-expanded > :not(.receipt--expanded):not(header):not(#receipts_list),
+.modal--popover--receipt-expanded > #receipts_list > :not(.receipt--expanded) {
+  display: none!important;
 }
 
 .receipt--expanded > span > .receipt--image {
