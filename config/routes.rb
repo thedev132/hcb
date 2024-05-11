@@ -88,12 +88,6 @@ Rails.application.routes.draw do
   post "enable_feature", to: "features#enable_feature"
   post "disable_feature", to: "features#disable_feature"
 
-  resources :reports, only: [] do
-    member do
-      get "fees", to: "reports#fees"
-    end
-  end
-
   resources :users, only: [:edit, :update] do
     collection do
       get "auth", to: "users#auth"
