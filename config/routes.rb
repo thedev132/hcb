@@ -417,16 +417,6 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-
-  resources :fee_reimbursements, only: [:show, :edit, :update] do
-    collection do
-      get "export"
-    end
-    post "mark_as_processed"
-    post "mark_as_unprocessed"
-    resources :comments
-  end
-
   get "brand_guidelines", to: redirect("branding")
   get "branding", to: "static_pages#branding"
   get "faq", to: "static_pages#faq"
