@@ -24,7 +24,7 @@
         <li>We only accept checks from U.S. financial institutions, in U.S.
           dollars.
         </li>
-        <li>For information on how to physically deposit checks, <a href="<%= faq_path %>">view our FAQ</a>.</li>
+        <li>For information on how to physically deposit checks, <%= link_to "view our FAQ", faq_path(anchor: "paper-check") %>.</li>
       </ul>
     <% end %>
   </div>
