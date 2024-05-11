@@ -2,14 +2,14 @@
 
 <% new ||= false %>
 <% latest_state_change = expense.versions.reverse.find { |version| version.changeset["aasm_state"]&.first.present? } %>
-<% non_manager = !OrganizerPosition.find_by(user: current_user, event: expense.report.event)&.manager? && !admin_signed_in? %>
+<% read_only = !OrganizerPosition.find_by(user: current_user, event: expense.report.event)&.manager? && current_user != expense.report.user && !admin_signed_in? %>
 
 <%= turbo_frame_tag expense do %>
   <div
     data-controller="expense-form"
     data-expense-form-enabled-value="<%= new %>"
     data-expense-form-memo-value="<%= expense.card_label.presence || "Untitled Expense" %>"
-    data-expense-form-locked-value="<%= expense.report.locked? || non_manager %>">
+    data-expense-form-locked-value="<%= expense.report.locked? || read_only %>">
     <article
       id="<%= expense.expense_number %>"
       class="
@@ -48,8 +48,8 @@
               <%= user_mention reviewed_by, { avatar: { style: "vertical-align: sub;" } }, "Unknown User" %>
             <% end %>
           <% end %>
-          <button id="edit-or-save" class="pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= "This expense is read-only. #{"Mark it as a draft to edit." unless expense.report.closed? || non_manager}" %>">
-            <% if expense.report.locked? || non_manager %>
+          <button id="edit-or-save" class="pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= "This expense is read-only. #{"Mark it as a draft to edit." unless expense.report.closed? || read_only}" %>">
+            <% if expense.report.locked? || read_only %>
               <%= inline_icon "private" %>
             <% else %>
               <%= inline_icon "checkmark", style: new ? nil : "display: none;" %>
