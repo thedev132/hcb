@@ -41,8 +41,8 @@ Rails.application.routes.draw do
 
   resources :receipts, only: [:create, :destroy] do
     collection do
-      post "link", to: "receipts#link"
-      get "link_modal", to: "receipts#link_modal"
+      post "link"
+      get "link_modal"
     end
   end
 
@@ -77,8 +77,8 @@ Rails.application.routes.draw do
 
   resources :suggested_pairings, only: [] do
     member do
-      post "ignore", to: "suggested_pairings#ignore"
-      post "accept", to: "suggested_pairings#accept"
+      post "ignore"
+      post "accept"
     end
   end
 
@@ -274,7 +274,6 @@ Rails.application.routes.draw do
   resources :sponsors
 
   resources :invoices, only: [:show] do
-    get "manual_payment"
     post "manually_mark_as_paid"
     post "archive"
     post "unarchive"
@@ -586,18 +585,18 @@ Rails.application.routes.draw do
   get "/event_by_airtable_id/:airtable_id" => "events#by_airtable_id"
   resources :events, except: [:new, :create], path_names: { edit: "settings" }, path: "/" do
     get "edit", to: redirect("/%{event_id}/settings")
-    put "toggle_hidden", to: "events#toggle_hidden"
+    put "toggle_hidden"
 
-    post "claim_point_of_contact", to: "events#claim_point_of_contact"
+    post "claim_point_of_contact"
 
     post "remove_header_image"
     post "remove_background_image"
     post "remove_logo"
 
-    get "team", to: "events#team", as: :team
+    get "team"
     get "google_workspace", to: "events#g_suite_overview", as: :g_suite_overview
-    post "g_suite_create", to: "events#g_suite_create", as: :g_suite_create
-    put "g_suite_verify", to: "events#g_suite_verify", as: :g_suite_verify
+    post "g_suite_create"
+    put "g_suite_verify"
     get "emburse_cards", to: "events#emburse_card_overview", as: :emburse_cards_overview
     get "cards", to: "events#card_overview", as: :cards_overview
     get "cards/new", to: "stripe_cards#new"
@@ -605,22 +604,22 @@ Rails.application.routes.draw do
 
     get "transfers/new", to: "events#new_transfer"
 
-    get "async_balance", to: "events#async_balance", as: :async_balance
-    get "reimbursements_pending_review_icon", to: "events#reimbursements_pending_review_icon", as: :reimbursements_pending_review_icon
+    get "async_balance"
+    get "reimbursements_pending_review_icon"
 
     # (@eilla1) these pages are for the wip resources page and will be moved later
-    get "connect_gofundme", to: "events#connect_gofundme", as: :connect_gofundme
-    get "sell_merch", to: "events#sell_merch", as: :sell_merch
+    get "connect_gofundme"
+    get "sell_merch"
 
-    get "documentation", to: "events#documentation", as: :documentation
-    get "transfers", to: "events#transfers", as: :transfers
-    get "statements", to: "events#statements", as: :statements
-    get "promotions", to: "events#promotions", as: :promotions
-    get "expensify", to: "events#expensify"
-    get "reimbursements", to: "events#reimbursements", as: :reimbursements
+    get "documentation"
+    get "transfers"
+    get "statements"
+    get "promotions"
+    get "expensify"
+    get "reimbursements"
     get "donations", to: "events#donation_overview", as: :donation_overview
     get "partner_donations", to: "events#partner_donation_overview", as: :partner_donation_overview
-    post "demo_mode_request_meeting", to: "events#demo_mode_request_meeting", as: :demo_mode_request_meeting
+    post "demo_mode_request_meeting"
     post "finish_signee_backfill"
     resources :disbursements, only: [:new, :create]
     resources :increase_checks, only: [:new, :create], path: "checks"
