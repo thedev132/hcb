@@ -111,12 +111,10 @@ class StripeCardsController < ApplicationController
     authorize @card
   end
 
-  def update_name
+  def update
     card = StripeCard.find(params[:id])
     authorize card
-    name = params[:stripe_card][:name]
-    name = nil unless name.present?
-    if card.update(name:)
+    if card.update(params.require(:stripe_card).permit(:name))
       flash[:success] = "Card's name has been successfully updated!"
     else
       flash[:error] = card.errors.full_messages.to_sentence || "Card's name could not be updated"

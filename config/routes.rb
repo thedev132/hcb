@@ -295,10 +295,8 @@ Rails.application.routes.draw do
   namespace :stripe_cards do
     resource :activation, only: [:new, :create], controller: :activation
   end
-  resources :stripe_cards, only: %i[create index show] do
+  resources :stripe_cards, only: %i[edit update create index show] do
     member do
-      get "edit"
-      post "update_name"
       post "freeze"
       post "defrost"
     end
