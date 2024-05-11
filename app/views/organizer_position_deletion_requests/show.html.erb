@@ -22,7 +22,9 @@
 
     <p>
       <strong>Submitter email</strong>
-      <%= @opdr.submitted_by.email %>
+      <%= copy_to_clipboard(@opdr.submitted_by.email) do %>
+        <%= @opdr.submitted_by.email %>
+      <% end %>
     </p>
 
     <p>
