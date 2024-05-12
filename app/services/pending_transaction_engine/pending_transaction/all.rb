@@ -28,7 +28,7 @@ module PendingTransactionEngine
       def canonical_pending_transactions
         @canonical_pending_transactions ||=
           begin
-            included_local_hcb_code_associations = [:receipts, :comments, :canonical_transactions, :canonical_pending_transactions]
+            included_local_hcb_code_associations = [:receipts, :comments, :canonical_transactions, { canonical_pending_transactions: [:canonical_pending_declined_mapping] }]
             included_local_hcb_code_associations << :tags if Flipper.enabled?(:transaction_tags_2022_07_29, @event)
             cpts = CanonicalPendingTransaction.includes(:raw_pending_stripe_transaction,
                                                         local_hcb_code: included_local_hcb_code_associations)
