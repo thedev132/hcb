@@ -133,15 +133,6 @@ html[data-dark='true'] {
   animation: border-dance 1s infinite linear;
 }
 
-@keyframes highlight {
-  from {
-    background-color: map-get($palette, warning);
-  }
-  to {
-    background-color: none;
-  }
-}
-
 .transaction__icon--selected {
   display: none;
 }
