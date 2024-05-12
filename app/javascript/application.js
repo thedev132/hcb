@@ -16,11 +16,11 @@ ReactRailsUJS.handleEvent('turbo:frame-render', ReactRailsUJS.handleUnmount)
 // Bad stuff happens if you don't do this. Trust me. ~ @cjdenio
 document.addEventListener('turbo:frame-render', () => {
   // prettier-ignore
-  window.$('.jquery-modal [data-behavior~=modal].turbo-frame-modal:not(.modal--popover)').remove()
+  $('.jquery-modal [data-behavior~=modal].turbo-frame-modal:not(.modal--popover)').remove()
 })
 
 document.addEventListener('turbo:before-cache', () => {
-  const currentModal = window.$.modal.getCurrent()
+  const currentModal = $.modal.getCurrent()
 
   if (currentModal) {
     currentModal.options.doFade = false
