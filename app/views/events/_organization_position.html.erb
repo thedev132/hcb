@@ -1,5 +1,5 @@
-<div class="organizer-position-invite card flex flex-col overflow-visible mb2">
-  <div class="organizer-position-invite__main-info flex">
+<div class="organizer-position card flex flex-col overflow-visible mb2">
+  <div class="organizer-position__main-info flex">
     <div class="flex g2" style="flex-grow: 1">
       <div class="flex justify-between">
         <div class="relative">
@@ -59,7 +59,7 @@
     <% end %>
   </div>
   <% if organizer_signed_in? %>
-    <div class="organizer-position-invite__contact-block g1 flex muted overflow-auto">
+    <div class="organizer-position__contact-block g1 flex muted overflow-auto">
       <p class="m0">
         <%= copy_to_clipboard(position.user.email, class: "inline-flex items-center g1 line-height-0") do %>
           <%= inline_icon("email", size: 20) %>
@@ -67,7 +67,7 @@
         <% end %>
       </p>
       <% if admin_signed_in? %>
-        <p class="organizer-position-invite__contact-block-separator h3 m0 line-height-1">•</p>
+        <p class="organizer-position__contact-block-separator h3 m0 line-height-1">•</p>
         <p class="warning m0">
           <%= copy_to_clipboard(position.user.phone_number, class: "inline-flex items-center g1 line-height-0") do %>
             <%= inline_icon("message-simple", size: 20) %>

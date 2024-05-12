@@ -32,7 +32,7 @@
 
 <% if @all_positions.any? %>
   <%= turbo_frame_tag "team_position" do %>
-    <%= render partial: "organization_position_invite", collection: @positions, as: :position %>
+    <%= render partial: "organization_position", collection: @positions, as: :position %>
     <%= paginate @positions %>
   <% end %>
 <% else %>
