@@ -1,4 +1,4 @@
-<%# locals: (expense:, new:) -%>
+<%# locals: (expense:, new: false) -%>
 
 <% new ||= false %>
 <% latest_state_change = expense.versions.reverse.find { |version| version.changeset["aasm_state"]&.first.present? } %>
