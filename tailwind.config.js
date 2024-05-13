@@ -64,6 +64,7 @@ module.exports = {
       colors: {
         slate: '#3c4858',
         muted: '#8492a6',
+        snow: '#f9fafc',
       },
     },
   },
