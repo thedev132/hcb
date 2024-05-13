@@ -27,7 +27,7 @@
     <% unless Rails.env.production? %>
       <% @sql_count = QueryCount::Counter.counter %>
       <% @sql_cached_count = QueryCount::Counter.counter_cache %>
-      Loaded using <%= @sql_count %> unique SQL <%= "query".pluralize @sql_count %> (+ <%= @sql_cached_count %> cached).
+      Loaded using <%= @sql_count %> unique SQL <%= "query".pluralize @sql_count %> (+ <%= @sql_cached_count %> cached). Running on Rails <%= Rails::VERSION::STRING %>.
     <% end %>
   </p>
 </footer>

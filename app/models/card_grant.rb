@@ -59,8 +59,8 @@ class CardGrant < ApplicationRecord
 
   delegate :balance, to: :subledger
 
-  serialize :merchant_lock, CommaSeparatedCoder # convert comma-separated merchant list to an array
-  serialize :category_lock, CommaSeparatedCoder
+  serialize :merchant_lock, coder: CommaSeparatedCoder # convert comma-separated merchant list to an array
+  serialize :category_lock, coder: CommaSeparatedCoder
 
   validates_presence_of :amount_cents, :email
   validates :amount_cents, numericality: { greater_than: 0, message: "can't be zero!" }

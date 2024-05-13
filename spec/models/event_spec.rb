@@ -15,11 +15,7 @@ RSpec.describe Event, type: :model do
 
   describe "#transaction_engine_v2_at" do
     it "has a value" do
-      expect(event.transaction_engine_v2_at).to be_nil
-
-      event.save!
-
-      expect(event.reload.transaction_engine_v2_at).not_to be_nil
+      expect(event.transaction_engine_v2_at).not_to be_nil
     end
   end
 

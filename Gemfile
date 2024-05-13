@@ -6,7 +6,7 @@ ruby File.read(File.join(File.dirname(__FILE__), ".ruby-version")).strip
 
 gem "dotenv-rails", groups: [:development, :test]
 
-gem "rails", "~> 7.0.8"
+gem "rails", "~> 7.1.3"
 
 gem "puma", "~> 6.4" # app server
 
@@ -56,7 +56,7 @@ gem "blind_index" # needed to query and/or guarantee uniqueness for encrypted fi
 
 gem "aasm" # state machine
 
-gem "paper_trail" # track changes to models
+gem "paper_trail", "~> 15.1.0" # track changes to models
 gem "acts_as_paranoid", "~> 0.9.0" # enables soft deletions
 
 gem "friendly_id", "~> 5.5.0" # slugs
@@ -149,7 +149,6 @@ gem "lograge" # Log formatting
 gem "statsd-instrument", "~> 3.5", ">= 3.5.12" # For reporting to HC Grafana
 
 group :production do
-  gem "skylight"
 
   # gem "heroku-deflater" # compression
 

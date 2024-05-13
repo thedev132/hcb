@@ -47,8 +47,7 @@ module Bank
 
     config.add_autoload_paths_to_load_path
 
-    config.autoload_paths << "#{config.root}/lib"
-    config.eager_load_paths << "#{config.root}/lib"
+    config.autoload_lib(ignore: %w(assets tasks))
     config.eager_load_paths << "#{config.root}/spec/mailers/previews"
 
     config.action_view.form_with_generates_remote_forms = false
