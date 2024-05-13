@@ -5,6 +5,8 @@ class SearchController < ApplicationController
   # GET /search
   def index
     begin
+      raise Errors::ValidationError, "Please provide a query parameter." unless params[:query]
+
       query = SearchService::Parser.new(params[:query]).run
       results = SearchService::Authorizer.new(
         SearchService::Engine.new(query, current_user).run,
