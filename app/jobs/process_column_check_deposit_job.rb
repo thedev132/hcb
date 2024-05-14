@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ProcessColumnCheckDepositJob < ApplicationJob
-  class AmountMismatchError < StandardError; end
   class UnconfidentError < StandardError; end
 
   def perform(check_deposit:, validate: true)
@@ -19,10 +18,7 @@ class ProcessColumnCheckDepositJob < ApplicationJob
       conn.post("/transfers/checks/image/front", { file: Faraday::Multipart::FilePart.new(file.path, check_deposit.front.content_type) }).body
     end
 
-    raise UnconfidentError, "could not confidently detect amount on check" if validate && front["deposit_amount_confidence"] < 0.8
-    raise UnconfidentError, "could not confidently parse payment details from check" if validate && front["micr_line_confidence"] < 0.8
-
-    raise AmountMismatchError, "provided amount was #{check_deposit.amount.format}, but detected amount was #{Money.from_cents(front["deposit_amount"]).format}" if validate && check_deposit.amount_cents.to_s != front["deposit_amount"]
+    raise UnconfidentError, "could not confidently parse payment details from check. confidence was #{front["micr_line_confidence"]}" if validate && front["micr_line_confidence"] < 0.8
 
     # Upload back
     back = check_deposit.back.open do |file|
