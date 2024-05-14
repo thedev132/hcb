@@ -28,7 +28,7 @@
       <span class="align-middle <%= "renamed" if renamed %>"
             data-controller="navigation"
             data-action="dblclick->navigation#navigate"
-            data-navigation-location-param="<%= edit_hcb_code_path(hcb_code, inline: true, prepend: prepended_to_memo, location:) %>"
+            data-navigation-location-param="<%= edit_hcb_code_path(hcb_code, inline: true, prepended_to_memo:, location:) %>"
             data-navigation-frame-param="<%= "#{location}:#{ActionView::RecordIdentifier.dom_id(hcb_code)}:memo" %>"
             style="cursor: text">
           <span
