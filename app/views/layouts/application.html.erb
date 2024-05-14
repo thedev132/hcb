@@ -30,31 +30,33 @@
       <script async src="https://cdn.headwayapp.co/widget.js"></script>
     <% end %>
 
-    <script>
-      console.log(`%c                -*%@@%*-
-            .=#@@@@@@@@@@#=.
-         .=%@@@@@*-..-*@@@@@%=.
-       -#@@@@@+:        :+@@@@@#-
-    :*@@@@@*:              :*@@@@@*:
-  =%@@@@#-                    -#@@@@%=.
-*@@@@@+.                        .+@@@@@*
-*@@*-   *@@*      *@@*      *@@*   :*@@*
-        @@@@      @@@@      @@@@
-        @@@@      @@@@      @@@@
-        @@@@      @@@@      @@@@
-        @@@@      @@@@      @@@@
-        @@@@      @@@@      @@@@
-        @@@@      @@@@      @@@@
-        @@@@      @@@@      @@@@
-        *@@*      *@@*      *@@*
+    <% if Rails.env.production? %>
+      <script>
+        console.log(`%c                -*%@@%*-
+              .=#@@@@@@@@@@#=.
+          .=%@@@@@*-..-*@@@@@%=.
+        -#@@@@@+:        :+@@@@@#-
+      :*@@@@@*:              :*@@@@@*:
+    =%@@@@#-                    -#@@@@%=.
+  *@@@@@+.                        .+@@@@@*
+  *@@*-   *@@*      *@@*      *@@*   :*@@*
+          @@@@      @@@@      @@@@
+          @@@@      @@@@      @@@@
+          @@@@      @@@@      @@@@
+          @@@@      @@@@      @@@@
+          @@@@      @@@@      @@@@
+          @@@@      @@@@      @@@@
+          @@@@      @@@@      @@@@
+          *@@*      *@@*      *@@*
 
-  *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*
-  *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*
+    *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*
+    *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*
 
-        Come hack on HCB with us!
-<%= Rails.configuration.constants.hack_on_hcb_form_url %>
-`, 'color: #ec3750; font-weight: bold; font-size: 10px;')
-    </script>
+          Come hack on HCB with us!
+  <%= Rails.configuration.constants.hack_on_hcb_form_url %>
+  `, 'color: #ec3750; font-weight: bold; font-size: 10px;')
+      </script>
+    <% end %>
 
     <meta name="format-detection" content="telephone=no">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
