@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_28_154337) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_14_142642) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -404,6 +404,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_28_154337) do
     t.bigint "created_by_id", null: false
     t.string "increase_status"
     t.string "rejection_reason"
+    t.string "column_id"
     t.index ["created_by_id"], name: "index_check_deposits_on_created_by_id"
     t.index ["event_id"], name: "index_check_deposits_on_event_id"
     t.index ["increase_id"], name: "index_check_deposits_on_increase_id", unique: true

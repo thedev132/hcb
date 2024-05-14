@@ -11,6 +11,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  back_file_id     :string
+#  column_id        :string
 #  created_by_id    :bigint           not null
 #  event_id         :bigint           not null
 #  front_file_id    :string
