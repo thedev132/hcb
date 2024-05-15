@@ -90,7 +90,7 @@
               turbo: local_assigns[:turbo_for_deletion] ? "true" : "false",
               "turbo-method": "delete",
               "turbo-confirm": "Are you sure you'd like to delete this receipt?",
-              "confirm": "Are you sure you'd like to delete this receipt?"
+              "confirm": !local_assigns[:turbo_for_deletion] ? "Are you sure you'd like to delete this receipt?" : nil
             },
             size: 24,
             class: "error tooltipped tooltipped--w",
