@@ -28,6 +28,45 @@
   </div>
 <% end %>
 
+<% if @event.robotics_team? %>
+  <div class="card pb0 mb3 promo-bin" id="bin">
+    <div class="card__banner card__banner--top flex justify-between items-center">
+      <h3 class="h1 p2 my0 flex flex-col items-start smoke">
+        🗑️ The Bin: Electronics Starter Kits
+      </h3>
+      <%= link_to "Join",
+        @perks_available ? "https://hackclub.com/bin/" : root_path,
+        class: "btn bg-success mr1 #{'disabled' unless @perks_available} tooltipped tooltipped--w",
+        target: :_blank %>
+    </div>
+    <p>
+      Now that build season is over, get your club members learning electronics early for next year. The Bin is a free beginner hardware kit program ideal for FIRST teams!
+    </p>
+    <p>
+      Rummage for parts, design your project in the online editor, and get the parts shipped to you for free paid for by donation. All FIRST club members in high school are eligible.
+    </p>
+  </div>
+
+  <div class="card pb0 mb3 promo-onboard" id="bin">
+    <div class="card__banner card__banner--top flex justify-between items-center">
+      <h3 class="h1 p2 my0 flex items-start smoke justify-center">
+        <img src="https://cloud-iuly89sfb-hack-club-bot.vercel.app/0surfin_orpheus.png" height="36px" class="mr2">
+        OnBoard Grant for PCB Fabrication
+      </h3>
+      <%= link_to "Jump Onboard",
+        @perks_available ? "https://hackclub.com/onboard/" : root_path,
+        class: "btn bg-success mr1 #{'disabled' unless @perks_available} tooltipped tooltipped--w",
+        target: :_blank %>
+    </div>
+    <p>
+      Use the OnBoard grant to master PCB design with free  resources, community support, and manufacturing grants.
+    </p>
+    <p>
+      Get up to $100 to cover the  costs of creating your custom circuit boards. Enhance your off-season R&D with hands-on experience and collaborate with fellow high schoolers in the Hack Club Slack community.
+    </p>
+  </div>
+<% end %>
+
 <div class="card mb3" id="1password">
   <div class="card__banner card__banner--top flex justify-between items-center promo-1password">
     <%= image_tag "1password.svg", width: 210, class: "p2" %>
