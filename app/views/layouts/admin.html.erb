@@ -42,7 +42,8 @@
          },
          Organizations: {
            Organizations: [events_admin_index_path, Event.approved.count, %i[counter]],
-           "Google Workspace Requests": [google_workspaces_admin_index_path, GSuite.needs_ops_review.count, %i[]]
+           "Google Workspace Requests": [google_workspaces_admin_index_path, GSuite.needs_ops_review.count, %i[]],
+           "Account Numbers": [account_numbers_admin_index_path, Column::AccountNumber.count, %i[counter]]
          },
          Misc: {
            "Bank Accounts": [bank_accounts_admin_index_path, BankAccount.failing.count, %i[counter]],

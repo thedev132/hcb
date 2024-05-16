@@ -1168,6 +1168,33 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def account_numbers
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+    @account_number_type = params[:account_number_type].present? ? params[:account_number_type] : nil # default/nil = show all, 1 = deposit only, 2 = spend + deposit
+
+    relation = Column::AccountNumber.includes(:event)
+
+    if @event_id
+      relation = relation.where(event_id: @event_id)
+    end
+
+    if @account_number_type == "1"
+      relation = relation.where(deposit_only: true)
+    elsif @account_number_type == "2"
+      relation = relation.where(deposit_only: false)
+    end
+
+    relation = relation.where(account_number: @q) if @q
+
+    @count = relation.count
+    @account_numbers = relation.page(@page).per(@per).order("events.id desc")
+
+    render layout: "admin"
+  end
+
   private
 
   def stream_data(content_type, filename, data, download = true)

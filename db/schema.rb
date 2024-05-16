@@ -444,6 +444,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_14_142642) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "deposit_only", default: true, null: false
+    t.string "account_number_bidx"
+    t.index ["account_number_bidx"], name: "index_column_account_numbers_on_account_number_bidx"
     t.index ["event_id"], name: "index_column_account_numbers_on_event_id"
   end
 

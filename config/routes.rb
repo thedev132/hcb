@@ -182,6 +182,7 @@ Rails.application.routes.draw do
       get "check_deposits", to: "admin#check_deposits"
       get "column_statements", to: "admin#column_statements"
       get "hq_receipts", to: "admin#hq_receipts"
+      get "account_numbers", to: "admin#account_numbers"
 
       resources :grants, only: [] do
         post "approve"
