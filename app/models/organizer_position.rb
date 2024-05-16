@@ -7,7 +7,7 @@
 #  id         :bigint           not null, primary key
 #  deleted_at :datetime
 #  first_time :boolean          default(TRUE)
-#  is_signee  :boolean
+#  is_signee  :boolean          default(FALSE)
 #  role       :integer          default("manager"), not null
 #  sort_index :integer
 #  created_at :datetime         not null

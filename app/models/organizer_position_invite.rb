@@ -8,7 +8,7 @@
 #  accepted_at           :datetime
 #  cancelled_at          :datetime
 #  initial               :boolean          default(FALSE)
-#  is_signee             :boolean
+#  is_signee             :boolean          default(FALSE)
 #  rejected_at           :datetime
 #  role                  :integer          default("manager"), not null
 #  slug                  :string

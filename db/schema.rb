@@ -1275,7 +1275,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_14_142642) do
     t.datetime "cancelled_at", precision: nil
     t.string "slug"
     t.boolean "initial", default: false
-    t.boolean "is_signee"
+    t.boolean "is_signee", default: false
     t.integer "role", default: 100, null: false
     t.index ["event_id"], name: "index_organizer_position_invites_on_event_id"
     t.index ["organizer_position_id"], name: "index_organizer_position_invites_on_organizer_position_id"
@@ -1292,7 +1292,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_14_142642) do
     t.datetime "deleted_at", precision: nil
     t.integer "sort_index"
     t.boolean "first_time", default: true
-    t.boolean "is_signee"
+    t.boolean "is_signee", default: false
     t.integer "role", default: 100, null: false
     t.index ["event_id"], name: "index_organizer_positions_on_event_id"
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
