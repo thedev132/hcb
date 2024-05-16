@@ -11,6 +11,7 @@ class DonationsController < ApplicationController
   before_action :set_donation, only: [:show]
   before_action :set_event, only: [:start_donation, :make_donation, :qr_code]
   before_action :check_dark_param
+  before_action :check_background_param
   before_action :hide_seasonal_decorations
   skip_before_action :redirect_to_onboarding
 
@@ -87,7 +88,7 @@ class DonationsController < ApplicationController
     authorize @donation
 
     if @donation.save
-      redirect_to finish_donation_donations_path(@event, @donation.url_hash)
+      redirect_to finish_donation_donations_path(@event, @donation.url_hash, background: @background)
     else
       render :start_donation, status: :unprocessable_entity
     end
@@ -200,6 +201,12 @@ class DonationsController < ApplicationController
       @dark = true
       cookies[:donation_dark] = true
     end
+  end
+
+  def check_background_param
+    # because we're going to be injecting this value into a stylesheet,
+    # we ensure that it's a hex code to prevent: https://css-tricks.com/css-security-vulnerabilities/
+    @background = params[:background] unless (params[:background] =~ /\A[0-9a-fA-F]{6}\z/).nil?
   end
 
   def hide_seasonal_decorations

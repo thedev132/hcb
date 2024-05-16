@@ -1,5 +1,5 @@
 <%= turbo_frame_tag :donation do %>
-  <ul class="tab-container max-width-1 mx-auto <%= "mt7" if @event.donation_header_image.attached? && !@event.donation_page_message.present? %>">
+  <ul class="tab-container max-width-1 mx-auto bg-transparent <%= "mt7" if @event.donation_header_image.attached? && !@event.donation_page_message.present? %>">
       <li class="<%= "active" unless @monthly %>">
           <%= link_to "One-time", start_donation_donations_path(@event), data: { turbo: true } %>
       </li>
@@ -70,6 +70,13 @@
     <p class="muted h5 mt2 mb1">
       Your contribution is tax-deductible<% if !@event.country_US? %> in the US<% end %>.
     </p>
+
+    <% if @background.present? %>
+      <%# @background is defined in the donations controller's check_background_param method %>
+      <%# it's used for organisations to set a custom background colour when embedding the form %>
+      <%# we include it here to ensure that this colour is used at all stages %>
+      <%= form.hidden_field :background, value: @background, name: :background %>
+    <% end %>
 
     <% if @event.demo_mode? %>
       <%= form.submit "Continue →", class: "w-100 bg-success", disabled: "true" %>
