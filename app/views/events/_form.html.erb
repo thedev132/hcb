@@ -273,7 +273,7 @@
     </div>
   </div>
   <% admin_tool do %>
-    <%= link_to (event.hidden? ? "Un-hide project" : "Hide project"),
+    <%= link_to (event.hidden? ? "Un-hide organization" : "Hide organization"),
                 event_toggle_hidden_path(event),
                 method: :put,
                 "data-confirm": "Do you really want to #{event.hidden? ? "un-hide" : "hide"} #{event.name}?",

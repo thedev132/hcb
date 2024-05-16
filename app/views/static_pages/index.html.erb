@@ -58,13 +58,13 @@
 
         <%= render partial: "events/event_card", collection: @events.not_hidden, as: :event %>
 
-        <%= link_to "https://hackclub.com/hcb/apply/?#{URI.encode_www_form({ userEmail: current_user.email, firstName: current_user.first_name, lastName: current_user.last_name, returningUser: "Yes, I have used HCB before", userPhone: current_user.phone_number, userBirthday: current_user.birthday }.compact)}" do %>
+        <%= link_to "https://hackclub.com/fiscal-sponsorship/apply/?#{URI.encode_www_form({ userEmail: current_user.email, firstName: current_user.first_name, lastName: current_user.last_name, returningUser: "Yes, I have used HCB before", userPhone: current_user.phone_number, userBirthday: current_user.birthday }.compact)}" do %>
           <li class="card card--hover bold font-brand flex items-center justify-center align-center h-full" style="max-width: 90vw">
             <div class="center">
               <div class="pop success mx-auto flex mb-1">
                 <%= inline_icon "plus", size: 28 %>
               </div>
-              New Project
+              New organization
             </div>
           </li>
         <% end %>
@@ -72,7 +72,7 @@
 
       <% if @events.hidden.any? %>
         <details class="w-full text-left">
-          <summary><h4 class="inline-block pb-0 border-none muted">Hidden projects</h4></summary>
+          <summary><h4 class="inline-block pb-0 border-none muted">Hidden organizations</h4></summary>
           <ul class="grid grid--medium-narrow text-left mt-0">
             <%= render partial: "events/event_card", collection: @events.hidden, as: :event %>
           </ul>
@@ -94,8 +94,8 @@
       </ul>
     <% end %>
     <% if @events.empty? && @invites.empty? && !current_user.admin? %>
-      <%= blankslate "No projects associated with your account yet." %>
-      <a href="https://hackclub.com/hcb/apply/?userEmail=<%= current_user.email %>&firstName=<%= current_user.first_name %>&lastName=<%= current_user.last_name %>&returningUser=No,%20first%20time!&userPhone=<%= current_user.phone_number %>" class="btn bg-success">
+      <%= blankslate "No organizations associated with your account yet." %>
+      <a href="https://hackclub.com/fiscal-sponsorship/apply/?userEmail=<%= current_user.email %>&firstName=<%= current_user.first_name %>&lastName=<%= current_user.last_name %>&userPhone=<%= current_user.phone_number %>" class="btn bg-success">
         <%= inline_icon "plus" %>
         New project
       </a>

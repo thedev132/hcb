@@ -8,11 +8,11 @@
 </div>
 <br>
 
-Welcome to the [HCB](https://hackclub.com/hcb/) codebase. We are so excited to have you. With your help, we can make HCB the best platform to run a nonprofit.
+Welcome to the [HCB](https://hackclub.com/fiscal-sponsorship/) codebase. We are so excited to have you. With your help, we can make HCB the best platform to run a nonprofit.
 
 ## What is HCB?
 
-HCB is a platform for managing your nonprofit's finances. Through HCB, you can get a 501(c)(3) status-backed restricted fund for your project and manage your finances through an intuitive web interface.
+HCB is a platform for managing your nonprofit’s finances. Through HCB, you can get a 501(c)(3) status-backed restricted fund for your organization and manage your finances through an intuitive web interface.
 
 ## Table of Contents
 

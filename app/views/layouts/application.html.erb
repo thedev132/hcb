@@ -89,9 +89,9 @@
     <% end %>
     <% if @event&.is_public && !organizer_signed_in? && !@no_app_shell && !@no_transparency_header && !@use_user_nav %>
       <div class="w-100 px3 bg-white transparency-banner" data-behavior="hide_iframe">
-        <p class="h5 medium center mt1 mb1">
-          This HCB project has been made public so you can see all its finances.
-          Hey, <%= link_to "what’s HCB?", "https://hackclub.com/hcb/", target: "_blank", class: "primary" %>
+        <p class="h5 font-medium text-center text-balance mt1 mb1">
+          This HCB organization has made their finances public.
+          Hey, <%= link_to "what’s HCB?", "https://hackclub.com/fiscal-sponsorship/", target: "_blank", class: "primary" %>
         </p>
       </div>
     <% end %>
