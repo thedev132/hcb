@@ -19,6 +19,7 @@ class ApiController < ApplicationController
     ).run
 
     render json: {
+      id: event.id,
       name: event.name,
       slug: event.slug,
       email: params[:email],
