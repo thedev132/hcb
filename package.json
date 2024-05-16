@@ -2,7 +2,7 @@
   "name": "@hackclub/bank",
   "private": true,
   "engines": {
-    "node": ">=18.0.0 <=21"
+    "node": ">=18.0.0 <=22"
   },
   "dependencies": {
     "@airbrake/browser": "^2.1.8",
