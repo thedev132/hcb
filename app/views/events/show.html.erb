@@ -74,7 +74,7 @@
   <% end %>
 </h1>
 
-<div class="flex items-center details-horiz details-horiz--lg" style="gap: 8px">
+<div class="flex md:items-center details-horiz details-horiz--lg" style="gap: 8px">
   <div class="stat statset__wide" data-tour-step="balance">
     <span class="stat__label">Account balance</span>
     <% if @event.fee_balance_v2_cents < 0 # this event has a fee credit (owes negative fees) %>
@@ -114,7 +114,7 @@
 <%= render "events/public_message" %>
 
 <main data-controller="transactions">
-  <h2 class="heading">
+  <h2 class="heading pb-0 border-b-0">
     <span style="flex-grow: 1">Transactions</span>
     <% if organizer_signed_in? && Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0 %>
       <div
@@ -142,7 +142,7 @@
       </div>
     <% end %>
     <% if @event.canonical_transactions.any? %>
-      <div data-controller="menu" data-menu-placement-value="bottom-end" class="ml-auto">
+      <div data-controller="menu" data-menu-placement-value="bottom-end">
         <button
           type="button"
           class="btn bg-info menu__toggle menu__toggle--arrowless overflow-visible z1"

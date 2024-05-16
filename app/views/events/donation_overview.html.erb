@@ -14,25 +14,23 @@
       Donate page
     <% end %>
 
-    <div class="md-pl1">
-      <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
-        <%= inline_icon "share" %>
-        <div class="menu__content" data-behavior="menu_content">
-          <%= link_to qr_code_donations_path(@event.slug),
-            data: { behavior: "modal_trigger", modal: "qr_code" } do %>
-            QR code
-          <% end %>
-          <%= link_to start_donation_donations_url(@event),
-            data: { behavior: "modal_trigger", modal: "embed_code" } do %>
-            Embed code
-          <% end %>
-          <%= link_to "#",
-            data: { behavior: "modal_trigger", modal: "prefilled_link" } do %>
-            Prefilled amount
-          <% end %>
-        </div>
-      </action>
-    </div>
+    <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
+      <%= inline_icon "share" %>
+      <div class="menu__content" data-behavior="menu_content">
+        <%= link_to qr_code_donations_path(@event.slug),
+          data: { behavior: "modal_trigger", modal: "qr_code" } do %>
+          QR code
+        <% end %>
+        <%= link_to start_donation_donations_url(@event),
+          data: { behavior: "modal_trigger", modal: "embed_code" } do %>
+          Embed code
+        <% end %>
+        <%= link_to "#",
+          data: { behavior: "modal_trigger", modal: "prefilled_link" } do %>
+          Prefilled amount
+        <% end %>
+      </div>
+    </action>
   <% end %>
 </h1>
 
