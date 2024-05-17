@@ -674,6 +674,10 @@ class Event < ApplicationRecord
     !engaged?
   end
 
+  def airtable_record
+    ApplicationsTable.all(filter: "{HCB ID} = '#{id}'").first
+  end
+
   private
 
   def point_of_contact_is_admin
