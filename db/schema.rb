@@ -52,6 +52,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_14_142642) do
     t.bigint "payment_recipient_id"
     t.string "recipient_email"
     t.boolean "send_email_notification", default: false
+    t.string "company_name"
+    t.string "company_entry_description"
     t.boolean "same_day", default: false, null: false
     t.index ["column_id"], name: "index_ach_transfers_on_column_id", unique: true
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"

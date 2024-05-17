@@ -10,6 +10,8 @@
 #  amount                    :integer
 #  approved_at               :datetime
 #  bank_name                 :string
+#  company_entry_description :string
+#  company_name              :string
 #  confirmation_number       :text
 #  payment_for               :text
 #  recipient_email           :string
@@ -81,6 +83,8 @@ class AchTransfer < ApplicationRecord
       errors.add(:base, "You don't have enough money to send this transfer! Your balance is #{(event.balance_available_v2_cents / 100).to_money.format}.")
     end
   end
+  validates :company_entry_description, length: { maximum: 10 }, allow_blank: true
+  validates :company_name, length: { maximum: 16 }, allow_blank: true
   validate { errors.add(:base, "Recipient must be in the same org") if payment_recipient && event != payment_recipient.event }
 
   has_one :t_transaction, class_name: "Transaction", inverse_of: :ach_transfer
@@ -142,6 +146,10 @@ class AchTransfer < ApplicationRecord
   before_create :set_fields_from_payment_recipient, if: -> { payment_recipient.present? }
   before_create :create_payment_recipient, if: -> { payment_recipient_id.nil? }
 
+  before_validation do
+    company_name = event.name[0...16] if company_name.blank?
+  end
+
   after_create :update_payment_recipient
 
   # Eagerly create HcbCode object
@@ -173,7 +181,8 @@ class AchTransfer < ApplicationRecord
         account_number:,
         routing_number:,
       },
-      company_name: event.name[0...16],
+      company_name:,
+      company_entry_description:,
       description: payment_for,
       account_number_id:,
       same_day:,
