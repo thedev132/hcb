@@ -1,7 +1,6 @@
 $font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
   'Fira Sans', Oxygen, Ubuntu, 'Helvetica Neue', sans-serif;
-$brand-font-family: ui-rounded, $font-family;
-$mono: 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
+$mono: ui-monospace, 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
 
 @import 'variables';
 @import 'basscss';
@@ -10,10 +9,6 @@ $mono: 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
 @import 'components/badges';
 @import 'components/receipts';
 @import 'components/modals';
-
-$font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-  'Fira Sans', Oxygen, Ubuntu, 'Helvetica Neue', sans-serif;
-$brand-font-family: ui-rounded, $font-family;
 
 @import 'components/buttons';
 
@@ -735,8 +730,8 @@ video {
   }
 
   nav {
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     flex-wrap: wrap;
     gap: 8px;
   }
@@ -745,18 +740,18 @@ video {
     padding-bottom: 0rem;
     margin-bottom: 0!important;
   }
-  
+
   .admin-nav-item[open] summary {
     /* Adjust the <details> padding while open */
     margin-bottom: 0px!important;
   }
-  
+
   .dropdown {
     position: absolute;
     top: 32px;
     padding-top: 4px;
   }
-  
+
   summary:hover + detail, detail:hover, details:hover > .dropdown {
     display: block;
   }
@@ -764,7 +759,7 @@ video {
   detail, .dropdown {
     display: none;
   }
-  
+
   .role-badge {
     margin-bottom: 0px!important;
   }
@@ -861,8 +856,8 @@ summary {
 }
 
 .events-filter-select {
-  display: grid; 
-  grid-template-columns: repeat(auto-fill, 300px); 
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
   gap: 0px 16px;
 }
 

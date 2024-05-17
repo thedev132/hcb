@@ -24,20 +24,8 @@ module.exports = {
         '"Helvetica Neue"',
         'sans-serif',
       ],
-      brand: [
-        'ui-rounded',
-        'system-ui',
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Roboto',
-        '"Fira Sans"',
-        'Oxygen',
-        'Ubuntu',
-        '"Helvetica Neue"',
-        'sans-serif',
-      ],
       mono: [
+        'ui-monospace',
         '"SFMono-Regular"',
         '"Roboto Mono"',
         'Menlo',
@@ -53,6 +41,11 @@ module.exports = {
         'monospace',
       ],
       'check-handwriting': ['Damion', 'cursive'],
+    },
+    fontWeight: {
+      normal: 400,
+      medium: 500,
+      bold: 600,
     },
     extend: {
       backgroundImage: {

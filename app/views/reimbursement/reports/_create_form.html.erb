@@ -1,33 +1,33 @@
 <section data-behavior="modal" role="dialog" id="create" class="modal modal--scroll bg-snow">
-  <%= form_with(model: Reimbursement::Report, class: "mb3", style: "max-width: 600px;", method: :post) do |form| %>
-    <%= modal_header "Open a Report" %>
+  <%= form_with(model: Reimbursement::Report, method: :post) do |form| %>
+    <%= modal_header "Open a report" %>
     <% unless current_user.created_reimbursement_reports.any? %>
       <div class="card border b--info mt2 mb2 container--sm mx-auto">
         <p class="mt0 mb0"><span class="bold">Paid for something out of pocket?</span> Compile your expenses into a reimbursement report, get approval from the organization's team, and, after you do, get paid back via ACH transfer or check.</p>
       </div>
     <% end %>
-    <%= form.label :report_name, "Report Name", class: "bold" %>
+    <%= form.label :report_name, "Report name", class: "bold" %>
     <%= form.text_field :report_name, placeholder: "Chicago Trip Expenses", required: true %>
     <% if defined? @event %>
-      <fieldset data-behavior="reimbursement_report_create_form_type_selection" class="mt2">
-        <legend class="bold pb2">Who is this reimbursement for?</legend>
-        <div class="field field--options flex">
+      <fieldset data-behavior="reimbursement_report_create_form_type_selection" class="mt3">
+        <legend>Who is this reimbursement for?</legend>
+        <div class="field field--options flex pt1">
           <%= form.radio_button :for, "myself", checked: true %>
           <%= form.label :for, value: "myself", class: "flex-1" do %>
-            <%= inline_icon "like", size: 28 %>
+            <%= inline_icon "like", size: 32 %>
             <strong>Myself</strong>
           <% end %>
           <% if @event.users.excluding(current_user).any? %>
             <%= form.radio_button :for, "organizer" %>
             <%= form.label :for, value: "organizer", class: "flex-1" do %>
-              <%= inline_icon "friend", size: 28 %>
-              <strong>Another Organizer</strong>
+              <%= inline_icon "friend", size: 32 %>
+              <strong>Another organizer</strong>
             <% end %>
           <% end %>
           <%= form.radio_button :for, "external" %>
           <%= form.label :for, value: "external", class: "flex-1" do %>
-            <%= inline_icon "person", size: 28 %>
-            <strong>External Contributor</strong>
+            <%= inline_icon "person", size: 32 %>
+            <strong>External contributor</strong>
           <% end %>
         </div>
       </fieldset>
@@ -45,7 +45,7 @@
       </div>
       <div id="reimbursement_report_invite_message_wrapper">
         <%= form.label :invite_message, "Invite Message", class: "mt1 bold" %>
-        <%= form.text_area :invite_message, placeholder: "We're excited to see your expenses..." %>
+        <%= form.text_area :invite_message, placeholder: "We're excited to see your expenses…" %>
       </div>
     <% else %>
       <%= form.hidden_field :user_id, value: current_user.id %>

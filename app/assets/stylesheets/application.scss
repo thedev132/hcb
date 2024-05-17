@@ -3,8 +3,7 @@
 
 $font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
   'Fira Sans', Oxygen, Ubuntu, 'Helvetica Neue', sans-serif;
-$brand-font-family: ui-rounded, $font-family;
-$mono: 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
+$mono: ui-monospace, 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
 
 :root {
   @each $name, $value in $palette {
@@ -46,7 +45,7 @@ a {
 }
 
 strong {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 textarea {
@@ -79,7 +78,7 @@ h2,
 h3,
 h4,
 fieldset legend {
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.125;
   letter-spacing: -0.02em;
 }
@@ -105,6 +104,7 @@ h3 {
 }
 
 h4 {
+  letter-spacing: 0;
   font-size: 1.25rem;
 }
 
@@ -142,7 +142,7 @@ td {
 }
 
 th {
-  font-weight: bold;
+  font-weight: 600;
   text-align: left;
   padding-bottom: 0.125rem;
 }
@@ -316,7 +316,7 @@ summary {
   animation: highlight 2s;
   border: 1px solid;
   border-color: rgba(map-get($palette, warning), 0.25);
-  
+
   .card__banner {
     border-color: inherit;
   }
@@ -428,15 +428,6 @@ summary {
   pre,
   code {
     @apply font-mono;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  .heading,
-  .stat__value {
-    @apply font-brand;
   }
 }
 

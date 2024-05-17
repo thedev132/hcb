@@ -125,7 +125,7 @@
         class="display-none">
         <button
           type="button"
-          class="btn btn-small bg-info menu__toggle menu__toggle--arrowless overflow-visible z1 mr1"
+          class="btn btn-small bg-info menu__toggle menu__toggle--arrowless overflow-visible z1"
           data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">
           <%= inline_icon "sticker", size: 16 %>
           <span class="nowrap">Toggle Tags</span>
@@ -155,7 +155,7 @@
           <%= link_to "All transactions (CSV)", transactions_exports_path(event: @event, format: :csv), target: :_blank %>
           <%= link_to "All transactions (JSON)", transactions_exports_path(event: @event, format: :json), target: :_blank %>
           <%= link_to "All transactions (Ledger)", transactions_exports_path(event: @event, format: :ledger), target: :_blank %>
-          <%= link_to "All Statements", event_statements_path(@event) %>
+          <%= link_to "Monthly statements", event_statements_path(@event) %>
         </div>
       </div>
     <% end %>

@@ -8,13 +8,13 @@
       </span>
     <% end %>
   </div>
-  <nav class="dock dock--desktop mt2">
+  <nav class="dock dock--desktop mt2 font-medium">
     <%= dock_item "Transactions",
       event_path(id: @event.slug),
       tooltip: "View your transactions",
       icon: "transactions",
       selected: local_assigns[:selected] == :transactions %>
-    <h4 class="mb0 h5 muted">Receive</h4>
+    <h4 class="mb0 h4 font-medium muted">Receive</h4>
     <hr>
     <%= dock_item "Donations",
       @event&.partner&.external? ? event_partner_donation_overview_path(event_id: @event.slug) :
@@ -38,7 +38,7 @@
       tooltip: "Deposit checks",
       icon: "cheque",
       selected: local_assigns[:selected] == :deposit_check if Flipper.enabled?(:check_deposits_2023_04_17, @event) && organizer_signed_in? %>
-    <h4 class="mb0 h5 muted">Spend</h4>
+    <h4 class="mb0 h4 font-medium muted">Spend</h4>
     <hr>
     <%= dock_item "Cards",
       event_cards_overview_path(event_id: @event.slug),
@@ -135,16 +135,9 @@
       </action>
     </div>
   </nav>
+
+  <%# Web component used for donation QR codes %>
+  <script src="https://unpkg.com/@bitjson/qr-code@1.0.2/dist/qr-code.js"></script>
 <% end %>
 <% content_for(:container) do %>
 <% end %>
-
-<%# 2022 April Fools :p %>
-<% if params[:jank].present? || DateTime.now <= Time.new(2022, 4, 2, 9, 30, 00, "-04:00") %>
-  <% if organizer_signed_in? and @event.custom_css_url.present? %>
-    <%= stylesheet_link_tag "https://scrapbook.hackclub.com/api/css?url=#{@event.custom_css_url}" %>
-  <% end %>
-<% end %>
-
-<%# Web component used for donation QR codes %>
-<script src="https://unpkg.com/@bitjson/qr-code@1.0.2/dist/qr-code.js"></script>

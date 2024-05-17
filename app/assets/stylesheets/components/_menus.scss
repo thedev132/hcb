@@ -253,6 +253,6 @@
 }
 
 [data-filter-menu-label-selected='true'] {
-  font-weight: 800;
-  color: $cyan;
+  font-weight: 600;
+  color: map-get($palette, 'info');
 }

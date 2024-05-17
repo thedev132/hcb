@@ -26,7 +26,7 @@
     #33d6a6 100px
   );
   background-attachment: fixed;
-  font-weight: bold;
+  font-weight: 600;
   color: $white;
 }
 .transaction--frc {
@@ -117,13 +117,13 @@ html[data-dark='true'] {
   }
 }
 
-.transaction--positive:has(.renamed), 
+.transaction--positive:has(.renamed),
 .transaction--negative:has(.renamed),
 .transaction--zero:has(.renamed) {
   animation: highlight 2s;
 }
 
-.transaction--positive:has(.renaming), 
+.transaction--positive:has(.renaming),
 .transaction--negative:has(.renaming),
 .transaction--zero:has(.renaming) {
   background-image: linear-gradient(90deg, $orange 50%, transparent 50%), linear-gradient(90deg, $orange 50%, transparent 50%), linear-gradient(0deg, $orange 50%, transparent 50%), linear-gradient(0deg, $orange 50%, transparent 50%);
@@ -156,5 +156,5 @@ html[data-dark='true'] {
 }
 
 .transaction__icon {
-  padding-left: 1rem; 
+  padding-left: 1rem;
 }

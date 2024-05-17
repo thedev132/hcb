@@ -127,11 +127,11 @@ module ApplicationHelper
     pop_icon_to "external", external_link, target: "_blank", size: 14, class: "modal__external muted", onload: "window.navigator.standalone ? this.setAttribute('target', '_top') : null"
   end
 
-  def modal_header(text, level: "h0", external_link: nil)
+  def modal_header(text, external_link: nil)
     content_tag :header, class: "pb2" do
       modal_close +
         (external_link ? modal_external_link(external_link) : "") +
-        content_tag(:h2, text.html_safe, class: "#{level} mt0 mb0 pb0 border-none")
+        content_tag(:h2, text.html_safe, class: "h1 mt0 mb0 pb0 border-none")
     end
   end
 

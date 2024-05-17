@@ -4,12 +4,12 @@
       <% if event.logo.attached? %>
         <div class="flex gap-2 items-center">
           <%= image_tag event.logo, height: 24, width: 24, class: "rounded align-bottom" %>
-          <strong class="font-brand text-xl leading-tight">
+          <strong class="text-xl leading-tight">
             <%= event.name %>
           </strong>
         </div>
       <% else %>
-        <strong class="font-brand text-xl leading-tight">
+        <strong class="text-xl leading-tight">
           <%= event.name %>
         </strong>
       <% end %>
@@ -17,16 +17,16 @@
     <% if event.demo_mode? %>
       <div class="badge bg-info ml0 mb2 w-fit">Playground Mode</div>
     <% end %>
-    <div class="font-brand h4 line-height-2 mb2 flex justify-between item-center">
+    <div class="h4 line-height-2 mb2 flex justify-between item-center">
       <span class="flex items-center gap-1 whitespace-nowrap">
         <%= inline_icon "payment", size: 16, class: "muted align-middle", 'aria-label': "Dollar sign", style: "transform: scale(2)" %>
         <%= turbo_frame_tag "event_balance_#{event.public_id}", src: event_async_balance_path(event), data: { turbo_permanent: true }, loading: :lazy do %>
-          <strong>-</strong>
+          —
         <% end %>
       </span>
       <span class="flex items-center gap-1">
         <%= inline_icon "card", size: 20, class: "muted align-middle", 'aria-label': "Cards", style: "transform: scale(1.2)" %>
-        <strong><%= event.stripe_cards.active.count %></strong>
+        <%= event.stripe_cards.active.count %>
       </span>
     </div>
     <div class="avatar-row">
