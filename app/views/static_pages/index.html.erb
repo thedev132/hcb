@@ -58,7 +58,7 @@
 
         <%= render partial: "events/event_card", collection: @events.not_hidden, as: :event %>
 
-        <%= link_to "https://hackclub.com/fiscal-sponsorship/apply/?#{URI.encode_www_form({ userEmail: current_user.email, firstName: current_user.first_name, lastName: current_user.last_name, returningUser: "Yes, I have used HCB before", userPhone: current_user.phone_number, userBirthday: current_user.birthday }.compact)}" do %>
+        <%= link_to apply_form_url do %>
           <li class="card card--hover bold font-brand flex items-center justify-center align-center h-full" style="max-width: 90vw">
             <div class="center">
               <div class="pop success mx-auto flex mb-1">
@@ -95,10 +95,10 @@
     <% end %>
     <% if @events.empty? && @invites.empty? && !current_user.admin? %>
       <%= blankslate "No organizations associated with your account yet." %>
-      <a href="https://hackclub.com/fiscal-sponsorship/apply/?userEmail=<%= current_user.email %>&firstName=<%= current_user.first_name %>&lastName=<%= current_user.last_name %>&userPhone=<%= current_user.phone_number %>" class="btn bg-success">
+      <%= link_to apply_form_url, class: "btn bg-success" do %>
         <%= inline_icon "plus" %>
-        New project
-      </a>
+        New organization
+      <% end %>
     <% end %>
   <% end %>
   <%= render partial: "static_pages/admin" %>
