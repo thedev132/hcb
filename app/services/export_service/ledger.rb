@@ -32,7 +32,7 @@ module ExportService
             payee: ct.local_hcb_code.memo,
             metadata:,
             postings: [
-              ::Ledger::Posting.new(account: "Expenses:#{category}", currency: "USD", amount: BigDecimal(clean_amount.to_f, 2))
+              ::Ledger::Posting.new(account: "Expenses:#{category}", currency: "USD", amount: BigDecimal(clean_amount, 2) / 100)
             ]
           )
         else
@@ -47,7 +47,7 @@ module ExportService
             date: ct.date,
             payee: ct.local_hcb_code.memo,
             postings: [
-              ::Ledger::Posting.new(account: "Income:#{income_type}", currency: "USD", amount: BigDecimal(clean_amount.to_f, 2))
+              ::Ledger::Posting.new(account: "Income:#{income_type}", currency: "USD", amount: BigDecimal(clean_amount, 2) / 100)
             ]
           )
         end
