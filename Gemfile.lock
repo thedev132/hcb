@@ -166,6 +166,9 @@ GEM
     brakeman (5.4.1)
     browser (5.3.1)
     builder (3.2.4)
+    bullet (7.1.6)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     business_time (0.13.0)
       activesupport (>= 3.2.0)
       tzinfo
@@ -786,6 +789,7 @@ GEM
       unf_ext
     unf_ext (0.0.8.1)
     unicode-display_width (2.4.2)
+    uniform_notifier (1.16.0)
     validates_email_format_of (1.7.2)
       i18n
     validates_zipcode (0.5.2)
@@ -836,6 +840,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   brakeman
   browser (~> 5.3)
+  bullet
   business_time
   byebug
   chronic
