@@ -53,7 +53,7 @@ class RecurringDonationsController < ApplicationController
     setup_intent = StripeService::SetupIntent.create(
       customer: @recurring_donation.stripe_customer_id,
       usage: "off_session",
-      metadata: { recurring_donation_id: @recurring_donation.id }
+      metadata: { recurring_donation_id: @recurring_donation.id, event_id: @recurring_donation.event.id }
     )
 
     @client_secret = setup_intent.client_secret

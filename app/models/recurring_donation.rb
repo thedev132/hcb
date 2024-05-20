@@ -162,7 +162,8 @@ class RecurringDonation < ApplicationRecord
       ],
       payment_behavior: "default_incomplete",
       payment_settings: { save_default_payment_method: "on_subscription" },
-      expand: ["latest_invoice.payment_intent", "default_payment_method"]
+      expand: ["latest_invoice.payment_intent", "default_payment_method"],
+      metadata: { event_id: event.id }
     )
 
     sync_with_stripe_subscription!(subscription)
