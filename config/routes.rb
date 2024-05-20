@@ -281,6 +281,9 @@ Rails.application.routes.draw do
     post "void"
     get "hosted"
     get "pdf"
+    member do
+      post "refund"
+    end
     resources :comments
   end
 

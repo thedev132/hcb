@@ -147,6 +147,7 @@ class Invoice < ApplicationRecord
     state :open_v2, initial: true
     state :paid_v2
     state :void_v2
+    state :refunded_v2
 
     event :mark_paid do
       transitions from: :open_v2, to: :paid_v2
@@ -154,6 +155,10 @@ class Invoice < ApplicationRecord
 
     event :mark_void do
       transitions from: :open_v2, to: :void_v2
+    end
+
+    event :mark_refunded do
+      transitions from: :paid_v2, to: :refunded_v2
     end
   end
 

@@ -183,16 +183,27 @@ class StripeController < ActionController::Base
     charge = event[:data][:object]
 
     donation = Donation.find_by(stripe_payment_intent_id: charge[:payment_intent])
-    return unless donation
+    invoice = Invoice.find_by(stripe_charge_id: charge[:id])
 
-    donation.mark_refunded! unless donation.refunded?
+    if donation
+      donation.mark_refunded! unless donation.refunded?
 
-    StripeService::Topup.create(
-      amount: charge[:amount_refunded],
-      currency: "usd",
-      description: "Refund for donation #{donation.id}",
-      statement_descriptor: "HCB-#{donation.local_hcb_code.short_code}"
-    )
+      StripeService::Topup.create(
+        amount: charge[:amount_refunded],
+        currency: "usd",
+        description: "Refund for donation #{donation.id}",
+        statement_descriptor: "HCB-#{donation.local_hcb_code.short_code}"
+      )
+    elsif invoice
+      invoice.mark_refunded! unless invoice.refunded_v2?
+
+      StripeService::Topup.create(
+        amount: charge[:amount_refunded],
+        currency: "usd",
+        description: "Refund for invoice #{invoice.id}",
+        statement_descriptor: "HCB-#{invoice.local_hcb_code.short_code}"
+      )
+    end
   end
 
   def handle_payment_intent_succeeded(event)

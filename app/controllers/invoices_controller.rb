@@ -217,6 +217,15 @@ class InvoicesController < ApplicationController
     redirect_to @invoice.invoice_pdf, allow_other_host: true
   end
 
+  def refund
+    @invoice = Invoice.find(params[:id])
+    @hcb_code = @invoice.local_hcb_code
+
+    ::InvoiceService::Refund.new(invoice_id: @invoice.id, amount: Monetize.parse(params[:amount]).cents).run
+
+    redirect_to hcb_code_path(@hcb_code.hashid), flash: { success: "The refund process has been queued for this invoice." }
+  end
+
   private
 
   def filtered_params
