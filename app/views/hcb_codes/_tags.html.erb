@@ -3,7 +3,7 @@
     <strong>Tags</strong>
     <div class="flex items-center flex-wrap" style="gap: 0.25rem">
       <% hcb_code.tags.filter { |tag| tag.event == @event }.each do |tag| %>
-        <span class="badge bg-muted ml0 mr1">
+        <span class="badge bg-muted ml0 mr1" data-tag="<%= tag.id %>">
           <%= tag.label %>
           <%= button_to toggle_tag_hcb_code_path(id: @hcb_code.hashid, tag_id: tag.id), class: "p0 line-height-0 bg-transparent border-none cursor-pointer link-reset", form_class: "line-height-0", form: { "data-turbo" => "true" } do %>
             <%= inline_icon "view-close", size: 16 %>
@@ -16,7 +16,7 @@
           <button class="list-badge add-tag-badge ml0 menu__toggle menu__toggle--arrowless" data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">+ Add tag</button>
           <div class="menu__content menu__content--2 menu__content--compact menu__content--left h6" data-menu-target="content">
             <% @event.tags.each do |tag| %>
-              <div class="flex items-center">
+              <div class="flex items-center" data-tag="<%= tag.id %>">
                 <%= button_to toggle_tag_hcb_code_path(id: @hcb_code.hashid, tag_id: tag.id), class: "menu__action", form_class: "flex-auto", form: { "data-turbo" => "true" } do %>
                   <%= "✓" if @hcb_code.tags.include?(tag) %>
 
@@ -28,7 +28,7 @@
               </div>
             <% end %>
             <% if @event.tags.any? %>
-              <div class="menu__divider"></div>
+              <div class="menu__divider tags__divider"></div>
             <% end %>
             <%= form_with url: event_tags_path(@event), data: { turbo: true } do |form| %>
               <%= form.hidden_field :hcb_code_id, value: @hcb_code.hashid %>

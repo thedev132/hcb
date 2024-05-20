@@ -29,7 +29,14 @@ class TagsController < ApplicationController
 
     tag.destroy!
 
-    redirect_back fallback_location: @event
+    respond_to do |format|
+      format.turbo_stream do
+        streams = [turbo_stream.remove_all("[data-tag='#{tag.id}']")]
+        streams << turbo_stream.remove_all(".tags__divider") if @event.tags.none?
+        render turbo_stream: streams
+      end
+      format.any { redirect_back fallback_location: @event }
+    end
   end
 
 end

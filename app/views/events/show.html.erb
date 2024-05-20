@@ -132,7 +132,7 @@
         </button>
         <div class="menu__content menu__content--2 menu__content--compact menu__content--left h6" data-menu-target="content">
           <% @event.tags.each do |tag| %>
-            <div class="flex items-center">
+            <div class="flex items-center" data-tag="<%= tag.id %>">
               <button class="menu__action" title="Apply this tag" data-action="click->transactions#addTag menu#close" data-tag-id="<%= tag.id %>">
                 <%= tag.label %>
               </button>

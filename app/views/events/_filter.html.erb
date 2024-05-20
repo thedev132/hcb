@@ -127,7 +127,7 @@
       <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0 %>
         <div data-filter-target="tags" data-filter-menu-selected="<%= @tag || !filter_applied ? "true" : "false" %>">
           <% @event.tags.each do |tag| %>
-            <div class="flex items-center">
+            <div class="flex items-center" data-tag="<%= tag.id %>">
               <%= link_to tag.label, { tag: tag.label, q: params[:q] }.compact, class: "flex-auto menu__action" %>
               <% if organizer_signed_in? %>
                 <%= button_to event_tag_path(@event, tag), class: "menu__action", method: :delete, title: "Delete this tag", form: { "data-turbo" => "true", "data-turbo-confirm" => tag.removal_confirmation_message } do %>

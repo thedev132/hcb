@@ -64,7 +64,7 @@
               <button class="list-badge add-tag-badge ml0 menu__toggle menu__toggle--arrowless" data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">+ Add tag</button>
               <div class="menu__content menu__content--2 menu__content--compact menu__content--left h6" data-menu-target="content">
                 <% (@event || pt.local_hcb_code.event).tags.each do |tag| %>
-                  <div class="flex items-center">
+                  <div class="flex items-center" data-tag="<%= tag.id %>">
                     <%= button_to toggle_tag_hcb_code_path(id: pt.local_hcb_code.hashid, tag_id: tag.id), class: "menu__action #{tag_dom_id(pt.local_hcb_code, tag, "_toggle")}", form_class: "flex-auto", form: { "data-turbo" => "true" } do %>
                       <%= "✓" if tagged_with.include?(tag) %>
 
@@ -76,7 +76,7 @@
                   </div>
                 <% end %>
                 <% if (@event || pt.local_hcb_code.event).tags.any? %>
-                  <div class="menu__divider"></div>
+                  <div class="menu__divider tags__divider"></div>
                 <% end %>
                 <%= form_with url: event_tags_path(@event || pt.local_hcb_code.event), data: { turbo: true } do |form| %>
                   <%= form.hidden_field :hcb_code_id, value: pt.local_hcb_code.hashid %>
