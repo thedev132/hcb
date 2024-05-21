@@ -36,7 +36,7 @@ class UsersController < ApplicationController
   end
 
   def auth_submit
-    @email = params[:email]&.downcase
+    @email = params[:email]
     user = User.find_by(email: @email)
 
     has_webauthn_enabled = user&.webauthn_credentials&.any?
@@ -76,7 +76,7 @@ class UsersController < ApplicationController
   # post to request login code
   def login_code
     @return_to = params[:return_to]
-    @email = params.require(:email)&.downcase
+    @email = params.require(:email)
     @force_use_email = params[:force_use_email]
 
     initialize_sms_params

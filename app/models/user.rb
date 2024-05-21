@@ -129,6 +129,7 @@ class User < ApplicationRecord
 
   validates :email, uniqueness: true, presence: true
   validates_email_format_of :email
+  normalizes :email, with: ->(email) { email.strip.downcase }
   validates :phone_number, phone: { allow_blank: true }
 
   validates :preferred_name, length: { maximum: 30 }
