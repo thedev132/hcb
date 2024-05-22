@@ -8,6 +8,7 @@ html[data-dark='true'] {
   body {
     background-color: $dark;
     color: map-get($palette, smoke);
+    color-scheme: dark;
   }
 
   input[type='date'],
@@ -20,7 +21,6 @@ html[data-dark='true'] {
   input[type='url'],
   select,
   textarea {
-    color-scheme: dark;
     background-color: $darkless;
     color: map-get($palette, white);
     border-color: $darkless;
@@ -88,7 +88,7 @@ html[data-dark='true'] {
   .flash {
     border: 0;
   }
-  
+
   .menu__content {
     input[type='date'],
     input[type='email'],
@@ -168,15 +168,15 @@ html[data-dark='true'] {
     &.b--warning {
       border-color: rgba(map-get($palette, warning), 0.375);
     }
-    
+
     &.b--info {
       border-color: rgba(map-get($palette, info), 0.375);
     }
-    
+
     &.b--success {
       border-color: rgba(map-get($palette, success), 0.375);
     }
-    
+
     &.b--primary {
       border-color: rgba(map-get($palette, primary), 0.375);
     }
@@ -189,7 +189,7 @@ html[data-dark='true'] {
   a > .card {
     color: map-get($palette, smoke);
   }
-  
+
   .dock__item.disabled span {
     color: map-get($palette, muted);
   }
@@ -221,7 +221,7 @@ html[data-dark='true'] {
   .comments .card.current-user {
     background-color: mix($darkless, map-get($palette, info), 90%);
   }
-  
+
   .comments .card.comment--admin {
     border: 1px dashed map-get($palette, warning);
     background-color: mix($darkless, map-get($palette, warning), 90%);
@@ -425,7 +425,7 @@ html[data-dark='true'] {
       @include gradient(info);
     }
   }
-  
+
   .mention-suggestions {
     border: 1px solid map-get($palette, slate);
   }
