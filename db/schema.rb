@@ -1338,8 +1338,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_14_142642) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "submitted_at", precision: nil
-    t.string "docusign_envelope_id"
-    t.boolean "signed_contract"
     t.string "owner_address_line1"
     t.string "owner_address_line2"
     t.string "owner_address_city"
@@ -1365,7 +1363,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_14_142642) do
     t.string "public_stripe_api_key"
     t.text "stripe_api_key_ciphertext"
     t.string "webhook_url"
-    t.string "docusign_template_id"
     t.bigint "representative_id"
     t.text "api_key_ciphertext"
     t.string "api_key_bidx"

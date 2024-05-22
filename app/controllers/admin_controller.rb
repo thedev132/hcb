@@ -67,25 +67,15 @@ class AdminController < ApplicationController
 
   def partner_edit
     @partner = Partner.find(params.require(:id))
-    edit_params = params.require(:partner).permit(
-      :docusign_template_id
-    )
+    edit_params = params.require(:partner)
     @partner.update!(edit_params)
     flash[:success] = "Partner updated"
     redirect_to partners_admin_index_path
   end
 
   def partnered_signup_sign_document
-    @partnered_signup = PartneredSignup.find(params.require(:id))
-
-    # Do not allow admins to sign if the applicant has not already signec
-    unless @partnered_signup.applicant_signed?
-      flash[:error] = "Applicant has not signed yet!"
-      redirect_to partnered_signups_admin_index_path and return
-    end
-
-    admin_contract_signing = Partners::Docusign::AdminContractSigning.new(@partnered_signup)
-    redirect_to admin_contract_signing.admin_signing_link, allow_other_host: true
+    # @msw: now that we're removing the partnered signup flow with docusign, this is just hardcoded to redirect to the root path
+    redirect_to root_path
   end
 
   def partnered_signups

@@ -546,7 +546,6 @@ Rails.application.routes.draw do
   post "stripe/webhook", to: "stripe#webhook"
   post "increase/webhook", to: "increase#webhook"
   post "webhooks/column", to: "column/webhooks#webhook"
-  get "docusign/signing_complete_redirect", to: "docusign#signing_complete_redirect"
 
   get "negative_events", to: "admin#negative_events"
 
