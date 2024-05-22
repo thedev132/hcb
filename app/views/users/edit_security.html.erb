@@ -7,7 +7,7 @@
 </h1>
 <turbo-frame id="settings" autoscroll data-autoscroll-behavior="smooth">
 <%= render "settings_nav", active: "security" %>
-<h2>Login details</h2>
+<h2>Security</h2>
 <fieldset>
   <% unless @user.phone_number.blank? %>
     <%= turbo_frame_tag :sms_auth_card do %>
