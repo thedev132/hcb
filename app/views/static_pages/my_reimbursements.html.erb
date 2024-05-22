@@ -33,37 +33,38 @@
   <div class="stat stat--small">
     <span class="stat__label">Total</span>
     <span class="stat__value">
-      <%= render_money_amount(@reports.to_calculate_total.sum(&:amount_cents)) %>
+      <%= render_money_amount(current_user.reimbursement_reports.to_calculate_total.sum(&:amount_cents)) %>
     </span>
   </div>
   <div class="stat stat--small">
     <span class="stat__label">Reimbursed</span>
     <span class="stat__value">
-      <%= render_money_amount(@reports.reimbursed.sum(&:amount_cents)) %>
+      <%= render_money_amount(current_user.reimbursement_reports.reimbursed.sum(&:amount_cents)) %>
     </span>
   </div>
   <div class="stat stat--small">
     <span class="stat__label">Pending</span>
     <span class="stat__value">
-      <%= render_money_amount(@reports.draft.sum(&:amount_cents)) %>
+      <%= render_money_amount(current_user.reimbursement_reports.draft.sum(&:amount_cents)) %>
     </span>
   </div>
 </div>
 
-<hr>
-
-<div style="text-align: center;">
-  <%= link_to "All", "?filter=all", class: "filterbar__item", "aria-selected": !["reimbursed", "pending", "rejected"].include?(params[:filter]), role: "tab" %>
-  <%= link_to "Pending", "?filter=pending", class: "filterbar__item", "aria-selected": params[:filter] == "pending", role: "tab" %>
-  <%= link_to "Reimbursed", "?filter=reimbursed", class: "filterbar__item", "aria-selected": params[:filter] == "reimbursed", role: "tab" %>
-  <%= link_to "Rejected", "?filter=rejected", class: "filterbar__item", "aria-selected": params[:filter] == "rejected", role: "tab" %>
-</div>
-
 <%= form_with(model: nil, local: true, method: :get) do |form| %>
-  <div class="filterbar flex flex-wrap items-center width-100">
-
+  <div class="filterbar flex items-center width-100">
     <%= form.text_field :q, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:q] %>
-
+    <%= link_to "?filter=my", class: "filterbar__item", "aria-selected": params[:filter] != "review_requested", role: "tab" do %>
+      My Reports
+      <span class="m0 badge <%= params[:filter] == "review_requested" ? "bg-primary" : "bg-snow text-black" %>" style="margin-left: 2px; transform: translateY(-1px)">
+        <%= current_user.reimbursement_reports.draft.count %>
+      </span>
+    <% end %>
+    <%= link_to "?filter=review_requested", class: "filterbar__item", "aria-selected": params[:filter] == "review_requested", role: "tab" do %>
+      Review Requested
+      <span class="m0 badge <%= params[:filter] != "review_requested" ? "bg-primary" : "bg-snow text-black" %>" style="margin-left: 2px; transform: translateY(-1px)">
+        <%= current_user.assigned_reimbursement_reports.submitted.count %>
+      </span>
+    <% end %>
   </div>
 <% end %>
 

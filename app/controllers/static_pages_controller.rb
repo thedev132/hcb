@@ -162,16 +162,15 @@ class StaticPagesController < ApplicationController
   end
 
   def my_reimbursements
-    @reports = current_user.reimbursement_reports
-    @reports = @reports.pending if params[:filter] == "pending"
-    @reports = @reports.where(aasm_state: ["reimbursement_approved", "reimbursed"]) if params[:filter] == "reimbursed"
-    @reports = @reports.rejected if params[:filter] == "rejected"
+    @reports = current_user.reimbursement_reports unless params[:filter] == "review_requested"
+    @reports = current_user.assigned_reimbursement_reports if params[:filter] == "review_requested"
     @reports = @reports.search(params[:q]) if params[:q].present?
     @payout_method = current_user.payout_method
   end
 
   def my_draft_reimbursements_icon
     @draft_reimbursements_count = current_user.reimbursement_reports.draft.count
+    @review_requested_reimbursements_count = current_user.assigned_reimbursement_reports.submitted.count
 
     render :my_draft_reimbursements_icon, layout: false
   end

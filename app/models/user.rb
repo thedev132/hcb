@@ -95,7 +95,7 @@ class User < ApplicationRecord
 
   has_many :reimbursement_reports, class_name: "Reimbursement::Report"
   has_many :created_reimbursement_reports, class_name: "Reimbursement::Report", foreign_key: "invited_by_id", inverse_of: :inviter
-  has_many :reimbursement_reports_to_review, class_name: "Reimbursement::Report", foreign_key: "reviewer_id", inverse_of: :reviewer
+  has_many :assigned_reimbursement_reports, class_name: "Reimbursement::Report", foreign_key: "reviewer_id", inverse_of: :reviewer
 
   has_many :card_grants
 

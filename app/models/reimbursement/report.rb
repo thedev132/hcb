@@ -42,7 +42,7 @@ module Reimbursement
     belongs_to :user
     belongs_to :event
     belongs_to :inviter, class_name: "User", foreign_key: "invited_by_id", optional: true, inverse_of: :created_reimbursement_reports
-    belongs_to :reviewer, class_name: "User", optional: true, inverse_of: :reimbursement_reports_to_review
+    belongs_to :reviewer, class_name: "User", optional: true, inverse_of: :assigned_reimbursement_reports
 
     has_paper_trail ignore: :expense_number
 
