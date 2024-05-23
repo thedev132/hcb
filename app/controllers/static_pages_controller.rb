@@ -14,7 +14,12 @@ class StaticPagesController < ApplicationController
       @events = @service.events
       @organizer_positions = @service.organizer_positions.not_hidden
       @invites = @service.invites
-      @activities = PublicActivity::Activity.for_user(current_user).order(created_at: :desc).page(1).per(25)
+
+      if admin_signed_in?
+        @activities = PublicActivity::Activity.all.order(created_at: :desc).page(params[:page]).per(25)
+      else
+        @activities = PublicActivity::Activity.for_user(current_user).order(created_at: :desc).page(params[:page]).per(25)
+      end
 
       @show_event_reorder_tip = current_user.organizer_positions.where.not(sort_index: nil).none?
 
@@ -27,7 +32,11 @@ class StaticPagesController < ApplicationController
   end
 
   def my_activities
-    @activities = PublicActivity::Activity.for_user(current_user).order(created_at: :desc).page(params[:page]).per(25)
+    if admin_signed_in?
+      @activities = PublicActivity::Activity.all.order(created_at: :desc).page(params[:page]).per(25)
+    else
+      @activities = PublicActivity::Activity.for_user(current_user).order(created_at: :desc).page(params[:page]).per(25)
+    end
     render partial: "static_pages/my_activities"
   end
 

@@ -2,7 +2,7 @@
   <span class="align-middle">
     opened <i><%= activity.trackable.name %></i>
   </span>
-  <% unless activity.trackable.recipient == activity.owner %>
+  <% unless activity.trackable.user == activity.owner %>
     <span class="align-middle">
       for
     </span>
