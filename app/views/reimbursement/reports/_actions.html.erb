@@ -39,9 +39,9 @@
         <% end %>
       </div>
 
-      <% if report.locked? && (current_user != report.user || report.submitted? || report.reimbursement_requested?) %>
+      <% if report.locked? %>
         <div style="flex-grow: 1;" class="flex justify-center items-center" style="gap: 4px;">
-          <% if current_user == report.user && !admin_signed_in? && report.locked? %>
+          <% if current_user == report.user && !admin_signed_in? %>
             <%= inline_icon "private" %>
             Expense Report Locked
           <% elsif report.may_mark_reimbursement_requested? %>
