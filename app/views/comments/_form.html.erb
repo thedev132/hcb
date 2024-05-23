@@ -53,5 +53,5 @@
 
   </div>
 
-  <%= form.submit "Add note", disabled: !organizer_signed_in? && current_user != commentable&.user %>
+  <%= form.submit "Add note", disabled: !organizer_signed_in? && current_user != commentable&.try(:user) %>
 <% end %>
