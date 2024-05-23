@@ -44,6 +44,9 @@ class User < ApplicationRecord
 
   has_paper_trail only: [:access_level]
 
+  include PublicActivity::Model
+  tracked owner: proc{ |controller, record| controller&.current_user || User.find_by(email: "bank@hackclub.com") }, recipient: proc { |controller, record| record }, only: [:create, :update]
+
   include PgSearch::Model
   pg_search_scope :search_name, against: [:full_name, :email, :phone_number], using: { tsearch: { prefix: true, dictionary: "english" } }
 

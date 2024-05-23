@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     get "inbox", to: "static_pages#my_inbox", as: :my_inbox
     get "receipt_bin/suggested_pairings", to: "static_pages#suggested_pairings", as: :suggested_pairings
     get "reimbursements", to: "static_pages#my_reimbursements", as: :my_reimbursements
+    get "activities", to: "static_pages#my_activities", as: :my_activities
     get "draft_reimbursements_icon", to: "static_pages#my_draft_reimbursements_icon", as: :my_draft_reimbursements_icon
     post "receipts/upload", to: "static_pages#receipt", as: :my_receipts_upload
     get "missing_receipts", to: "static_pages#my_missing_receipts_list", as: :my_missing_receipts_list

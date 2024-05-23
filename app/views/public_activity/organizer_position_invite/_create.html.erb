@@ -1,0 +1,11 @@
+<%= render layout: "/public_activity/common", locals: { activity:, icon: "member-add", color: "info" } do %>
+  <span class="align-middle">
+    invited
+  </span>
+  <span class="muted" style="margin-right: -0.25em;">
+    <%= user_mention activity.recipient, { avatar: { style: "vertical-align: sub; transform: translateY(3px); margin-left: 2px;" } }, "Unknown User" %>
+  </span>
+  <span class="align-middle">
+    to <%= activity.trackable.event.name %>
+  </span>
+<% end %>

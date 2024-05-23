@@ -1,0 +1,5 @@
+<%= render layout: "/public_activity/common", locals: { activity:, icon: "support", color: "purple" } do %>
+  <span class="align-middle">
+    donated <%= render_money activity.trackable.amount %> to <%= link_to activity.trackable.event.name, activity.trackable.event %>
+  </span>
+<% end %>

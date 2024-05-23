@@ -62,6 +62,9 @@ class OrganizerPositionInvite < ApplicationRecord
   include FriendlyId
   include OrganizerPosition::HasRole
 
+  include PublicActivity::Model
+  tracked owner: proc{ |controller, record| controller&.current_user || User.find_by(email: "bank@hackclub.com") }, event_id: proc { |controller, record| record.event.id }, recipient: proc { |controller, record| record.user }, only: [:create]
+
   friendly_id :slug_candidates, use: :slugged
 
   scope :pending, -> { where(accepted_at: nil, rejected_at: nil, cancelled_at: nil) }

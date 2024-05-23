@@ -102,4 +102,5 @@
     <% end %>
   <% end %>
   <%= render partial: "static_pages/admin" %>
+  <%= render partial: "static_pages/my_activities" if Flipper.enabled?(:recently_on_hcb_2024_05_23, current_user) %>
 </main>

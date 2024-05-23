@@ -38,11 +38,15 @@ module Reimbursement
     attribute :expense_number, :integer
     has_one :expense_payout
     has_one :event, through: :report
+    has_one :user, through: :report
     include AASM
     include Receiptable
     include Hashid::Rails
     has_paper_trail
     acts_as_paranoid
+
+    include PublicActivity::Model
+    tracked owner: proc{ |controller, record| controller&.current_user || User.find_by(email: "bank@hackclub.com") }, recipient: proc { |controller, record| record.user }, event_id: proc { |controller, record| record.event.id }, only: []
 
     before_validation :set_amount_cents
 
@@ -64,6 +68,8 @@ module Reimbursement
       event :mark_approved do
         transitions from: :pending, to: :approved
         after do
+          latest_state_change = versions.reverse.find { |version| version.changeset["aasm_state"]&.first.present? }
+          create_activity(key: "reimbursement_expense.approved", owner: User.find_by(id: latest_state_change.whodunnit || 2891))
           ReimbursementMailer.with(report: self.report, expense: self).expense_approved.deliver_later
         end
       end

@@ -1,0 +1,17 @@
+<%= render layout: "/public_activity/common", locals: { activity:, icon: "attachment", color: "info" } do %>
+  <span class="align-middle">
+    opened <i><%= activity.trackable.name %></i>
+  </span>
+  <% unless activity.trackable.recipient == activity.owner %>
+    <span class="align-middle">
+      for
+    </span>
+    <span class="muted" style="margin-right: -0.25em;">
+      <%= user_mention activity.trackable.user, { avatar: { style: "vertical-align: sub; transform: translateY(3px); margin-left: 2px;" } }, "Unknown User" %>
+    </span>
+  <% end %>
+  <span class="align-middle">
+    on <%= link_to activity.trackable.event.name, activity.trackable.event %>
+    for reimbursement
+  </span>
+<% end %>

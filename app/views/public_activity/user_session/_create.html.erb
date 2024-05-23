@@ -1,0 +1,5 @@
+<%= render layout: "/public_activity/common", locals: { activity:, icon: "door-enter", color: "primary" } do %>
+  <span class="align-middle">
+    logged into HCB<%= " on #{activity.trackable.os_info}" if activity.trackable&.os_info.present? %>
+  </span>
+<% end %>

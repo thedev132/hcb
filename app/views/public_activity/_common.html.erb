@@ -1,0 +1,26 @@
+<li class="conversation_item mt2" style="margin-bottom: 24px;">
+  <div class="flex flex-row items-center" style="gap: 16px">
+    <div class="flex items-center justify-center z2 pop no_hover bg-<%= color %>-important" style="color: white;">
+      <%= inline_icon icon, width: 30 %>
+    </div>
+    <div class="conversation_item_text" style="transform: translateY(-3px);">
+      <% unless defined?(hide_owner) && hide_owner %>
+        <% if activity.owner == current_user %>
+          <span class="align-middle">
+            You
+          </span>
+        <% else %>
+          <span class="muted" style="margin-right: -0.25em;">
+            <%= user_mention activity.owner || User.find_by(email: "bank@hackclub.com"), { avatar: { style: "transform: translateY(3px); vertical-align: sub;" } }, "Unknown User" %>
+          </span>
+        <% end %>
+      <% end %>
+      <%= yield %>
+      <% unless defined?(hide_timestamp) && hide_timestamp %>
+        <span class="tooltipped tooltipped--n align-middle timestamp" style="cursor: default" aria-label="<%= local_assigns[:activity].created_at.strftime("%b %e, %Y") %>">
+          <%= time_ago_in_words activity.created_at %> ago
+        </span>
+      <% end %>
+    </div>
+  </div>
+</li>

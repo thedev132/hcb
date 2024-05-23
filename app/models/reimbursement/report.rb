@@ -63,6 +63,9 @@ module Reimbursement
     include Commentable
     include Hashid::Rails
 
+    include PublicActivity::Model
+    tracked owner: proc{ |controller, record| controller&.current_user || User.find_by(email: "bank@hackclub.com") }, recipient: proc { |controller, record| record.user }, event_id: proc { |controller, record| record.event.id }, only: [:create]
+
     acts_as_paranoid
 
     after_create_commit do
@@ -111,6 +114,7 @@ module Reimbursement
         end
         after do
           ReimbursementMailer.with(report: self).reimbursement_approved.deliver_later
+          create_activity(key: "reimbursement_report.approved", owner: user)
         end
       end
 

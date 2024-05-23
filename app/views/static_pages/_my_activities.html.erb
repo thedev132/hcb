@@ -1,0 +1,18 @@
+<h3 class="w-100 mb0 text-left mt2 border-bottom pb1">Recently on HCB...</h3>
+
+<ul class="list-reset comments mb5 w-100 mt1">
+  <turbo-frame id="activities-<%= @activities.current_page %>">
+    <%= render_activities @activities %>
+    <% if @activities.next_page %>
+      <%= turbo_frame_tag(
+            "activities-#{@activities.next_page}",
+            loading: :lazy,
+            src: "/my/activities?page=#{@activities.next_page}",
+            target: "_top",
+            style: "text-align: center;"
+          ) do %>
+        <i class="muted">Loading more activities...</i>
+      <% end %>
+    <% end %>
+  </turbo-frame>
+</ul>

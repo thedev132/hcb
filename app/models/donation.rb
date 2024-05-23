@@ -58,6 +58,9 @@ class Donation < ApplicationRecord
   include HasStripeDashboardUrl
   has_stripe_dashboard_url "payments", :stripe_payment_intent_id
 
+  include PublicActivity::Model
+  tracked owner: proc{ |controller, record| controller&.current_user || User.find_by(email: "bank@hackclub.com") }, event_id: proc { |controller, record| record.event.id }, only: []
+
   include PgSearch::Model
   pg_search_scope :search_name, against: [:name, :email], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "donations.created_at"
 
@@ -90,6 +93,9 @@ class Donation < ApplicationRecord
 
     event :mark_in_transit do
       transitions from: :pending, to: :in_transit
+      after do
+        create_activity(key: "donation.paid", owner: User.create_with(full_name: name).find_or_create_by!(email:))
+      end
     end
 
     event :mark_deposited do
