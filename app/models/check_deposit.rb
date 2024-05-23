@@ -120,6 +120,8 @@ class CheckDeposit < ApplicationRecord
   end
 
   def state
+    return :success if local_hcb_code.ct.present?
+
     if pending?
       :info
     elsif rejected? || returned?
@@ -130,6 +132,8 @@ class CheckDeposit < ApplicationRecord
   end
 
   def state_text
+    return "Deposited" if local_hcb_code.ct.present?
+
     if pending?
       "Pending"
     elsif rejected?

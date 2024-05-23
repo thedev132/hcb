@@ -38,8 +38,8 @@
     </p>
     <% if @hcb_code.ct %>
       <p>
-        <strong>Deposited at</strong>
-        <%= format_datetime @hcb_code.ct.raw_increase_transaction&.increase_transaction&.dig("created_at") %>
+        <strong>Deposited on</strong>
+        <%= format_date @hcb_code.ct.date %>
       </p>
     <% else %>
       <p>
