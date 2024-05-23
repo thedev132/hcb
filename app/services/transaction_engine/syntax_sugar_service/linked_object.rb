@@ -17,6 +17,7 @@ module TransactionEngine
           return likely_dda_check if dda_check?
           return likely_increase_check if increase_check?
           return likely_check_deposit if check_deposit?
+          return likely_column_check_deposit if column_check_deposit?
 
           return likely_ach if outgoing_ach?
           return likely_increase_ach if increase_ach?
@@ -84,6 +85,10 @@ module TransactionEngine
         increase_check_deposit_id = @canonical_transaction.raw_increase_transaction.increase_transaction.dig("source", "check_deposit_acceptance", "check_deposit_id")
 
         CheckDeposit.find_by(increase_id: increase_check_deposit_id)
+      end
+
+      def likely_column_check_deposit
+        CheckDeposit.find_by(column_id: @canonical_transaction.column_transaction_id)
       end
 
       def likely_ach
