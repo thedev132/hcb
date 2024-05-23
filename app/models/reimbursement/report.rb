@@ -226,6 +226,12 @@ module Reimbursement
       !event.users.include?(user) || OrganizerPosition.find_by(user:, event:)&.member? || (event.reimbursements_require_organizer_peer_review && event.users.size > 1)
     end
 
+    def reimbursement_confirmation_message
+      return nil if expenses.pending.none?
+
+      "#{expenses.pending.count} #{"expense".pluralize(expenses.pending.count)} #{expenses.pending.count == 1 ? "hasn't" : "haven't"} been approved; if you continue, #{expenses.pending.count == 1 ? "it" : "these"} will not be reimbursed."
+    end
+
     private
 
     def last_user_change_to(...)
