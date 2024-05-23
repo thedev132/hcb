@@ -3,7 +3,7 @@
     <div class="flex items-center justify-center z2 pop no_hover bg-<%= color %>-important" style="color: white;">
       <%= inline_icon icon, width: 30 %>
     </div>
-    <div class="conversation_item_text" style="transform: translateY(-3px);">
+    <div class="conversation_item_text" style="transform: translateY(-3px); flex-wrap: wrap">
       <% unless defined?(hide_owner) && hide_owner %>
         <% if activity.owner == current_user %>
           <span class="align-middle">
