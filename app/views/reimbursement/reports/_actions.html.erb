@@ -49,24 +49,24 @@
               <%= inline_icon "payment-transfer" %>
               Reimburse <%= render_money report.amount_to_reimburse %>
             <% end %>
-          <% elsif report.locked? && report.submitted? && !::Shared::AmpleBalance.ample_balance?(report.amount_to_reimburse_cents, report.event) %>
+          <% elsif report.submitted? && !::Shared::AmpleBalance.ample_balance?(report.amount_to_reimburse_cents, report.event) %>
             <div class="tooltipped tooltipped--n" aria-label="This event can not fulfill this request.">
               <div class="btn bg-info disabled">
                 <%= inline_icon "payment-transfer" %>
                 Reimburse <%= render_money report.amount_to_reimburse %>
               </div>
             </div>
-          <% elsif report.locked? && report.submitted? %>
+          <% elsif report.submitted? %>
             <%= link_to reimbursement_report_approve_all_expenses_path(report), class: "btn bg-success", method: :post do %>
               <%= inline_icon "thumbsup" %>
               Approve All Expenses
             <% end %>
-          <% elsif report.locked? && report.reimbursement_requested? && !admin_signed_in? %>
+          <% elsif report.reimbursement_requested? && !admin_signed_in? %>
             <div class="btn bg-info disabled" style="opacity: 0.75" disabled>
               <%= inline_icon "clock" %>
               Pending HCB Team Review
             </div>
-          <% elsif report.locked? && report.reimbursement_requested? %>
+          <% elsif report.reimbursement_requested? %>
             <% admin_tool("overflow-visible") do %>
               <%= link_to reimbursement_report_admin_approve_path(report_id: report.id), class: "btn bg-info", method: :post do %>
                 <%= inline_icon "thumbsup" %>
