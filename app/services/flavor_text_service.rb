@@ -494,6 +494,7 @@ class FlavorTextService
       "The only part not outstanding is our balance",
       "BOOOOOOOOOONNNNNNKKKKKKKKKKKKK",
       "Wanna&nbsp;<a href='#{Rails.configuration.constants.hack_on_hcb_form_url}' target='_blank' style='color: inherit'>hack on hcb</a>?".html_safe,
+      "everyone's favorite money thing!",
     ]
   end
 
