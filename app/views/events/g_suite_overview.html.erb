@@ -61,19 +61,10 @@
               <p class="secondary mt1 mb0">It might be called something like "Manage DNS," "Email Settings," or "Advanced
                 Settings."</p>
             </li>
-            <li>
-              <% if @g_suite %>
-                <strong>Add your Google Workspace’s verification record</strong>. This is specific to your Google
-                Workspace. Make it a <strong>TXT record</strong> at your domain’s root, and set the value to this:
-                <pre><%= organizer_signed_in? ? "google-site-verification=#{@g_suite.verification_key}" : "REDACTED– SIGN IN TO VIEW" %></pre>
-              <% else %>
-                Continue to #4, but you’ll need to <strong>refresh this page later for this step</strong>.
-              <% end %>
-            </li>
             <li>Delete any existing MX records.<br>
               <p class="secondary mt1 mb0">If you can’t delete the existing records, change their priority number to 20 or
                 higher.</p></li>
-            <li><strong>Add new DNS records</strong> for the Google mail servers.
+            <li><strong>Add new DNS records</strong> for Google Workspace.
               <p>If your domain host limits the number of MX records, just add the first 2 MX records in this table.</p>
               <table summary="Server addresses for use in DNS records configured for Google Workspace">
                 <thead>
@@ -87,6 +78,19 @@
                 </thead>
                 <tbody>
                 <tr class="shade-neutral">
+                  <td>
+                    <% if @g_suite.subdomain %>
+                      <%= @g_suite.subdomain %>
+                    <% else %>
+                      @ <span class="muted">or leave blank</span>
+                    <% end %>
+                  </td>
+                  <td>3600</td>
+                  <td>TXT</td>
+                  <td>1</td>
+                  <td><%= organizer_signed_in? ? copy_to_clipboard("google-site-verification=#{@g_suite.verification_key}", tooltip_direction: "w") : "REDACTED – SIGN IN TO VIEW" %></td>
+                </tr>
+                <tr>
                   <td>
                     <% if @g_suite.subdomain %>
                       <%= @g_suite.subdomain %>
@@ -186,8 +190,15 @@
                 hosts also require a trailing period at the end of the server name.</p>
             </li>
             <li>
-              <% if @g_suite.configuring? %>
-                <%= link_to "Verify", event_g_suite_verify_path(event_id: @event.id), method: :put, class: "btn" %>
+              <% if @g_suite.verification_error? %>
+                <div class="ml0 badge mb2 mr4 error bg-error rounded-lg pl1">
+                  <h4 class="m1">
+                    There was an error verifying your domain. Please make sure you entered all required DNS records correctly.
+                  </h4>
+                </div>
+              <% end %>
+              <% if @g_suite.configuring? || @g_suite.verification_error? %>
+                <%= link_to @g_suite.verification_error? ? "Retry Verification" : "Verify", event_g_suite_verify_path(event_id: @event.id), method: :put, class: "btn" %>
               <% end %>
               <% if @g_suite.verifying? %>
                 <span class="h4 ml0 pending badge">Verifying…</span>

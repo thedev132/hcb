@@ -966,6 +966,20 @@ class AdminController < ApplicationController
     redirect_to google_workspace_process_admin_path(@g_suite), flash: { success: "#{has_existing_key ? 'Updated verification key' : 'Approved'} (it may take a few seconds for the dashboard to reflect this change)" }
   end
 
+  def google_workspace_verify
+    @g_suite = GSuite.find(params[:id])
+
+    GSuiteService::Verify.new(g_suite_id: @g_suite.id).run
+
+    redirect_to google_workspace_process_admin_path(@g_suite), flash: { success: "Verification in progress. It may take a few minutes for this domain to reflect an updated verification status." }
+  end
+
+  def google_workspaces_verify_all
+    GSuiteJob::VerifyAll.perform_later
+
+    redirect_to google_workspaces_admin_index_path, flash: { success: "Verification in progress. It may take a few minutes for domains to reflect updated verification statuses." }
+  end
+
   def google_workspace_update
     @g_suite = GSuite.find(params[:id])
 
