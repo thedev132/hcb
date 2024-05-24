@@ -290,6 +290,10 @@ class User < ApplicationRecord
     return events.organized_by_hack_clubbers.any?
   end
 
+  def last_seen_at
+    user_sessions.maximum(:last_seen_at)
+  end
+
   private
 
   def update_stripe_cardholder

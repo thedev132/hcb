@@ -10,6 +10,7 @@
 #  expiration_at            :datetime         not null
 #  fingerprint              :string
 #  ip                       :string
+#  last_seen_at             :datetime
 #  latitude                 :decimal(, )
 #  longitude                :decimal(, )
 #  os_info                  :string
@@ -105,6 +106,13 @@ class UserSession < ApplicationRecord
 
     # Return self to allow chaining
     self
+  end
+
+  LAST_SEEN_AT_COOLDOWN = 5.minutes
+  def touch_last_seen_at
+    return if last_seen_at&.after? LAST_SEEN_AT_COOLDOWN.ago # prevent spamming writes
+
+    update_columns(last_seen_at: Time.now)
   end
 
   private

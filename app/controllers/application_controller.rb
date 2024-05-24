@@ -18,6 +18,9 @@ class ApplicationController < ActionController::Base
   # Redirect users to the onboarding page if they haven't completed it yet
   before_action :redirect_to_onboarding
 
+  # update the current session's last_seen_at
+  before_action { current_session&.touch_last_seen_at }
+
   # This cookie is used for Safari PWA prompts
   before_action do
     next if current_user.nil?
