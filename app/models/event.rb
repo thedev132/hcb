@@ -36,7 +36,7 @@
 #  owner_email                                  :string
 #  owner_name                                   :string
 #  owner_phone                                  :string
-#  pending_transaction_engine_at                :datetime         default(Sat, 13 Feb 2021 22:49:40.981965000 UTC +00:00)
+#  pending_transaction_engine_at                :datetime         default(Sat, 13 Feb 2021 22:49:40.000000000 UTC +00:00)
 #  postal_code                                  :string
 #  public_message                               :text
 #  public_reimbursement_page_enabled            :boolean          default(FALSE), not null
