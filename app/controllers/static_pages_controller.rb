@@ -15,9 +15,9 @@ class StaticPagesController < ApplicationController
       @organizer_positions = @service.organizer_positions.not_hidden
       @invites = @service.invites
 
-      if admin_signed_in?
+      if admin_signed_in? && Flipper.enabled?(:recently_on_hcb_2024_05_23, current_user)
         @activities = PublicActivity::Activity.all.order(created_at: :desc).page(params[:page]).per(25)
-      else
+      elsif Flipper.enabled?(:recently_on_hcb_2024_05_23, current_user)
         @activities = PublicActivity::Activity.for_user(current_user).order(created_at: :desc).page(params[:page]).per(25)
       end
 
