@@ -46,6 +46,12 @@
     <% end %>
   </nav>
 
+  <% if Flipper.enabled?(:recently_on_hcb_2024_05_23, current_user) %>
+    <h4 class="w-100 mb0 text-left mt3 border-bottom pb1 xs-hide md-hide">Recent Activity</h4>
+  <% end %>
+
+  <%= render partial: "static_pages/my_activities" if Flipper.enabled?(:recently_on_hcb_2024_05_23, current_user) %>
+
   <% if current_user.events.not_demo_mode.funded.exists? && Flipper.enabled?(:bank_wrapped, current_user) %>
     <div id="bank-wrapped-dialog" style="display: none;">
       <article role="alertdialog" class="flash flex items-center mt3 mb2 mx-auto shrink-none">

@@ -1,14 +1,10 @@
-<%= render layout: "/public_activity/common", locals: { activity:, icon: "welcome", color: "info", hide_owner: true, hide_timestamp: true } do %>
+<%= render layout: "/public_activity/common", locals: { activity:, icon: "welcome", color: "info", hide_owner: true } do %>
   <% if activity.recipient == current_user %>
-    <span class="align-middle">
-      <i>You</i>
-    </span>
+    <i>You</i>
   <% else %>
-    <span class="muted" style="margin-right: -0.25em;">
-      <%= user_mention activity.recipient || User.find_by(email: "bank@hackclub.com"), { avatar: { style: "transform: translateY(3px); vertical-align: sub;" } }, "Unknown User" %>
+    <span class="muted">
+      <%= activity.recipient&.name || "A user" %>
     </span>
   <% end %>
-  <span class="align-middle">
-    <i>joined HCB! Welcome to the club.</i>
-  </span>
+  <i>joined HCB!</i>
 <% end %>

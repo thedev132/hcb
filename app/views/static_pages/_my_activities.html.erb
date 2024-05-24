@@ -1,6 +1,4 @@
-<h3 class="w-100 mb0 text-left mt2 border-bottom pb1">Recently on HCB...</h3>
-
-<ul class="list-reset comments mb5 w-100 mt1">
+<ul class="list-reset comments w-100 mt1 xs-hide md-hide" style="overflow: scroll">
   <turbo-frame id="activities-<%= @activities.current_page %>">
     <%= render_activities @activities %>
     <% if @activities.next_page %>

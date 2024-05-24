@@ -1,5 +1,3 @@
 <%= render layout: "/public_activity/common", locals: { activity:, icon: "attachment", color: "info" } do %>
-  <span class="align-middle">
-    was reimbursed for <i><%= activity.trackable.name %></i> on <%= link_to activity.trackable.event.name, activity.trackable.event %>
-  </span>
+  was reimbursed for <i><%= activity.trackable.name %></i> on <%= link_to activity.trackable.event.name, activity.trackable.event %>
 <% end %>
