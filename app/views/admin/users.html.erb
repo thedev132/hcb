@@ -46,7 +46,12 @@
             <%= user.name %>
           <% end %>
         </td>
-        <td><%= user.email %></td>
+        <td>
+          <%= user.email %>
+          <% user.email_updates.confirmed.order(created_at: :desc).pluck(:original).excluding(user.email).each do | email | %>
+            <br> <i><%= email %></i>
+          <% end %>
+        </td>
         <td>
           <% user.organizer_positions.with_deleted.each do |op| %>
             <% if op.deleted? %>

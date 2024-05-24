@@ -71,8 +71,16 @@
                              prompt: @user.birthday.nil? %>
       </div>
       <div class="field">
-        <%= form.label :email, class: "muted" %>
-        <%= form.email_field :email, disabled: true %>
+        <%= form.label :email %>
+        <%= form.email_field :email, disabled: !Flipper.enabled?(:email_updates_2024_05_24, current_user) %>
+        <% if @user.email_updates.active.any? %>
+          <p style="max-width: 420px;">
+            <small>
+              You've requested to update your email to <%= mail_to @user.email_updates.active.first.replacement %>.
+              To continue, click on the verification and authorization links in both your new and old email inboxes respectively.
+            </small>
+          </p>
+        <% end %>
       </div>
       <%= form.label :profile_picture %>
       <p class="flex items-center mt1">

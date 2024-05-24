@@ -143,6 +143,12 @@ Rails.application.routes.draw do
         get "data"
       end
     end
+    resources :email_updates, only: [] do
+      collection do
+        get "verify"
+        get "authorize", to: "email_updates#authorize_change"
+      end
+    end
   end
 
   resources :admin, only: [] do

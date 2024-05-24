@@ -1880,6 +1880,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_22_045214) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_email_updates", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "aasm_state", null: false
+    t.string "original", null: false
+    t.string "replacement", null: false
+    t.string "authorization_token", null: false
+    t.string "verification_token", null: false
+    t.boolean "verified", default: false, null: false
+    t.boolean "authorized", default: false, null: false
+    t.bigint "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["updated_by_id"], name: "index_user_email_updates_on_updated_by_id"
+    t.index ["user_id"], name: "index_user_email_updates_on_user_id"
+  end
+
   create_table "user_payout_method_ach_transfers", force: :cascade do |t|
     t.text "account_number_ciphertext", null: false
     t.text "routing_number_ciphertext", null: false
@@ -2100,6 +2116,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_22_045214) do
   add_foreign_key "transactions", "fee_reimbursements"
   add_foreign_key "transactions", "fee_relationships"
   add_foreign_key "transactions", "invoice_payouts"
+  add_foreign_key "user_email_updates", "users"
+  add_foreign_key "user_email_updates", "users", column: "updated_by_id"
   add_foreign_key "user_sessions", "users"
   add_foreign_key "user_sessions", "users", column: "impersonated_by_id"
   add_foreign_key "webauthn_credentials", "users"

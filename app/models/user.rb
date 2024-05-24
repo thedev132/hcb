@@ -42,13 +42,13 @@ class User < ApplicationRecord
   include Commentable
   extend FriendlyId
 
-  has_paper_trail only: [:access_level]
+  has_paper_trail only: [:access_level, :email]
 
   include PublicActivity::Model
   tracked owner: proc{ |controller, record| controller&.current_user || User.find_by(email: "bank@hackclub.com") }, recipient: proc { |controller, record| record }, only: [:create, :update]
 
   include PgSearch::Model
-  pg_search_scope :search_name, against: [:full_name, :email, :phone_number], using: { tsearch: { prefix: true, dictionary: "english" } }
+  pg_search_scope :search_name, against: [:full_name, :email, :phone_number], associated_against: { email_updates: :original }, using: { tsearch: { prefix: true, dictionary: "english" } }
 
   friendly_id :slug_candidates, use: :slugged
   scope :admin, -> { where(access_level: [:admin, :superadmin]) }
@@ -75,6 +75,8 @@ class User < ApplicationRecord
   has_many :webauthn_credentials
   has_many :mailbox_addresses
   has_many :api_tokens
+  has_many :email_updates, class_name: "User::EmailUpdate", inverse_of: :user
+  has_many :email_updates_created, class_name: "User::EmailUpdate", inverse_of: :updated_by
 
   has_many :events, through: :organizer_positions
 

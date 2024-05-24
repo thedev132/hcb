@@ -347,6 +347,23 @@ class UsersController < ApplicationController
       end
     end
 
+    email_change_requested = false
+
+    if params[:user][:email].present? && params[:user][:email] != @user.email
+      begin
+        email_update = User::EmailUpdate.new(
+          user: @user,
+          original: @user.email,
+          replacement: params[:user][:email],
+          updated_by: current_user
+        )
+        email_update.save!
+      rescue
+        flash[:error] = update.errors.full_messages.to_sentence
+        return redirect_back_or_to edit_user_path(@user)
+      end
+    end
+
     if @user.update(user_params)
       confetti! if !@user.seasonal_themes_enabled_before_last_save && @user.seasonal_themes_enabled? # confetti if the user enables seasonal themes
 
@@ -356,6 +373,9 @@ class UsersController < ApplicationController
       else
         if @user.payout_method&.saved_changes? && @user == current_user
           flash[:success] = "Your payout details have been updated. We'll use this information for all payouts going forward."
+        elsif email_update&.requested?
+          email_update.send_emails
+          flash[:success] = "We've sent a verification link to your new email (#{params[:user][:email]}) and a authorization link to your old email (#{@user.email}), please click them both to confirm this change."
         else
           flash[:success] = @user == current_user ? "Updated your profile!" : "Updated #{@user.first_name}'s profile!"
         end
