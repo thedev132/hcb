@@ -83,7 +83,7 @@ module Reimbursement
       event :mark_submitted do
         transitions from: [:draft, :reimbursement_requested], to: :submitted do
           guard do
-            user.payout_method.present? && (!maximum_amount_cents || amount_cents <= maximum_amount_cents)
+            user.payout_method.present? && !exceeds_maximum_amount? && expenses.any? && !missing_receipts?
           end
         end
         after do
@@ -234,6 +234,14 @@ module Reimbursement
       return nil if expenses.pending.none?
 
       "#{expenses.pending.count} #{"expense".pluralize(expenses.pending.count)} #{expenses.pending.count == 1 ? "hasn't" : "haven't"} been approved; if you continue, #{expenses.pending.count == 1 ? "it" : "these"} will not be reimbursed."
+    end
+
+    def missing_receipts?
+      expenses.complete.with_receipt.count != expenses.count
+    end
+
+    def exceeds_maximum_amount?
+      maximum_amount_cents && amount_cents >= maximum_amount_cents
     end
 
     private
