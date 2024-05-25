@@ -1,7 +1,7 @@
 <li class="mt1" style="font-size: 14px">
   <div class="flex flex-row" style="gap: 8px; margin-left: 4px">
     <%#= inline_icon icon, width: 24, class: "muted" %>
-    <%= avatar_for activity.owner, 24 %>
+    <%= avatar_for(defined?(hide_owner) && hide_owner ? User.find(2891) : activity.owner, 24) %>
     <div class="flex flex-col" style="transform: translateY(-3px); line-height: 1.6">
       <span>
         <% unless defined?(hide_owner) && hide_owner %>
