@@ -587,6 +587,7 @@ class EventsController < ApplicationController
     @increase_checks = @increase_checks.in_transit if params[:filter] == "in_transit"
     @increase_checks = @increase_checks.increase_deposited if params[:filter] == "deposited"
     @increase_checks = @increase_checks.canceled if params[:filter] == "canceled"
+    @increase_checks = @increase_checks.search_recipient(params[:q]) if params[:q].present?
 
     @card_grants = @card_grants.search_recipient(params[:q]) if params[:q].present?
 

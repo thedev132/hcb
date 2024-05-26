@@ -49,6 +49,9 @@ class IncreaseCheck < ApplicationRecord
 
   include AASM
 
+  include PgSearch::Model
+  pg_search_scope :search_recipient, against: [:recipient_name, :memo], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "increase_checks.created_at"
+
   belongs_to :event
   belongs_to :user, optional: true
 
