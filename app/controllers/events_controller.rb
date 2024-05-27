@@ -379,6 +379,8 @@ class EventsController < ApplicationController
 
     display_cards = if helpers.show_mock_data? && organizer_signed_in?
                       @user_stripe_cards
+                    elsif helpers.show_mock_data?
+                      []
                     else
                       [
                         @user_stripe_cards.active,
