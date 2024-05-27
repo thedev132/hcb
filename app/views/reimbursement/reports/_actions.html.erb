@@ -1,6 +1,6 @@
 <% member_viewing = !OrganizerPosition.find_by(user: current_user, event: report.event)&.manager? && current_user != report.user && !admin_signed_in? %>
 
-<div style="display: flex; flex-direction: column-reverse;" id="action-wrapper">
+<div class="flex flex-col-reverse" id="action-wrapper">
   <%# Using a reverse column flex container, we can
       define the button hint next to the button states,
       and it will get rendered above the button %>
@@ -106,7 +106,7 @@
               </div>
             </div>
           <% end %>
-        <% elsif !report.may_mark_submitted? %>
+        <% elsif !report.may_mark_submitted? && report.draft? %>
           <div class="btn bg-info disabled">
             <%= inline_icon "send" %>
             Submit & Request Review
