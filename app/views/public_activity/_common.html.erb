@@ -1,23 +1,25 @@
-<li class="mt1" style="font-size: 14px">
-  <div class="flex flex-row" style="gap: 8px; margin-left: 4px">
-    <%#= inline_icon icon, width: 24, class: "muted" %>
-    <%= avatar_for(defined?(hide_owner) && hide_owner ? User.find(2891) : activity.owner, 24) %>
-    <div class="flex flex-col" style="transform: translateY(-3px); line-height: 1.6">
-      <span>
-        <% unless defined?(hide_owner) && hide_owner %>
-          <% if activity.owner == current_user %>
-            You
-          <% else %>
-            <span class="muted"><%= activity.owner&.name || "A user" %></span>
+<% if activity.trackable.present? %>
+  <li class="mt1" style="font-size: 14px">
+    <div class="flex flex-row" style="gap: 8px; margin-left: 4px">
+      <%#= inline_icon icon, width: 24, class: "muted" %>
+      <%= avatar_for(defined?(hide_owner) && hide_owner ? User.find(2891) : activity.owner, 24) %>
+      <div class="flex flex-col" style="transform: translateY(-3px); line-height: 1.6">
+        <span>
+          <% unless defined?(hide_owner) && hide_owner %>
+            <% if activity.owner == current_user %>
+              You
+            <% else %>
+              <span class="muted"><%= activity.owner&.name || "A user" %></span>
+            <% end %>
           <% end %>
-        <% end %>
-        <%= yield %>
-      </span>
-      <% unless defined?(hide_timestamp) && hide_timestamp %>
-        <span class="tooltipped tooltipped--n align-middle timestamp" style="cursor: default" aria-label="<%= local_assigns[:activity].created_at.strftime("%b %e, %Y") %>">
-          <%= time_ago_in_words activity.created_at %> ago
+          <%= yield %>
         </span>
-      <% end %>
+        <% unless defined?(hide_timestamp) && hide_timestamp %>
+          <span class="tooltipped tooltipped--n align-middle timestamp" style="cursor: default" aria-label="<%= local_assigns[:activity].created_at.strftime("%b %e, %Y") %>">
+            <%= time_ago_in_words activity.created_at %> ago
+          </span>
+        <% end %>
+      </div>
     </div>
-  </div>
-</li>
+  </li>
+<% end %>
