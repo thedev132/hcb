@@ -1,3 +1,3 @@
-<%= render layout: "/public_activity/common", locals: { activity:, icon: "checkmark", color: "success" } do %>
+<%= render layout: "/public_activity/common", locals: { activity: } do %>
   approved <i><%= activity.trackable.memo %></i> on your reimbursement report, <%= link_to activity.trackable.report.name, activity.trackable.report %>
 <% end %>
