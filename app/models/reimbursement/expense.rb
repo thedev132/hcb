@@ -68,9 +68,11 @@ module Reimbursement
       event :mark_approved do
         transitions from: :pending, to: :approved
         after do
-          latest_state_change = versions.reverse.find { |version| version.changeset["aasm_state"]&.first.present? }
-          create_activity(key: "reimbursement_expense.approved", owner: User.find_by(id: latest_state_change.whodunnit || 2891))
-          ReimbursementMailer.with(report: self.report, expense: self).expense_approved.deliver_later
+          if report.team_review_required?
+            latest_state_change = versions.reverse.find { |version| version.changeset["aasm_state"]&.first.present? }
+            create_activity(key: "reimbursement_expense.approved", owner: User.find_by(id: latest_state_change.whodunnit || 2891))
+            ReimbursementMailer.with(report: self.report, expense: self).expense_approved.deliver_later
+          end
         end
       end
 
