@@ -1,0 +1,9 @@
+<% if activity.owner != current_user && OrganizerPosition.find_by(user: current_user, event: activity.trackable.event)&.manager? && (activity.trackable.reviewer.nil? || activity.trackable.reviewer == current_user) %>
+  <%= render layout: "/public_activity/common", locals: { activity: } do %>
+    requested your review on <i><%= activity.trackable.name %></i> on <%= link_to activity.trackable.event.name, activity.trackable.event %>
+  <% end %>
+<% else %>
+  <%= render layout: "/public_activity/common", locals: { activity: } do %>
+    submitted <i><%= activity.trackable.name %></i> for review from <%= link_to activity.trackable.event.name, activity.trackable.event %>
+  <% end %>
+<% end %>
