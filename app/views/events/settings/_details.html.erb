@@ -1,9 +1,7 @@
 <%= form_with(model: event, local: true, class: "mb3") do |form| %>
   <%= form_errors event, "organization" %>
 
-  <h3 class="mb1">Organization profile</h3>
-
-  <div class="card">
+  <div class="card flex flex-col items-start gap-2">
     <div class="field">
       <%= form.label :logo %>
       <p class="h5 muted mt0 mb1">
@@ -22,7 +20,7 @@
 
       <% if policy(@event).update? %>
         <div class="field--fileupload">
-          <%= form.label :logo, "Choose File", class: "field--fileupload__label" %>
+          <%= form.label :logo, "Choose file", class: "field--fileupload__label" %>
           <%= form.file_field :logo, accept: "image/*,image/heic", class: "field--fileupload__field" %>
         </div>
 
@@ -32,10 +30,10 @@
       <% end %>
     </div>
 
-    <div class="field mt3">
+    <div class="field">
       <%= form.label :background_image %>
       <p class="h5 muted mt0 mb1">
-        Displayed as the background of your organization's card on the homepage.
+        Displayed as the background of your organization’s card on the homepage.
       </p>
       <% if @event.background_image.attached? %>
         <%= image_tag @event.background_image, width: 256 %>
@@ -43,7 +41,7 @@
 
       <% if policy(@event).update? %>
         <div class="field--fileupload">
-          <%= form.label :background_image, "Choose File", class: "field--fileupload__label" %>
+          <%= form.label :background_image, "Choose file", class: "field--fileupload__label" %>
           <%= form.file_field :background_image, accept: "image/*,image/heic", class: "field--fileupload__field" %>
         </div>
 
@@ -53,17 +51,17 @@
       <% end %>
     </div>
 
-    <div class="field mt3">
-      <%= form.label :description, "Mission Statement" %>
+    <div class="field">
+      <%= form.label :description, "Mission statement" %>
       <p class="h5 muted mt0 mb1">
-        A short description of your organization's goals and impacts.
+        A short description of your organization’s goals and impacts.
       </p>
-      <%= form.text_area :description, placeholder: "Focusing on...", class: "w-100 fit", disabled: !policy(@event).update? %>
+      <%= form.text_area :description, placeholder: "We focus on…", class: "max-w-md", disabled: !policy(@event).update? %>
     </div>
 
-    <div class="field mt2">
+    <div class="field block">
       <%= form.label :website, "Website URL" %>
-      <%= form.text_field :website, type: :url, placeholder: "https://hackclub.com", class: "w-100 fit", disabled: !policy(@event).update? %>
+      <%= form.text_field :website, type: :url, placeholder: "https://hackclub.com", class: "w-100", disabled: !policy(@event).update? %>
     </div>
 
     <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
@@ -71,7 +69,7 @@
 
   <% if @event.card_grant_setting.present? %>
 
-    <h3 class="mb1" id="card-grants">Card Grants</h3>
+    <h3 class="mb1" id="card-grants">Card grants</h3>
 
     <div class="card">
       <%= form.fields_for :card_grant_setting, @event.card_grant_setting do |card_grant_setting_fields| %>
@@ -107,35 +105,8 @@
   <% end %>
 
   <% if !@event.unapproved? %>
-    <% if params[:jank].present? || DateTime.now <= Time.new(2022, 4, 2, 9, 30, 00, "-04:00") %>
-      <h3 class="mb1 border-none flex flex-row items-center">
-        <span>Custom CSS</span>
-        <span class="badge nowrap bg-warning">Beta</span>
-        <span class="badge nowrap ml1 bg-<%= @color %>"><%= @flavor %></span>
-      </h3>
-
-      <div class="card">
-        <p class="mt0">To customize the styling on your dashboard, paste a <strong>link to a CSS file</strong> below. Here are a few of the class names you might find helpful to spice up your dashboard:</p>
-        <ul class="mt0 pl2 mb2">
-          <li><code>circle</code> is an avatar</li>
-          <li><code>heading</code> is the main heading for the page (eg. <strong>Financials</strong>)</li>
-          <li><code>badge</code> is a badge that shows a status or count</li>
-          <li><code>stat</code> shows the amount of money raised in a given category</li>
-          <li><code>primary</code> is the accent color of the text and icons on the dashboard, currently <span style="color: #ec3750; font-weight: bold;">#EC3750</span></li>
-          <li><code>h1</code> styles your organization name</li>
-          <li><code>transaction--negative</code> is a negative transaction on the ledger (eg. card transaction, money transfer, etc.)</li>
-          <li><code>transaction--positive</code> is a positive transaction on the ledger (eg. donation, refund, etc.)</li>
-        </ul>
-        <div class="field">
-          <%= form.label :custom_css_url, "Custom CSS URL" %>
-          <%= form.text_field :custom_css_url, type: "url", placeholder: "https://hcb.hackclub.com/dinobbq.css", class: "w-100 fit" %>
-        </div>
-        <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
-      </div>
-    <% end %>
-
     <% if @event.category.in? ["hackathon", "event", "high school hackathon"] %>
-      <h3 class="mb1" id="event_date_heading">Event Date</h3>
+      <h3 class="mb1" id="event_date_heading">Event date</h3>
       <div class="card mb3">
         <p class="mt0">
           The date of your next event.
@@ -156,7 +127,7 @@
 
     <div class="card">
       <div class="field field--checkbox">
-        <%= form.check_box :donation_page_enabled, disabled: !policy(@event).update? %>
+        <%= form.check_box :donation_page_enabled, disabled: !policy(@event).update?, switch: true %>
         <%= form.label :donation_page_enabled, "Enable donation page" %>
       </div>
       <div class="field">
@@ -180,7 +151,7 @@
     <div class="card">
       <% if @event.users.size > 1 %>
         <div class="field field--checkbox">
-          <%= form.check_box :reimbursements_require_organizer_peer_review, disabled: !policy(@event).update? %>
+          <%= form.check_box :reimbursements_require_organizer_peer_review, disabled: !policy(@event).update?, switch: true %>
           <% if Flipper.enabled?(:user_permissions_2024_03_09, @event) %>
             <%= form.label :reimbursements_require_organizer_peer_review, "Require a peer review for reports submitted by managers." %>
           <% else %>
@@ -189,7 +160,7 @@
         </div>
       <% end %>
       <div class="field field--checkbox">
-        <%= form.check_box :public_reimbursement_page_enabled, disabled: !policy(@event).update? %>
+        <%= form.check_box :public_reimbursement_page_enabled, disabled: !policy(@event).update?, switch: true %>
         <%= form.label :public_reimbursement_page_enabled, "Enable public reimbursement page" %>
       </div>
       <div class="field">
@@ -218,16 +189,16 @@
       </li>
     </ul>
     <div class="field field--checkbox">
-      <%= form.check_box :is_public, disabled: !policy(@event).update? %>
+      <%= form.check_box :is_public, disabled: !policy(@event).update?, switch: true %>
       <%= form.label :is_public, "Enable Transparency Mode" %>
     </div>
     <div class="field field--checkbox" data-behavior="additional_transparency_settings <% if !event.is_public? %>autohide<% end %>">
-      <%= form.check_box :is_indexable, disabled: !policy(@event).update? %>
-      <%= form.label :is_indexable, "List #{@event.name} in HCB's public directory" %>
+      <%= form.check_box :is_indexable, disabled: !policy(@event).update?, switch: true %>
+      <%= form.label :is_indexable, "List #{@event.name} in HCB’s public directory" %>
     </div>
     <% unless !winter?(override_preference: true) %>
       <div class="field field--checkbox" data-behavior="additional_transparency_settings <% if !event.is_public? %>autohide<% end %>">
-        <%= form.check_box :holiday_features, disabled: !policy(@event).update? %>
+        <%= form.check_box :holiday_features, disabled: !policy(@event).update?, switch: true %>
         <%= form.label :holiday_features, "Enable Holiday Features ⛄ for Transparency Mode" %>
       </div>
     <% end %>
@@ -239,7 +210,7 @@
     <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
   </div>
 
-  <h3 class="mb1">Danger Zone</h3>
+  <h3 class="mb1">Danger zone</h3>
   <div class="card border b--warning mb3"
     data-controller="external-validation"
     data-external-validation-url-value="<%= validate_slug_event_path(@event) %>"
@@ -251,7 +222,7 @@
     </div>
     <ul class="mt1 mb2">
       <li>
-        We'll automatically redirect most pages to your organization's new URL, including:
+        We’ll automatically redirect most pages to your organization’s new URL, including:
         <ul>
           <li>Your donation page</li>
           <li>Transparency Mode pages</li>
@@ -262,7 +233,7 @@
         <span class="bold">unable to get it back.</span>
       </li>
     </ul>
-    <%= form.label :slug, "Organization URL", class: "bold" %>
+    <%= form.label :slug, "Organization URL" %>
     <div style="display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto">
       <span class="secondary flex items-center">hcb.hackclub.com/</span>
       <%= form.text_field :slug, placeholder: event.persisted? ? event.name.parameterize : nil, data: { action: "input->external-validation#validate" }, disabled: !policy(@event).update? %>
@@ -272,129 +243,4 @@
       <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
     </div>
   </div>
-  <% admin_tool do %>
-    <%= link_to (event.hidden? ? "Un-hide organization" : "Hide organization"),
-                event_toggle_hidden_path(event),
-                method: :put,
-                "data-confirm": "Do you really want to #{event.hidden? ? "un-hide" : "hide"} #{event.name}?",
-                class: "btn bg-success" if event.persisted? %>
-  <% end %>
-
-  <% admin_tool do %>
-    <div class="field" id="admin_settings">
-      <%= form.label :name %>
-      <%= form.text_field :name %>
-    </div>
-
-    <div class="field">
-      <%= form.label :sponsorship_fee, "Sponsorship fee (as fraction of revenue)" %>
-      <%= form.text_field :sponsorship_fee, value: event.sponsorship_fee || 0.07, placeholder: "0.07", required: true %>
-    </div>
-
-    <div class="field">
-      <%= form.label :stripe_card_shipping_type, "Card shipping method" %>
-      <%= form.collection_select :stripe_card_shipping_type, Event.stripe_card_shipping_types, :first, :first %>
-    </div>
-
-    <div class="field">
-      <%= form.label :postal_code %>
-      <%= form.text_field :postal_code, placeholder: "90069" %>
-    </div>
-
-    <div class="field">
-      <%= form.label :country %>
-      <%= form.collection_select :country, Event.countries_for_select, :first, :last, { include_blank: "Select a country" } %>
-    </div>
-
-    <div class="field">
-      <%= form.label :category %>
-      <%= form.collection_select :category, Event.categories, :first, :first, { include_blank: "Select a category" } %>
-    </div>
-
-    <div class="field">
-      <%= form.label :point_of_contact_id, capture { %>
-        Point of Contact <%= link_to "(Me!)", event_claim_point_of_contact_path(@event), method: :post %>
-      <% } %>
-      <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email %>
-    </div>
-
-    <div class="field field--checkbox">
-      <%= form.check_box :demo_mode %>
-      <%= form.label :demo_mode, "Is in Playground Mode?" %>
-    </div>
-
-    <div class="field field--checkbox">
-      <%= form.check_box :omit_stats %>
-      <%= form.label :omit_stats, "Omit from public stats?" %>
-    </div>
-
-    <div class="field field--checkbox">
-      <%= form.check_box :can_front_balance %>
-      <%= form.label :can_front_balance, "Front incoming transactions?" %>
-    </div>
-
-    <div class="action">
-      <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
-    </div>
-  <% end %>
-<% end %>
-
-<% admin_tool("mb3") do %>
-  <%= turbo_frame_tag "organization_tags"  do %>
-    <h3 id="admin_organization_tags" class="mb2 mt1">Organization Tags</h3>
-    <div class="mb1">
-      <div class="flex items-center flex-wrap" style="gap: 0.25rem">
-        <% @event.event_tags.each do |tag| %>
-          <span class="badge bg-muted ml0 mr1">
-            <% if tag.purpose.present? %>
-              <span class="bold italic"><%= tag.purpose.titleize %>:</span>&nbsp;
-            <% end %>
-            <%= tag.name %>
-            <%= button_to toggle_event_tag_event_path(id: @event.id, event_tag_id: tag.id), class: "p0 line-height-0 bg-transparent border-none cursor-pointer link-reset", form_class: "line-height-0", form: { "data-turbo" => "true" } do %>
-              <%= inline_icon "view-close", size: 16 %>
-            <% end %>
-          </span>
-        <% end %>
-
-        <div class="overflow-visible relative line-height-0" data-controller="menu" data-menu-append-to-value="turbo-frame#organization_tags">
-          <button class="list-badge add-tag-badge ml0 menu__toggle menu__toggle--arrowless" data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">+
-            Add tag
-          </button>
-          <div class="menu__content menu__content--2 menu__content--compact menu__content--left h6" data-menu-target="content">
-            <% EventTag.find_each do |tag| %>
-              <div class="flex items-center">
-                <%= button_to toggle_event_tag_event_path(id: @event.id, event_tag_id: tag.id), class: "menu__action", form_class: "flex-auto", form: { "data-turbo" => "true" } do %>
-                  <%= "✓" if @event.event_tags.include?(tag) %>
-
-                  <% if tag.purpose.present? %>
-                    <span class="bold italic"><%= tag.purpose.titleize %>:</span>&nbsp;
-                  <% end %>
-                  <%= tag.name %>
-                <% end %>
-                <%= button_to event_event_tag_path(@event, tag), class: "menu__action", method: :delete, title: "Delete this tag", form: { "data-turbo" => "true", "data-turbo-confirm" => tag.removal_confirmation_message } do %>
-                  <%= inline_icon "delete", size: 16, style: "margin: 0" %>
-                <% end %>
-              </div>
-            <% end %>
-            <% if @event.event_tags.any? %>
-              <div class="menu__divider"></div>
-            <% end %>
-            <%= form_with url: event_event_tags_path(@event), data: { turbo: true } do |form| %>
-              <%= form.hidden_field :event_id, value: @event.id %>
-              <%= form.text_field :name, data: { "behavior" => @event.event_tags.none? ? "autofocus" : "" }, class: "menu__input", placeholder: "+ Create tag", autocomplete: "off", required: true %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-  <% end %>
-<% end %>
-
-<% admin_tool do %>
-  <%= button_to "Delete organization", event_path(@event), method: :delete, class: "btn bg-error", disabled: !@event.demo_mode?, data: { confirm: "⚠️ Are you sure you'd like to delete this organization?" } %>
-  <% unless @event.demo_mode? %>
-    <p class="h5 muted mt0 mb1">
-      Only demo accounts can be deleted.
-    </p>
-  <% end %>
 <% end %>

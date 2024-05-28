@@ -239,10 +239,8 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
+    @settings_tab = params[:tab]
     authorize @event
-
-    @color = ["info", "success", "warning", "accent", "error"].sample
-    @flavor = ["jank", "janky", "wack", "wacky", "hack", "hacky"].sample
   end
 
   # PATCH/PUT /events/1

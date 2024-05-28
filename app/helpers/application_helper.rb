@@ -361,4 +361,12 @@ module ApplicationHelper
     css_classes = "pointer tooltipped tooltipped--#{tooltip_direction} #{options.delete(:class)}"
     tag.span "data-controller": "clipboard", "data-clipboard-text-value": clipboard_value, class: css_classes, "aria-label": "Click to copy", "data-action": "click->clipboard#copy", **options, &block
   end
+
+  def settings_tab(active: false, &block)
+    if active
+      tag.li(class: "active", data: { controller: "scroll-into-view" }, &block)
+    else
+      tag.li(&block)
+    end
+  end
 end
