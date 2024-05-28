@@ -1,3 +1,5 @@
+<% user = activity.trackable.user %>
+
 <%= render layout: "/public_activity/common", locals: { activity: } do %>
-  approved <i><%= activity.trackable.memo %></i> on your reimbursement report, <%= link_to activity.trackable.report.name, activity.trackable.report %>
+  approved <i><%= activity.trackable.memo %></i> on <%= user == current_user ? "your" : "#{user.name}'#{'s' unless user.name.ends_with?('s')}" %> reimbursement report, <%= link_to activity.trackable.report.name, activity.trackable.report %>
 <% end %>
