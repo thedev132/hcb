@@ -1,3 +1,3 @@
-<%= render layout: "/public_activity/common", locals: { activity:, icon: "support", color: "purple" } do %>
-  donated <%= render_money activity.trackable.amount %> to <%= link_to activity.trackable.event.name, activity.trackable.event %>
+<%= render layout: "/public_activity/common", locals: { activity:, icon: "support", color: "purple", hide_owner: true } do %>
+  <%= activity.trackable.name(show_anonymous: true) %> donated <%= render_money activity.trackable.amount %> to <%= link_to activity.trackable.event.name, activity.trackable.event %>
 <% end %>

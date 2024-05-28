@@ -94,11 +94,7 @@ class Donation < ApplicationRecord
     event :mark_in_transit do
       transitions from: :pending, to: :in_transit
       after do
-        begin
-          create_activity(key: "donation.paid", owner: User.create_with(full_name: name).find_or_create_by!(email:))
-        rescue ActiveRecord::RecordInvalid => e
-          create_activity(key: "donation.paid", owner: User.find_or_create_by!(email:))
-        end
+        create_activity(key: "donation.paid", owner: nil)
       end
     end
 
