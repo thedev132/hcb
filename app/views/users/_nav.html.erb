@@ -47,7 +47,7 @@
   </nav>
 
   <% if Flipper.enabled?(:recently_on_hcb_2024_05_23, current_user) && @activities %>
-    <h4 class="w-100 mb0 text-left mt3 border-bottom pb1 xs-hide md-hide">Recent Activity</h4>
+    <h4 class="w-100 mb0 text-left mt3 border-bottom pb1 activity">Recent Activity</h4>
   <% end %>
 
   <%= render partial: "static_pages/my_activities" if Flipper.enabled?(:recently_on_hcb_2024_05_23, current_user) && @activities %>

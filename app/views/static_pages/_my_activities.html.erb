@@ -1,4 +1,4 @@
-<ul class="list-reset comments w-100 mt1 xs-hide md-hide" style="overflow: scroll">
+<ul class="list-reset comments w-100 my-0 py-2 activity overflow-scroll">
   <turbo-frame id="activities-<%= @activities.current_page %>" target="_top">
     <%= render_activities @activities %>
     <% if @activities.next_page %>

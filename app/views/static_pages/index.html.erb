@@ -1,6 +1,5 @@
 <% title "Home" %>
 <% page_md %>
-<% content_for(:container_style) { "max-height: 100vh; overflow: scroll" } if Flipper.enabled?(:recently_on_hcb_2024_05_23, current_user) %>
 
 <%= render "users/nav", selected: :home if signed_in? %>
 

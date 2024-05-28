@@ -40,6 +40,23 @@ body {
   min-height: 100vh;
 }
 
+.activity {
+  display: none;
+}
+
+@media (min-width: 56em) {
+  body:has(.activity) {
+    padding-bottom: 0rem;
+  }
+  .activity {
+    display: block;
+  }
+  .container:has(.activity) > .app__content {
+    max-height: 100vh;
+    overflow: scroll;
+  }
+}
+
 a {
   color: currentColor;
 }
