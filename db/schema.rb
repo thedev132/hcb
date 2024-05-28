@@ -113,7 +113,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_22_045214) do
     t.bigint "recipient_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "event_id"
+    t.bigint "event_id"
     t.index ["event_id"], name: "index_activities_on_event_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
     t.index ["owner_type", "owner_id"], name: "index_activities_on_owner"
