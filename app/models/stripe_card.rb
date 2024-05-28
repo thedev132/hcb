@@ -75,11 +75,11 @@ class StripeCard < ApplicationRecord
   belongs_to :stripe_cardholder
   belongs_to :replacement_for, class_name: "StripeCard", optional: true
   has_one :replacement, class_name: "StripeCard", foreign_key: :replacement_for_id
-  alias_attribute :cardholder, :stripe_cardholder
+  alias_method :cardholder, :stripe_cardholder
   has_one :user, through: :stripe_cardholder
   has_many :stripe_authorizations
-  alias_attribute :authorizations, :stripe_authorizations
-  alias_attribute :transactions, :stripe_authorizations
+  alias_method :authorizations, :stripe_authorizations
+  alias_method :transactions, :stripe_authorizations
   alias_attribute :platinum, :is_platinum_april_fools_2023
 
   has_one :card_grant, required: false
