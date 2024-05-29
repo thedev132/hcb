@@ -152,6 +152,16 @@ class User < ApplicationRecord
     transactions_missing_receipt_count "Missing Receipts"
   end
 
+  after_save do
+    if use_sms_auth_previously_changed?
+      if use_sms_auth
+        create_activity(key: "user.enabled_sms_auth")
+      else
+        create_activity(key: "user.disabled_sms_auth")
+      end
+    end
+  end
+
   # admin? takes into account an admin user's preference
   # to pretend to be a non-admin, normal user
   def admin?

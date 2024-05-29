@@ -1,0 +1,3 @@
+<%= render layout: "/public_activity/common", locals: { activity: } do %>
+  disabled SMS authentication<% if current_user == activity.owner %>, login codes will be sent via email instead<% end %>
+<% end %>
