@@ -45,7 +45,7 @@
             <% end %>
             <%= user_mention expense.approved_by, { avatar: { style: "vertical-align: sub;" } }, "Unknown User" %>
           <% end %>
-          <button id="edit-or-save" class="pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= "This expense is read-only. #{"Mark it as a draft to edit." unless expense.report.closed? || read_only}" %>">
+          <button class="edit-or-save pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= "This expense is read-only. #{"Mark it as a draft to edit." unless expense.report.closed? || read_only}" %>">
             <% if expense.report.locked? || read_only %>
               <%= inline_icon "private" %>
             <% else %>
