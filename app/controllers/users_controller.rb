@@ -12,6 +12,8 @@ class UsersController < ApplicationController
   def impersonate
     authorize current_user
 
+    return redirect_to root_path, flash: { error: "You cannot impersonate another user if you're already impersonating someone. " } if current_session&.impersonated?
+
     user = User.find(params[:id])
 
     impersonate_user(user)
