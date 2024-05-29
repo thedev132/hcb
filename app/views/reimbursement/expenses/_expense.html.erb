@@ -1,6 +1,5 @@
 <%# locals: (expense:, new: false) -%>
 
-<% latest_state_change = expense.versions.reverse.find { |version| version.changeset["aasm_state"]&.first.present? } %>
 <% read_only = !OrganizerPosition.find_by(user: current_user, event: expense.report.event)&.manager? && current_user != expense.report.user && !admin_signed_in? %>
 
 <%= turbo_frame_tag expense do %>
@@ -34,18 +33,13 @@
           <div style="flex-grow: 1" data-expense-form-target="memo" class="bold <%= "muted" unless expense.memo.presence %>">
             <%= expense.card_label.presence || "Untitled Expense" %>
           </div>
-          <% if latest_state_change && latest_state_change.changeset["reimbursement_report_id"]&.first.nil? && latest_state_change.whodunnit %>
-            <% reviewed_by = User.find_by(id: latest_state_change.whodunnit || 2891) %>
-            <%# if reviewed_by is the report's creator, team review was not required for this report. %>
-            <%# if a team re-enables team reviews, we'll show each expense as approved by it's creator.  %>
-            <% if reviewed_by != expense.report.user || expense.report.team_review_required? %>
-              <% if expense.approved? %>
-                Approved by
-              <% else %>
-                Approval removed by
-              <% end %>
-              <%= user_mention expense.approved_by || reviewed_by, { avatar: { style: "vertical-align: sub;" } }, "Unknown User" %>
+          <% if expense.approved_by %>
+            <% if expense.approved? %>
+              Approved by
+            <% else %>
+              Approval removed by
             <% end %>
+            <%= user_mention expense.approved_by, { avatar: { style: "vertical-align: sub;" } }, "Unknown User" %>
           <% end %>
           <button id="edit-or-save" class="pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= "This expense is read-only. #{"Mark it as a draft to edit." unless expense.report.closed? || read_only}" %>">
             <% if expense.report.locked? || read_only %>
