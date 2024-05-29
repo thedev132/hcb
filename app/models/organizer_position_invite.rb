@@ -63,7 +63,7 @@ class OrganizerPositionInvite < ApplicationRecord
   include OrganizerPosition::HasRole
 
   include PublicActivity::Model
-  tracked owner: proc{ |controller, record| controller&.current_user || User.find_by(email: "bank@hackclub.com") }, event_id: proc { |controller, record| record.event.id }, recipient: proc { |controller, record| record.user }, only: [:create]
+  tracked owner: proc{ |controller, record| controller&.current_user }, event_id: proc { |controller, record| record.event.id }, recipient: proc { |controller, record| record.user }, only: [:create]
 
   friendly_id :slug_candidates, use: :slugged
 

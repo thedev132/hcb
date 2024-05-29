@@ -59,7 +59,7 @@ class Donation < ApplicationRecord
   has_stripe_dashboard_url "payments", :stripe_payment_intent_id
 
   include PublicActivity::Model
-  tracked owner: proc{ |controller, record| controller&.current_user || User.find_by(email: "bank@hackclub.com") }, event_id: proc { |controller, record| record.event.id }, only: []
+  tracked owner: proc{ |controller, record| controller&.current_user }, event_id: proc { |controller, record| record.event.id }, only: []
 
   include PgSearch::Model
   pg_search_scope :search_name, against: [:name, :email], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "donations.created_at"

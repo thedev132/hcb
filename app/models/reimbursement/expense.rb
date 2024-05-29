@@ -47,7 +47,7 @@ module Reimbursement
     acts_as_paranoid
 
     include PublicActivity::Model
-    tracked owner: proc{ |controller, record| controller&.current_user || User.find_by(email: "bank@hackclub.com") }, recipient: proc { |controller, record| record.user }, event_id: proc { |controller, record| record.event.id }, only: []
+    tracked owner: proc{ |controller, record| controller&.current_user }, recipient: proc { |controller, record| record.user }, event_id: proc { |controller, record| record.event.id }, only: []
 
     before_validation :set_amount_cents
 
