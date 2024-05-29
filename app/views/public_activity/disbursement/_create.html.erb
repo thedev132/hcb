@@ -1,0 +1,8 @@
+<% source = activity.trackable.source_event %>
+<% destination = activity.trackable.destination_event %>
+
+<% unless activity.trackable.rejected? %>
+  <%= render layout: "/public_activity/common", locals: { activity: } do %>
+    transferred <%= render_money activity.trackable.amount %> from <%= source.name %> to <%= destination.name %>
+  <% end %>
+<% end %>

@@ -106,6 +106,9 @@ class Disbursement < ApplicationRecord
     }
   }.freeze
 
+  include PublicActivity::Model
+  tracked owner: proc{ |controller, record| controller&.current_user }, recipient: proc { |controller, record| record.destination_event }, event_id: proc { |controller, record| record.source_event.id }, only: [:create]
+
   aasm timestamps: true, whiny_persistence: true do
     state :reviewing, initial: true # Being reviewed by an admin
     state :pending                  # Waiting to be processed by the TX engine
