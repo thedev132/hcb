@@ -137,13 +137,13 @@ module Reimbursement
 
     def status_text
       return "Pending" if reimbursement_requested?
-      return "Approved" if reimbursement_approved?
+      return "In Transit" if reimbursement_approved?
 
       aasm_state.humanize.titleize
     end
 
     def admin_status_text
-      return "Review Required" if reimbursement_requested?
+      return "Review Requested" if reimbursement_requested?
       return "Organizers Reviewing" if submitted?
 
       status_text
