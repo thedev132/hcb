@@ -50,6 +50,9 @@ class Comment < ApplicationRecord
     changes_requested: 1 # used by reimbursements
   }
 
+  include PublicActivity::Model
+  tracked owner: proc{ |controller, record| controller&.current_user }, event_id: proc { |controller, record| record.commentable.try(:event)&.id }, only: [:create]
+
   after_create_commit :send_notification_email
 
   def edited?

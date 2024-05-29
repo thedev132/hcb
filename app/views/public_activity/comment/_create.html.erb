@@ -1,0 +1,3 @@
+<%= render layout: "/public_activity/common", locals: { activity: } do %>
+  <%= activity.trackable.action_text %> on <%= link_to activity.trackable.commentable.try(:name) || activity.trackable.commentable.try(:memo) || "an item", activity.trackable.commentable %>
+<% end %>
