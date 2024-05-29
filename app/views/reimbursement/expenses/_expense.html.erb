@@ -39,12 +39,12 @@
             <%# if reviewed_by is the report's creator, team review was not required for this report. %>
             <%# if a team re-enables team reviews, we'll show each expense as approved by it's creator.  %>
             <% if reviewed_by != expense.report.user || expense.report.team_review_required? %>
-              <% if latest_state_change.changeset["aasm_state"].second == "approved" %>
+              <% if expense.approved? %>
                 Approved by
               <% else %>
                 Approval removed by
               <% end %>
-              <%= user_mention reviewed_by, { avatar: { style: "vertical-align: sub;" } }, "Unknown User" %>
+              <%= user_mention expense.approved_by || reviewed_by, { avatar: { style: "vertical-align: sub;" } }, "Unknown User" %>
             <% end %>
           <% end %>
           <button id="edit-or-save" class="pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= "This expense is read-only. #{"Mark it as a draft to edit." unless expense.report.closed? || read_only}" %>">

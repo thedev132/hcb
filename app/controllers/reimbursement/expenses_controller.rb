@@ -37,7 +37,7 @@ module Reimbursement
       authorize @expense
 
       if expense_params[:reimbursement_report_id] && @expense.reimbursement_report_id != expense_params[:reimbursement_report_id]
-        @expense.assign_attributes(expense_number: nil, aasm_state: :pending)
+        @expense.assign_attributes(expense_number: nil, aasm_state: :pending, approved_by_id: nil)
       end
       @expense.assign_attributes(expense_params.except(:event_id))
 
@@ -49,7 +49,7 @@ module Reimbursement
         authorize report
         ActiveRecord::Base.transaction do
           report.save!
-          @expense.update!(reimbursement_report_id: report.id, expense_number: nil, aasm_state: :pending)
+          @expense.update!(reimbursement_report_id: report.id, expense_number: nil, aasm_state: :pending, approved_by_id: nil)
         end
       end
 
@@ -66,7 +66,7 @@ module Reimbursement
     def approve
       authorize @expense
 
-      @expense.mark_approved! if @expense.may_mark_approved?
+      @expense.mark_approved!(current_user) if @expense.may_mark_approved?
 
       respond_to do |format|
         format.turbo_stream { render turbo_stream: on_update_streams }
@@ -77,7 +77,7 @@ module Reimbursement
     def unapprove
       authorize @expense
 
-      @expense.mark_pending! if @expense.may_mark_pending?
+      @expense.mark_pending!(current_user) if @expense.may_mark_pending?
 
       respond_to do |format|
         format.turbo_stream { render turbo_stream: on_update_streams }

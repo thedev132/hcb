@@ -39,6 +39,7 @@ module Reimbursement
     has_one :expense_payout
     has_one :event, through: :report
     has_one :user, through: :report
+    belongs_to :approved_by, class_name: "User", optional: true
     include AASM
     include Receiptable
     include Hashid::Rails
@@ -67,18 +68,19 @@ module Reimbursement
 
       event :mark_approved do
         transitions from: :pending, to: :approved
-        after do
-          if report.team_review_required?
-            latest_state_change = versions.reverse.find { |version| version.changeset["aasm_state"]&.first.present? }
-            create_activity(key: "reimbursement_expense.approved", owner: User.find_by(id: latest_state_change.whodunnit || 2891))
-            ReimbursementMailer.with(report: self.report, expense: self).expense_approved.deliver_later
+        after do |current_user|
+          if report.team_review_required? && current_user
+            update(approved_by: current_user)
+            create_activity(key: "reimbursement_expense.approved", owner: current_user)
           end
+          ReimbursementMailer.with(report: self.report, expense: self).expense_approved.deliver_later
         end
       end
 
       event :mark_pending do
         transitions from: :approved, to: :pending
-        after do
+        after do |current_user|
+          update(approved_by: current_user) if current_user
           ReimbursementMailer.with(report: self.report, expense: self).expense_unapproved.deliver_later
         end
       end
