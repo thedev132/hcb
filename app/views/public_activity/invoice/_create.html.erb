@@ -1,0 +1,4 @@
+<%= render layout: "/public_activity/common", locals: { activity: } do %>
+  sent a <%= render_money activity.trackable.amount_due %>
+  invoice to <%= activity.trackable.sponsor.name %>
+<% end %>
