@@ -17,11 +17,17 @@
           <% end %>
           <%= yield %>
         </span>
-        <% unless defined?(hide_timestamp) && hide_timestamp %>
-          <span class="tooltipped tooltipped--n align-middle timestamp" style="cursor: default" aria-label="<%= local_assigns[:activity].created_at.strftime("%b %e, %Y") %>">
+        <div class="flex items-center">
+          <% url = hcb_code_path(activity.trackable.hcb_code) if activity.trackable.try(:hcb_code) %>
+          <% if defined?(url) && url %>
+            <%= link_to url, class: "flex items-center" do %>
+              <%= inline_icon "link", width: 20, class: "muted ml-[-4px] mr-[2px]" %>
+            <% end %>
+          <% end %>
+          <span class="align-middle timestamp" style="cursor: default">
             <%= time_ago_in_words activity.created_at %> ago
           </span>
-        <% end %>
+        </div>
       </div>
     </div>
   </li>
