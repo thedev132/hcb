@@ -1,5 +1,5 @@
 <%= render layout: "/public_activity/common", locals: { activity: } do %>
-  opened <i><%= activity.trackable.name %></i>
+  opened <i><%= link_to activity.trackable.name, activity.trackable %></i>
   <% unless activity.trackable.user == activity.owner %>
     for <span class="muted"><%= activity.trackable&.user&.name || "a user" %></span>
   <% end %>
