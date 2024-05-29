@@ -82,6 +82,9 @@ class CheckDeposit < ApplicationRecord
     unknown: "unknown"
   }, prefix: :rejection_reason
 
+  include PublicActivity::Model
+  tracked owner: proc{ |controller, record| controller&.current_user }, event_id: proc { |controller, record| record.event.id }, only: [:create]
+
   def submit!
     increase_front = Increase::Files.create(
       purpose: :check_image_front,

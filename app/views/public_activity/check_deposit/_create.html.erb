@@ -1,0 +1,6 @@
+<% unless activity.trackable.rejected? || activity.trackable.returned? %>
+  <%= render layout: "/public_activity/common", locals: { activity: } do %>
+    deposited a <%= render_money activity.trackable.amount_cents %> check
+    for <%= link_to activity.trackable.event.name, activity.trackable.event %>
+  <% end %>
+<% end %>
