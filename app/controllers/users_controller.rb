@@ -230,17 +230,15 @@ class UsersController < ApplicationController
     begin
       session = UserSession.find(params[:id])
       if session.user.id != current_user.id
-        Rail.logger.error "User id: #{user.id} tried to delete session #{session.id}"
-        flash[:error] = "Error deleting the session"
-        return
+        return redirect_back_or_to settings_security_path, flash: { error: "Error deleting the session" }
       end
 
-      session.destroy
+      session.destroy!
       flash[:success] = "Deleted session!"
     rescue ActiveRecord::RecordNotFound => e
       flash[:error] = "Session is not found"
     end
-    redirect_to root_path
+    redirect_back_or_to settings_security_path
   end
 
   def revoke_oauth_application
