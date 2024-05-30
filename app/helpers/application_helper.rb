@@ -318,10 +318,14 @@ module ApplicationHelper
       "More, tonight at 9.",
       "Go wild.",
       "But, the night is still young.",
-      "You pansy.",
+      "You coward.",
       "Now go write some code?",
       "AKA a world of pure imagination"
     ].sample
+  end
+
+  def tooltipped_logo?
+    !Rails.env.production? || user_birthday?
   end
 
   require "json"
