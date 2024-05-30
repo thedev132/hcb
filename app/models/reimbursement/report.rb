@@ -143,7 +143,7 @@ module Reimbursement
     end
 
     def admin_status_text
-      return "Review Requested" if reimbursement_requested?
+      return "HCB Review Requested" if reimbursement_requested?
       return "Organizers Reviewing" if submitted?
 
       status_text
