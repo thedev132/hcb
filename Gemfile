@@ -212,3 +212,6 @@ gem "cssbundling-rails", "~> 1.4"
 gem "sprockets-rails", "~> 3.4"
 
 gem "public_activity"
+
+gem "console1984"
+gem "audits1984"
