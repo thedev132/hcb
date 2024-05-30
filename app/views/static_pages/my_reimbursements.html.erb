@@ -54,7 +54,7 @@
   <div class="filterbar flex items-center width-100">
     <%= form.text_field :q, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:q] %>
     <%= link_to "?filter=my", class: "filterbar__item", "aria-selected": params[:filter] != "review_requested", role: "tab" do %>
-      My Reports
+      My reports
       <% unless current_user.reimbursement_reports.draft.none? %>
         <span class="m0 badge <%= params[:filter] == "review_requested" ? "bg-primary" : "bg-snow text-black" %>" style="margin-left: 2px; transform: translateY(-1px)">
           <%= current_user.reimbursement_reports.draft.count %>
@@ -62,7 +62,7 @@
       <% end %>
     <% end %>
     <%= link_to "?filter=review_requested", class: "filterbar__item", "aria-selected": params[:filter] == "review_requested", role: "tab" do %>
-      Review Requested
+      Review requested
       <% unless current_user.assigned_reimbursement_reports.submitted.none? %>
         <span class="m0 badge <%= params[:filter] != "review_requested" ? "bg-primary" : "bg-snow text-black" %>" style="margin-left: 2px; transform: translateY(-1px)">
           <%= current_user.assigned_reimbursement_reports.submitted.count %>
