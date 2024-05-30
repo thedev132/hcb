@@ -136,7 +136,8 @@ module Reimbursement
     end
 
     def status_text
-      return "Pending" if reimbursement_requested?
+      return "Review Requested" if submitted?
+      return "Processing" if reimbursement_requested?
       return "In Transit" if reimbursement_approved?
 
       aasm_state.humanize.titleize
