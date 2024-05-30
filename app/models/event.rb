@@ -397,6 +397,9 @@ class Event < ApplicationRecord
     priority: 2,
   }
 
+  include PublicActivity::Model
+  tracked owner: proc{ |controller, record| controller&.current_user }, event_id: proc { |controller, record| record.id }, only: [:create]
+
   def admin_formatted_name
     "#{name} (#{id})"
   end
