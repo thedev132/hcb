@@ -79,6 +79,10 @@
               <span class="tooltipped tooltipped--e inline-block" aria-label="Card Grant">
                 <%= inline_icon "bag" %>
               </span>
+            <% elsif d.is_a?(PaypalTransfer) %>
+              <span class="tooltipped tooltipped--e inline-block" aria-label="PayPal Transfer">
+                <%= inline_icon "paypal" %>
+              </span>
             <% else %>
               <span class="tooltipped tooltipped--e inline-block" aria-label="HCB transfer">
                 <%= inline_icon "door-leave" %>

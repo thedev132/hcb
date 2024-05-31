@@ -300,6 +300,10 @@ class CanonicalTransaction < ApplicationRecord
     nil
   end
 
+  def paypal_transfer
+    return linked_object if linked_object.is_a?(PaypalTransfer)
+  end
+
   def check_deposit
     return linked_object if linked_object.is_a?(CheckDeposit)
 

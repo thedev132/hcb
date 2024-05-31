@@ -173,6 +173,7 @@ Rails.application.routes.draw do
       get "reimbursements", to: "admin#reimbursements"
       get "checks", to: "admin#checks"
       get "increase_checks", to: "admin#increase_checks"
+      get "paypal_transfers", to: "admin#paypal_transfers"
       get "partner_organizations", to: "admin#partner_organizations"
       get "events", to: "admin#events"
       get "event_new", to: "admin#event_new"
@@ -215,6 +216,7 @@ Rails.application.routes.draw do
       post "disbursement_approve", to: "admin#disbursement_approve"
       post "disbursement_reject", to: "admin#disbursement_reject"
       get "increase_check_process", to: "admin#increase_check_process"
+      get "paypal_transfer_process", to: "admin#paypal_transfer_process"
       get "google_workspace_process", to: "admin#google_workspace_process"
       post "google_workspace_approve", to: "admin#google_workspace_approve"
       post "google_workspace_verify", to: "admin#google_workspace_verify"
@@ -240,6 +242,7 @@ Rails.application.routes.draw do
 
   post "set_event", to: "admin#set_event_multiple_transactions", as: :set_event_multiple_transactions
   post "set_event/:id", to: "admin#set_event", as: :set_event
+  post "set_paypal_transfer/:id", to: "admin#set_paypal_transfer", as: :set_paypal_transfer
 
   resources :organizer_position_invites, only: [:show], path: "invites" do
     post "accept"
@@ -315,6 +318,13 @@ Rails.application.routes.draw do
   end
 
   resources :increase_checks, only: [] do
+    member do
+      post "approve"
+      post "reject"
+    end
+  end
+
+  resources :paypal_transfers, only: [] do
     member do
       post "approve"
       post "reject"
@@ -636,6 +646,7 @@ Rails.application.routes.draw do
     post "finish_signee_backfill"
     resources :disbursements, only: [:new, :create]
     resources :increase_checks, only: [:new, :create], path: "checks"
+    resources :paypal_transfers, only: [:new, :create]
     resources :ach_transfers, only: [:new, :create]
     resources :organizer_position_invites,
               only: [:new, :create],

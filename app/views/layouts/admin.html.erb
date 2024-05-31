@@ -24,7 +24,7 @@
            ACHs: [ach_admin_index_path, AchTransfer.pending.count, %i[]],
            Checks: [increase_checks_admin_index_path, IncreaseCheck.pending.count, %i[]],
            Disbursements: [disbursements_admin_index_path, Disbursement.reviewing.count, %i[]],
-           PayPal: ["https://airtable.com/tbloGiW2jhja8ivtV/viwzhAnWYhpFNhvmC", 0, %i[]],
+           PayPal: [paypal_transfers_admin_index_path, PaypalTransfer.pending.count, %i[]],
            Reimbursements: [reimbursements_admin_index_path, Reimbursement::Report.reimbursement_requested.count, %i[]]
          },
          Ledger: {

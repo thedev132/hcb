@@ -115,12 +115,6 @@ module StaticPagesHelper
         query: { filterByFormula: "Status='Pending'" },
         destination: "https://airtable.com/tbloFbH16HI7t3mfG/viwzgt8VLHOC82m8n"
       },
-      paypal_transfers: {
-        id: "appEzv7w2IBMoxxHe",
-        table: "PayPal%20Transfers",
-        query: { filterByFormula: "Status='Pending'" },
-        destination: "https://airtable.com/tbloGiW2jhja8ivtV/viwzhAnWYhpFNhvmC"
-      },
       disputed_transactions: {
         id: "appEzv7w2IBMoxxHe",
         table: "Disputed%20Transactions",

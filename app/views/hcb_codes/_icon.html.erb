@@ -12,6 +12,10 @@
   <td class="transaction__icon tooltipped tooltipped--e" aria-label="Mailed check">
     <%= inline_icon "email" %>
   </td>
+<% elsif tx.local_hcb_code.paypal_transfer? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="PayPal transfer">
+    <%= inline_icon "paypal" %>
+  </td>
 <% elsif tx.local_hcb_code.check_deposit? %>
   <td class="transaction__icon tooltipped tooltipped--e" aria-label="Check deposit">
     <%= inline_icon "cheque" %>

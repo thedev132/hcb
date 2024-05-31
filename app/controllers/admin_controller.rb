@@ -654,6 +654,23 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def paypal_transfers
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @paypal_transfers = PaypalTransfer.page(@page).per(@per).order(
+      Arel.sql("aasm_state = 'pending' DESC"),
+      "created_at desc"
+    )
+
+    render layout: "admin"
+  end
+
+  def paypal_transfer_process
+    @paypal_transfer = PaypalTransfer.find(params[:id])
+
+    render layout: "admin"
+  end
+
   def partner_donations
     @page = params[:page] || 1
     @per = params[:per] || 20
@@ -1020,6 +1037,31 @@ class AdminController < ApplicationController
     redirect_back fallback_location: ledger_admin_index_path
   end
 
+  def set_paypal_transfer
+    ActiveRecord::Base.transaction do
+      paypal_transfer = PaypalTransfer.find(params[:paypal_transfer_id])
+
+      canonical_transaction = CanonicalTransactionService::SetEvent.new(
+        canonical_transaction_id: params[:id],
+        event_id: paypal_transfer.event.id,
+        user: current_user
+      ).run
+
+      CanonicalPendingTransactionService::Settle.new(
+        canonical_transaction:,
+        canonical_pending_transaction: paypal_transfer.canonical_pending_transaction
+      ).run!
+
+      canonical_transaction.update!(hcb_code: paypal_transfer.hcb_code, transaction_source_type: "PaypalTransfer", transaction_source_id: paypal_transfer.id)
+
+      paypal_transfer.mark_deposited!
+
+      redirect_to transaction_admin_path(canonical_transaction)
+    end
+  rescue => e
+    redirect_to transaction_admin_path(params[:id]), flash: { error: e.message }
+  end
+
   def audit
     @topups = StripeService::Topup.list[:data]
   end
@@ -1353,8 +1395,6 @@ class AdminController < ApplicationController
         airtable_task_size :first_grant
       when :pending_wire_transfers_airtable
         airtable_task_size :wire_transfers
-      when :pending_paypal_transfers_airtable
-        airtable_task_size :paypal_transfers
       when :pending_disputed_transactions_airtable
         airtable_task_size :disputed_transactions
       when :pending_feedback_airtable
