@@ -42,6 +42,9 @@ class PaypalTransfer < ApplicationRecord
 
   monetize :amount_cents, as: "amount"
 
+  include PublicActivity::Model
+  tracked owner: proc{ |controller, record| controller&.current_user }, event_id: proc { |controller, record| record.event.id }, only: [:create]
+
   after_create do
     create_canonical_pending_transaction!(event:, amount_cents: -amount_cents, memo: "OUTGOING PAYPAL TRANSFER", date: created_at)
   end
