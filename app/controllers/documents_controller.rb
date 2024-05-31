@@ -5,13 +5,15 @@ class DocumentsController < ApplicationController
   before_action :set_document, except: [:common_index, :index, :new, :create, :fiscal_sponsorship_letter]
 
   def common_index
-    @documents = Document.common
-    authorize @documents
+    authorize @active_documents = Document.common.active
+    authorize @archived_documents = Document.common.archived
   end
 
   def index
-    @documents = @event.documents.includes(:user)
-    authorize @documents
+    authorize @active_documents = @event.documents.includes(:user).active
+    authorize @active_common_documents = Document.common.active
+    authorize @archived_documents = @event.documents.includes(:user).archived
+    authorize @archived_common_documents = Document.common.archived
   end
 
   def new
@@ -52,6 +54,20 @@ class DocumentsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def toggle_archive
+    authorize @document
+
+    if @document.active?
+      @document.mark_archive!(current_user)
+      flash[:success] = "Document successfully archived."
+    else
+      @document.mark_unarchive!
+      flash[:success] = "Document successfully unarchived."
+    end
+
+    redirect_to @document
   end
 
   def destroy

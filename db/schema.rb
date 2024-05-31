@@ -588,7 +588,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_29_041700) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.text "slug"
+    t.datetime "archived_at"
+    t.bigint "archived_by_id"
+    t.string "aasm_state"
     t.datetime "deleted_at", precision: nil
+    t.index ["archived_by_id"], name: "index_documents_on_archived_by_id"
     t.index ["event_id"], name: "index_documents_on_event_id"
     t.index ["slug"], name: "index_documents_on_slug", unique: true
     t.index ["user_id"], name: "index_documents_on_user_id"
@@ -2071,6 +2075,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_29_041700) do
   add_foreign_key "document_downloads", "users"
   add_foreign_key "documents", "events"
   add_foreign_key "documents", "users"
+  add_foreign_key "documents", "users", column: "archived_by_id"
   add_foreign_key "donations", "donation_payouts", column: "payout_id"
   add_foreign_key "donations", "events"
   add_foreign_key "donations", "fee_reimbursements"

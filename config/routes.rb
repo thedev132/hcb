@@ -356,6 +356,7 @@ Rails.application.routes.draw do
       get "", to: "documents#common_index", as: :common
     end
     get "download"
+    post "toggle", to: "documents#toggle_archive"
   end
 
   resources :bank_accounts, only: [:new, :create, :update, :show, :index] do

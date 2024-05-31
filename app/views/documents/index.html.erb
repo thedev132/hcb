@@ -14,8 +14,8 @@
 </h1>
 
 <ul class="grid">
-  <%= render @documents %>
-  <%= render Document.common.all %>
+  <%= render @active_documents %>
+  <%= render @active_common_documents %>
 
   <% if @event.approved? && !@event.demo_mode? %>
     <%= link_to event_fiscal_sponsorship_letter_path(event_id: @event.slug, format: "pdf") do %>
@@ -30,3 +30,21 @@
     <% end %>
   <% end %>
 </ul>
+
+<% if @archived_documents.any? || @archived_common_documents.any? %>
+  <ul class="list-reset">
+    <li class="mb3">
+      <details>
+        <summary class="cursor-pointer relative mb2">
+          <h3 class="inline mb1">Archived Documents</h3>
+        </summary>
+        <article>
+          <ul class="grid">
+            <%= render @archived_documents %>
+            <%= render @archived_common_documents %>
+          </ul>
+        </article>
+      </details>
+    </li>
+  </ul>
+<% end %>
