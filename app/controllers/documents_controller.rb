@@ -3,6 +3,7 @@
 class DocumentsController < ApplicationController
   before_action :set_event, only: [:index, :new, :fiscal_sponsorship_letter]
   before_action :set_document, except: [:common_index, :index, :new, :create, :fiscal_sponsorship_letter]
+  skip_after_action :verify_authorized, only: [:index]
 
   def common_index
     authorize @active_documents = Document.common.active
@@ -10,10 +11,10 @@ class DocumentsController < ApplicationController
   end
 
   def index
-    authorize @active_documents = @event.documents.includes(:user).active
-    authorize @active_common_documents = Document.common.active
-    authorize @archived_documents = @event.documents.includes(:user).archived
-    authorize @archived_common_documents = Document.common.archived
+    @active_documents = @event.documents.includes(:user).active
+    @active_common_documents = Document.common.active
+    @archived_documents = @event.documents.includes(:user).archived
+    @archived_common_documents = Document.common.archived
   end
 
   def new
