@@ -600,7 +600,7 @@ class EventsController < ApplicationController
     @paypal_transfers = @paypal_transfers.approved.or(@paypal_transfers.pending) if params[:filter] == "in_transit"
     @paypal_transfers = @paypal_transfers.deposited if params[:filter] == "deposited"
     @paypal_transfers = @paypal_transfers.rejected if params[:filter] == "canceled"
-    @paypal_transfers = @paypal_transfers.search_name(params[:q]) if params[:q].present?
+    @paypal_transfers = @paypal_transfers.search_recipient(params[:q]) if params[:q].present?
 
     @transfers = Kaminari.paginate_array((@increase_checks + @checks + @ach_transfers + @disbursements + @card_grants + @paypal_transfers).sort_by { |o| o.created_at }.reverse!).page(params[:page]).per(100)
 

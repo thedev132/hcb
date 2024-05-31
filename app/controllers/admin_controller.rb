@@ -657,7 +657,16 @@ class AdminController < ApplicationController
   def paypal_transfers
     @page = params[:page] || 1
     @per = params[:per] || 20
-    @paypal_transfers = PaypalTransfer.page(@page).per(@per).order(
+    @q = params[:q].present? ? params[:q] : nil
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    @paypal_transfers = PaypalTransfer.all
+
+    @paypal_transfers = @paypal_transfers.search_recipient(@q) if @q
+
+    @paypal_transfers.where(event_id: @event_id) if @event_id
+
+    @paypal_transfers = @paypal_transfers.page(@page).per(@per).order(
       Arel.sql("aasm_state = 'pending' DESC"),
       "created_at desc"
     )

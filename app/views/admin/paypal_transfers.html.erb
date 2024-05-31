@@ -1,5 +1,11 @@
 <% title "PayPal" %>
 
+<%= form_with local: true, url: paypal_transfers_admin_index_path, method: :get do |form| %>
+  <%= form.text_field :q, value: params[:q], placeholder: "Search" %>
+  <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description, { include_blank: "Select An Event", selected: @event_id }, { width: 250, style: "max-width: 250px" }) %>
+  <%= form.submit "Search" %>
+<% end %>
+
 <div class="flex items-center mb2">
   <div class="flex-grow">
     <%= page_entries_info @paypal_transfers, entry_name: "transfers" %>

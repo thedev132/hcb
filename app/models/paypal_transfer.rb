@@ -31,7 +31,7 @@ class PaypalTransfer < ApplicationRecord
   has_paper_trail
 
   include PgSearch::Model
-  pg_search_scope :search_name, against: [:recipient_name]
+  pg_search_scope :search_recipient, against: [:recipient_name, :recipient_email]
 
   include AASM
 
