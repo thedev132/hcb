@@ -13,7 +13,9 @@ module UsersHelper
     "https://gravatar.com/avatar/#{hex}?s=#{size}&d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/#{CGI.escape(name)}/#{size}/#{get_user_color(id)}/fff"
   end
 
-  def profile_picture_for(user, size = 24, default_image: "https://cloud-80pd8aqua-hack-club-bot.vercel.app/0image-23.png")
+  def profile_picture_for(user, size = 24, default_image: nil)
+    default_image ||= "https://cloud-80pd8aqua-hack-club-bot.vercel.app/0image-23.png"
+
     # profile_picture_for works with OpenStructs (used on the front end when a user isn't registered),
     # so this method shows Gravatars/intials for non-registered and allows showing of uploaded profile pictures for registered users.
     if user.nil?
