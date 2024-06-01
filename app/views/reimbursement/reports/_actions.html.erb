@@ -152,7 +152,7 @@
               <span class="bold">Status:</span> the HCB team is reviewing this report. To make further changes, mark it as a draft.
             <% end %>
           <% end %>
-        <% elsif current_user == report.user %>
+        <% elsif current_user == report.user && report.submitted? %>
           <%= link_to reimbursement_report_draft_path(report_id: report.id), class: "btn bg-muted", method: :post do %>
             <%= inline_icon "reply" %>
             Mark As Draft
