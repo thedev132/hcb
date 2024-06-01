@@ -423,7 +423,7 @@ class Event < ApplicationRecord
 
   # displayed on /negative_events
   def self.negatives
-    select { |event| event.balance < 0 || event.emburse_balance < 0 || event.fee_balance < 0 }
+    select { |event| event.balance_v2_cents < 0 }
   end
 
   def emburse_department_path
