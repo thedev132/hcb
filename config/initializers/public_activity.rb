@@ -7,4 +7,8 @@ class PublicActivity::Activity
       .or(where(recipient_type: "Event", recipient_id: user.events.pluck(:id)))
   }
 
+  def trackable_is_deletable?
+    trackable_type.constantize.in?([Reimbursement::Report])
+  end
+
 end
