@@ -1,6 +1,11 @@
 <% hcb_code = activity.trackable.canonical_pending_transaction.local_hcb_code %>
 
 <%= render layout: "/public_activity/common", locals: { activity:, url: hcb_code_path(hcb_code) } do %>
-  <%= hcb_code.stripe_refund? ? "was refunded" : "spent" %> <%= render_money hcb_code.amount_cents.abs %>
-  <%= hcb_code.stripe_refund? ? "from" : "on" %> <i><%= hcb_code.memo %></i>
+  <% if hcb_code.stripe_refund? %>
+    was refunded <%= render_money hcb_code.amount_cents.abs %> from <i><%= hcb_code.memo %></i>
+  <% elsif hcb_code.pt&.declined? %>
+    was declined for <%= render_money hcb_code.amount_cents.abs %> at <i><%= hcb_code.memo %></i>
+  <% else %>
+    spent <%= render_money hcb_code.amount_cents.abs %> on <i><%= hcb_code.memo %></i>
+  <% end %>
 <% end %>
