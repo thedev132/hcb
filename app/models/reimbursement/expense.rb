@@ -69,11 +69,14 @@ module Reimbursement
       event :mark_approved do
         transitions from: :pending, to: :approved
         after do |current_user|
-          if report.team_review_required? && current_user
-            update(approved_by: current_user)
-            create_activity(key: "reimbursement_expense.approved", owner: current_user)
+          if report.team_review_required?
+            ReimbursementMailer.with(report: self.report, expense: self).expense_approved.deliver_later
+            if current_user
+              update(approved_by: current_user)
+              create_activity(key: "reimbursement_expense.approved", owner: current_user)
+            end
           end
-          ReimbursementMailer.with(report: self.report, expense: self).expense_approved.deliver_later
+
         end
       end
 
