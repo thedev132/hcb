@@ -7,6 +7,14 @@ class PublicActivity::Activity
       .or(where(recipient_type: "Event", recipient_id: user.events.pluck(:id)))
   }
 
+  validate do
+    unless owner.nil? || owner_type == User.name
+      Airbrake.notify("Public Activity Validation Failed") # this is temporary so we can catch issues before releasing the feature fully.
+    end
+
+    true
+  end
+
   def trackable_is_deletable?
     trackable_type.constantize.in?([Reimbursement::Report])
   end
