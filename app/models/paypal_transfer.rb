@@ -62,6 +62,7 @@ class PaypalTransfer < ApplicationRecord
     event :mark_rejected do
       after do
         canonical_pending_transaction.decline!
+        create_activity(key: "paypal_transfer.rejected")
       end
       transitions from: [:pending, :approved], to: :rejected
     end
