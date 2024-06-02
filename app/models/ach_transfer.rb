@@ -120,6 +120,7 @@ class AchTransfer < ApplicationRecord
       after do |processed_by = nil|
         canonical_pending_transaction&.decline!
         update!(processor: processed_by) if processed_by.present?
+        create_activity(key: "ach_transfer.rejected", owner: processed_by)
       end
       transitions from: [:pending, :scheduled], to: :rejected
     end
@@ -140,6 +141,7 @@ class AchTransfer < ApplicationRecord
         else
           AchTransferMailer.with(ach_transfer: self, reason:).notify_failed.deliver_later
         end
+        create_activity(key: "ach_transfer.failed", owner: nil)
       end
       transitions from: [:in_transit, :deposited], to: :failed
     end
