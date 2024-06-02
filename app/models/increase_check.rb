@@ -82,6 +82,7 @@ class IncreaseCheck < ApplicationRecord
     event :mark_rejected do
       after do
         canonical_pending_transaction.decline!
+        create_activity(key: "increase_check.rejected")
       end
       transitions from: :pending, to: :rejected
     end
