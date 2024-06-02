@@ -3,14 +3,12 @@
 
 <% if activity.trackable.card_grant.present? %>
   <%= render layout: "/public_activity/common", locals: { activity: } do %>
-    created a <%= render_money activity.trackable.amount %> card grant on
+    rejected a <%= render_money activity.trackable.amount %> card grant on
     <%= link_to source.name, source %> for
     <span class="muted"><%= activity.trackable.card_grant.user&.name || activity.trackable.card_grant.email %></span>
-    <%= "(rejected)" if activity.trackable.rejected? %>
   <% end %>
 <% else %>
   <%= render layout: "/public_activity/common", locals: { activity: } do %>
-    transferred <%= render_money activity.trackable.amount %> from <%= link_to source.name, source %> to <%= link_to destination.name, destination %>
-    <%= "(rejected)" if activity.trackable.rejected? %>
+    rejected a <%= render_money activity.trackable.amount %> transfer from <%= link_to source.name, source %> to <%= link_to destination.name, destination %>
   <% end %>
 <% end %>

@@ -144,6 +144,7 @@ class Disbursement < ApplicationRecord
       after do |fulfilled_by|
         update(fulfilled_by:)
         canonical_pending_transactions.each { |cpt| cpt.decline! }
+        create_activity(key: "disbursement.rejected", owner: fulfilled_by)
       end
       transitions from: [:reviewing, :pending], to: :rejected
     end
