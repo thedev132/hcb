@@ -138,6 +138,12 @@ module StaticPagesHelper
         table: "Google%20Workspace%20Waitlist",
         query: { filterByFormula: "Status='Pending'" },
         destination: "https://airtable.com/appEzv7w2IBMoxxHe/tbl9CkfZHKZYrXf1T/viwgfJvrrD9Jn9VLj"
+      },
+      boba: {
+        id: "app05mIKwNPO2l1vT",
+        table: "Event%20Codes",
+        query: { filterByFormula: "Status='Under Review'" },
+        destination: "https://airtable.com/app05mIKwNPO2l1vT/tblcIuVemD63IbBuY/viw1Zo5lX8e7t2Vzu"
       }
     }
   end

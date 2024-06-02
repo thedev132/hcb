@@ -1410,6 +1410,8 @@ class AdminController < ApplicationController
         airtable_task_size :feedback
       when :pending_google_workspace_waitlist_airtable
         airtable_task_size :google_workspace_waitlist
+      when :pending_boba_airtable
+        airtable_task_size :boba
       when :emburse_card_requests
         EmburseCardRequest.under_review.size
       when :emburse_transactions
