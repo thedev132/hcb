@@ -15,7 +15,8 @@
               You
             <% end %>
           <% else %>
-            <span class="muted"><%= "#{activity.owner&.name || "A user"}#{"'s" if local_assigns[:possessive]}" %></span>
+            <span class="muted"><%= activity.owner&.name || "A user" %></span>
+            <%= "'s" if local_assigns[:possessive] %>
           <% end %>
         <% end %>
         <%= yield %>
