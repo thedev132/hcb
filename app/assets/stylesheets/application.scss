@@ -48,12 +48,19 @@ body {
   body:has(.activity) {
     padding-bottom: 0rem;
   }
+
   .activity {
     display: block;
   }
+
+  .container:has(.activity) > .app__sidebar {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+  }
+
   .container:has(.activity) > .app__content {
-    max-height: 100vh;
-    overflow: scroll;
+    padding-bottom: 2rem;
   }
 }
 
