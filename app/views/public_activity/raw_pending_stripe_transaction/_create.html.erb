@@ -1,11 +1,15 @@
 <% hcb_code = activity.trackable.canonical_pending_transaction.local_hcb_code %>
 
-<%= render layout: "/public_activity/common", locals: { activity:, url: hcb_code_path(hcb_code) } do %>
-  <% if hcb_code.stripe_refund? %>
+<% if hcb_code.stripe_refund? %>
+  <%= render layout: "/public_activity/common", locals: { activity:, url: hcb_code_path(hcb_code) } do %>
     was refunded <%= render_money hcb_code.amount_cents.abs %> from <i><%= hcb_code.memo %></i>
-  <% elsif hcb_code.pt&.declined? %>
-    was declined for <%= render_money hcb_code.amount_cents.abs %> at <i><%= hcb_code.memo %></i>
-  <% else %>
+  <% end %>
+<% elsif hcb_code.pt&.declined? %>
+  <%= render layout: "/public_activity/common", locals: { possessive: true, activity:, url: hcb_code_path(hcb_code) } do %>
+    card was declined for <%= render_money hcb_code.amount_cents.abs %> at <i><%= hcb_code.memo %></i>
+  <% end %>
+<% else %>
+  <%= render layout: "/public_activity/common", locals: { activity:, url: hcb_code_path(hcb_code) } do %>
     spent <%= render_money hcb_code.amount_cents.abs %> on <i><%= hcb_code.memo %></i>
   <% end %>
 <% end %>
