@@ -27,9 +27,9 @@ HCB is a platform for managing your nonprofit’s finances. Through HCB, you can
 
 ## Contributing
 
-We are so excited for you to join the codebase! We have a [Quick Start](#quick-start) guide, or you can go to the [wiki](https://github.com/hackclub/hcb/wiki) for more information on how to get started.
+We are so excited for you to join the codebase! We have a [guide to getting started](#quick-start) below and additional documentation on the [wiki](https://github.com/hackclub/hcb/wiki).
 
-All contributors are expected to follow the Hack Club [Code of Conduct](https://hackclub.com/conduct).
+All contributors are expected to follow the Hack Club [Code of Conduct](https://hackclub.com/conduct) and Hack Club's [contributing guidelines](https://github.com/hackclub/hackclub/blob/main/CONTRIBUTING.md).
 
 ## Quick Start
 
