@@ -26,7 +26,7 @@ class StatsController < ApplicationController
   end
 
   def stats
-    json = Rails.cache.fetch("stats", expires_in: 20.minutes) do
+    json = Rails.cache.fetch("stats", expires_in: 1.minute) do
       now = params[:date].present? ? Date.parse(params[:date]) : DateTime.current
       year_ago = now - 1.year
       qtr_ago = now - 3.months
@@ -74,6 +74,10 @@ class StatsController < ApplicationController
 
         # events
         events: events_list,
+
+        # users
+
+        currently_online: User.currently_online.count
       }
     end
     render json:

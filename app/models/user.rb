@@ -162,6 +162,8 @@ class User < ApplicationRecord
     end
   end
 
+  scope :currently_online, -> { where(id: UserSession.where("last_seen_at > ?", 15.minutes.ago).pluck(:user_id)) }
+
   # admin? takes into account an admin user's preference
   # to pretend to be a non-admin, normal user
   def admin?
