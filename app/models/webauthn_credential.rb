@@ -33,6 +33,6 @@ class WebauthnCredential < ApplicationRecord
   validates :sign_count, presence: true
 
   include PublicActivity::Model
-  tracked owner: proc{ |controller, record| record.user }, recipient: proc { |controller, record| record.user }, only: [:create]
+  tracked owner: proc{ |controller, record| record.user }, recipient: proc { |controller, record| record.user }, only: [:create, :destroy]
 
 end
