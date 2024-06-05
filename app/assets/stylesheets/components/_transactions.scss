@@ -61,6 +61,8 @@ html[data-dark='true'] {
 }
 
 .transaction__memo {
+  max-width: 400px;
+
   > div {
     display: flex;
     align-items: center;
