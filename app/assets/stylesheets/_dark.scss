@@ -432,9 +432,9 @@ html[data-dark='true'] {
   .mention-suggestions {
     border: 1px solid map-get($palette, slate);
   }
-}
 
-.transaction--positive > td > span > span > span.success-dark.medium {
-  color: white;
-  font-weight: 400;
+  .transaction--positive > td > span > span > span.success-dark.medium {
+    color: white;
+    font-weight: 400;
+  }
 }
