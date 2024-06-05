@@ -227,17 +227,11 @@ html[data-dark='true'] {
     background-color: mix($darkless, map-get($palette, warning), 90%);
   }
 
-  .card__banner.bg-success,
-  .transaction--positive {
+  .card__banner.bg-success {
     background-color: rgba(map-get($palette, success), 0.25);
   }
-  .card__banner.bg-error,
-  .transaction--negative {
+  .card__banner.bg-error {
     background-color: rgba(map-get($palette, error), 0.25);
-  }
-  .shade-neutral,
-  .transaction--zero {
-    background-color: $darkless;
   }
   .shade-yellow {
     background-color: rgba(map-get($palette, pending), 0.125);

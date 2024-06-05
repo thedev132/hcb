@@ -36,7 +36,7 @@
 
 <% if @event.donation_page_enabled %>
   <section class="modal" data-behavior="modal" role="dialog" id="qr_code">
-    <%= modal_header "Donations QR Code" %>
+    <%= modal_header "Donations QR code" %>
     <div class="flex flex-wrap gap-4">
       <div class="flex-1">
         <div class="bg-white rounded-2xl w-fit h-fit cursor-pointer border border-muted *:w-52 *:h-52 *:hidden" onclick="saveActiveQRCodeAsImage()" style="padding-top: 4.5px; padding-left: 4.5px;">
@@ -104,7 +104,7 @@
   </section>
 
   <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="prefilled_link">
-    <%= modal_header "Prefilled Amount" %>
+    <%= modal_header "Prefilled amount" %>
     <%= react_component "donation_overview/PreviewLink", path: start_donation_donations_url(@event) %>
   </section>
 <% else %>
@@ -138,11 +138,9 @@
 <hr>
 
 <% if @recurring_donations.size > 0 %>
-  <h2>
-    Recurring Donations
-    <span style="font-weight: 400; font-size: 0.7em">
-      <%= render_money @recurring_donations_monthly_sum %><span class="muted">/month</span>
-    </span>
+  <h2 class="heading pb-0 border-b-0">
+    Recurring donations
+    <%= badge_for "#{render_money @recurring_donations_monthly_sum}/month" %>
   </h2>
   <div class="table-container mb3">
     <table>
@@ -151,8 +149,8 @@
           <th></th>
           <th>Started on</th>
           <th>Name</th>
-          <th>Amount</th>
-          <th>Total donated</th>
+          <th class="text-right">Amount</th>
+          <th class="text-right">Total donated</th>
         </tr>
       </thead>
       <tbody>
@@ -170,11 +168,11 @@
                 <span class="muted h5"><%= recurring_donation.email %></span>
               <% end %>
             </td>
-            <td>
-              <%= render_money recurring_donation.amount %><span class="muted">/month</span>
+            <td class="text-right">
+              <strong><%= render_money recurring_donation.amount %></strong><span class="muted">/mo</span>
             </td>
-            <td>
-              <strong><%= render_money recurring_donation.total_donated %></strong>
+            <td class="text-right">
+              <%= render_money recurring_donation.total_donated %>
             </td>
           </tr>
         <% end %>
@@ -226,7 +224,7 @@
               <%= d.name %>
             <% end %>
             <% if d.recurring? %>
-              <div class="line-height-0 ml1 tooltipped tooltipped--n" aria-label="Monthly donor"><%= inline_icon "transactions", size: 24, class: "muted" %></div>
+              <div class="line-height-0 ml1 tooltipped tooltipped--n" aria-label="Monthly donor"><%= inline_icon "support-recurring", size: 24, class: "muted" %></div>
             <% end %>
             <% if d.anonymous? %>
               <div class="line-height-0 ml1 tooltipped tooltipped--n" aria-label="Anonymous donor"><%= inline_icon "private-fill", size: 24, class: "muted" %></div>

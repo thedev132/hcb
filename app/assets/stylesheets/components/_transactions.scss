@@ -61,14 +61,12 @@ html[data-dark='true'] {
 }
 
 .transaction__memo {
-  max-width: 400px;
-
   > div {
     display: flex;
     align-items: center;
   }
 
-  span:first-child {
+  span:not(.badge):first-of-type {
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -117,20 +115,21 @@ html[data-dark='true'] {
   }
 }
 
-.transaction--positive:has(.renamed),
-.transaction--negative:has(.renamed),
-.transaction--zero:has(.renamed) {
+.transaction:has(.renamed) {
   animation: highlight 2s;
 }
 
-.transaction--positive:has(.renaming),
-.transaction--negative:has(.renaming),
-.transaction--zero:has(.renaming) {
+.transaction:has(.renaming) {
   background-image: linear-gradient(90deg, $orange 50%, transparent 50%), linear-gradient(90deg, $orange 50%, transparent 50%), linear-gradient(0deg, $orange 50%, transparent 50%), linear-gradient(0deg, $orange 50%, transparent 50%);
   background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
   background-size: 50px 2px, 50px 2px, 2px 50px, 2px 50px;
   background-position: 0 0, 0 100%, 0 100%, 100% 20px;
   animation: border-dance 1s infinite linear;
+}
+
+// "Pending" badge
+.transaction .renaming ~ .badge.bg-muted {
+  display: none;
 }
 
 .transaction__icon--selected {
@@ -157,4 +156,17 @@ html[data-dark='true'] {
 
 .transaction__icon {
   padding-left: 1rem;
+}
+
+.memo-frame[busy] {
+  cursor: progress;
+}
+
+.memo-frame[busy] .memo-frame__ai-button {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.embedded .embedded-display-none {
+  display: none;
 }

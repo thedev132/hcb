@@ -1,7 +1,7 @@
 <% instance = ct.__id__ %>
 <% tagged_with = ct.local_hcb_code.tags.filter { |tag| !@event || tag.event == @event } %>
 <tr
-  class="transaction--<%= ct.amount.negative? ? "negative" : ct.amount.positive? ? "positive" : "zero" %> <%= ct.local_hcb_code.disbursement.special_appearance[:css_class] if !ct.amount.negative? && ct.local_hcb_code.disbursement&.special_appearance? %>"
+  class="transaction <%= ct.local_hcb_code.disbursement.special_appearance[:css_class] if !ct.amount.negative? && ct.local_hcb_code.disbursement&.special_appearance? %>"
   id="<%= ct.local_hcb_code.hashid %>"
   <% if defined?(selectable) && selectable %>
     data-action="click->transactions#select"
@@ -30,7 +30,7 @@
   <% end %>
   <%= render "hcb_codes/icon", tx: ct, authorless: local_assigns[:authorless] %>
   <td>
-    <%= ct.date %>
+    <%= format_date ct.date %>
   </td>
   <td class="transaction__memo">
     <div>
@@ -95,19 +95,15 @@
 
       <% if ct.local_hcb_code %>
         <%= list_badge_for ct.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: ct.local_hcb_code.receipt_optional?, required: ct.local_hcb_code.missing_receipt? %>
-        <%= list_badge_for admin_signed_in? ? ct.local_hcb_code.comments.size : ct.local_hcb_code.not_admin_only_comments_count, "note", "post", optional: true %>
       <% end %>
     </div>
   </td>
   <td class="nowrap">
     <span class="flex items-center justify-end">
-      <% if ct.local_hcb_code.donation&.recurring? %>
-        <div class="line-height-0 mr1 tooltipped tooltipped--n" aria-label="Recurring donation"><%= inline_icon "transactions", size: 24, class: "muted" %></div>
-      <% end %>
       <% if ct.likely_account_verification_related? && !organizer_signed_in? %>
         <%= redacted_amount %>
       <% else %>
-        <span><%= number_to_currency ct.amount %></span>
+        <span><%= render_transaction_amount ct.amount %></span>
       <% end %>
     </span>
   </td>

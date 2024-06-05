@@ -79,27 +79,8 @@
   }
 }
 
-$shades: (
-  red: rgba($red, 0.125),
-  yellow: rgba($yellow, 0.125),
-  green: rgba($green, 0.125),
-  neutral: rgba($muted, 0.125),
-);
-
-@each $name, $value in $shades {
-  .shade-#{'' + $name} {
-    background-color: $value;
-  }
-}
-
-.transaction--positive {
-  @extend .shade-green;
-}
-.transaction--negative {
-  @extend .shade-red;
-}
-.transaction--zero {
-  @extend .shade-neutral;
+.shade-yellow {
+  background-color: rgba($yellow, 0.125);
 }
 
 @each $name, $value in $palette {

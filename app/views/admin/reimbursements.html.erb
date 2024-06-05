@@ -87,7 +87,7 @@
       <% payout_holding = tx.local_hcb_code.reimbursement_payout_holding %>
       <% report = payout_holding.report %>
       <tr>
-        <td><%= tx.date %></td>
+        <td><%= format_date tx.date %></td>
         <td class="nowrap"><%= render_money tx.amount %></td>
         <td><%= link_to tx.local_hcb_code.memo, hcb_code_path(tx.local_hcb_code) %></td>
         <td><%= link_to report.name, report %></td>
@@ -126,7 +126,7 @@
   <tbody>
     <% @unidentified_transactions.each do |tx| %>
       <tr>
-        <td><%= tx.date %></td>
+        <td><%= format_date tx.date %></td>
         <td class="nowrap"><%= render_money tx.amount %></td>
         <td><%= link_to tx.local_hcb_code.memo, hcb_code_path(tx.local_hcb_code) %></td>
       </tr>
@@ -151,7 +151,7 @@
   <tbody>
     <% @pending_transactions.each do |tx| %>
       <tr>
-        <td><%= tx.date %></td>
+        <td><%= format_date tx.date %></td>
         <td class="nowrap"><%= render_money tx.amount %></td>
         <td><%= link_to tx.local_hcb_code.memo, hcb_code_path(tx.local_hcb_code) %></td>
       </tr>

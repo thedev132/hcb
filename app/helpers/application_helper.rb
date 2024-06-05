@@ -9,7 +9,7 @@ module ApplicationHelper
     unit = opts[:unit] || "$"
     trunc = opts[:trunc] || false
 
-    num = BigDecimal(amount || 0) / 100
+    num = BigDecimal((amount || 0).to_s) / 100
     if trunc
       if num >= 1_000_000
         "#{number_to_currency(num / 1_000_000, precision: 1, unit:)}m"
@@ -30,6 +30,14 @@ module ApplicationHelper
   def render_money_amount(amount, opts = {})
     opts[:unit] = ""
     render_money(amount, opts)
+  end
+
+  def render_transaction_amount(amount)
+    if amount >= 0
+      content_tag(:span, "+#{render_money amount}", class: "success-dark medium")
+    else
+      render_money amount
+    end
   end
 
   def render_percentage(decimal, params = {})
@@ -76,8 +84,8 @@ module ApplicationHelper
                 class: "list-badge tooltipped tooltipped--w #{options[:required] && count == 0 ? 'b--warning warning' : ''} #{options[:class]}")
   end
 
-  def badge_for(count, options = {})
-    content_tag :span, count, class: "badge #{options[:class]} #{'bg-muted' if count == 0}"
+  def badge_for(value, options = {})
+    content_tag :span, value, class: "badge #{options[:class]} #{'bg-muted' if [0, "Pending"].include?(value)}"
   end
 
   def status_badge(type = :pending)
