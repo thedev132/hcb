@@ -49,17 +49,6 @@
             <%= transaction_memo(pt) %>
           <% end %>
         </span>
-
-        <% if pt.amount_cents.negative? && name_contains_emoji?(pt.local_hcb_code.memo) %>
-          <% admin_tool("memo-frame__ai-button badge pending m0 p0 overflow-visible") do %>
-            <a href="<%= memo_frame_hcb_code_path(pt.local_hcb_code, gen_memo: true) %>"
-                style="padding: 4px 6px"
-                data-turbo="true"
-                class="link-reset">
-              ✨ AI rename
-            </a>
-          <% end %>
-        <% end %>
       <% end %>
 
       <% if !defined?(receipt_upload_button) && !defined?(hide_tags) && organizer_signed_in? && !pt.instance_of?(OpenStruct) && Flipper.enabled?(:transaction_tags_2022_07_29, @event || pt.local_hcb_code.event) %>
