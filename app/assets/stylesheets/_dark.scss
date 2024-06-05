@@ -433,3 +433,8 @@ html[data-dark='true'] {
     border: 1px solid map-get($palette, slate);
   }
 }
+
+.transaction--positive > td > span > span > span.success-dark.medium {
+  color: white;
+  font-weight: 400;
+}
