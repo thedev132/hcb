@@ -160,6 +160,9 @@ html[data-dark='true'] {
     textarea {
       background: $dark;
       border-color: $dark;
+      &:focus {
+        border-color: map-get($palette, info);
+      }
     }
 
     pre {
