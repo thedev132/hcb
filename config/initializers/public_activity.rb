@@ -8,11 +8,7 @@ class PublicActivity::Activity
   }
 
   validate do
-    unless owner.nil? || owner_type == User.name
-      Airbrake.notify("Public Activity Validation Failed") # this is temporary so we can catch issues before releasing the feature fully.
-    end
-
-    true
+    owner.nil? || owner_type == User.name
   end
 
   def trackable_is_deletable?
