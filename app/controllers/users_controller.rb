@@ -359,7 +359,7 @@ class UsersController < ApplicationController
         )
         email_update.save!
       rescue
-        flash[:error] = update.errors.full_messages.to_sentence
+        flash[:error] = email_update.errors.full_messages.to_sentence
         return redirect_back_or_to edit_user_path(@user)
       end
     end
