@@ -1,11 +1,11 @@
 <%# This partial combines `CanonicalPendingTransaction`, `CanonicalTransaction`, and `CanonicalTransactionGrouped` icons. `tx` can be either of these! %>
 
 <% if tx.local_hcb_code.bank_fee? || tx.try(:fee_payment?) %>
-  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Fiscal sponsorship fee">
+  <td class="transaction__icon transaction__fee_icon tooltipped tooltipped--e" aria-label="Fiscal sponsorship fee">
     <%= inline_icon "bank-icon" %>
   </td>
 <% elsif tx.local_hcb_code.fee_revenue? %>
-  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Fee revenue">
+  <td class="transaction__icon transaction__fee_icon tooltipped tooltipped--e" aria-label="Fee revenue">
     <%= inline_icon "bank-icon" %>
   </td>
 <% elsif tx.local_hcb_code.check? || tx.local_hcb_code.increase_check? %>
