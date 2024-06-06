@@ -315,6 +315,11 @@ html[data-dark='true'] {
     background-color: rgba(map-get($palette, info), 0.125);
   }
 
+  .badge.bg-snow {
+    background-color: rgba(map-get($palette, white), 1);
+    color: black;
+  }
+
   .flash.accent,
   .badge.bg-accent,
   .pop.accent {
