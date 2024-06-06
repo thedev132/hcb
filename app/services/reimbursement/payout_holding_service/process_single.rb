@@ -22,6 +22,8 @@ module Reimbursement
                              sender_bank_account_id:,
                              receiver_bank_account_id:,
                              description: memo
+
+          payout_holding.report.mark_reimbursed!
         end
 
         true

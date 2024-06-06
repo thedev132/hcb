@@ -52,13 +52,22 @@ module Reimbursement
       CanonicalPendingTransaction.create!(reimbursement_expense_payout: self, event:, amount_cents:, memo: expense.memo, date: created_at, fronted: true)
     end
 
+    before_destroy do
+      canonical_pending_transaction&.decline!
+    end
+
     aasm do
       state :pending, initial: true
+      state :approved
       state :in_transit
       state :settled
 
+      event :mark_approved do
+        transitions from: :pending, to: :approved
+      end
+
       event :mark_in_transit do
-        transitions from: :pending, to: :in_transit
+        transitions from: :approved, to: :in_transit
       end
 
       event :mark_settled do
