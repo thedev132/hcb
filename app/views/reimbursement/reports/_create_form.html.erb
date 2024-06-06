@@ -6,8 +6,13 @@
         <p class="mt0 mb0"><span class="bold">Paid for something out of pocket?</span> Compile your expenses into a reimbursement report, get approval from the organization's team, and, after you do, get paid back via ACH transfer or check.</p>
       </div>
     <% end %>
-    <%= form.label :report_name, "Report name", class: "bold" %>
-    <%= form.text_field :report_name, placeholder: "Chicago Trip Expenses", required: true %>
+    <div class="flex flex-col" x-data="{ report_name: '' }">
+      <%= form.label :report_name, "Report name", class: "bold" %>
+      <%= form.text_field :report_name, placeholder: "Chicago Trip Expenses", required: true, "x-model": "report_name" %>
+      <template x-if="/\d/.test(report_name)">
+        <div class="warning mt1">⚠️ Reimbursement reports should have a descriptive name. Sam's Trip to Chicago is an example of a good name, but Report #45 is not.</div>
+      </template>
+    </div>
     <% if defined? @event %>
       <fieldset data-behavior="reimbursement_report_create_form_type_selection" class="mt3">
         <legend>Who is this reimbursement for?</legend>
