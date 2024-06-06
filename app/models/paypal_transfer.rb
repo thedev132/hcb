@@ -39,6 +39,7 @@ class PaypalTransfer < ApplicationRecord
   belongs_to :user
 
   has_one :canonical_pending_transaction
+  has_one :reimbursement_payout_holding, class_name: "Reimbursement::PayoutHolding", inverse_of: :paypal_transfer, required: false
 
   monetize :amount_cents, as: "amount"
 
@@ -65,6 +66,12 @@ class PaypalTransfer < ApplicationRecord
         create_activity(key: "paypal_transfer.rejected")
       end
       transitions from: [:pending, :approved], to: :rejected
+      after do
+        if reimbursement_payout_holding.present?
+          ReimbursementMailer.with(reimbursement_payout_holding:).paypal_transfer_failed.deliver_later
+          reimbursement_payout_holding.mark_failed!
+        end
+      end
     end
 
     event :mark_deposited do

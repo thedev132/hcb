@@ -1,7 +1,7 @@
 <%= form_with model: user do |form| %>
   <fieldset>
     <legend class="heading h3 pb2">How would you like to reimbursed?</legend>
-    <div class="field field--options">
+    <div class="field field--options trio">
       <%= form.radio_button :payout_method_type, "User::PayoutMethod::AchTransfer" %>
       <%= form.label :payout_method_type, value: "User::PayoutMethod::AchTransfer" do %>
         <%= inline_icon "payment-transfer", size: 28 %>
@@ -13,6 +13,12 @@
         <%= inline_icon "email", size: 28 %>
         <strong>Mailed Check</strong>
         <small>(10-12 biz. days)</small>
+      <% end %>
+      <%= form.radio_button :payout_method_type, "User::PayoutMethod::PaypalTransfer" %>
+      <%= form.label :payout_method_type, value: "User::PayoutMethod::PaypalTransfer" do %>
+        <%= inline_icon "paypal", size: 28 %>
+        <strong>PayPal</strong>
+        <small>(2-3 biz. days)</small>
       <% end %>
     </div>
   </fieldset>
@@ -46,6 +52,18 @@
       <div class="field">
         <%= form.label :postal_code %>
         <%= form.text_field :address_postal_code, placeholder: StripeCardholder::DEFAULT_BILLING_ADDRESS[:postal_code] %>
+      </div>
+
+      <div class="actions inline-block mt1">
+        <%= form.submit "Save" %>
+      </div>
+    <% end %>
+  </section>
+  <section data-behavior="paypal_transfer_payout_method_inputs" class="<%= "display-none-not-important" unless user.payout_method.instance_of?(User::PayoutMethod::PaypalTransfer) %>">
+    <%= form.fields_for :payout_method, user.payout_method.instance_of?(User::PayoutMethod::PaypalTransfer) ? user.payout_method : User::PayoutMethod::PaypalTransfer.new do |form| %>
+      <div class="field">
+        <%= form.label :recipient_email, "PayPal email" %>
+        <%= form.email_field :recipient_email, placeholder: "fionah@gmail.com", required: true %>
       </div>
 
       <div class="actions inline-block mt1">

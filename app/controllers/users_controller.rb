@@ -501,6 +501,14 @@ class UsersController < ApplicationController
       }
     end
 
+    if params.require(:user)[:payout_method_type] == User::PayoutMethod::PaypalTransfer.name
+      attributes << {
+        payout_method_attributes: [
+          :recipient_email
+        ]
+      }
+    end
+
     if superadmin_signed_in?
       attributes << :access_level
     end

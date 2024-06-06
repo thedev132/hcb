@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_29_041700) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_31_075659) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1690,8 +1690,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_29_041700) do
     t.string "aasm_state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "paypal_transfer_id"
     t.index ["ach_transfers_id"], name: "index_reimbursement_payout_holdings_on_ach_transfers_id"
     t.index ["increase_checks_id"], name: "index_reimbursement_payout_holdings_on_increase_checks_id"
+    t.index ["paypal_transfer_id"], name: "index_reimbursement_payout_holdings_on_paypal_transfer_id"
     t.index ["reimbursement_reports_id"], name: "index_reimbursement_payout_holdings_on_reimbursement_reports_id"
   end
 
@@ -1958,6 +1960,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_29_041700) do
     t.text "address_country", null: false
     t.text "address_postal_code", null: false
     t.text "address_state", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "user_payout_method_paypal_transfers", force: :cascade do |t|
+    t.text "recipient_email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
