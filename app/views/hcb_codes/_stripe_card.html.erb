@@ -38,17 +38,23 @@
       <% end %>
     </span>
 
-      <% if @hcb_code.pt&.declined? %>
-        <span class="badge h4 md-right bg-accent">
-          Declined
-          <%= inline_icon :info, size: 20 %>
-        </span>
-      <% end %>
-      <% if @hcb_code.pt&.unsettled? %>
-        <span class="badge h4 md-right bg-muted">
-          Pending
-          <%= inline_icon :info, size: 20 %>
-        </span>
+      <% if @hcb_code.pt && !@hcb_code.pt.settled? %>
+        <% if @hcb_code.pt.raw_pending_stripe_transaction&.stripe_transaction&.dig("status") == "reversed" %>
+          <span class="badge h4 md-right bg-accent">
+            Reversed
+            <%= inline_icon :info, size: 20 %>
+          </span>
+        <% elsif @hcb_code.pt.declined? %>
+          <span class="badge h4 md-right bg-accent">
+            Declined
+            <%= inline_icon :info, size: 20 %>
+          </span>
+        <% else %>
+          <span class="badge h4 md-right bg-muted">
+            Pending
+            <%= inline_icon :info, size: 20 %>
+          </span>
+        <% end %>
       <% end %>
 
       <% if @hcb_code.personal_transaction.present? %>
