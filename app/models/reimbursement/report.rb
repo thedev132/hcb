@@ -105,6 +105,9 @@ module Reimbursement
             expenses.approved.count > 0 && amount_to_reimburse > 0 && (!maximum_amount_cents || expenses.approved.sum(:amount_cents) <= maximum_amount_cents) && Shared::AmpleBalance.ample_balance?(amount_to_reimburse_cents, event)
           end
         end
+        after do
+          ReimbursementJob::Nightly.perform_later
+        end
       end
 
       event :mark_reimbursement_approved do
@@ -114,6 +117,7 @@ module Reimbursement
           end
         end
         after do
+          ReimbursementJob::Nightly.perform_later
           ReimbursementMailer.with(report: self).reimbursement_approved.deliver_later
           create_activity(key: "reimbursement_report.approved", owner: user)
         end
