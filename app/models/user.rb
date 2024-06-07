@@ -125,6 +125,8 @@ class User < ApplicationRecord
 
   after_update :update_stripe_cardholder, if: -> { phone_number_previously_changed? || email_previously_changed? }
 
+  after_update :sync_with_loops
+
   validates_presence_of :full_name, if: -> { full_name_in_database.present? }
   validates_presence_of :birthday, if: -> { birthday_ciphertext_in_database.present? }
 
@@ -305,8 +307,16 @@ class User < ApplicationRecord
     return events.organized_by_hack_clubbers.any?
   end
 
+  def teenager?
+    birthday&.after?(19.years.ago) || events.high_school_hackathon.any? || events.organized_by_teenagers.any?
+  end
+
   def last_seen_at
     user_sessions.maximum(:last_seen_at)
+  end
+
+  def last_login_at
+    user_sessions.maximum(:created_at)
   end
 
   private
@@ -363,6 +373,11 @@ class User < ApplicationRecord
     unless payout_method_type.nil? || payout_method.is_a?(User::PayoutMethod::Check) || payout_method.is_a?(User::PayoutMethod::AchTransfer) || payout_method.is_a?(User::PayoutMethod::PaypalTransfer)
       errors.add(:payout_method, "is an invalid method, must be check or ACH transfer")
     end
+  end
+
+  def sync_with_loops
+    new_user = full_name_before_last_save.blank? && !onboarding?
+    UserService::SyncWithLoops.new(user_id: id, new_user:).run if teenager?
   end
 
 end
