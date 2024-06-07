@@ -8,7 +8,7 @@ module Reimbursement
       end
 
       def run
-        raise ArgumentError, "must be a pending expense payout only" unless expense_payout.pending?
+        raise ArgumentError, "must be an approved expense payout only" unless expense_payout.approved?
 
         ActiveRecord::Base.transaction do
           expense_payout.mark_in_transit!

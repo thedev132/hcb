@@ -8,7 +8,7 @@ module Reimbursement
       end
 
       def run
-        raise ArgumentError, "must be pending payout holding only" unless payout_holding.pending?
+        raise ArgumentError, "must be an approved payout holding only" unless payout_holding.approved?
 
         ActiveRecord::Base.transaction do
           payout_holding.mark_in_transit!
@@ -44,7 +44,7 @@ module Reimbursement
       end
 
       def payout_holding
-        @payout_holding ||= Reimbursement::PayoutHolding.pending.find(@payout_holding_id)
+        @payout_holding ||= Reimbursement::PayoutHolding.approved.find(@payout_holding_id)
       end
 
     end
