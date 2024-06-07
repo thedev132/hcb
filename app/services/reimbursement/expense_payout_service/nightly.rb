@@ -4,7 +4,7 @@ module Reimbursement
   module ExpensePayoutService
     class Nightly
       def run
-        Reimbursement::Report.reimbursement_approved.or(Reimbursement::Report.reimbursement_requested).find_each(batch_size: 100) do |report|
+        Reimbursement::Report.reimbursement_approved.find_each(batch_size: 100) do |report|
           next if report.payout_holding.present?
 
           expense_payouts = []
@@ -21,9 +21,6 @@ module Reimbursement
             report:
           )
 
-        end
-
-        Reimbursement::Report.reimbursement_approved.find_each(batch_size: 100) do |report|
           report.payout_holding.mark_approved!
 
           report.payout_holding.expense_payouts.each do |expense_payout|
