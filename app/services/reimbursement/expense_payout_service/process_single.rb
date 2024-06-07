@@ -42,7 +42,7 @@ module Reimbursement
       end
 
       def expense_payout
-        @expense_payout ||= Reimbursement::ExpensePayout.pending.find(@expense_payout_id)
+        @expense_payout ||= Reimbursement::ExpensePayout.approved.find(@expense_payout_id)
       end
 
     end
