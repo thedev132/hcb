@@ -366,6 +366,8 @@ class HcbCode < ApplicationRecord
       increase_check
     elsif ach_transfer? && ach_transfer.reimbursement_payout_holding.present?
       ach_transfer
+    elsif paypal_transfer? && paypal_transfer&.reimbursement_payout_holding.present?
+      paypal_transfer
     else
       nil
     end
