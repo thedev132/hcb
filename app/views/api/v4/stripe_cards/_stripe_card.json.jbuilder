@@ -8,6 +8,8 @@ json.name stripe_card.name
 
 if stripe_card.user == @current_user && stripe_card.activated?
   json.last4 stripe_card.last4
+  json.exp_month stripe_card.stripe_exp_month
+  json.exp_year stripe_card.stripe_exp_year
 else
   json.last4 nil
 end
