@@ -115,7 +115,7 @@ class HcbCode
       end
 
       def reimbursement_payout_transfer_memo
-        "Payout holding for reimbursement report #{reimbursement_payout_transfer.reimbursement_payout_holding.report.hashid}"
+        "Payout transfer for reimbursement report #{reimbursement_payout_transfer.reimbursement_payout_holding.report.hashid}"
       end
 
     end
