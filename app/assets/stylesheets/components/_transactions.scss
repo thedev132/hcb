@@ -180,3 +180,7 @@ html[data-dark='true'] {
 .embedded .embedded-display-none {
   display: none;
 }
+
+.pending_transactions_tags:has(> div) {
+  margin-top: 2px;
+}
