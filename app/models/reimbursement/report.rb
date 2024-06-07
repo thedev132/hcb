@@ -127,7 +127,6 @@ module Reimbursement
         transitions from: [:draft, :submitted, :reimbursement_requested], to: :rejected
         after do
           ReimbursementMailer.with(report: self).rejected.deliver_later
-          payout_holding&.destroy!
         end
       end
 

@@ -49,28 +49,16 @@ module Reimbursement
     scope :in_transit_or_pending, -> { where("aasm_state in (?)", ["pending", "in_transit"]) }
 
     after_create do
-      CanonicalPendingTransaction.create!(reimbursement_expense_payout: self, event:, amount_cents:, memo: expense.memo, date: created_at, fronted: false)
-    end
-
-    before_destroy do
-      canonical_pending_transaction&.decline!
+      CanonicalPendingTransaction.create!(reimbursement_expense_payout: self, event:, amount_cents:, memo: expense.memo, date: created_at, fronted: true)
     end
 
     aasm do
       state :pending, initial: true
-      state :approved
       state :in_transit
       state :settled
 
-      event :mark_approved do
-        transitions from: :pending, to: :approved
-        after do
-          canonical_pending_transaction.update(fronted: true)
-        end
-      end
-
       event :mark_in_transit do
-        transitions from: :approved, to: :in_transit
+        transitions from: :pending, to: :in_transit
       end
 
       event :mark_settled do

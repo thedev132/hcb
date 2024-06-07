@@ -5,8 +5,6 @@ module Reimbursement
     class Nightly
       def run
         Reimbursement::Report.reimbursement_approved.find_each(batch_size: 100) do |report|
-          next if report.payout_holding.present?
-
           expense_payouts = []
 
           report.expenses.approved.each do |expense|
@@ -21,18 +19,14 @@ module Reimbursement
             report:
           )
 
-          report.payout_holding.mark_approved!
-
-          report.payout_holding.expense_payouts.each do |expense_payout|
-            expense_payout.mark_approved!
-          end
+          report.mark_reimbursed!
         end
 
-        Reimbursement::ExpensePayout.approved.find_each(batch_size: 100) do |expense_payout|
+        Reimbursement::ExpensePayout.pending.find_each(batch_size: 100) do |expense_payout|
           Reimbursement::ExpensePayoutService::ProcessSingle.new(expense_payout_id: expense_payout.id).run
         end
 
-        Reimbursement::PayoutHolding.approved.find_each(batch_size: 100) do |payout_holding|
+        Reimbursement::PayoutHolding.pending.find_each(batch_size: 100) do |payout_holding|
           Reimbursement::PayoutHoldingService::ProcessSingle.new(payout_holding_id: payout_holding.id).run
         end
 

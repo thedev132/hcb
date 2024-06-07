@@ -25,7 +25,7 @@ module Reimbursement
     include AASM
     include HasBookTransfer
 
-    has_many :expense_payouts, class_name: "Reimbursement::ExpensePayout", foreign_key: "reimbursement_payout_holdings_id", inverse_of: :payout_holding, dependent: :destroy
+    has_many :expense_payouts, class_name: "Reimbursement::ExpensePayout", foreign_key: "reimbursement_payout_holdings_id", inverse_of: :payout_holding
     belongs_to :report, foreign_key: "reimbursement_reports_id", inverse_of: :payout_holding
     belongs_to :ach_transfer, optional: true, foreign_key: "ach_transfers_id", inverse_of: :reimbursement_payout_holding
     belongs_to :increase_check, optional: true, foreign_key: "increase_checks_id", inverse_of: :reimbursement_payout_holding
@@ -37,18 +37,13 @@ module Reimbursement
 
     aasm do
       state :pending, initial: true
-      state :approved
       state :in_transit
       state :settled
       state :sent
       state :failed
 
-      event :mark_approved do
-        transitions from: :pending, to: :approved
-      end
-
       event :mark_in_transit do
-        transitions from: :approved, to: :in_transit
+        transitions from: :pending, to: :in_transit
       end
 
       event :mark_settled do
