@@ -169,6 +169,12 @@
           <div class="primary"><%= message %></div>
         <% end %>
       </div>
+
+      <div class="field">
+        <%= form.label :address_country, "Country" %>
+        <%= form.text_field :address_country, value: "United States", disabled: true %>
+      </div>
+
       <div class="field">
         <%= form.label :recipient_email, "Recipient Email" %>
         <%= form.email_field :recipient_email, placeholder: "fionah@gmail.com", required: true, disabled: %>

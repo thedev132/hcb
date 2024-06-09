@@ -1,6 +1,6 @@
 <%= form_with model: user do |form| %>
   <fieldset>
-    <legend class="heading h3 pb2">How would you like to reimbursed?</legend>
+    <legend class="heading h3 pb2">How would you like to be reimbursed?</legend>
     <div class="field field--options trio">
       <%= form.radio_button :payout_method_type, "User::PayoutMethod::AchTransfer" %>
       <%= form.label :payout_method_type, value: "User::PayoutMethod::AchTransfer" do %>
@@ -49,9 +49,16 @@
         </div>
       </div>
 
-      <div class="field">
-        <%= form.label :postal_code %>
-        <%= form.text_field :address_postal_code, placeholder: StripeCardholder::DEFAULT_BILLING_ADDRESS[:postal_code] %>
+      <div class="flex">
+        <div class="field flex-auto mr1">
+          <%= form.label :postal_code %>
+          <%= form.text_field :address_postal_code, placeholder: StripeCardholder::DEFAULT_BILLING_ADDRESS[:postal_code] %>
+        </div>
+
+        <div class="field flex-auto ml1">
+          <%= form.label :address_country, "Country" %>
+          <%= form.text_field :address_country, value: "United States", disabled: true %>
+        </div>
       </div>
 
       <div class="actions inline-block mt1">
