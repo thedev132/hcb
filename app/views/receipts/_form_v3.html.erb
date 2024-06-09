@@ -69,12 +69,12 @@
                   <span id="upload-receipt-button-text"><%= local_assigns[:success] || local_assigns[:error] %></span>
                   <script>
                     // JavaScript to revert changes after 2 seconds
-                    if (document.getElementById("upload-receipt-button") && document.getElementById("upload-receipt-button-text")) {
-                      setTimeout(function() {
+                    setTimeout(function() {
+                      if (document.getElementById("upload-receipt-button") && document.getElementById("upload-receipt-button-text")) {
                         document.getElementById("upload-receipt-button-text").innerHTML = 'Upload receipt';
                         document.getElementById("upload-receipt-button").classList.remove("bg-success", "bg-error");
-                      }, 2000);
-                    }
+                      }
+                    }, 2000);
                   </script>
                 <% else %>
                   <span>Upload receipt</span>
