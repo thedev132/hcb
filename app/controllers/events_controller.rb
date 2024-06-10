@@ -423,6 +423,9 @@ class EventsController < ApplicationController
   end
 
   def account_number
+    @transactions = CanonicalTransaction.where(transaction_source_type: "RawColumnTransaction", transaction_source_id: RawColumnTransaction.where("column_transaction->>'account_number_id' = '#{@event.column_account_number.column_id}'").pluck(:id))
+    page = (params[:page] || 1).to_i
+    @transactions = @transactions.page(page).per(params[:per] || 25)
     authorize @event
   end
 

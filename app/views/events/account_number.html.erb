@@ -69,6 +69,27 @@
           <p class="m0 left-align">You may need to tap "Verify bank manually" or similar when linking your account to apps like Venmo.</p>
         </section>
       </div>
+      <h2 class="heading block border-none text-center mb3">Associated Transactions</h2>
+      <div class="table-container" data-tour-step="transactions">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Date</th>
+              <th>Description</th>
+              <th class="right-align">Amount</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody data-behavior="transactions">
+            <%= render partial: "canonical_transactions/canonical_transaction", collection: @transactions, as: :ct, locals: { event: @event, show_amount: true, selectable: false } %>
+          </tbody>
+        </table>
+        <%= paginate @transactions %>
+        <% if @transactions.length == 0 %>
+          <%= blankslate "No transactions yet." %>
+        <% end %>
+      </div>
     <% else %>
       <div class="card container--sm mx-auto center pt4 pb4 mb3">
         <%= button_to "View account number", event_column_account_number_path(@event), method: :post, class: "btn bg-accent" %>
