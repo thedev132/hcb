@@ -658,6 +658,7 @@ Rails.application.routes.draw do
     resources :invoices, only: [:new, :create, :index]
     resources :tags, only: [:create, :destroy]
     resources :event_tags, only: [:create, :destroy]
+    resources :comments
 
     resources :recurring_donations, only: [:create], path: "recurring" do
       member do

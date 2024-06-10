@@ -82,6 +82,8 @@ class Event < ApplicationRecord
   include CountryEnumable
   has_country_enum
 
+  include Commentable
+
   has_paper_trail
   acts_as_paranoid
   validates_as_paranoid
