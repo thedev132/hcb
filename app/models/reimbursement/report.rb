@@ -164,6 +164,13 @@ module Reimbursement
       return "primary"
     end
 
+    def status_description
+      return "Review requested from #{event.name}" if submitted?
+      return "HCB is reviewing this report" if reimbursement_requested?
+
+      nil
+    end
+
     def locked?
       !draft?
     end
