@@ -5,6 +5,7 @@ class FeaturesController < ApplicationController
     receipt_bin_2023_04_07: %w[🧾 🗑️ 💰],
     sms_receipt_notifications_2022_11_23: %w[📱 🧾 🔔 💬],
     hcb_code_popovers_2023_06_16: nil,
+    transactions_background_2024_06_05: %w[🌈 🔴 🟢],
     rename_on_homepage_2023_12_06: %w[🖊️ ⚡ ⌨️],
     command_bar_2024_02_05: %w[🔍 🔎 ✨ 💸],
     transaction_tags_2022_07_29: %w[🏷️],
