@@ -191,5 +191,12 @@
         });
       </script>
     <% end %>
+    <% if Flipper.enabled?(:transactions_background_2024_06_05, current_user) %>
+      <style>
+        .success-dark {
+            color: #1f8164
+        }
+      </style>
+    <% end %>
   </body>
 </html>
