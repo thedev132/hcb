@@ -101,7 +101,7 @@ class IncreaseCheck < ApplicationRecord
 
   validate on: :create do
     if amount > event.balance_available_v2_cents
-      errors.add(:base, "You don't have enough money to send this transfer! Your balance is #{ApplicationController.helpers.render_money(amount_cents)}.")
+      errors.add(:base, "You don't have enough money to send this transfer! Your balance is #{ApplicationController.helpers.render_money(event.balance_available_v2_cents)}.")
     end
   end
 
