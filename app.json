@@ -1,12 +1,9 @@
 {
   "name": "bank",
   "scripts": {
-    "postdeploy": "pg_dump --data-only -Fc $HEROKU_POSTGRESQL_JADE_URL | pg_restore --clean --if-exists --no-acl --no-owner -d $DATABASE_URL; bundle exec rails db:migrate"
+    "postdeploy": "bundle exec rails db:migrate db:seed"
   },
   "env": {
-    "HEROKU_POSTGRESQL_JADE_URL": {
-      "required": true
-    },
     "LANG": {
       "required": true
     },
@@ -41,7 +38,7 @@
     {
       "plan": "heroku-postgresql",
       "options": {
-        "version": "12"
+        "version": "14"
       }
     },
     {
