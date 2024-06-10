@@ -130,3 +130,7 @@ ledger_audit_weekly_job:
 send_admin_reminders_job:
   cron: "0 7 * * *" # run at 7am UTC each morning
   class: "SendAdminRemindersJob"
+
+gauge_online_user_count_job:
+  cron: "*/5 * * * *" # Every 5 minutes
+  class: "StatsdJob::GaugeOnlineUserCount"
