@@ -70,7 +70,7 @@
     <%= form.fields_for :payout_method, user.payout_method.instance_of?(User::PayoutMethod::PaypalTransfer) ? user.payout_method : User::PayoutMethod::PaypalTransfer.new do |form| %>
       <div class="field">
         <%= form.label :recipient_email, "PayPal email" %>
-        <%= form.email_field :recipient_email, placeholder: "fionah@gmail.com", required: true %>
+        <%= form.email_field :recipient_email, placeholder: "fionah@gmail.com" %>
       </div>
 
       <div class="actions inline-block mt1">
