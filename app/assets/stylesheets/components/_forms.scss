@@ -219,6 +219,8 @@ legend {
   grid-template-columns: repeat(2, 1fr);
   width: 100%;
 
+  @extend .max-width-1;
+
   &.trio {
     grid-template-columns: repeat(3, 1fr);
   }
