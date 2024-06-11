@@ -6,7 +6,7 @@ class DonationsController < ApplicationController
   include SetEvent
   include Rails::Pagination
 
-  skip_after_action :verify_authorized, except: [:start_donation, :make_donation]
+  skip_after_action :verify_authorized, only: [:export, :show, :refund, :qr_code, :finish_donation, :finished]
   skip_before_action :signed_in_user
   before_action :set_donation, only: [:show]
   before_action :set_event, only: [:start_donation, :make_donation, :qr_code]

@@ -3,7 +3,30 @@
 class UsersController < ApplicationController
   skip_before_action :signed_in_user, only: [:auth, :auth_submit, :choose_login_preference, :set_login_preference, :webauthn_options, :webauthn_auth, :login_code, :exchange_login_code]
   skip_before_action :redirect_to_onboarding, only: [:edit, :update, :logout, :unimpersonate]
-  skip_after_action :verify_authorized, except: [:edit, :update]
+  skip_after_action :verify_authorized, only: [:choose_login_preference,
+                                               :set_login_preference,
+                                               :logout_all,
+                                               :logout_session,
+                                               :revoke_oauth_application,
+                                               :auth,
+                                               :edit_address,
+                                               :edit_payout,
+                                               :impersonate,
+                                               :delete_profile_picture,
+                                               :auth_submit,
+                                               :webauthn_options,
+                                               :webauthn_auth,
+                                               :login_code,
+                                               :exchange_login_code,
+                                               :logout,
+                                               :unimpersonate,
+                                               :receipt_report,
+                                               :edit_featurepreviews,
+                                               :edit_security,
+                                               :edit_admin,
+                                               :toggle_sms_auth,
+                                               :complete_sms_auth_verification,
+                                               :start_sms_auth_verification]
   before_action :set_shown_private_feature_previews, only: [:edit, :edit_featurepreviews, :edit_security, :edit_admin]
   before_action :migrate_return_to, only: [:auth, :auth_submit, :choose_login_preference, :login_code, :exchange_login_code, :webauthn_auth]
 
