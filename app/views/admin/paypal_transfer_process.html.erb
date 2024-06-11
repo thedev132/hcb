@@ -1,3 +1,8 @@
+<%= link_to paypal_transfers_admin_index_path, class: "btn btn-small bg-muted" do %>
+    <%= inline_icon "view-back" %>
+    Back to PayPal transfers
+<% end %>
+
 <h1>Process PayPal Transfer #<%= @paypal_transfer.id %></h1>
 <p><small>Current Status: <%= @paypal_transfer.aasm_state %></small></p>
 

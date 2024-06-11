@@ -4,6 +4,13 @@
 <%= render "users/nav", selected: :reimbursements if @use_user_nav %>
 
 <div class="md:mt-12">
+    <% admin_tool "w-fit" do %>
+      <%= link_to reimbursements_admin_index_path, class: "btn btn-small bg-muted" do %>
+        <%= inline_icon "view-back" %>
+        View more reimbursements
+      <% end %>
+    <% end %>
+
   <h3 class="mt2 mb1 muted flex items-start" style="font-weight: 400; gap: 4px;">
     <span style="flex-grow: 1;">
       <%= user_mention @user, { class: "tooltipped--s align-top" } %>

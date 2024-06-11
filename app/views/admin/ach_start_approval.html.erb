@@ -1,3 +1,8 @@
+<%= link_to ach_admin_index_path, class: "btn btn-small bg-muted" do %>
+    <%= inline_icon "view-back" %>
+    Back to ACHs
+<% end %>
+
 <h1>Process ACH Transfer #<%= @ach_transfer.id %></h1>
 <p><small>Current Status: <%= @ach_transfer.aasm_state %></small></p>
 
