@@ -1,70 +1,86 @@
 <%= form_with(model: event, local: true, class: "mb3") do |form| %>
   <%= form_errors event, "organization" %>
 
-  <div class="card flex flex-col items-start gap-2">
-    <div class="field">
-      <%= form.label :logo %>
-      <p class="h5 muted mt0 mb1">
-        Displayed on your
-        <%= link_to "donation page",
-          @event.donation_page_enabled? ? start_donation_donations_path(@event) : { anchor: "donations" },
-          target: @event.donation_page_enabled? ? "_blank" : nil %>
-        and your
-        <%= link_to "public reimbursement page",
-          @event.public_reimbursement_page_enabled? ? reimbursement_start_reimbursement_report_url(@event) : { anchor: "public-reimbursements" },
-          target: @event.public_reimbursement_page_enabled? ? "_blank" : nil %>.
-      </p>
-      <% if @event.logo.attached? %>
-        <%= image_tag @event.logo, height: 72 %>
-      <% end %>
-
-      <% if policy(@event).update? %>
-        <div class="field--fileupload">
-          <%= form.label :logo, "Choose file", class: "field--fileupload__label" %>
-          <%= form.file_field :logo, accept: "image/*,image/heic", class: "field--fileupload__field" %>
-        </div>
-
-        <% if @event.logo.attached? %>
-          <%= link_to "Remove logo", event_remove_logo_path(@event), class: "btn btn-small bg-error mt1", method: :post %>
-        <% end %>
-      <% end %>
-    </div>
-
-    <div class="field">
-      <%= form.label :background_image %>
-      <p class="h5 muted mt0 mb1">
-        Displayed as the background of your organization’s card on the homepage.
-      </p>
+  <div class="card flex flex-col items-start gap-2 p0">
+    <div class="event_settings__banner">
       <% if @event.background_image.attached? %>
-        <%= image_tag @event.background_image, width: 256 %>
+        <%= image_tag @event.background_image, height: 200, class: "banner__image" %>
       <% end %>
 
       <% if policy(@event).update? %>
-        <div class="field--fileupload">
-          <%= form.label :background_image, "Choose file", class: "field--fileupload__label" %>
-          <%= form.file_field :background_image, accept: "image/*,image/heic", class: "field--fileupload__field" %>
-        </div>
-
-        <% if @event.background_image.attached? %>
-          <%= link_to "Remove background image", event_remove_background_image_path(@event), class: "btn btn-small bg-error mt1", method: :post %>
-        <% end %>
+       <button
+          type="button"
+          data-behavior="menu_toggle" aria-expanded="false" tabindex="0"
+          class="pop menu__toggle z1 event_settings__banner--edit">
+          <%= inline_icon "photo", size: 24 %>
+          <div class="menu__content h5" data-behavior="menu_content">
+            <div class="field--fileupload">
+              <%= form.label :background_image, "Choose file", class: "field--fileupload__label" %>
+              <%= form.file_field :background_image, accept: "image/*,image/heic", class: "field--fileupload__field" %>
+            </div>
+            <% if @event.background_image.attached? %>
+              <%= link_to "Remove background image", event_remove_background_image_path(@event), method: :post, style: "padding: 0.25rem 0.5rem" %>
+            <% end %>
+          </div>
+        </button>
       <% end %>
-    </div>
 
-    <div class="field">
-      <%= form.label :description, "Mission statement" %>
-      <p class="h5 muted mt0 mb1">
-        A short description of your organization’s goals and impacts.
-      </p>
-      <%= form.text_area :description, placeholder: "We focus on…", class: "max-w-md", disabled: !policy(@event).update? %>
-    </div>
+      <div class="event_settings__banner--logo">
+        <% if @event.logo.attached? %>
+          <%= image_tag @event.logo || "missing_logo.png", height: 100, class: "event_settings__banner--logo-image" %>
+        <% else %>
+          <%= image_tag "missing_logo.png", height: 100, class: "event_settings__banner--logo-image" %>
+        <% end %>
 
-    <div class="field block">
-      <%= form.label :website, "Website URL" %>
-      <%= form.text_field :website, type: :url, placeholder: "https://hackclub.com", class: "w-100", disabled: !policy(@event).update? %>
+        <% if policy(@event).update? %>
+          <button
+            type="button"
+            data-behavior="menu_toggle" aria-expanded="false" tabindex="0"
+            class="pop menu__toggle z1 event_settings__logo--edit">
+            <%= inline_icon "photo", size: 24 %>
+            <div class="menu__content menu__content--left h5" data-behavior="menu_content">
+              <div class="field--fileupload">
+                <%= form.label :logo, "Choose file", class: "field--fileupload__label" %>
+                <%= form.file_field :logo, accept: "image/*,image/heic", class: "field--fileupload__field" %>
+              </div>
+              <% if @event.logo.attached? %>
+                <div class="menu__divider"></div>
+                <%= link_to "Remove logo", event_remove_logo_path(@event), method: :post, style: "padding: 0.25rem 0.5rem" %>
+              <% end %>
+            </div>
+          </button>
+        <% end %>
+      </div>
     </div>
-
-    <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
+    <div class="event_settings__content">
+      <h2><%= @event.name %></h2>
+      <div class="w-full">
+        <div class="field flex-1">
+          <%= form.label :website, "Website URL" %>
+          <%= form.text_field :website, type: :url, placeholder: "https://hackclub.com", disabled: !policy(@event).update? %>
+        </div>
+        <div class="field flex-1">
+          <%= form.label :description, "Mission statement" %>
+          <%= form.text_area :description, placeholder: "A short description of your organization’s goals.", disabled: !policy(@event).update? %>
+        </div>
+      </div>
+      <div class="md:flex items-center">
+        <div class="float-left flex gap-3 items-center flex-1 max-w-2xl mr-auto">
+          <%= inline_icon "info", size: 24, class: "muted" %>
+          <p class="h5 muted m0">
+            Your logo is displayed on the
+            <%= link_to "donation page",
+              @event.donation_page_enabled? ? start_donation_donations_path(@event) : { anchor: "donations" },
+              target: @event.donation_page_enabled? ? "_blank" : nil %>
+            and your
+            <%= link_to "public reimbursement page",
+              @event.public_reimbursement_page_enabled? ? reimbursement_start_reimbursement_report_url(@event) : { anchor: "public-reimbursements" },
+              target: @event.public_reimbursement_page_enabled? ? "_blank" : nil %>. Organization banners are visible on the homepage only.
+          </p>
+        </div>
+        <%= form.submit "Update", class: "%{is_disabled} md:ml-3 mt-2 md:mt-0" % { is_disabled: ("disabled" unless policy(@event).update?) } %>
+      </div>
+    </div>
   </div>
 
   <% if @event.card_grant_setting.present? %>
