@@ -123,6 +123,7 @@ class CheckDeposit < ApplicationRecord
   end
 
   def state
+    return :muted if column_id.nil? && increase_id.nil?
     return :success if local_hcb_code.ct.present?
 
     if pending?
@@ -135,10 +136,11 @@ class CheckDeposit < ApplicationRecord
   end
 
   def state_text
+    return "Pending submission" if column_id.nil? && increase_id.nil?
     return "Deposited" if local_hcb_code.ct.present?
 
     if pending?
-      "Pending"
+      "Processing"
     elsif rejected?
       "Rejected"
     elsif returned?

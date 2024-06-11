@@ -1202,7 +1202,7 @@ class AdminController < ApplicationController
   def check_deposits
     @page = params[:page] || 1
     @per = params[:per] || 20
-    @check_deposits = CheckDeposit.page(@page).per(@per).order(created_at: :desc)
+    @check_deposits = CheckDeposit.page(@page).per(@per).order(Arel.sql("column_id IS NULL AND increase_id IS NULL DESC, created_at DESC"))
 
     render layout: "admin"
   end

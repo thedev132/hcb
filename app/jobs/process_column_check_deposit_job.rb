@@ -2,6 +2,7 @@
 
 class ProcessColumnCheckDepositJob < ApplicationJob
   class UnconfidentError < StandardError; end
+  class ApiError < StandardError; end
 
   def perform(check_deposit:, validate: true)
     raise ArgumentError, "check deposit already processed" if check_deposit.column_id.present? || check_deposit.increase_id.present?
@@ -36,6 +37,9 @@ class ProcessColumnCheckDepositJob < ApplicationJob
     check_deposit.update!(column_id: column_check_deposit["id"])
 
     check_deposit
+
+  rescue Faraday::Error => e
+    raise ApiError, e.response_body["message"]
 
   end
 
