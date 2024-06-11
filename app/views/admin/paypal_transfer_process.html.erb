@@ -27,6 +27,12 @@
       <td style="text-align: right;">Payment Purpose:</td>
       <td><%= @paypal_transfer.payment_for %></td>
     </tr>
+    <% if @paypal_transfer.reimbursement_payout_holding.present? %>
+      <tr>
+        <td style="text-align: right;">Reimbursement report:</td>
+        <td><%= link_to @paypal_transfer.reimbursement_payout_holding.report.name, @paypal_transfer.reimbursement_payout_holding.report %></td>
+      </tr>
+    <% end %>
     <tr>
       <td style="text-align: right;">Amount:</td>
       <td><%= render_money @paypal_transfer.amount %></td>
