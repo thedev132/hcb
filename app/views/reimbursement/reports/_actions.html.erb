@@ -32,7 +32,7 @@
             Add <%= report.expenses.count > 0 ? "Another" : "An" %> Expense
           </div>
         <% else %>
-          <%= link_to reimbursement_report_reject_path(report_id: report.id), class: "btn bg-primary", data: { turbo: true, turbo_method: :post } do %>
+          <%= link_to reimbursement_report_reject_path(report_id: report.id), class: "btn bg-error", data: { turbo: true, turbo_method: :post } do %>
             <%= inline_icon "thumbsdown" %>
             Reject & Close Report
           <% end %>
