@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: user_payout_method_paypal_transfers
+#
+#  id              :bigint           not null, primary key
+#  recipient_email :text             not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
 class User
   module PayoutMethod
     class PaypalTransfer < ApplicationRecord
