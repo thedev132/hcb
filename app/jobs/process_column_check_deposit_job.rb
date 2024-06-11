@@ -36,6 +36,8 @@ class ProcessColumnCheckDepositJob < ApplicationJob
 
     check_deposit.update!(column_id: column_check_deposit["id"])
 
+    Turbo::StreamsChannel.broadcast_replace_to(check_deposit, target: [check_deposit, :status], partial: "check_deposits/status", locals: { check_deposit: })
+
     check_deposit
 
   rescue Faraday::Error => e

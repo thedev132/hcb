@@ -1,3 +1,5 @@
+<%= turbo_stream_from @hcb_code.check_deposit %>
+
 <% title "Deposit of a #{render_money(@hcb_code.check_deposit.amount_cents)} check" %>
 
 <% if @hcb_code.check_deposit.rejected? %>
@@ -25,9 +27,7 @@
       </span>
       <span class="regular"><%= render_money @hcb_code.check_deposit.amount_cents %></span>
     </span>
-    <span class="badge h4 md-right ml0 bg-<%= @hcb_code.check_deposit.state %>">
-      <%= @hcb_code.check_deposit.state_text %>
-    </span>
+    <%= render "check_deposits/status", check_deposit: @hcb_code.check_deposit %>
     <%= render partial: "hcb_codes/meatballs", locals: { hcb_code: @hcb_code } %>
   </h2>
 

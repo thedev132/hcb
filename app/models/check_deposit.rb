@@ -43,10 +43,7 @@ class CheckDeposit < ApplicationRecord
   belongs_to :created_by, class_name: "User"
   has_one :canonical_pending_transaction
 
-  # after_create_commit :submit!
-  after_create_commit do
-    create_canonical_pending_transaction!(event:, amount_cents:, memo: "CHECK DEPOSIT", date: created_at)
-  end
+  after_create_commit :submit!
 
   after_update if: -> { increase_status_previously_changed?(to: "rejected") } do
     canonical_pending_transaction.decline!
@@ -86,30 +83,7 @@ class CheckDeposit < ApplicationRecord
   tracked owner: proc{ |controller, record| controller&.current_user }, event_id: proc { |controller, record| record.event.id }, only: [:create]
 
   def submit!
-    increase_front = Increase::Files.create(
-      purpose: :check_image_front,
-      file: StringIO.new(self.front.download.force_encoding("UTF-8")),
-    )
-    self.front_file_id = increase_front["id"]
-
-    increase_back = Increase::Files.create(
-      purpose: :check_image_back,
-      file: StringIO.new(self.back.download.force_encoding("UTF-8")),
-    )
-    self.back_file_id = increase_back["id"]
-
-    increase_check_deposit = Increase::CheckDeposits.create(
-      amount: amount_cents,
-      currency: "USD",
-      account_id: IncreaseService::AccountIds::FS_MAIN,
-      front_image_file_id: self.front_file_id,
-      back_image_file_id: self.back_file_id,
-    )
-
-    self.increase_id = increase_check_deposit["id"]
-    self.increase_status = increase_check_deposit["status"]
-
-    self.save!
+    ProcessColumnCheckDepositJob.perform_later(check_deposit: self)
 
     create_canonical_pending_transaction!(event:, amount_cents:, memo: "CHECK DEPOSIT", date: created_at)
   end

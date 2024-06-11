@@ -779,7 +779,7 @@ GEM
       openssl (> 2.0)
       openssl-signature_algorithm (~> 1.0)
     trailblazer-option (0.1.2)
-    turbo-rails (1.4.0)
+    turbo-rails (2.0.5)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
@@ -943,7 +943,7 @@ DEPENDENCIES
   swagger-blocks
   table_print
   terser (~> 1.1)
-  turbo-rails (~> 1.4)
+  turbo-rails (~> 2.0.5)
   twilio-ruby
   validates_email_format_of
   validates_zipcode

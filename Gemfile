@@ -23,7 +23,7 @@ gem "jsbundling-rails", "~> 1.1"
 gem "terser", "~> 1.1" # JS compressor
 gem "jquery-rails"
 gem "react-rails"
-gem "turbo-rails", "~> 1.4"
+gem "turbo-rails", "~> 2.0.5"
 
 gem "invisible_captcha"
 gem "local_time" # client-side timestamp converter for cache-safe rendering
