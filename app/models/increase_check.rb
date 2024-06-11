@@ -73,7 +73,12 @@ class IncreaseCheck < ApplicationRecord
 
     event :mark_approved do
       after do
-        IncreaseCheckMailer.with(check: self).notify_recipient.deliver_later if self.send_email_notification
+        if self.send_email_notification
+          IncreaseCheckMailer.with(check: self).notify_recipient.deliver_later
+          IncreaseCheckJob::RemindUndepositedRecipient.set(wait: 30.days).perform_later(self)
+          IncreaseCheckJob::RemindUndepositedRecipient.set(wait: (180 - 30).days).perform_later(self)
+        end
+
         canonical_pending_transaction.update(fronted: true)
       end
       transitions from: :pending, to: :approved
@@ -125,6 +130,8 @@ class IncreaseCheck < ApplicationRecord
 
   enum :column_status, %w(initiated issued manual_review rejected pending_deposit pending_stop deposited stopped pending_first_return pending_second_return first_return pending_reclear recleared second_return settled returned pending_user_initiated_return user_initiated_return_submitted user_initiated_returned pending_user_initiated_return_dishonored).index_with(&:itself), prefix: :column
   enum :column_delivery_status, %w(created mailed in_transit in_local_area processed_for_delivery delivered failed rerouted returned_to_sender).index_with(&:itself), prefix: :column_delivery
+
+  VALID_DURATION = 180.days
 
   def column?
     column_id.present?
