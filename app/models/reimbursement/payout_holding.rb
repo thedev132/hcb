@@ -12,12 +12,14 @@
 #  updated_at               :datetime         not null
 #  ach_transfers_id         :bigint
 #  increase_checks_id       :bigint
+#  paypal_transfer_id       :bigint
 #  reimbursement_reports_id :bigint           not null
 #
 # Indexes
 #
 #  index_reimbursement_payout_holdings_on_ach_transfers_id          (ach_transfers_id)
 #  index_reimbursement_payout_holdings_on_increase_checks_id        (increase_checks_id)
+#  index_reimbursement_payout_holdings_on_paypal_transfer_id        (paypal_transfer_id)
 #  index_reimbursement_payout_holdings_on_reimbursement_reports_id  (reimbursement_reports_id)
 #
 module Reimbursement
