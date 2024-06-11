@@ -1,7 +1,7 @@
 <%= form_with model: user do |form| %>
   <fieldset>
     <legend class="heading h3 pb2">How would you like to be reimbursed?</legend>
-    <div class="field field--options trio">
+    <div class="field field--options trio" style="max-width: none;">
       <%= form.radio_button :payout_method_type, "User::PayoutMethod::AchTransfer" %>
       <%= form.label :payout_method_type, value: "User::PayoutMethod::AchTransfer" do %>
         <%= inline_icon "payment-transfer", size: 28 %>
@@ -67,6 +67,11 @@
     <% end %>
   </section>
   <section data-behavior="paypal_transfer_payout_method_inputs" class="<%= "display-none-not-important" unless user.payout_method.instance_of?(User::PayoutMethod::PaypalTransfer) %>">
+    <%= render "callout",
+        type: "info",
+        title: "Important info about PayPal reimbursements" do %>
+        Depending on your location, PayPal may charge a fee that is not covered by HCB. This fee can range from $0 to $5.
+    <% end %>
     <%= form.fields_for :payout_method, user.payout_method.instance_of?(User::PayoutMethod::PaypalTransfer) ? user.payout_method : User::PayoutMethod::PaypalTransfer.new do |form| %>
       <div class="field">
         <%= form.label :recipient_email, "PayPal email" %>
