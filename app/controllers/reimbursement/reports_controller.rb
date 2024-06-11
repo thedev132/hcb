@@ -12,11 +12,15 @@ module Reimbursement
     def create
       @event = Event.friendly.find(report_params[:event_id])
       user = User.find_or_create_by!(email: report_params[:email])
-      @report = @event.reimbursement_reports.build(report_params.except(:email).merge(user:, inviter: current_user))
+      @report = @event.reimbursement_reports.build(report_params.except(:email, :receipt_id, :value).merge(user:, inviter: current_user))
 
       authorize @report
 
       if @report.save
+        if report_params[:receipt_id]
+          @expense = @report.expenses.create!(value: report_params[:value], memo: report_params[:report_name])
+          Receipt.find(report_params[:receipt_id]).update!(receiptable: @expense)
+        end
         if current_user && user == current_user
           redirect_to @report
         elsif admin_signed_in? || organizer_signed_in?
@@ -257,7 +261,7 @@ module Reimbursement
     end
 
     def report_params
-      params.require(:reimbursement_report).permit(:report_name, :maximum_amount, :event_id, :email, :invite_message).compact_blank
+      params.require(:reimbursement_report).permit(:report_name, :maximum_amount, :event_id, :email, :invite_message, :receipt_id, :value).compact_blank
     end
 
     def update_reimbursement_report_params

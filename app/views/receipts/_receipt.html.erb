@@ -76,11 +76,22 @@
   <% end %>
 
   <% unless defined?(hide_info) %>
-    <footer class="flex items-center flex-row" style="border-top: none;">
+    <footer class="flex items-center flex-row mt1" style="border-top: none;">
       <%= relative_timestamp receipt.created_at, prefix: "#{receipt.user == current_user ? "you" : ""} added ", suffix: receipt.user == current_user || receipt.user.nil? ? "" : " by #{receipt.user.first_name}", class: defined?(selectable) ? "h5" : "h5 muted" %>
 
       <span style="flex-grow: 1;"></span>
 
+      <% if defined?(show_reimbursements_button) %>
+        <%= pop_icon_to "attachment",
+            "#",
+            data: {
+              "behavior": "modal_trigger",
+              "modal": "create_#{receipt.id}"
+            },
+            size: 24,
+            class: "info tooltipped tooltipped--w mr1",
+            'aria-label': "Get reimbursed for this" %>
+      <% end %>
       <% if defined?(show_delete_button) %>
         <%= pop_icon_to "view-close",
             receipt_path(receipt, popover: local_assigns[:popover]),
@@ -111,4 +122,8 @@
       <%= image_tag receipt.preview, class: "card p0", style: "image-rendering: crisp-edges; object-fit: contain; width: auto; height: auto; max-width: 100%; max-height: 100%; height: 100vh;", onload: "this.style.maxWidth = `${this.naturalWidth}px`; this.style.maxHeight = `${this.naturalHeight}px`; this.style.minWidth = '300px'; this.style.minHeight = '300px'; this.parentElement.style.maxHeight = `${this.naturalHeight}px`;" %>
     <% end %>
   </section>
+<% end %>
+
+<% if defined?(show_reimbursements_button) %>
+  <%= render partial: "reimbursement/reports/create_form", locals: { receipt: } %>
 <% end %>
