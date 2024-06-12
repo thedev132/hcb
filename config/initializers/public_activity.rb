@@ -9,40 +9,49 @@ class PublicActivity::Activity
 
   include Turbo::Broadcastable
 
-  # after_create_commit -> {
-  #  streams = []
+  after_create_commit -> {
+    # this code has been tested
+    # but because this will run so often
+    # i don't want it to break other features
+    # as it's non-critical, hence this.
+    # - @sampoder
+    begin
+      streams = []
 
-  #  if event_id
-  #    Event.find(event_id).users.each do |user|
-  #      streams << [user, "activities"]
-  #    end
-  #  end
+      if event_id
+        Event.find(event_id).users.each do |user|
+          streams << [user, "activities"]
+        end
+      end
 
-  #  if recipient.is_a?(User)
-  #    streams << [recipient, "activities"]
-  #  end
+      if recipient.is_a?(User)
+        streams << [recipient, "activities"]
+      end
 
-  #  if recipient.is_a?(Event)
-  #    recipient.users.each do |user|
-  #      streams << [user, "activities"]
-  #    end
-  #  end
+      if recipient.is_a?(Event)
+        recipient.users.each do |user|
+          streams << [user, "activities"]
+        end
+      end
 
-  #  User.admin.each do |user|
-  #    streams << [user, "activities"]
-  #  end
+      User.admin.each do |user|
+        streams << [user, "activities"]
+      end
 
-  #  streams.uniq.each do |stream|
-  #    broadcast_action_later_to(
-  #      stream,
-  #      action: :prepend,
-  #      target: "activities-1",
-  #      partial: "public_activity/activity",
-  #      locals: { activity: self, current_user: streams.first }
-  #    )
+      streams.uniq.each do |stream|
+        broadcast_action_later_to(
+          stream,
+          action: :prepend,
+          target: "activities-1",
+          partial: "public_activity/activity",
+          locals: { activity: self, current_user: streams.first }
+        )
+      end
+    rescue => e
+      Airbrake.notify(e)
+    end
 
-  #  end
-  # }
+  }
 
   validate do
     owner.nil? || owner_type == User.name

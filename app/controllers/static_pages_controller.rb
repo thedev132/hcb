@@ -37,7 +37,6 @@ class StaticPagesController < ApplicationController
     else
       @activities = PublicActivity::Activity.for_user(current_user).order(created_at: :desc).page(params[:page]).per(25)
     end
-    render partial: "static_pages/my_activities"
   end
 
   def branding
