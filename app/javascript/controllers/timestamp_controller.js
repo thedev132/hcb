@@ -1,16 +1,21 @@
 import { Controller } from '@hotwired/stimulus'
 
-// example implementation: data-controller="timestamp" data-timestamp-target="label" data-time="<%= activity.created_at.to_i * 1000 %>"
+// example implementation: data-controller="timestamp" data-timestamp-time-value="<%= activity.created_at.to_i * 1000 %>"
 // to_i gets you seconds since epoch! JS needs milliseconds.
 
 export default class extends Controller {
-  static targets = ['label']
+  static values = {
+    time: Number,
+  }
+
   connect() {
-    setInterval(() => {
-      this.labelTarget.innerText = DateHelper.time_ago_in_words(
-        this.labelTarget.dataset.time
-      )
+    this.interval = setInterval(() => {
+      this.element.innerText = DateHelper.time_ago_in_words(this.timeValue)
     }, 60000)
+  }
+
+  disconnect() {
+    if (this.interval) clearInterval(this.interval)
   }
 }
 

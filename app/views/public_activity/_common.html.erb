@@ -27,7 +27,7 @@
             <%= inline_icon "link", width: 20, class: "muted ml-[-4px] mr-[2px]" %>
           <% end %>
         <% end %>
-        <span class="align-middle timestamp" style="cursor: default" data-controller="timestamp" data-timestamp-target="label" data-time="<%= activity.created_at.to_i * 1000 %>">
+        <span class="align-middle timestamp" style="cursor: default" data-controller="timestamp" data-timestamp-time-value="<%= activity.created_at.to_i * 1000 %>">
           <%= time_ago_in_words activity.created_at %> ago
         </span>
       </div>
