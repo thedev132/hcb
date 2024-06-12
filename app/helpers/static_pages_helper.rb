@@ -144,6 +144,12 @@ module StaticPagesHelper
         table: "Event%20Codes",
         query: { filterByFormula: "Status='Under Review'" },
         destination: "https://airtable.com/app05mIKwNPO2l1vT/tblcIuVemD63IbBuY/viw1Zo5lX8e7t2Vzu"
+      },
+      arcade: {
+        id: "app1VxI7f3twOIs2g",
+        table: "tblKgmsperK0QHEQX",
+        query: { filterByFormula: "OR(Status='Awaiting Confirmation', Status='Awaiting Fulfillment')" },
+        destination: "https://airtable.com/app1VxI7f3twOIs2g/tblKgmsperK0QHEQX"
       }
     }
   end
