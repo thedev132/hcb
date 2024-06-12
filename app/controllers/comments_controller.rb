@@ -17,7 +17,7 @@ class CommentsController < ApplicationController
 
     if @comment.save
       flash[:success] = "Note created."
-      redirect_to @commentable
+      redirect_to @commentable.is_a?(Event) ? edit_event_path(@commentable, tab: :admin) : @commentable
     else
       render :new, status: :unprocessable_entity
     end
@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
       # @commentable is not guaranteed to have a #show,
       # but all commentables effectively have a #show
       # because that's the only place comments show up as a list.
-      redirect_to @comment.commentable
+      redirect_to @comment.commentable.is_a?(Event) ? edit_event_path(@comment.commentable, tab: :admin) : @comment.commentable
     else
       @commentable = @comment.commentable
       render :edit, status: :unprocessable_entity
