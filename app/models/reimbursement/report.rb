@@ -254,7 +254,7 @@ module Reimbursement
     end
 
     def exceeds_maximum_amount?
-      maximum_amount_cents && amount_cents >= maximum_amount_cents
+      maximum_amount_cents && amount_cents > maximum_amount_cents
     end
 
     private
