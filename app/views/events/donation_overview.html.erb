@@ -3,17 +3,22 @@
 <%= render "events/nav", selected: :donations %>
 
 <h1 class="heading">
-  <span class="flex items-center">
+  <span class="flex items-center flex-grow">
     Donations
     <%= badge_for @donations.count, class: "bg-muted" %>
   </span>
-
-  <% if @event.donation_page_enabled %>
-    <%= link_to start_donation_donations_path(@event), target: "_blank", class: "btn" do %>
-      <%= inline_icon "external" %>
-      Donate page
+  <% unless show_mock_data? %>
+    <% if organizer_signed_in? && @donations.not_pending.any? %>
+      <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
+        <%= inline_icon "download" %>
+        <div class="menu__content h5" data-behavior="menu_content">
+          <%= link_to "Export donations (CSV)", export_donations_path(event: @event, format: :csv), target: :_blank %>
+          <%= link_to "Export donations (JSON)", export_donations_path(event: @event, format: :json), target: :_blank %>
+        </div>
+      </action>
     <% end %>
-
+  <% end %>
+  <% if @event.donation_page_enabled %>
     <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
       <%= inline_icon "share" %>
       <div class="menu__content" data-behavior="menu_content">
@@ -31,6 +36,10 @@
         <% end %>
       </div>
     </action>
+    <%= link_to start_donation_donations_path(@event), target: "_blank", class: "btn" do %>
+      <%= inline_icon "external" %>
+      Donate page
+    <% end %>
   <% end %>
 </h1>
 
@@ -116,39 +125,24 @@
     <span class="stat__label">Total</span>
     <span class="stat__value"><%= render_money_amount @stats[:deposited] %></span>
   </div>
-  <% unless show_mock_data? %>
-    <% if organizer_signed_in? && @donations.not_pending.any? %>
-      <button
-        type="button"
-        <%= organizer_signed_in? ? "data-behavior=menu_toggle aria-expanded=false tabindex=0" : "disabled=disabled" %>
-        class="btn bg-info menu__toggle overflow-visible right h5 z1" style="padding: 0.25rem 1rem;">
-          <%= inline_icon "download", size: 16 %>
-          Export
-          <% if organizer_signed_in? %>
-            <div class="menu__content h5" data-behavior="menu_content">
-            <%= link_to "Export donations (CSV)", export_donations_path(event: @event, format: :csv), target: :_blank %>
-            <%= link_to "Export donations (JSON)", export_donations_path(event: @event, format: :json), target: :_blank %>
-            </div>
-          <% end %>
-      </button>
-    <% end %>
-  <% end %>
+  <div class="stat stat--small ml3">
+    <span class="stat__label">Per month</span>
+    <span class="stat__value"><%= render_money_amount @recurring_donations_monthly_sum %></span>
+  </div>
+
 </div>
 
-<hr>
-
 <% if @recurring_donations.size > 0 %>
-  <h2 class="heading pb-0 border-b-0">
+  <h2 class="heading mt4 pb1" style="margin-bottom: 16px;">
     Recurring donations
-    <%= badge_for "#{render_money @recurring_donations_monthly_sum}/month" %>
   </h2>
   <div class="table-container mb3">
     <table>
       <thead>
         <tr>
-          <th></th>
-          <th>Started on</th>
+          <th>Status</th>
           <th>Name</th>
+          <th>Started on</th>
           <th class="text-right">Amount</th>
           <th class="text-right">Total donated</th>
         </tr>
@@ -157,7 +151,6 @@
         <% @recurring_donations.each do |recurring_donation| %>
           <tr>
             <td style="width: 1%"><span class="ml0 mr1 badge bg-success"><%= recurring_donation.stripe_status.humanize %></span></td>
-            <td><%= format_date recurring_donation.created_at %></td>
             <td class="line-height-3">
               <% if recurring_donation.is_a? RecurringDonation %>
                 <%= recurring_donation.name(show_anonymous: organizer_signed_in?) %><br>
@@ -168,6 +161,7 @@
                 <span class="muted h5"><%= recurring_donation.email %></span>
               <% end %>
             </td>
+            <td><%= format_date recurring_donation.created_at %></td>
             <td class="text-right">
               <strong><%= render_money recurring_donation.amount %></strong><span class="muted">/mo</span>
             </td>
@@ -180,6 +174,10 @@
     </table>
   </div>
 <% end %>
+
+<h2 class="heading mt4 pb1" style="margin-bottom: 16px;">
+  Past donations
+</h2>
 
 <div style="text-align: center;">
   <%= link_to "Deposited", "?filter=deposited", class: "filterbar__item", "aria-selected": !["refunded"].include?(params[:filter]), role: "tab" %>
