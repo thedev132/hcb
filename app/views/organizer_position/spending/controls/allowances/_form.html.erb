@@ -1,0 +1,15 @@
+<%= form_with(model: [@event, @active_control, @provisional_allowance], url: event_organizer_position_spending_control_allowances_path(control_id: @active_control), data: { turbo: false }) do |form| %>
+  <div class="field">
+    <%= form.label :amount %>
+    <%= form.number_field :amount, placeholder: "500.00", required: true, step: 0.01 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :memo, "Memo" %>
+    <%= form.text_field :memo, placeholder: "Lunch for layover at SFO", required: true %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -337,6 +337,7 @@ class EventsController < ApplicationController
     end
 
     @stripe_cardholders = StripeCardholder.where(user_id: @event.users.pluck(:id)).includes(:user).order("created_at desc")
+    @organizer_position = OrganizerPosition.find_by(event: @event, user: current_user)
 
     authorize @event
 

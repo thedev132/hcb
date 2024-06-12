@@ -1341,6 +1341,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_075659) do
     t.index ["user_id"], name: "index_organizer_position_invites_on_user_id"
   end
 
+  create_table "organizer_position_spending_control_allowances", force: :cascade do |t|
+    t.bigint "authorized_by_id", null: false
+    t.integer "amount_cents", null: false
+    t.text "memo"
+    t.bigint "organizer_position_spending_control_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["authorized_by_id"], name: "idx_org_pos_spend_ctrl_allows_on_authed_by_id"
+    t.index ["organizer_position_spending_control_id"], name: "idx_org_pos_spend_ctrl_allows_on_org_pos_spend_ctrl_id"
+  end
+
+  create_table "organizer_position_spending_controls", force: :cascade do |t|
+    t.boolean "active", default: true
+    t.datetime "ended_at"
+    t.bigint "organizer_position_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organizer_position_id"], name: "idx_org_pos_spend_ctrls_on_org_pos_id"
+  end
+
   create_table "organizer_positions", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "event_id"
@@ -2138,6 +2158,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_075659) do
   add_foreign_key "organizer_position_invites", "organizer_positions"
   add_foreign_key "organizer_position_invites", "users"
   add_foreign_key "organizer_position_invites", "users", column: "sender_id"
+  add_foreign_key "organizer_position_spending_control_allowances", "organizer_position_spending_controls"
+  add_foreign_key "organizer_position_spending_control_allowances", "users", column: "authorized_by_id"
+  add_foreign_key "organizer_position_spending_controls", "organizer_positions"
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
   add_foreign_key "partner_donations", "events"

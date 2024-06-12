@@ -679,8 +679,16 @@ Rails.application.routes.draw do
 
     resource :column_account_number, controller: "column/account_number", only: [:create, :update], path: "account-number"
 
-    resources :organizer_positions, path: "team", as: "organizer", only: [] do
+    resources :organizer_positions, path: "team", only: [] do
       resources :organizer_position_deletion_requests, path: "removal-requests", as: "remove", only: [:new]
+
+      scope module: "organizer_position" do
+        namespace :spending do
+          resources :controls do
+            resources :allowances, only: [:new, :create], controller: "control/allowances"
+          end
+        end
+      end
     end
 
     resources :payment_recipients, only: [:destroy]

@@ -24,6 +24,17 @@
     } %>
 
 <%= render partial: "features/preview", locals: {
+      id: "spending-controls",
+      classes: ["feature-spending-controls"],
+      feature_flag: :spending_controls_2024_06_03,
+      name: "Spending Controls",
+      description: content_tag(:span) do
+        concat "Control your members' spending with preauthorized card limits!"
+      end,
+      event: @event,
+    } if params["spending-controls"] %>
+
+<%= render partial: "features/preview", locals: {
       id: "anonymous-donations",
       classes: ["feature-anonymous-donations"],
       feature_flag: :anonymous_donations_2024_01_29,
