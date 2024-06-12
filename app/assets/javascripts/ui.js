@@ -177,6 +177,7 @@ function loadAsyncFrames(){
         const parent = $(frame).parent()
         $(frame).replaceWith(data)
         loadModals(parent)
+        loadTextExpander()
       }).fail(() => {
         $(frame).children('.shimmer').first().addClass('shimmer--error')
       })

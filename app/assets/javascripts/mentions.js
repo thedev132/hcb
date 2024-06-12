@@ -1,4 +1,4 @@
-document.addEventListener("turbo:load", () => {
+function loadTextExpander() {
   document.querySelectorAll('text-expander').forEach((expander) => {
     expander.addEventListener('text-expander-change', function(event) {
       const {key, provide, text} = event.detail
@@ -30,4 +30,6 @@ document.addEventListener("turbo:load", () => {
       if (popover) popover.showPopover()
     })
   });
-})
+}
+
+document.addEventListener("turbo:load", loadTextExpander)
