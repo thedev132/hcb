@@ -53,7 +53,9 @@
   <%= form_with url: reimbursement_report_request_changes_path(report_id: @report.id), model: [@report, Comment.new] do |form| %>
     <%= form.hidden_field :commentable_type, value: @commentable.class %>
     <%= form.hidden_field :commentable_id, value: @report.id %>
-    <%= form.text_area :content, class: "card mb2 overflow-visible", placeholder: "Describe your requested changes…", "data-behavior": "ctrl_enter_submit", style: "min-height: 100px" %>
+    <text-expander keys="@">
+      <%= form.text_area :content, class: "card mb2 overflow-visible", placeholder: "Describe your requested changes…", "data-behavior": "ctrl_enter_submit", style: "min-height: 100px" %>
+    </text-expander>
 
     <%= form.hidden_field :action, value: :changes_requested %>
 
