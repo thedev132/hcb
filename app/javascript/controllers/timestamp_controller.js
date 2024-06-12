@@ -29,7 +29,6 @@ let DateHelper = {
     var distance_in_minutes = Math.floor(distance_in_seconds / 60)
     var tense = distance_in_seconds < 0 ? ' from now' : ' ago'
     distance_in_minutes = Math.abs(distance_in_minutes)
-    console.log(distance_in_minutes)
     if (distance_in_minutes == 0) {
       return 'less than a minute' + tense
     }
