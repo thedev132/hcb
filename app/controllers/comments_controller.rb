@@ -25,7 +25,7 @@ class CommentsController < ApplicationController
 
   def edit
     @commentable = @comment.commentable
-    @event = @commentable.event
+    @event = @commentable.is_a?(Event) ? @commentable : @commentable.event
 
     authorize @comment
   end
