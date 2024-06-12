@@ -335,6 +335,7 @@ class Event < ApplicationRecord
 
   validates :name, :sponsorship_fee, :organization_identifier, presence: true
   validates :slug, presence: true, format: { without: /\s/ }
+  validates :slug, format: { without: /\A\d+\z/ }
   validates_uniqueness_of_without_deleted :slug
 
   after_save :update_slug_history
