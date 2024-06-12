@@ -50,6 +50,7 @@ class CardGrant < ApplicationRecord
 
   enum :status, [:active, :canceled], default: :active
 
+  before_create :create_card_grant_setting
   before_create :create_user
   before_create :create_subledger
   after_create :transfer_money
@@ -149,6 +150,10 @@ class CardGrant < ApplicationRecord
   end
 
   private
+
+  def create_card_grant_setting
+    CardGrantSetting.find_or_create_by!(event_id:)
+  end
 
   def create_user
     self.user = User.find_or_create_by!(email:)
