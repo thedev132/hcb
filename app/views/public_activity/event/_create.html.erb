@@ -1,3 +1,3 @@
-<%= render layout: "/public_activity/common", locals: { activity:, icon: "bank-account", color: "info", hide_owner: true } do %>
+<%= render layout: "/public_activity/common", locals: { activity:, current_user:, icon: "bank-account", color: "info", hide_owner: true } do %>
   <%= link_to activity.trackable.name, activity.trackable %> opened an account on HCB
 <% end %>

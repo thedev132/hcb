@@ -1,4 +1,4 @@
-<%= render layout: "/public_activity/common", locals: { activity: } do %>
+<%= render layout: "/public_activity/common", locals: { activity:, current_user: } do %>
   invited <span class="muted"><%= activity.recipient&.name %></span>
   to <%= activity.trackable.event.name %>
 <% end %>
