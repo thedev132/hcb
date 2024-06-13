@@ -358,7 +358,7 @@ class StripeCard < ApplicationRecord
   def balance_available
     if subledger.present?
       subledger.balance_cents
-    elsif (spending_control = event.organizer_positions.find_by(user:).active_spending_control)
+    elsif (spending_control = event.organizer_positions.find_by(user:)&.active_spending_control)
       spending_control.balance_cents
     else
       event.balance_available_v2_cents
