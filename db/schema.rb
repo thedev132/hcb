@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_31_075659) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_13_205428) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -2013,6 +2013,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_075659) do
     t.index ["session_token_bidx"], name: "index_user_sessions_on_session_token_bidx"
     t.index ["user_id"], name: "index_user_sessions_on_user_id"
     t.index ["webauthn_credential_id"], name: "index_user_sessions_on_webauthn_credential_id"
+  end
+
+  create_table "user_totps", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "secret_ciphertext", null: false
+    t.datetime "last_used_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["user_id"], name: "index_user_totps_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

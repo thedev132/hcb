@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  skip_before_action :signed_in_user, only: [:auth, :auth_submit, :choose_login_preference, :set_login_preference, :webauthn_options, :webauthn_auth, :login_code, :exchange_login_code]
+  skip_before_action :signed_in_user, only: [:auth, :auth_submit, :choose_login_preference, :set_login_preference, :webauthn_options, :webauthn_auth, :login_code, :exchange_login_code, :totp, :totp_auth]
   skip_before_action :redirect_to_onboarding, only: [:edit, :update, :logout, :unimpersonate]
   skip_after_action :verify_authorized, only: [:choose_login_preference,
                                                :set_login_preference,
@@ -26,7 +26,9 @@ class UsersController < ApplicationController
                                                :edit_admin,
                                                :toggle_sms_auth,
                                                :complete_sms_auth_verification,
-                                               :start_sms_auth_verification]
+                                               :start_sms_auth_verification,
+                                               :totp,
+                                               :totp_auth]
   before_action :set_shown_private_feature_previews, only: [:edit, :edit_featurepreviews, :edit_security, :edit_admin]
   before_action :migrate_return_to, only: [:auth, :auth_submit, :choose_login_preference, :login_code, :exchange_login_code, :webauthn_auth]
 
@@ -65,10 +67,13 @@ class UsersController < ApplicationController
     user = User.find_by(email: @email)
 
     has_webauthn_enabled = user&.webauthn_credentials&.any?
+    has_totp_enabled = user&.totp&.present?
     login_preference = session[:login_preference]
 
-    if !has_webauthn_enabled || login_preference == "email"
+    if !has_webauthn_enabled && !has_totp_enabled || login_preference == "email"
       redirect_to login_code_users_path, status: :temporary_redirect
+    elsif login_preference == "totp" && has_totp_enabled
+      redirect_to totp_users_path, status: :temporary_redirect
     else
       session[:auth_email] = @email
       redirect_to choose_login_preference_users_path(return_to: params[:return_to])
@@ -78,6 +83,8 @@ class UsersController < ApplicationController
   def choose_login_preference
     @email = session[:auth_email]
     @user = User.find_by_email(@email)
+    @webauthn_available = @user&.webauthn_credentials&.any?
+    @totp_available = @user&.totp&.present?
     @return_to = params[:return_to]
     return redirect_to auth_users_path if @email.nil?
 
@@ -92,6 +99,9 @@ class UsersController < ApplicationController
     when "email"
       session[:login_preference] = "email" if remember
       redirect_to login_code_users_path, status: :temporary_redirect
+    when "totp"
+      session[:login_preference] = "totp" if remember
+      redirect_to totp_users_path, status: :temporary_redirect
     when "webauthn"
       # This should never happen, because WebAuthn auth is handled on the frontend
       redirect_to choose_login_preference_users_path
@@ -121,7 +131,9 @@ class UsersController < ApplicationController
 
     @user_id = resp[:id]
 
-    @webauthn_available = User.find_by(email: @email)&.webauthn_credentials&.any?
+    user = User.find_by(email: @email)
+    @webauthn_available = user&.webauthn_credentials&.any?
+    @totp_available = user&.totp&.present?
 
     render status: :unprocessable_entity
 
@@ -189,6 +201,36 @@ class UsersController < ApplicationController
       redirect_to auth_users_path, flash: { error: "Something went wrong." }
     rescue ActiveRecord::RecordInvalid => e
       redirect_to auth_users_path, flash: { error: e.record.errors&.full_messages&.join(". ") }
+    end
+  end
+
+  def totp
+    @return_to = params[:return_to]
+    @email = params.require(:email)
+    render status: :unprocessable_entity
+  rescue ActionController::ParameterMissing
+    flash[:error] = "Please enter an email address."
+    redirect_to auth_users_path
+  end
+
+  def totp_auth
+    user = User.find_by(email: params[:email])
+
+    return redirect_to auth_users_path unless user.present?
+
+    if user.totp.verify(params[:code], drift_behind: 15, after: user.totp.last_used_at)
+      user.totp.update!(last_used_at: DateTime.now)
+      fingerprint_info = {
+        fingerprint: params[:fingerprint],
+        device_info: params[:device_info],
+        os_info: params[:os_info],
+        timezone: params[:timezone],
+        ip: request.remote_ip
+      }
+      sign_in(user:, fingerprint_info:)
+      redirect_to(params[:return_to] || root_path)
+    else
+      redirect_to totp_users_path(email: params[:email]), flash: { error: "Invalid TOTP code, please try again." }
     end
   end
 
@@ -324,6 +366,20 @@ class UsersController < ApplicationController
     @all_sessions = (@sessions + @oauth_authorizations).sort_by { |s| s.created_at }.reverse!
 
     authorize @user
+  end
+
+  def enable_totp
+    @user = params[:id] ? User.friendly.find(params[:id]) : current_user
+    authorize @user
+    @user.totp&.destroy!
+    @user.create_totp!
+  end
+
+  def disable_totp
+    @user = params[:id] ? User.friendly.find(params[:id]) : current_user
+    authorize @user
+    @user.totp&.destroy!
+    redirect_back_or_to security_user_path(@user)
   end
 
   def edit_admin

@@ -15,6 +15,9 @@
     <%= javascript_include_tag "application", 'data-turbo-track': "reload", defer: true %>
     <%= javascript_include_tag "bundle", 'data-turbo-track': "reload", defer: true %>
 
+    <%# Web component used for TOTP / donation QR codes %>
+    <script src="https://unpkg.com/@bitjson/qr-code@1.0.2/dist/qr-code.js"></script>
+
     <% if signed_in? %>
       <script>
         document.addEventListener("turbo:load", () => {

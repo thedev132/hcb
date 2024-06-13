@@ -108,6 +108,7 @@ class User < ApplicationRecord
   has_one_attached :profile_picture
 
   has_one :partner, inverse_of: :representative
+  has_one :totp, class_name: "User::Totp"
 
   # a user does not actually belong to its payout method,
   # but this is a convenient way to set up the association.

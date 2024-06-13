@@ -216,4 +216,6 @@ gem "public_activity"
 gem "console1984"
 gem "audits1984"
 
+gem "rotp"
+
 gem "ruby-limiter"
