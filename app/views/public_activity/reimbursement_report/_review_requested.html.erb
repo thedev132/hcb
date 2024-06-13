@@ -1,3 +1,5 @@
+<% current_user ||= local_assigns[:p][:current_user] %>
+
 <% if activity.trackable.present? %>
   <% if activity.owner != current_user && OrganizerPosition.find_by(user: current_user, event: activity.trackable.event)&.manager? && (activity.trackable.reviewer.nil? || activity.trackable.reviewer == current_user) %>
     <%= render layout: "/public_activity/common", locals: { activity:, current_user:, url: reimbursement_report_path(activity.trackable) } do %>
