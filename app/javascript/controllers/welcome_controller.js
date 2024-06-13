@@ -85,7 +85,7 @@ export default class extends Controller {
       onComplete: () => {
         document.body.style.overflow = 'auto'
         if (this.shouldReload) {
-          location.reload() // TODO: remove
+          location.replace(location.pathname) // TODO: remove
         }
       },
     })
