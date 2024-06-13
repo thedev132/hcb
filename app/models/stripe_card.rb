@@ -355,11 +355,17 @@ class StripeCard < ApplicationRecord
                                .pluck(:hcb_code)
   end
 
+  def active_spending_control
+    return @active_spending_control if defined?(@active_spending_control)
+
+    @active_spending_control = event.organizer_positions.find_by(user:)&.active_spending_control
+  end
+
   def balance_available
     if subledger.present?
       subledger.balance_cents
-    elsif (spending_control = event.organizer_positions.find_by(user:)&.active_spending_control)
-      spending_control.balance_cents
+    elsif active_spending_control
+      active_spending_control.balance_cents
     else
       event.balance_available_v2_cents
     end
