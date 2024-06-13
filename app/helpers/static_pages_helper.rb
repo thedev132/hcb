@@ -148,7 +148,7 @@ module StaticPagesHelper
       arcade: {
         id: "app1VxI7f3twOIs2g",
         table: "tblKgmsperK0QHEQX",
-        query: { filterByFormula: "OR(Status='Awaiting Confirmation', Status='Awaiting Fulfillment')" },
+        query: { filterByFormula: "Status='Awaiting Fulfillment'" },
         destination: "https://airtable.com/app1VxI7f3twOIs2g/tblKgmsperK0QHEQX"
       }
     }
