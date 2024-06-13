@@ -218,7 +218,7 @@ class UsersController < ApplicationController
 
     return redirect_to auth_users_path unless user.present?
 
-    if user.totp.verify(params[:code], drift_behind: 15, after: user.totp.last_used_at)
+    if user.totp&.verify(params[:code], drift_behind: 15, after: user.totp&.last_used_at)
       user.totp.update!(last_used_at: DateTime.now)
       fingerprint_info = {
         fingerprint: params[:fingerprint],
