@@ -44,7 +44,7 @@ class PublicActivity::Activity
           action: :prepend,
           target: "activities-1",
           partial: "public_activity/activity",
-          locals: { activity: self, current_user: streams.first }
+          locals: { activity: self, current_user: stream.first }
         )
       end
     rescue => e
