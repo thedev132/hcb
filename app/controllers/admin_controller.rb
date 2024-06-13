@@ -1412,6 +1412,8 @@ class AdminController < ApplicationController
         airtable_task_size :google_workspace_waitlist
       when :pending_boba_airtable
         airtable_task_size :boba
+      when :pending_you_ship_we_ship_airtable
+        airtable_task_size :you_ship_we_ship
       when :pending_arcade_airtable
         airtable_task_size :arcade
       when :emburse_card_requests
