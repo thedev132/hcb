@@ -22,7 +22,8 @@ class Tag < ApplicationRecord
   set_public_id_prefix :tag
 
   belongs_to :event
-  has_and_belongs_to_many :hcb_codes
+  has_many :hcb_code_tags
+  has_many :hcb_codes, through: :hcb_code_tags
 
   validates :label, presence: true, uniqueness: { scope: :event_id, case_sensitive: false }
   validates_format_of :color, with: /\A#(?:\h{3}){1,2}\z/, allow_nil: true, message: "must be a color hex code"

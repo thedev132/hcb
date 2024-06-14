@@ -30,7 +30,8 @@ class HcbCode < ApplicationRecord
 
   monetize :amount_cents
 
-  has_and_belongs_to_many :tags
+  has_many :hcb_code_tags
+  has_many :tags, through: :hcb_code_tags
 
   has_many :suggested_pairings
   has_many :suggested_receipts, source: :receipt, through: :suggested_pairings
