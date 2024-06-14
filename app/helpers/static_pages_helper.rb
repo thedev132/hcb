@@ -52,7 +52,7 @@ module StaticPagesHelper
       bank_applications: {
         id: "apppALh5FEOKkhjLR",
         table: "Events",
-        query: { filterByFormula: "Pending='Pending'" },
+        query: { filterByFormula: "OR(Status='⭐️ New Application', [Status='Applied - Approved', Status='Applied - Need Rejection'])" },
         destination: "https://airtable.com/tblctmRFEeluG4do7/viwGhv19cV1ZRj61a"
       },
       stickers: {
