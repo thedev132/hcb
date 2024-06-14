@@ -19,6 +19,7 @@
               <%= form.file_field :background_image, accept: "image/*,image/heic", class: "field--fileupload__field" %>
             </div>
             <% if @event.background_image.attached? %>
+              <div class="menu__divider"></div>
               <%= link_to "Remove background image", event_remove_background_image_path(@event), method: :post, style: "padding: 0.25rem 0.5rem" %>
             <% end %>
           </div>
