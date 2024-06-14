@@ -269,7 +269,7 @@ GEM
       smart_properties
     errbase (0.2.2)
     erubi (1.13.0)
-    et-orbi (1.2.7)
+    et-orbi (1.2.11)
       tzinfo
     execjs (2.8.1)
     factory_bot (6.2.1)
@@ -320,8 +320,8 @@ GEM
     foreman (0.87.2)
     friendly_id (5.5.0)
       activerecord (>= 4.0.0)
-    fugit (1.8.1)
-      et-orbi (~> 1, >= 1.2.7)
+    fugit (1.11.0)
+      et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
     geo_pattern (1.5.0)
       color (~> 1.5)
@@ -640,7 +640,7 @@ GEM
     redcarpet (3.6.0)
     redis (5.0.8)
       redis-client (>= 0.17.0)
-    redis-client (0.17.1)
+    redis-client (0.22.1)
       connection_pool
     regexp_parser (2.8.1)
     relaxed-rubocop (2.5)
@@ -722,7 +722,7 @@ GEM
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
       redis-client (>= 0.14.0)
-    sidekiq-cron (1.10.1)
+    sidekiq-cron (1.12.0)
       fugit (~> 1.8)
       globalid (>= 1.0.1)
       sidekiq (>= 6)
@@ -936,7 +936,7 @@ DEPENDENCIES
   safely_block
   scientist
   sidekiq (~> 7.1.3)
-  sidekiq-cron (~> 1.10)
+  sidekiq-cron (~> 1.12)
   simplecov
   solargraph
   solargraph-rails (~> 0.2.0)
