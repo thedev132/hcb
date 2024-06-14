@@ -74,7 +74,6 @@ class IncreaseCheck < ApplicationRecord
     event :mark_approved do
       after do
         if self.send_email_notification
-          IncreaseCheckMailer.with(check: self).notify_recipient.deliver_later
           IncreaseCheckJob::RemindUndepositedRecipient.set(wait: 30.days).perform_later(self)
           IncreaseCheckJob::RemindUndepositedRecipient.set(wait: (180 - 30).days).perform_later(self)
         end
@@ -82,6 +81,10 @@ class IncreaseCheck < ApplicationRecord
         canonical_pending_transaction.update(fronted: true)
       end
       transitions from: :pending, to: :approved
+
+      after_commit do
+        IncreaseCheckMailer.with(check: self).notify_recipient.deliver_later
+      end
     end
 
     event :mark_rejected do
