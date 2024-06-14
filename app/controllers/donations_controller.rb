@@ -154,6 +154,16 @@ class DonationsController < ApplicationController
     end
   end
 
+  def export_donors
+    @event = Event.friendly.find(params[:event])
+
+    authorize @event.donations.first
+
+    respond_to do |format|
+      format.csv { stream_donors_csv }
+    end
+  end
+
   private
 
   def stream_donations_csv
@@ -174,6 +184,16 @@ class DonationsController < ApplicationController
     self.response_body = donations_json
   end
 
+  def stream_donors_csv
+    set_file_headers_csv
+    headers["Content-disposition"] = "attachment; filename=donors.csv"
+    set_streaming_headers
+
+    response.status = 200
+
+    self.response_body = donors_csv
+  end
+
   def set_file_headers_csv
     headers["Content-Type"] = "text/csv"
     headers["Content-disposition"] = "attachment; filename=donations.csv"
@@ -190,6 +210,10 @@ class DonationsController < ApplicationController
 
   def donations_json
     ::DonationService::Export::Json.new(event_id: @event.id).run
+  end
+
+  def donors_csv
+    ::DonationService::Export::Donors::Csv.new(event_id: @event.id).run
   end
 
   def set_donation

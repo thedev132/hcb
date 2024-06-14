@@ -484,6 +484,7 @@ Rails.application.routes.draw do
       get ":event_name/:donation", to: "donations#finish_donation", as: "finish_donation"
       get ":event_name/:donation/finished", to: "donations#finished", as: "finished_donation"
       get "export"
+      get "export_donors"
     end
 
     member do
