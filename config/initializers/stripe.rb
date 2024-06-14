@@ -3,5 +3,5 @@
 stripe_environment = Rails.env.production? ? :live : :test
 
 # update as needed, we specify explicitly in code to avoid inter-branch API version conflicts
-Stripe.api_version = "2019-02-11"
+Stripe.api_version = "2019-02-19"
 Stripe.api_key = Rails.application.credentials.stripe[stripe_environment][:secret_key]
