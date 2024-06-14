@@ -81,7 +81,7 @@
 
       <span style="flex-grow: 1;"></span>
 
-      <% if defined?(show_reimbursements_button) %>
+      <% if defined?(show_reimbursements_button) && receipt.receiptable_id == nil && current_user %>
         <%= pop_icon_to "attachment",
             "#",
             data: {
@@ -124,6 +124,6 @@
   </section>
 <% end %>
 
-<% if defined?(show_reimbursements_button) %>
+<% if defined?(show_reimbursements_button) && receipt.receiptable_id == nil && current_user %>
   <%= render partial: "reimbursement/reports/create_form", locals: { receipt: } %>
 <% end %>
