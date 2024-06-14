@@ -20,7 +20,7 @@ module TransactionGroupingEngine
       def running_balance_by_date
         query = <<~SQL
           WITH date_range AS (
-            SELECT generate_series('#{Event.find(@event_id).canonical_transactions.order(date: :asc).first.date}'::date, CURRENT_DATE, '1 day'::interval) AS date
+            SELECT generate_series('#{Event.find(@event_id).canonical_transactions.order(date: :asc).first&.date || Date.today}'::date, CURRENT_DATE, '1 day'::interval) AS date
           ),
           rbt AS (#{running_balance_sql})
           SELECT date, (
