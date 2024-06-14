@@ -75,6 +75,13 @@
             <% end %>
           <% end %>
         </div>
+      <% elsif report.initial_draft? %>
+        <div style="flex-grow: 1;" class="flex justify-center items-center" style="gap: 4px;">
+          <%= button_to reimbursement_report_path(@report), class: "btn bg-error", method: :delete, type: "button" do %>
+            <%= inline_icon "delete" %>
+            Cancel Report
+          <% end %>
+        </div>
       <% end %>
 
       <div style="flex-grow: 1;" class="flex justify-end">
