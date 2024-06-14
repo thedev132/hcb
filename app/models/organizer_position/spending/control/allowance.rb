@@ -33,6 +33,14 @@ class OrganizerPosition
         has_one :organizer_position, through: :control
         has_one :event, through: :organizer_position
 
+        validate :balance_is_positive, on: :create
+
+        private
+
+        def balance_is_positive
+          errors.add(:control, "balance must be positive") if control.balance_cents + amount_cents < 0
+        end
+
       end
 
     end
