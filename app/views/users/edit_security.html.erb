@@ -100,6 +100,22 @@
       <% end %>
     <% end %>
   </div>
+
+  <% if @expired_sessions.any? %>
+    <h3 class="inline-flex items-center">
+      Recently logged out
+      <%= badge_for @expired_sessions.count, class: "bg-muted" %>
+    </h3>
+    <div class="grid grid--split">
+      <% @expired_sessions.each do |session| %>
+        <% if session.is_a? UserSession %>
+          <%= render "user_session", session: %>
+        <% elsif session.is_a? ApiToken %>
+          <%= render "oauth_authorization", authorization: session %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
 </fieldset>
 
 <% if @user.phone_number.present? %>
