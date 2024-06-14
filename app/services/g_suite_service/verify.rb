@@ -42,7 +42,7 @@ module GSuiteService
     def mx_valid
       Resolv::DNS.open do |dns|
         mx_records = dns.getresources(domain, Resolv::DNS::Resource::IN::MX)
-        return mx_records.map(&:exchange).map(&:to_s).include?(VALID_MX)
+        return mx_records.map(&:exchange).map(&:to_s).map(&:downcase).include?(VALID_MX)
       end
       false
     end
@@ -51,7 +51,7 @@ module GSuiteService
       Resolv::DNS.open do |dns|
         txt_records = dns.getresources(domain, Resolv::DNS::Resource::IN::TXT)
         txt_records.each do |record|
-          return true if record.data.include?(VALID_SPF_HEADER) && record.data.include?(VALID_SPF)
+          return true if record.data.downcase.include?(VALID_SPF_HEADER) && record.data.downcase.include?(VALID_SPF)
         end
       end
       false
