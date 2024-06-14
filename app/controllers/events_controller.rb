@@ -215,6 +215,30 @@ class EventsController < ApplicationController
     end
   end
 
+  def balance_by_date
+    begin
+      authorize @event
+    rescue Pundit::NotAuthorizedError
+      render json: { error: "We couldn’t find that organization!" }
+      return
+    end
+
+    max = [365, (Date.today - @event.created_at.to_date).to_i + 5].min
+
+    balance_by_date = ::TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).running_balance_by_date
+
+    if balance_by_date[max.days.ago.to_date] > balance_by_date[0.days.ago.to_date]
+      balance_trend = "down"
+    else
+      balance_trend = "up"
+    end
+
+    render json: {
+      balanceByDate: balance_by_date,
+      balanceTrend: balance_trend
+    }
+  end
+
   # GET /event_by_airtable_id/recABC
   def by_airtable_id
     authorize Event

@@ -17,6 +17,34 @@ module TransactionGroupingEngine
         all
       end
 
+      def running_balance_by_date
+        query = <<~SQL
+          WITH date_range AS (
+            SELECT generate_series('#{Event.find(@event_id).canonical_transactions.order(date: :asc).first.date}'::date, CURRENT_DATE, '1 day'::interval) AS date
+          ),
+          rbt AS (#{running_balance_sql})
+          SELECT date, (
+              SELECT running_balance
+              FROM rbt
+              WHERE rbt.date <= date_range.date AND running_balance IS NOT NULL
+              ORDER BY rbt.date DESC
+              LIMIT 1
+          ) AS running_balance
+          FROM date_range;
+        SQL
+
+        ActiveRecord::Base.connection.execute(query).map { |entry| [entry["date"].to_date, entry["running_balance"]] }.to_h
+      end
+
+      def running_balance_sql
+        query = <<~SQL
+          SELECT sum(amount_cents) over (order by date asc rows between unbounded preceding and current row) as running_balance, *
+          FROM (
+            #{canonical_transactions_grouped_sql}
+          ) canonical_transactions_grouped
+        SQL
+      end
+
       def all
         canonical_transactions_grouped.map do |ctg|
           build(ctg)
@@ -90,7 +118,7 @@ module TransactionGroupingEngine
         "#{joins.join(" ")} where #{conditions.join(" and ")}"
       end
 
-      def canonical_transactions_grouped
+      def canonical_transactions_grouped_sql
         pt_group_sql = <<~SQL
           select
             array_agg(pt.id) as pt_ids
@@ -232,8 +260,10 @@ module TransactionGroupingEngine
           #{modifiers}
           order by date desc, pt_ids[1] desc, ct_ids[1] desc
         SQL
+      end
 
-        ActiveRecord::Base.connection.execute(q)
+      def canonical_transactions_grouped
+        ActiveRecord::Base.connection.execute(canonical_transactions_grouped_sql)
       end
 
     end

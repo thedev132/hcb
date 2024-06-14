@@ -21,6 +21,10 @@ class EventPolicy < ApplicationPolicy
     is_public || admin_or_user?
   end
 
+  def balance_by_date?
+    is_public || admin_or_user?
+  end
+
   # NOTE(@lachlanjc): this is bad, I’m sorry.
   # This is the StripeCardsController#shipping method when rendered on the event
   # card overview page. This should be moved out of here.

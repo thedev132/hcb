@@ -709,6 +709,8 @@ Rails.application.routes.draw do
       post "validate_slug"
       get "termination"
     end
+
+    get "balance_by_date"
   end
 
   # rewrite old event urls to the new ones not prefixed by /events/

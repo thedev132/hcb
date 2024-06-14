@@ -14,6 +14,7 @@
     "@fingerprintjs/fingerprintjs": "^3.3.0",
     "@floating-ui/dom": "^1.0.1",
     "@floating-ui/react-dom": "^1.0.0",
+    "@fnando/sparkline": "^0.3.10",
     "@github/text-expander-element": "^2.6.1",
     "@github/webauthn-json": "^1.0.0",
     "@hackclub/hcb-wrapped": "^2023.0.0",
