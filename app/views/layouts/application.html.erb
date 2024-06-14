@@ -82,10 +82,6 @@
                         step: @tour&.step || 0,
                         options: @tour&.tourable&.try(:tourable_options) || {},
                         back_to_tour: @back_to_tour %>
-
-    <%= render "maintenance_banner", datetime: "2024-06-13 20:00:00 -0700".to_datetime, duration: 1.hour,
-               learn_more_url: "https://headwayapp.co/hcb-changelog/scheduled-maintenance-june-13th-294639" unless @no_app_shell %>
-
     <% if current_session&.impersonated? %>
       <div class="w-100 px4 bg-white transparency-banner">
         <p class="h5 medium center mt1 mb1">
