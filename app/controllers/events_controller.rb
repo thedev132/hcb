@@ -227,7 +227,7 @@ class EventsController < ApplicationController
 
     balance_by_date = ::TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).running_balance_by_date
 
-    if balance_by_date[max.days.ago.to_date] > balance_by_date[0.days.ago.to_date]
+    if (balance_by_date[max.days.ago.to_date] || balance_by_date[balance_by_date.keys.first]) > balance_by_date[0.days.ago.to_date]
       balance_trend = "down"
     else
       balance_trend = "up"
