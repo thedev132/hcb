@@ -432,6 +432,49 @@ class EventsController < ApplicationController
 
     @g_suite = @event.g_suites.first
     @waitlist_form_submitted = GWaitlistTable.all(filter: "{OrgID} = '#{@event.id}'").any? unless Flipper.enabled?(:google_workspace, @event)
+
+    # this is janky and should be fixed at some point!
+    # for more context on what this is:
+    # result[0] = verification key
+    # result[1] = spf
+    # result[2] = mx1
+    # result[3] = mx2
+    # result[4] = mx3
+    # result[5] = mx4
+    # result[6] = mx5
+    @result = [false, false, false, false, false, false, false]
+
+    if @g_suite&.verification_error?
+      Resolv::DNS.open do |dns|
+        records = dns.getresources(@g_suite.domain, Resolv::DNS::Resource::IN::TXT)
+        records.each do |record|
+          if record.data.include?("google-site-verification=#{@g_suite.verification_key}")
+            @result[0] = true
+          end
+          if record.data.include?("v=spf1") && record.data.include?("include:_spf.google.com")
+            @result[1] = true
+          end
+        end
+      end
+
+      mx_records = [
+        "ASPMX.L.GOOGLE.COM",
+        "ALT1.ASPMX.L.GOOGLE.COM",
+        "ALT2.ASPMX.L.GOOGLE.COM",
+        "ALT3.ASPMX.L.GOOGLE.COM",
+        "ALT4.ASPMX.L.GOOGLE.COM"
+      ]
+
+      Resolv::DNS.open do |dns|
+        mx_response = dns.getresources(@g_suite.domain, Resolv::DNS::Resource::IN::MX)
+        mx_response.each do |record|
+          mx_host = record.exchange.to_s.upcase
+          index = mx_records.index(mx_host)
+          @result[index + 2] = true if index
+        end
+      end
+    end
+
   end
 
   def g_suite_create

@@ -207,3 +207,20 @@ $shades: (
 details[open] .flip-when-open {
   transform: rotate(180deg);
 }
+
+table.strikeable {
+  border-collapse: collapse
+}
+
+tr.strikethrough td {
+  position: relative
+}
+
+tr.strikethrough td:before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  border-bottom: 1px solid #8492a6;
+}
