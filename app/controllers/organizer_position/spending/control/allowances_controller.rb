@@ -15,8 +15,12 @@ class OrganizerPosition
         def create
           attributes = filtered_params
           attributes[:authorized_by_id] = current_user.id
-          attributes[:amount] = params[:organizer_position_spending_control_allowance][:amount]
+
+          attributes[:amount] = params[:organizer_position_spending_control_allowance][:amount].to_f
+          attributes[:amount] *= -1 if params[:organizer_position_spending_control_allowance][:operation] == "subtract"
+
           attributes[:memo] = params[:organizer_position_spending_control_allowance][:memo]
+
           @allowance = @active_control.allowances.build(attributes)
 
           authorize @allowance
@@ -27,7 +31,7 @@ class OrganizerPosition
             flash[:error] = @allowance.errors.full_messages.to_sentence
           end
 
-          redirect_to event_organizer_position_spending_controls_path( @allowance.organizer_position)
+          redirect_to event_organizer_position_spending_controls_path(@allowance.organizer_position)
         end
 
         private
