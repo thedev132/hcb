@@ -22,6 +22,10 @@ class User
     belongs_to :user
     has_encrypted :secret
     validates :secret, presence: true
+
+    include PublicActivity::Model
+    tracked owner: proc{ |controller, record| record.user }, recipient: proc { |controller, record| record.user }, only: [:create]
+
     before_validation do
       self.secret ||= ROTP::Base32.random
     end
