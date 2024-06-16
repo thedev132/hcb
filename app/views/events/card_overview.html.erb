@@ -90,12 +90,10 @@
     <div class="flex flex-col justify-center mt4">
       <section class="grid">
         <% if organizer_signed_in? %>
-          <div class="flex justify-center">
-            <%= link_to my_cards_path, class: "btn btn-small flex w-fit mx-auto" do %>
-              <%= inline_icon "view-back", style: "margin-left: -8px; height: 100%; width: fit-content;" %>
-              <p class="m0">See all your cards across organizations</p>
-            <% end %>
-          </div>
+          <%= link_to my_cards_path,
+                      class: "card card--hover block pt4 pb4 card--promo card--sunset cursor-pointer" do %>
+            <h3 class="mt0 mb0">See all your cards →</h3>
+          <% end %>
         <% end %>
         <% if @event.used_emburse? %>
           <%= link_to event_emburse_cards_overview_path(event_id: @event.slug),
