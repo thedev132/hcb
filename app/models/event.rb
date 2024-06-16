@@ -639,6 +639,16 @@ class Event < ApplicationRecord
     super
   end
 
+  def start
+    Airbrake.notify("event.start accessed.")
+    super
+  end
+
+  def end
+    Airbrake.notify("event.end accessed.")
+    super
+  end
+
   def total_fee_payments_v2_cents
     @total_fee_payments_v2_cents ||=
       begin

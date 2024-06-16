@@ -121,24 +121,7 @@
 
   <% end %>
 
-  <% if !@event.unapproved? %>
-    <% if @event.category.in? ["hackathon", "event", "high school hackathon"] %>
-      <h3 class="mb1" id="event_date_heading">Event date</h3>
-      <div class="card mb3">
-        <p class="mt0">
-          The date of your next event.
-        </p>
-        <div class="field">
-          <%= form.label :start %>
-          <%= form.date_select :start %>
-        </div>
-        <div class="field">
-          <%= form.label :end %>
-          <%= form.date_select :end %>
-        </div>
-        <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
-      </div>
-    <% end %>
+  <% unless @event.unapproved? %>
 
     <h3 class="mb1" id="donations">Donations</h3>
 
