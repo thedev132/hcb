@@ -1,3 +1,5 @@
+/* eslint-disable no-unreachable */
+
 import { Controller } from '@hotwired/stimulus'
 import sparkline from '@fnando/sparkline'
 
@@ -18,6 +20,7 @@ export default class extends Controller {
     )
   }
   connect() {
+    return
     fetch(window.location.pathname + '/balance_by_date')
       .then(r => r.json())
       .then(jsonData => {
