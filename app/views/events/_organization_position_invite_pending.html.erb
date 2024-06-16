@@ -53,6 +53,9 @@
           </div>
         <% end %>
       </div>
+      <%= "and contract signee" if invite.signee? && invite.event.organizer_positions.where(is_signee: nil).none? %>
+    <% else %>
+      <%= "as a contract signee" if invite.signee? && invite.event.organizer_positions.where(is_signee: nil).none? %>
     <% end %>
     by <%= invite.sender.full_name %>
   </div>
