@@ -156,6 +156,12 @@ module StaticPagesHelper
         table: "tblKgmsperK0QHEQX",
         query: { filterByFormula: "Status='Awaiting Fulfillment'" },
         destination: "https://airtable.com/app1VxI7f3twOIs2g/tblKgmsperK0QHEQX"
+      },
+      arcade: {
+        id: "app4kCWulfB02bV8Q",
+        table: "tblNUDETwMdUlBCSM",
+        query: { filterByFormula: "Status='Awaiting Fulfillment'" },
+        destination: "https://airtable.com/app4kCWulfB02bV8Q/tblNUDETwMdUlBCSM/viwM8PNakitt9nm9C"
       }
     }
   end
