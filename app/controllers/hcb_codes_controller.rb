@@ -33,6 +33,8 @@ class HcbCodesController < ApplicationController
 
     authorize @hcb_code
 
+    return not_found if @hcb_code.unused?
+
     if params[:show_details] == "true" && @hcb_code.ach_transfer?
       ahoy.track "ACH details shown", hcb_code_id: @hcb_code.id
       @show_ach_details = true

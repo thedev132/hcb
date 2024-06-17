@@ -390,6 +390,10 @@ class HcbCode < ApplicationRecord
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::UNKNOWN_CODE
   end
 
+  def unused?
+    unknown? && no_transactions?
+  end
+
   def hcb_i1
     split_code[1]
   end
