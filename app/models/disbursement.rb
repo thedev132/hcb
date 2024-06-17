@@ -150,6 +150,10 @@ class Disbursement < ApplicationRecord
     end
   end
 
+  def pending_expired?
+    local_hcb_code.has_pending_expired?
+  end
+
   # Eagerly create HcbCode object
   after_create :local_hcb_code
 

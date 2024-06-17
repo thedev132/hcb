@@ -86,6 +86,10 @@ class HcbCode < ApplicationRecord
     @date ||= ct.try(:date) || pt.try(:date)
   end
 
+  def has_pending_expired?
+    canonical_pending_transactions.pending_expired.any?
+  end
+
   def type
     return :unknown if unknown?
     return :invoice if invoice?

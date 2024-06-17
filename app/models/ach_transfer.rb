@@ -199,6 +199,10 @@ class AchTransfer < ApplicationRecord
     save!
   end
 
+  def pending_expired?
+    local_hcb_code.has_pending_expired?
+  end
+
   def approve!(processed_by = nil)
     if scheduled_on.present?
       mark_scheduled!

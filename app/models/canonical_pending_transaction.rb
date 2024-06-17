@@ -129,6 +129,8 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :included_in_stats, -> { includes(canonical_pending_event_mapping: :event).where(events: { omit_stats: false }) }
   scope :with_custom_memo, -> { where("custom_memo is not null") }
 
+  scope :pending_expired, -> { unsettled.where(created_at: ..5.days.ago) }
+
   validates :custom_memo, presence: true, allow_nil: true
 
   before_validation { self.custom_memo = custom_memo.presence&.strip }
@@ -137,6 +139,10 @@ class CanonicalPendingTransaction < ApplicationRecord
   after_create_commit :write_system_event
 
   attr_writer :stripe_cardholder
+
+  def pending_expired?
+    unsettled? && created_at < 5.days.ago
+  end
 
   def mapped?
     @mapped ||= canonical_pending_event_mapping.present?

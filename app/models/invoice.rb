@@ -186,6 +186,10 @@ class Invoice < ApplicationRecord
   # Stripe syncing…
   before_destroy :close_stripe_invoice
 
+  def pending_expired?
+    local_hcb_code.has_pending_expired?
+  end
+
   def fee_reimbursed?
     !fee_reimbursement.nil?
   end
