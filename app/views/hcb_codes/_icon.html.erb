@@ -26,7 +26,7 @@
   </td>
 <% elsif tx.local_hcb_code.reimbursement_expense_payout? %>
   <% user = tx.local_hcb_code.reimbursement_expense_payout.expense.report.user %>
-  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Reimbursed to <%= user.name %>">
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Reimbursed to <%= user.initial_name %>">
     <%= avatar_for user, 24 %>
   </td>
 <% elsif tx.try(:stripe_refund?) || tx.local_hcb_code.stripe_refund? %>
