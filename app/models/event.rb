@@ -168,6 +168,8 @@ class Event < ApplicationRecord
     where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", MIN_WAITING_TIME_BETWEEN_FEES.ago, self.event_ids_with_pending_fees.to_a.map { |a| a["event_id"] })
   end
 
+  self.ignored_columns = %w[start end]
+
   scope :demo_mode, -> { where(demo_mode: true) }
   scope :not_demo_mode, -> { where(demo_mode: false) }
   scope :filter_demo_mode, ->(demo_mode) { demo_mode.nil? ? all : where(demo_mode:) }
@@ -636,16 +638,6 @@ class Event < ApplicationRecord
 
   def reload
     @total_fee_payments_v2_cents = nil
-    super
-  end
-
-  def start
-    Airbrake.notify("event.start accessed.")
-    super
-  end
-
-  def end
-    Airbrake.notify("event.end accessed.")
     super
   end
 
