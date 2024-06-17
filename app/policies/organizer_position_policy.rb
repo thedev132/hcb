@@ -25,7 +25,7 @@ class OrganizerPositionPolicy < ApplicationPolicy
   end
 
   def can_remove?
-    admin_or_manager?
+    admin_or_manager? || record.user == user
   end
 
   def view_allowances?
