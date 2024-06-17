@@ -50,7 +50,7 @@ class CardGrant < ApplicationRecord
 
   enum :status, [:active, :canceled], default: :active
 
-  before_create :create_card_grant_setting
+  before_validation :create_card_grant_setting, on: :create
   before_create :create_user
   before_create :create_subledger
   after_create :transfer_money
