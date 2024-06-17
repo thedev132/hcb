@@ -2,7 +2,7 @@
 
 class OrganizerPositionPolicy < ApplicationPolicy
   def destroy?
-    user.admin?
+    admin_or_contract_signee?
   end
 
   def set_index?
@@ -24,7 +24,7 @@ class OrganizerPositionPolicy < ApplicationPolicy
     admin_or_manager?
   end
 
-  def can_remove?
+  def can_request_removal?
     admin_or_manager? || record.user == user
   end
 
@@ -37,6 +37,10 @@ class OrganizerPositionPolicy < ApplicationPolicy
   def admin_or_manager?
     user&.admin? ||
       OrganizerPosition.find_by(user:, event: record.event)&.manager? # This is not just `record`!
+  end
+
+  def admin_or_contract_signee?
+    user&.admin? || OrganizerPosition.find_by(user:, event: record.event)&.is_signee
   end
 
 end

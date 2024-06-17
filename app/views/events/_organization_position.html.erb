@@ -50,12 +50,15 @@
             <%= pop_icon_to "clock", "#", class: "muted", disabled: true %>
           </div>
         <% else %>
-          <div class="tooltipped tooltipped--w" aria-label="<%= policy(position).can_remove? ? "Remove user from organization" : "You don't have permission to remove users" %>">
+          <div class="tooltipped tooltipped--w" aria-label="<%= policy(position).can_request_removal? ? "Remove user from organization" : "You don't have permission to remove users" %>">
           <%= pop_icon_to "member-remove",
-                          new_event_organizer_position_remove_path(organizer_position_id: position.user.slug),
+                          policy(position).destroy? ? organizer_path(position) : new_event_organizer_position_remove_path(organizer_position_id: position.user.slug),
                           class: "error",
-                          data: { turbo_frame: "_top" },
-                          disabled: !policy(position).can_remove? %>
+                          data: {
+                            turbo_frame: "_top",
+                            turbo_method: policy(position).destroy? ? :DELETE : :GET
+                          },
+                          disabled: !policy(position).can_request_removal? %>
           </div>
         <% end %>
       </div>
