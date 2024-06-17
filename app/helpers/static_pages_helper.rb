@@ -151,7 +151,7 @@ module StaticPagesHelper
         query: { filterByFormula: "Status='Under Review'" },
         destination: "https://airtable.com/app05mIKwNPO2l1vT/tblcIuVemD63IbBuY/viw1Zo5lX8e7t2Vzu"
       },
-      arcade: {
+      power_hour: {
         id: "app1VxI7f3twOIs2g",
         table: "tblKgmsperK0QHEQX",
         query: { filterByFormula: "Status='Awaiting Fulfillment'" },
