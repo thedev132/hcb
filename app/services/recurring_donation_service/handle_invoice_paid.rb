@@ -10,6 +10,13 @@ module RecurringDonationService
       recurring_donation = RecurringDonation.find_by(stripe_subscription_id: @stripe_invoice.subscription)
       return unless recurring_donation
 
+      safely do
+        StripeService::Charge.update(
+          @stripe_invoice[:charge],
+          { metadata: { event_id: recurring_donation.event.id } },
+        )
+      end
+
       first_donation = recurring_donation.donations.none?
 
       donation = recurring_donation.donations.build(
