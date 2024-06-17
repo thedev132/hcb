@@ -856,15 +856,16 @@ summary {
 }
 
 .events-filter-select {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  gap: 0px 16px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .events-filter-select > label {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 300px;
+  margin-right: 16px;
 }
 
 .events-filter-select > label > select, .events-filter-select > label > input {
