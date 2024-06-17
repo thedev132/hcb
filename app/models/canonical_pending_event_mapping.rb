@@ -23,7 +23,7 @@
 #  fk_rails_...  (event_id => events.id)
 #
 class CanonicalPendingEventMapping < ApplicationRecord
-  after_create_commit { broadcast_refresh_later_to(event, :transactions) }
+  broadcasts_refreshes_to ->(mapping) { [mapping.event, :transactions] }
 
   belongs_to :canonical_pending_transaction
   belongs_to :event
