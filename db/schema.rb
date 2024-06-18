@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_17_130219) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_18_141324) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -777,8 +777,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_17_130219) do
 
   create_table "events", force: :cascade do |t|
     t.text "name"
-    t.datetime "start", precision: nil
-    t.datetime "end", precision: nil
     t.text "address"
     t.decimal "sponsorship_fee"
     t.datetime "created_at", precision: nil, null: false

@@ -20,7 +20,6 @@
 #  donation_page_message                        :text
 #  donation_reply_to_email                      :text
 #  donation_thank_you_message                   :text
-#  end                                          :datetime
 #  expected_budget                              :integer
 #  has_fiscal_sponsorship_document              :boolean
 #  hidden_at                                    :datetime
@@ -45,7 +44,6 @@
 #  reimbursements_require_organizer_peer_review :boolean          default(FALSE), not null
 #  slug                                         :text
 #  sponsorship_fee                              :decimal(, )
-#  start                                        :datetime
 #  stripe_card_shipping_type                    :integer          default("standard"), not null
 #  transaction_engine_v2_at                     :datetime
 #  webhook_url                                  :string
