@@ -45,7 +45,7 @@ export default class extends Controller {
   static values = {
     title: String,
     linking: { type: Boolean, default: false },
-    pastable: { type: Boolean, default: false },
+    globalPaste: { type: Boolean, default: false },
     receiptable: String,
     modal: String,
   }
@@ -56,12 +56,16 @@ export default class extends Controller {
 
     this.submitting = false
 
-    if (this.pastableValue) {
-      document.body.addEventListener('paste', e => {
-        e.dataTransfer = e.clipboardData
-        this.drop(e)
-      })
-    }
+    const element = this.globalPasteValue
+      ? document.body
+      : this.hasFormTarget
+        ? this.formTarget
+        : this.element
+
+    element.addEventListener('paste', e => {
+      e.dataTransfer = e.clipboardData
+      this.drop(e)
+    })
   }
 
   dragover(e) {
@@ -69,7 +73,7 @@ export default class extends Controller {
   }
 
   async drop(e) {
-    e.preventDefault()
+    if (!e.clipboardData) e.preventDefault()
 
     this.counter = 0
     this.hideDropzone()
@@ -105,6 +109,9 @@ export default class extends Controller {
     }
 
     this.submitting = true
+
+    if (e.clipboardData && this.dropzoneTarget.contains(e.target))
+      e.stopImmediatePropagation()
   }
 
   dragenter() {

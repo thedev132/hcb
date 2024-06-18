@@ -12,7 +12,7 @@
           ",
           "file-drop-target" => ("dropzone" if defined?(restricted_dropzone)),
           "file-drop-title-value" => defined?(restricted_dropzone) ? "Drop to add to Receipt Bin." : "Drop to instantly add a receipt.",
-          "file-drop-pastable-value" => defined?(pastable) ? "true" : "false"
+          "file-drop-global-paste-value" => defined?(global_paste) && global_paste ? "true" : "false"
         }.compact, html: {
           onsubmit: "
             const button = $('#upload-receipt-button', this);
