@@ -14,6 +14,10 @@ class User
       "an unknown method"
     end
 
+    def human_kind
+      "unknown"
+    end
+
   end
 
 end

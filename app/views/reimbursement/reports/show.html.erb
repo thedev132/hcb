@@ -16,8 +16,8 @@
   <h3 class="mt2 mb1 muted flex items-start" style="font-weight: 400; gap: 4px;">
     <span style="flex-grow: 1;">
       <%= user_mention @user, { class: "tooltipped--s align-top" } %>
-      <%= "will be reimbursed " if @report.reimbursement_approved? %>
-      <%= "was reimbursed " if @report.reimbursed? %>
+      <%= "will be reimbursed " if @report.reimbursement_approved? || @report.reimbursed? && !@report.payout_holding.sent? %>
+      <%= "was reimbursed " if @report.reimbursed? && @report.payout_holding.sent? %>
       <%= "requested " if @report.rejected? %>
       <%= "is requesting " unless @report.closed? %>
       <%= render "total", report: @report %>

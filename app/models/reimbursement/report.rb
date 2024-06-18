@@ -144,7 +144,9 @@ module Reimbursement
     def status_text
       return "Review Requested" if submitted?
       return "Processing" if reimbursement_requested?
+      return "⚠️ Processing" if reimbursed? && payout_holding&.failed?
       return "In Transit" if reimbursement_approved?
+      return "In Transit" if reimbursed? && !payout_holding.sent?
 
       aasm_state.humanize.titleize
     end
@@ -161,6 +163,7 @@ module Reimbursement
       return "info" if submitted?
       return "error" if rejected?
       return "purple" if reimbursement_requested?
+      return "warning" if reimbursed? && payout_holding&.failed?
       return "success" if reimbursement_approved? || reimbursed?
 
       return "primary"
