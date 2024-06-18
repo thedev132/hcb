@@ -11,7 +11,8 @@
             dragleave#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragleave
           ",
           "file-drop-target" => ("dropzone" if defined?(restricted_dropzone)),
-          "file-drop-title-value" => defined?(restricted_dropzone) ? "Drop to add to Receipt Bin." : "Drop to instantly add a receipt."
+          "file-drop-title-value" => defined?(restricted_dropzone) ? "Drop to add to Receipt Bin." : "Drop to instantly add a receipt.",
+          "file-drop-pastable-value" => defined?(pastable) ? "true" : "false"
         }.compact, html: {
           onsubmit: "
             const button = $('#upload-receipt-button', this);

@@ -140,6 +140,7 @@ class ReceiptsController < ApplicationController
         restricted_dropzone: params[:upload_method] != :transaction_page,
         include_spacing: params[:upload_method] != :receipt_center,
         success: "#{"Receipt".pluralize(params[:file].length)} added!",
+        pastable: true,
         turbo: true
       }
       if @receiptable && !@frame

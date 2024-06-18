@@ -28,7 +28,8 @@
   <%= render partial: "receipts/form_v3", locals: {
         upload_method: "receipt_center",
         restricted_dropzone: true,
-        turbo: true
+        turbo: true,
+        pastable: true
       } %>
 
   <%= render partial: "receipts/blankslate", locals: { count: @receipts.size } %>

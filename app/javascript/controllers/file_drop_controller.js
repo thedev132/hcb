@@ -45,6 +45,7 @@ export default class extends Controller {
   static values = {
     title: String,
     linking: { type: Boolean, default: false },
+    pastable: { type: Boolean, default: false },
     receiptable: String,
     modal: String,
   }
@@ -54,6 +55,13 @@ export default class extends Controller {
     this.counter = 0
 
     this.submitting = false
+
+    if (this.pastableValue) {
+      document.body.addEventListener('paste', e => {
+        e.dataTransfer = e.clipboardData
+        this.drop(e)
+      })
+    }
   }
 
   dragover(e) {
