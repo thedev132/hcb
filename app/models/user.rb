@@ -7,6 +7,7 @@
 #  id                       :bigint           not null, primary key
 #  access_level             :integer          default("user"), not null
 #  birthday_ciphertext      :text
+#  charge_notifications     :integer          default("email_and_sms"), not null
 #  comment_notifications    :integer          default("all_threads"), not null
 #  email                    :text
 #  full_name                :string
@@ -146,6 +147,8 @@ class User < ApplicationRecord
   validate :profile_picture_format
 
   enum comment_notifications: { all_threads: 0, my_threads: 1, no_threads: 2 }
+
+  enum charge_notifications: { email_and_sms: 0, email: 1, sms: 2, nothing: 3 }, _prefix: :charge_notifications
 
   comma do
     id
@@ -318,6 +321,14 @@ class User < ApplicationRecord
 
   def last_login_at
     user_sessions.maximum(:created_at)
+  end
+
+  def email_charge_notifications_enabled?
+    charge_notifications_email? || charge_notifications_email_and_sms?
+  end
+
+  def sms_charge_notifications_enabled?
+    charge_notifications_sms? || charge_notifications_email_and_sms?
   end
 
   private

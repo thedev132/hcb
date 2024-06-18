@@ -137,7 +137,7 @@
       <% end %>
       <% unless @onboarding %>
         <fieldset>
-          <legend class="heading h2 pt2">Comment Notifications</legend>
+          <legend class="heading h2 pt2">Comment notifications</legend>
           <p class="h5 muted mt1 mb2">
             Which comments would you like to receive notifications for?
           </p>
@@ -155,6 +155,34 @@
             <%= form.radio_button :comment_notifications, :no_threads %>
             <%= form.label :comment_notifications, value: :no_threads do %>
               <%= inline_icon "support", size: 28 %>
+              <strong>Nothing</strong>
+            <% end %>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend class="heading h2 pt2">Charge notifications</legend>
+          <p class="h5 muted mt1 mb2">
+            How would you like to receive charge notifications?
+          </p>
+          <div class="field field--options field--green">
+            <%= form.radio_button :charge_notifications, :email_and_sms %>
+            <%= form.label :charge_notifications, value: :email_and_sms do %>
+              <%= inline_icon "announcement", size: 28 %>
+              <strong>Email & SMS</strong>
+            <% end %>
+            <%= form.radio_button :charge_notifications, :email %>
+            <%= form.label :charge_notifications, value: :email do %>
+              <%= inline_icon "email", size: 28 %>
+              <strong>Email</strong>
+            <% end %>
+            <%= form.radio_button :charge_notifications, :sms %>
+            <%= form.label :charge_notifications, value: :sms do %>
+              <%= inline_icon "message", size: 28 %>
+              <strong>SMS</strong>
+            <% end %>
+            <%= form.radio_button :charge_notifications, :nothing %>
+            <%= form.label :charge_notifications, value: :nothing do %>
+              <%= inline_icon "view-close", size: 28 %>
               <strong>Nothing</strong>
             <% end %>
           </div>
