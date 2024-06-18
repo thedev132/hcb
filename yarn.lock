@@ -5023,12 +5023,7 @@ seed-shuffle@^1.0.0:
   resolved "https://registry.npmjs.org/seed-shuffle/-/seed-shuffle-1.0.0.tgz"
   integrity sha512-3X5+dwKT4IVbvAPO+gBOQhG4y/rjKHY2VMwx1z3ArQB3S+hpGOypk0WhiLGOfg64ClpyBAwXa0yzxOowiM43gQ==
 
-semver@7.0.0:
-  version "7.0.0"
-  resolved "https://registry.npmjs.org/semver/-/semver-7.0.0.tgz"
-  integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
-
-semver@^6.1.1, semver@^6.1.2, semver@^6.3.0, semver@^6.3.1:
+semver@^6.3.0, semver@^6.3.1:
   version "6.3.1"
   resolved "https://registry.npmjs.org/semver/-/semver-6.3.1.tgz"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==

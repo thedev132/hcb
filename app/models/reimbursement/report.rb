@@ -66,6 +66,8 @@ module Reimbursement
     include PublicActivity::Model
     tracked owner: proc{ |controller, record| controller&.current_user }, recipient: proc { |controller, record| record.user }, event_id: proc { |controller, record| record.event.id }, only: [:create]
 
+    broadcasts_refreshes_to ->(report) { report }
+
     acts_as_paranoid
 
     after_create_commit do

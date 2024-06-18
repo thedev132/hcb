@@ -54,6 +54,8 @@ module Reimbursement
     validates :expense_number, uniqueness: { scope: :reimbursement_report_id }
     validate :valid_expense_type
 
+    broadcasts_refreshes_to ->(expense) { expense.report }
+
     before_validation do
       unless self.expense_number
         self.expense_number = (self.report.expenses.with_deleted.pluck(:expense_number).max || 0) + 1

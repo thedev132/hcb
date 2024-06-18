@@ -2,6 +2,8 @@
 <% page_md %>
 <%= render "events/nav", selected: :reimbursements unless @use_user_nav %>
 <%= render "users/nav", selected: :reimbursements if @use_user_nav %>
+<%= turbo_stream_from @report %>
+<% turbo_refreshes_with method: :morph, scroll: :preserve %>
 
 <div class="md:mt-12">
     <% admin_tool "w-fit" do %>
