@@ -60,3 +60,8 @@
 
   <%= form.submit "Add note", disabled: !organizer_signed_in? && current_user != commentable&.try(:user) %>
 <% end %>
+
+<% unless @popover %>
+  <%= turbo_stream_from commentable, :comments %>
+  <% turbo_refreshes_with method: :morph, scroll: :preserve %>
+<% end %>

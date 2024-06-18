@@ -55,6 +55,8 @@ class Comment < ApplicationRecord
 
   after_create_commit :send_notification_email
 
+  broadcasts_refreshes_to ->(comment) { [comment.commentable, :comments] } unless Rails.env.test?
+
   def edited?
     has_untracked_edit? or
       versions.where("event = 'update' OR event = 'destroy'").any?
