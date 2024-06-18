@@ -39,8 +39,15 @@ class FeaturesController < ApplicationController
       if Flipper.disable_actor(feature, actor)
         # If it's the user permissions feature, make all the users & invites in the org managers.
         if feature == "user_permissions_2024_03_09" && actor.is_a?(Event)
+          # Disable all spending controls
+          actor.organizer_positions.each { |op| op.active_spending_control&.deactivate }
+          Flipper.disable_actor("spending_controls_2024_06_03", actor)
+
           actor.organizer_positions.update_all(role: :manager)
           actor.organizer_position_invites.pending.update_all(role: :manager)
+        elsif feature == "spending_controls_2024_06_03" && actor.is_a?(Event)
+          # Disable all controls
+          actor.organizer_positions.each { |op| op.active_spending_control&.deactivate }
         end
         flash[:success] = "You've opted out of this beta; please let us know if you had any feedback."
       else
