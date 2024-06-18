@@ -10,6 +10,19 @@
   <%= settings_tab active: @settings_tab == "details" || @settings_tab.nil? do %>
     <%= link_to "Organization details", edit_event_path(@event, tab: "details"), data: { turbo: true, turbo_action: "advance" } %>
   <% end %>
+  <% unless @event.unapproved? %>
+    <%= settings_tab active: @settings_tab == "donations" do %>
+      <%= link_to "Donations", edit_event_path(@event, tab: "donations"), data: { turbo: true, turbo_action: "advance" } %>
+    <% end %>
+    <%= settings_tab active: @settings_tab == "reimbursements" do %>
+      <%= link_to "Reimbursements", edit_event_path(@event, tab: "reimbursements"), data: { turbo: true, turbo_action: "advance" } %>
+    <% end %>
+    <% if @event.card_grant_setting.present? %>
+      <%= settings_tab active: @settings_tab == "card_grants" do %>
+        <%= link_to "Card grants", edit_event_path(@event, tab: "card_grants"), data: { turbo: true, turbo_action: "advance" } %>
+      <% end %>
+    <% end %>
+  <% end %>
   <%= settings_tab active: @settings_tab == "features" do %>
     <%= link_to "Feature previews", edit_event_path(@event, tab: "features"), data: { turbo: true, turbo_action: "advance" } %>
   <% end %>
@@ -22,6 +35,12 @@
 
 <% if @settings_tab == "features" %>
   <%= render "events/settings/features", event: @event %>
+<% elsif @settings_tab == "donations" %>
+  <%= render "events/settings/donations", event: @event %>
+<% elsif @settings_tab == "reimbursements" %>
+  <%= render "events/settings/reimbursements", event: @event %>
+<% elsif @settings_tab == "card_grants" %>
+  <%= render "events/settings/card_grants", event: @event %>
 <% elsif @settings_tab == "admin" && admin_signed_in? %>
   <%= render "events/settings/admin", event: @event %>
 <% else %>
