@@ -189,7 +189,7 @@ class Check < ApplicationRecord
   end
 
   def url
-    lob_url || ::CheckService::LobUrl::Generate.new(check: self).run
+    lob_url
   end
 
   def smart_memo
