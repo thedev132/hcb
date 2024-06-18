@@ -271,7 +271,7 @@ class ReceiptsController < ApplicationController
       )
     end
 
-    if @receiptable.is_a?(HcbCode) && on_transaction_page? && !((@receiptable.stripe_card? || @receiptable.stripe_force_capture?) && @receiptable.stripe_card.present?)
+    if @receiptable.is_a?(HcbCode) && on_transaction_page? && !@receiptable.stripe_refund?
       @hcb_code = @receiptable
       streams.append(
         turbo_stream.replace(
