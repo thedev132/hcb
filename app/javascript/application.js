@@ -48,5 +48,6 @@ Alpine.start()
 import LocalTime from 'local-time'
 LocalTime.start()
 
+import 'chartkick/chart.js'
 import '@github/text-expander-element'
 import '@oddbird/popover-polyfill'

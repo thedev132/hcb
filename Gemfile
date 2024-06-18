@@ -207,6 +207,7 @@ gem "jbuilder", "~> 2.11"
 gem "ledgerjournal"
 gem "doorkeeper", "~> 5.6"
 
+gem "chartkick"
 gem "cssbundling-rails", "~> 1.4"
 
 gem "sprockets-rails", "~> 3.4"

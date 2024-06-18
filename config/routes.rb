@@ -622,8 +622,8 @@ Rails.application.routes.draw do
   get "/event_by_airtable_id/:airtable_id" => "events#by_airtable_id"
   resources :events, except: [:new, :create], path_names: { edit: "settings" }, path: "/" do
     get "edit", to: redirect("/%{event_id}/settings")
+    get "breakdown"
     put "toggle_hidden"
-
     post "claim_point_of_contact"
 
     post "remove_header_image"

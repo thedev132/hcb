@@ -14,7 +14,12 @@
       tooltip: "View your transactions",
       icon: "transactions",
       selected: local_assigns[:selected] == :transactions %>
-    <h4 class="mb0 h4 font-medium muted">Receive</h4>
+    <%= dock_item "Breakdown",
+      event_breakdown_path(event_id: @event.slug),
+      tooltip: "Breakdown",
+      icon: "grid",
+      selected: local_assigns[:selected] == :breakdown if policy(@event).breakdown? %>
+    <h4 class="mb0 h5 muted">Receive</h4>
     <hr>
     <%= dock_item "Donations",
       @event&.partner&.external? ? event_partner_donation_overview_path(event_id: @event.slug) :

@@ -1,0 +1,147 @@
+<% title "Breakdown of #{@event.name}'s finances" %>
+<%= page_md %>
+<%= render "nav", selected: :breakdown %>
+
+<% if @event&.is_public %>
+  <% content_for :head do %>
+    <% img = "https://hcb-og.hackclub.com/api/embeds/#{@event.slug}" %>
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image" content="<%= img %>">
+    <meta name="twitter:image" content="<%= img %>">
+    <meta property="og:site_name" content="HCB">
+    <meta property="og:url" content="<%= event_url(@event) %>">
+    <meta property="og:title" content="<%= @event.name %>">
+    <meta name="twitter:title" content="<%= @event.name %>">
+    <% description = "#{@event.name}'s finances have been made public on HCB so you can see how their money is spent." %>
+    <meta property="og:description" content="<%= description %>">
+    <meta name="twitter:description" content="<%= description %>">
+    <meta name="description" content="<%= description %>">
+  <% end %>
+<% end %>
+
+<h1>Breakdown</h1>
+
+<% line_chart_config = {
+     elements: { point: { radius: 0 } },
+     scales: {
+       y: {
+         title: {
+           color: "gray",
+           font: {
+             size: 14,
+             weight: "900",
+           },
+         },
+       },
+       x: {
+         border: {
+           display: false
+         },
+         grid: {
+           display: false,
+         },
+         title: {
+           color: "gray",
+           font: {
+             size: 14,
+             weight: "900",
+           },
+         },
+       },
+     }
+   }
+
+   def pie_chart_config(legend_position)
+     {
+       elements: {
+         arc: {
+           borderWidth: 0
+         }
+       },
+       plugins: {
+         legend: {
+           position: legend_position,
+           align: legend_position == "bottom" ? "center" : "start",
+           labels: {
+             boxWidth: 10,
+             boxHeight: 10,
+             usePointStyle: "circle"
+           }
+         }
+       }
+     }
+   end %>
+
+<div class="statset mt2 mb3">
+  <div class="stat tooltipped tooltipped--s pr3" aria-label="This excludes archived invoices">
+    <span class="stat__label">Account balance</span>
+    <span class="stat__value"><%= render_money_amount(@event.balance) %></span>
+  </div>
+  <div class="stat stat--small">
+    <span class="stat__label">Amount raised</span>
+    <span class="stat__value"><%= render_money_amount @event.total_raised %></span>
+  </div>
+  <div class="stat stat--small">
+    <span class="stat__label">Amount spent</span>
+    <span class="stat__value"><%= render_money_amount @event.total_raised - @event.balance %></span>
+  </div>
+</div>
+
+<div class="grid-container mb3">
+  <% 7.times do |x| %>
+    <% 53.times do |y| %>
+      <% entry = @heatmap.to_a[y * 7 + x][1] %>
+      <% label = @heatmap.to_a[y * 7 + x][0] %>
+      <% pos_bg = "rgba(57, 211, 83, #{Math.log(entry[:positive]) / Math.log(@maximum_positive_change)})" %>
+      <% neg_bg = "rgba(248, 81, 73, #{Math.log(entry[:negative].abs) / Math.log(@maximum_negative_change.abs)})" %>
+
+      <% if entry[:positive] > 0 && entry[:negative] == 0 %>
+        <div class="grid-item tooltipped tooltipped--s"
+             aria-label="<%= label %>"
+             style="background-color: <%= pos_bg %>">
+        </div>
+      <% elsif entry[:negative] < 0 && entry[:positive] == 0 %>
+        <div class="grid-item tooltipped tooltipped--s"
+             aria-label="<%= label %>"
+             style="background-color: <%= neg_bg %>">
+        </div>
+      <% elsif entry[:negative] + entry[:positive] != 0 %>
+        <div class="grid-item tooltipped tooltipped--s"
+             aria-label="<%= label %>"
+             style="background: linear-gradient(135deg, <%= pos_bg %>, <%= pos_bg %> 50%, <%= neg_bg %> 50%)">
+        </div>
+      <% else %>
+        <div class="grid-item card" title="<%= label %>"></div>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+<% if @tags.any? %>
+  <div class="breakdown-row">
+    <div class="card--breakdown" style="flex: 1">
+      <h3>By Tag</h3>
+      <%= pie_chart @tags, library: pie_chart_config("right"), download: true %>
+    </div>
+  </div>
+<% end %>
+
+<div class="breakdown-row">
+  <div class="card--breakdown" style="flex: 1">
+    <h3>By User</h3>
+    <%= pie_chart @users, library: pie_chart_config("right"), download: true %>
+  </div>
+</div>
+
+<div class="breakdown-row">
+  <div class="card--breakdown" style="flex: 1">
+    <h3>By Merchant</h3>
+    <%= column_chart @merchants, colors: ["#EC3750"], xtitle: "Merchant", ytitle: "Amount", id: "merchant-chart", dataset: { borderWidth: 0 }, library: line_chart_config, download: true %>
+  </div>
+
+  <div class="card--breakdown" style="flex: 1">
+    <h3>By Category</h3>
+    <%= pie_chart @categories, library: pie_chart_config("bottom"), download: true %>
+  </div>
+</div>

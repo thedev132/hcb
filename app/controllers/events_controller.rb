@@ -215,6 +215,22 @@ class EventsController < ApplicationController
     end
   end
 
+  def breakdown
+    authorize @event
+
+    @heatmap = BreakdownEngine::Heatmap.new(@event).run
+    @maximum_positive_change = @heatmap.values.max { |change| change[:positive] } || 0
+    @maximum_negative_change = @heatmap.values.min { |change| change[:negative] } || 0
+
+    @merchants = BreakdownEngine::Merchants.new(@event).run
+
+    @categories = BreakdownEngine::Categories.new(@event).run
+
+    @users = BreakdownEngine::Users.new(@event).run
+
+    @tags = BreakdownEngine::Tags.new(@event).run
+  end
+
   def balance_by_date
     begin
       authorize @event

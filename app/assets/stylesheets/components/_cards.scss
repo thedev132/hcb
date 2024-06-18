@@ -155,3 +155,12 @@ a.card {
 .card--sunset {
   background-image: url('https://cloud-awvmmj0xe.vercel.app/sunset_card.png');
 }
+
+.card--breakdown {
+  @extend .card;
+  @extend .border;
+  padding: 20px;
+  padding-top: 0px;
+  padding-bottom: 24px;
+  border: 1px solid map-get($palette, smoke);
+}
