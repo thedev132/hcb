@@ -589,7 +589,7 @@ class Event < ApplicationRecord
     elsif unapproved?
       "pending approval"
     elsif hack_club_hq?
-      "hack club affiliated project"
+      "Hack Club affiliated project"
     elsif salary?
       "salary account"
     elsif sponsorship_fee == 0
