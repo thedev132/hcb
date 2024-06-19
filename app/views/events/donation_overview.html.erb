@@ -9,6 +9,10 @@
   </span>
   <% unless show_mock_data? %>
     <% if organizer_signed_in? && @donations.not_pending.any? %>
+      <%= pop_icon_to "email",
+          "mailto:?bcc=#{@donations.not_pending.pluck(:email).uniq.compact.join(',')}",
+          target: "_blank",
+          class: "tooltipped tooltipped--s", "aria-label": "Email donors" %>
       <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
         <%= inline_icon "download" %>
         <div class="menu__content h5" data-behavior="menu_content">
