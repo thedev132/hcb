@@ -7,7 +7,7 @@
   <% if @event.public_reimbursement_page_enabled? %>
     <%= link_to reimbursement_start_reimbursement_report_url(@event), target: "_blank", class: "btn" do %>
       <%= inline_icon "external" %>
-      Public Form
+      Public form
     <% end %>
   <% end %>
   <%= link_to "#", class: "btn bg-success", data: { behavior: "modal_trigger", modal: "create" } do %>

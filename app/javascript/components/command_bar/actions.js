@@ -414,7 +414,7 @@ export const adminActions = adminUrls => [
     id: 'admin_tool_29',
     section: 'Admin Tools',
     priority: Priority.HIGH,
-    name: 'Google Workspace Waitlist',
+    name: 'Google Workspace waitlist',
     icon: <Icon glyph="google" size={16} />,
     perform: () =>
       (window.location.href = adminUrls['Google Workspace Waitlist']),

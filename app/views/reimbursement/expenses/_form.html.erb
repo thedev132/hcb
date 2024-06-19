@@ -33,7 +33,7 @@
     <% elsif expense.report.submitted? %>
       <%= link_to reimbursement_expense_unapprove_path(expense_id: expense.id), class: "btn bg-muted", data: { turbo: true, "turbo-method": "post" } do %>
         <%= inline_icon "reply" %>
-        Remove Approval
+        Remove approval
       <% end %>
     <% end %>
   <% end %>

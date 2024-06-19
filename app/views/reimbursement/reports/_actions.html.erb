@@ -34,7 +34,7 @@
         <% elsif !report.closed? %>
           <%= link_to reimbursement_report_reject_path(report_id: report.id), class: "btn bg-error", data: { turbo: true, turbo_method: :post } do %>
             <%= inline_icon "thumbsdown" %>
-            Reject & Close Report
+            Reject & close report
           <% end %>
         <% end %>
       </div>
@@ -71,7 +71,7 @@
         <div style="flex-grow: 1;" class="flex justify-start items-center" style="gap: 4px;">
           <%= button_to reimbursement_report_path(report), class: "btn bg-error", method: :delete, type: "button" do %>
             <%= inline_icon "delete" %>
-            Cancel Report
+            Cancel report
           <% end %>
         </div>
       <% end %>
@@ -98,7 +98,7 @@
             <div class="tooltipped tooltipped--n" aria-label="<%= user.name %> is missing payout information.">
               <div class="btn bg-info disabled">
                 <%= inline_icon "send" %>
-                Submit & Request Review
+                Submit & request review
                 <% button_hint = capture do %>
                   <span class="bold">Status:</span> before <%= user.first_name %> can be reimbursed, they need to add their payout information.
                 <% end %>
@@ -119,7 +119,7 @@
         <% elsif !report.may_mark_submitted? && report.draft? %>
           <div class="btn bg-info disabled">
             <%= inline_icon "send" %>
-            Submit & Request Review
+            Submit & request review
             <% button_hint = capture do %>
               <% if report.expenses.none? %>
                 Get started by adding an expense to this report.
@@ -133,7 +133,7 @@
         <% elsif report.draft? && !::Shared::AmpleBalance.ample_balance?(report.amount_cents, report.event) && !report.team_review_required? %>
           <div class="btn bg-info disabled">
             <%= inline_icon "send" %>
-            Submit & Request Review
+            Submit & request review
             <% button_hint = capture do %>
               <span class="bold warning">Warning</span>: your report is beyond your balance. To continue, lower the amount requested.
             <% end %>
@@ -141,7 +141,7 @@
         <% elsif report.initial_draft? %>
           <%= link_to reimbursement_report_submit_path(report_id: report.id), class: "btn bg-info", method: :post do %>
             <%= inline_icon "send" %>
-            Submit & Request Review
+            Submit & request review
             <% button_hint = capture do %>
               <span class="bold">Your next step:</span> after adding all of your expenses, submit the report to request a review.
             <% end %>
@@ -149,7 +149,7 @@
         <% elsif report.draft? %>
           <%= link_to "#", class: "btn bg-info", data: { behavior: "modal_trigger", modal: "submit" } do %>
             <%= inline_icon "send" %>
-            Submit & Request Review
+            Submit & request review
             <% button_hint = capture do %>
               <span class="bold">Your next step:</span> after adding all of your expenses, submit the report to request a review.
             <% end %>
