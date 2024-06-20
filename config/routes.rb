@@ -655,7 +655,9 @@ Rails.application.routes.draw do
     get "expensify"
     get "reimbursements"
     get "donations", to: "events#donation_overview", as: :donation_overview
-    get "partner_donations", to: "events#partner_donation_overview", as: :partner_donation_overview
+    get "partner_donations", to: "events#partner_donation_overview", as: :partner_donation_overviews
+    get "activation_flow", to: "events#activation_flow", as: :activation_flow
+    post "activate", to: "events#activate", as: :activate
     post "demo_mode_request_meeting"
     post "finish_signee_backfill"
     resources :disbursements, only: [:new, :create]

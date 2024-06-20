@@ -201,6 +201,14 @@ class EventPolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def activation_flow?
+    user&.admin? && record.demo_mode?
+  end
+
+  def activate?
+    user&.admin? && record.demo_mode?
+  end
+
   private
 
   def admin_or_user?
