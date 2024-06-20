@@ -22,6 +22,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       <KBarProvider
         actions={[...initalActions, ...(admin ? adminActions(adminUrls) : [])]}
       >
+        <ButtonTrigger />
         <KBarPortal>
           <KBarPositioner style={{ zIndex: 1000 }}>
             <SearchAndResults />
@@ -30,6 +31,15 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       </KBarProvider>
     </div>
   )
+}
+
+const ButtonTrigger = () => {
+  const { query } = useKBar()
+  if (document.getElementById('command_bar_trigger')) {
+    document.getElementById('command_bar_trigger').onclick = function () {
+      query.toggle()
+    }
+  }
 }
 
 const animatorStyle = {

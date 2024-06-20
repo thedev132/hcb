@@ -50,6 +50,16 @@ input[type='submit'],
     @include gradient(primary);
   }
 
+  &.bg-smoke {
+    background-color: lighten(map-get($palette, smoke), 3%);
+    color: darken(map-get($palette, smoke), 50%) !important;
+
+    html[data-dark='true'] & {
+      background-color: darken(map-get($palette, slate), 13%);
+      color: lighten(map-get($palette, slate), 50%) !important;
+    }
+  }
+
   &.bg-muted {
     @include gradient(muted);
   }
