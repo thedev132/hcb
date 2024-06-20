@@ -62,7 +62,7 @@
 
     <% unless show_mock_data? %>
       <div style="text-align: center;">
-        <%= link_to "All", event_cards_overview_path(event_id: @event.slug), class: "filterbar__item", "aria-selected": @status.nil?, role: "tab" %>
+        <%= link_to "All", event_cards_overview_path(event_id: @event.slug, view: params[:view], q: @q), class: "filterbar__item", "aria-selected": @status.nil?, role: "tab" %>
         <% %w[virtual physical active inactive].each do |status| %>
           <%= link_to status.humanize, "?status=#{status}#{"&q=#{@q}" if @q}#{"&view=#{params[:view]}" if params[:view]}", class: "filterbar__item", "aria-selected": @status == status, role: "tab" %>
         <% end %>
