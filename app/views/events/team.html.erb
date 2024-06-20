@@ -1,18 +1,19 @@
 <% title "Team overview" %>
-<% page_sm %>
+<% page_md if params[:view] == "list" %>
+<% page_sm unless params[:view] == "list" %>
 <%= render "nav", selected: :team %>
 
 <h1 class="heading">
-  <span class="flex items-center">
+  <span class="flex flex-grow items-center">
     Team
     <%= badge_for @all_positions.size, class: "bg-muted" %>
   </span>
 
+  <%= pop_icon_to params[:view] == "list" ? "grid" : "list",
+   "?view=#{params[:view] == 'list' ? 'grid' : 'list'}#{"&q=#{@q}" if @q}#{"&status=#{@status}" if @status}" %>
+
   <% if organizer_signed_in? %>
-    <%= mail_to @all_positions.map { |op| op.user.email_address_with_name }.join(","), class: "btn btn--icon bg-info" do %>
-      <%= inline_icon "email" %>
-      Email everyone
-    <% end %>
+    <%= pop_icon_to "email", "mailto:#{@all_positions.map { |op| op.user.email_address_with_name }.join(",")}" %>
   <% end %>
 
   <% if policy(@event).can_invite_user? %>
@@ -30,13 +31,39 @@
   </section>
 <% end %>
 
-<% if @all_positions.any? %>
-  <%= turbo_frame_tag "team_position" do %>
-    <%= render partial: "organization_position", collection: @positions, as: :position %>
-    <%= paginate @positions %>
+<% if params[:view] == "list" %>
+  <% if @all_positions.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Date invited</th>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Contact</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% if @all_positions.any? %>
+      <%= turbo_frame_tag "team_position" do %>
+        <%= render partial: "organizer_position_row", collection: @positions, as: :position %>
+      <% end %>
+    <% end %>
+  </table>
+  <%= paginate @positions %>
+  <% else %>
+    <%= blankslate "No others on your team yet" %>
   <% end %>
 <% else %>
-  <%= blankslate "No others on your team yet" %>
+
+  <% if @all_positions.any? %>
+    <%= turbo_frame_tag "team_position" do %>
+      <%= render partial: "organization_position", collection: @positions, as: :position %>
+      <%= paginate @positions %>
+    <% end %>
+  <% else %>
+    <%= blankslate "No others on your team yet" %>
+  <% end %>
 <% end %>
 
 <% if @pending.any? %>
