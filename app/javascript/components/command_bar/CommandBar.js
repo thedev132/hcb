@@ -21,6 +21,10 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
     <div style={{ position: 'relative', zIndex: '1000' }}>
       <KBarProvider
         actions={[...initalActions, ...(admin ? adminActions(adminUrls) : [])]}
+        options={{
+          disableScrollbarManagement: true,
+          disableDocumentLock: true,
+        }}
       >
         <ButtonTrigger />
         <KBarPortal>
