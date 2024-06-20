@@ -125,7 +125,7 @@
   <p>You can start accepting donations once you enable it in your organization’s <%= link_to "settings", edit_event_path(@event, anchor: "donations") %>.</p>
 <% end %>
 
-<div class="mt3 mb2">
+<div class="mt3 mb2 statset">
   <div class="stat">
     <span class="stat__label">Total</span>
     <span class="stat__value"><%= render_money_amount @stats[:deposited] %></span>
