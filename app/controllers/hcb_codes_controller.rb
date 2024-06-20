@@ -69,6 +69,7 @@ class HcbCodesController < ApplicationController
   def edit
     @hcb_code = HcbCode.find_by(hcb_code: params[:id]) || HcbCode.find(params[:id])
     @event = @hcb_code.event
+    @ai_memo = params[:display_ai_memo] == "true" ? @hcb_code.suggested_memos.last : nil
 
     authorize @hcb_code
 

@@ -56,8 +56,11 @@ module.exports = {
       },
       colors: {
         slate: '#3c4858',
+        smoke: '#e0e6ed',
         muted: '#8492a6',
         snow: '#f9fafc',
+        darkless: '#252429',
+        dark: '#17171d'
       },
     },
   },

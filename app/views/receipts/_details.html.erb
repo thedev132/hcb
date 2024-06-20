@@ -1,0 +1,77 @@
+<h2 class="mt-0">
+  <span style="vertical-align: text-bottom;"><%= user_mention(receipt.user, { avatar: { style: "vertical-align: baseline;" }, style: "color: red;" }) %></span>'s receipt
+</h2>
+
+<% if Flipper.enabled?(:ai_memos_2024_06_20, current_user) %>
+  <% if receipt.suggested_memo %>
+    <p class="mt-0"><%= receipt.suggested_memo %></p>
+  <% end %>
+
+  <% if receipt.data_extracted? && (
+    receipt.extracted_total_amount_cents ||
+    receipt.extracted_card_last4 ||
+    receipt.extracted_date
+  ) %>
+
+    <section class="details mt0">
+      <% if receipt.extracted_merchant_name %>
+        <div class="fs-mask" style="grid-template-columns: 7rem auto;">
+          <strong style="font-weight: 600;">Merchant</strong>
+          <% if receipt.extracted_merchant_url %>
+            <%= link_to receipt.extracted_merchant_name, receipt.extracted_merchant_url, target: "_blank" %>
+          <% else %>
+            <%= receipt.extracted_merchant_name %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if receipt.extracted_total_amount_cents %>
+        <div class="fs-mask" style="grid-template-columns: 7rem auto;">
+          <strong style="font-weight: 600;">Amount</strong>
+          <%= render_money receipt.extracted_total_amount_cents %>
+        </div>
+      <% end %>
+
+      <% if receipt.extracted_date %>
+        <div class="fs-mask" style="grid-template-columns: 7rem auto;">
+          <strong style="font-weight: 600;">Date</strong>
+          <%= format_date receipt.extracted_date %>
+        </div>
+      <% end %>
+
+      <% if receipt.extracted_card_last4 %>
+        <div class="fs-mask" style="grid-template-columns: 7rem auto;">
+          <strong style="font-weight: 600;">Card last 4</strong>
+          <%= "•••• #{receipt.extracted_card_last4}" %>
+        </div>
+      <% end %>
+    </section>
+
+    <small class="mt2 flex flex-row justify-between gap-2" style="color: var(--ai);">
+      <small class="flex flex-row content-start gap-2 tooltipped tooltipped--n" aria-label="HCB uses AI to extract key features from your receipts.">
+        <%= inline_icon "rep", size: 30, class: "m-[-6px]" %>
+        Data extracted by HCB
+      </small>
+    </small>
+
+    <hr class="my2">
+
+  <% end %>
+<% end %>
+
+<section class="details break-words">
+  <div class="fs-mask" style="grid-template-columns: 7rem calc(100% - 7rem); word-wrap: break-word">
+    <strong style="font-weight: 600;">Name</strong>
+    <span style="word-wrap: break-word; width: 100%;"><%= receipt.file.blob.filename %></span>
+  </div>
+
+  <div class="fs-mask" style="grid-template-columns: 7rem auto;">
+    <strong style="font-weight: 600;">Uploaded</strong>
+    <%= relative_timestamp receipt.created_at %>
+  </div>
+
+  <div class="fs-mask" style="grid-template-columns: 7rem auto;">
+    <strong style="font-weight: 600;">Size</strong>
+    <%= number_to_human_size receipt.file.blob.byte_size %>
+  </div>
+</section>

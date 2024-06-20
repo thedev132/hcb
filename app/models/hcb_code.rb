@@ -26,6 +26,8 @@ class HcbCode < ApplicationRecord
   include Commentable
   include Receiptable
 
+  include Turbo::Broadcastable
+
   include Memo
 
   monetize :amount_cents
@@ -560,6 +562,10 @@ class HcbCode < ApplicationRecord
 
   def accepts_receipts?
     !reimbursement_expense_payout?
+  end
+
+  def suggested_memos
+    receipts.pluck(:suggested_memo).compact
   end
 
 end

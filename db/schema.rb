@@ -1639,6 +1639,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_18_141324) do
     t.bigint "receiptable_id"
     t.integer "upload_method"
     t.text "textual_content_ciphertext"
+    t.string "suggested_memo"
+    t.text "extracted_card_last4_ciphertext"
+    t.integer "extracted_subtotal_amount_cents"
+    t.integer "extracted_total_amount_cents"
+    t.datetime "extracted_date"
+    t.string "extracted_merchant_name"
+    t.string "extracted_merchant_url"
+    t.string "extracted_merchant_zip_code"
+    t.boolean "data_extracted", default: false, null: false
     t.index ["receiptable_type", "receiptable_id"], name: "index_receipts_on_receiptable_type_and_receiptable_id"
     t.index ["user_id"], name: "index_receipts_on_user_id"
   end

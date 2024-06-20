@@ -4,14 +4,23 @@
 #
 # Table name: receipts
 #
-#  id                         :bigint           not null, primary key
-#  receiptable_type           :string
-#  textual_content_ciphertext :text
-#  upload_method              :integer
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
-#  receiptable_id             :bigint
-#  user_id                    :bigint
+#  id                              :bigint           not null, primary key
+#  data_extracted                  :boolean          default(FALSE), not null
+#  extracted_card_last4_ciphertext :text
+#  extracted_date                  :datetime
+#  extracted_merchant_name         :string
+#  extracted_merchant_url          :string
+#  extracted_merchant_zip_code     :string
+#  extracted_subtotal_amount_cents :integer
+#  extracted_total_amount_cents    :integer
+#  receiptable_type                :string
+#  suggested_memo                  :string
+#  textual_content_ciphertext      :text
+#  upload_method                   :integer
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#  receiptable_id                  :bigint
+#  user_id                         :bigint
 #
 # Indexes
 #
@@ -24,6 +33,7 @@
 #
 class Receipt < ApplicationRecord
   has_encrypted :textual_content
+  has_encrypted :extracted_card_last4
 
   include PublicIdentifiable
   set_public_id_prefix :rct
@@ -47,11 +57,16 @@ class Receipt < ApplicationRecord
     end
   end
 
+  SYNCHRONOUS_SUGGESTION_UPLOAD_METHODS = %w[quick_expense].freeze
+
   after_create_commit do
     # Queue async job to extract text from newly upload receipt
     # and to suggest pairings
-    ReceiptJob::ExtractTextualContent.perform_later(self)
-    ReceiptJob::SuggestPairings.perform_later(self)
+    unless Receipt::SYNCHRONOUS_SUGGESTION_UPLOAD_METHODS.include?(upload_method.to_s)
+      # certain interfaces run suggestions synchronously
+      ReceiptJob::ExtractTextualContent.perform_later(self)
+      ReceiptJob::SuggestPairings.perform_later(self)
+    end
   end
   validate :has_owner
 

@@ -504,6 +504,14 @@ document.addEventListener("turbo:before-stream-render", ((event) => {
           element.reload();
         }
       });
+    } else if (streamElement.action == "refresh_suggested_pairings") {
+      const turboStreamElements = document.querySelectorAll('turbo-frame');
+      turboStreamElements.forEach(element => {
+        if (element.id.startsWith("suggested_pairings")) {
+          element.src = "/my/receipt_bin/suggested_pairings"
+          element.reload();
+        }
+      });
     } else if (streamElement.action == "close_modal") {
       $.modal.close().remove()
       

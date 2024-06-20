@@ -19,7 +19,8 @@
     <% end %>
   </p>
 
-  <%= render partial: "suggested_pairings", locals: { pairings: @pairings, current_slide: 0 } %>
+  <%= turbo_stream_from current_user, :suggested_pairings %>
+  <%= turbo_frame_tag "suggested_pairings", src: suggested_pairings_path %>
 
   <h2>
     Receipt Bin

@@ -25,6 +25,7 @@ $palette: (
   success: $green,
   //  'success-dark': $green-dark,
   error: desaturate(darken($red, 25%), 15%),
+  ai: $purple,
   warning: $orange,
   pending: $yellow,
   purple: $purple,

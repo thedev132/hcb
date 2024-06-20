@@ -34,7 +34,12 @@
           <span class="regular muted"> <%= @hcb_code.stripe_refund? ? "refunded" : "for" %> </span>
           <%= number_to_currency(@hcb_code.amount.abs) %>
         </span>
+
         <%= render "hcb_codes/memo_stream", hcb_code: @hcb_code %>
+
+        <span style="flex-grow: 1;"></span>
+
+        <%= render partial: "ai_memo", locals: { hcb_code: @hcb_code } %>
       <% end %>
     </span>
 

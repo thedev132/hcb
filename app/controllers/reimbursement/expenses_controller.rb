@@ -11,12 +11,13 @@ module Reimbursement
       authorize @expense
 
       if params[:file]
-        ::ReceiptService::Create.new(
+        receipt = ::ReceiptService::Create.new(
           receiptable: @expense,
           uploader: current_user,
           attachments: params[:file],
           upload_method: :quick_expense
         ).run!
+        @expense.update(memo: receipt.first.suggested_memo, amount_cents: receipt.first.extracted_total_amount_cents) if receipt.first.suggested_memo
       end
 
       if @expense.save

@@ -42,12 +42,13 @@ module Reimbursement
 
       if @report.save
         @expense = @report.expenses.create!(amount_cents: 0)
-        ::ReceiptService::Create.new(
+        receipt = ::ReceiptService::Create.new(
           receiptable: @expense,
           uploader: current_user,
           attachments: params[:reimbursement_report][:file],
           upload_method: :quick_expense
         ).run!
+        @expense.update(memo: receipt.first.suggested_memo, amount_cents: receipt.first.extracted_total_amount_cents) if receipt.first.suggested_memo
         redirect_to reimbursement_report_path(@report, edit: @expense.id)
       else
         redirect_to event_reimbursements_path(@event), flash: { error: @report.errors.full_messages.to_sentence }

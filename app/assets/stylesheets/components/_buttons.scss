@@ -72,6 +72,10 @@ input[type='submit'],
     @include gradient(purple);
   }
 
+  &.bg-ai {
+    @include gradient(ai);
+  }
+
   &.bg-success {
     @include gradient(success);
     color: darken(map-get($palette, success), 33.3%) !important;

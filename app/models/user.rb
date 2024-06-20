@@ -43,6 +43,8 @@ class User < ApplicationRecord
   include Commentable
   extend FriendlyId
 
+  include Turbo::Broadcastable
+
   has_paper_trail only: [:access_level, :email]
 
   include PublicActivity::Model

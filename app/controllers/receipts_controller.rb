@@ -169,7 +169,7 @@ class ReceiptsController < ApplicationController
     notify_airbrake(e)
 
     flash_type = :error
-    flash_message = e.message
+    flash_message = "There was an error uploading your receipt. Please try again."
 
     streams.append(
       turbo_stream.replace(

@@ -175,6 +175,13 @@ class StaticPagesController < ApplicationController
     end
   end
 
+  def suggested_pairings
+    render partial: "static_pages/suggested_pairings", locals: {
+      pairings: current_user.receipt_bin.suggested_receipt_pairings,
+      current_slide: 0
+    }
+  end
+
   def my_reimbursements
     @reports = current_user.reimbursement_reports unless params[:filter] == "review_requested"
     @reports = current_user.assigned_reimbursement_reports if params[:filter] == "review_requested"
