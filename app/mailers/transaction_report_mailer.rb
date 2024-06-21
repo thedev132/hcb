@@ -10,8 +10,11 @@ class TransactionReportMailer < ApplicationMailer
 
       cpts = CanonicalPendingTransaction.unsettled.joins(:raw_pending_stripe_transaction).where("(stripe_transaction->'card'->>'id' IN (?)) AND (CAST(stripe_transaction->>'created' AS BIGINT) >= EXTRACT(EPOCH FROM TIMESTAMP ?))", card_ids, 1.week.ago)
       cts = CanonicalTransaction.stripe_transaction.where("(stripe_transaction->'card'->>'id' IN (?)) AND (CAST(stripe_transaction->>'created' AS BIGINT) >= EXTRACT(EPOCH FROM TIMESTAMP ?))", card_ids, 1.week.ago)
+      txs = cpts + cts
 
-      { user:, txs: cpts + cts }
+      total = txs.sum(&:amount_cents).abs
+
+      { user:, txs:, total: }
     end.compact
 
     @total = @target_users.map{ |x| x[:txs].sum(&:amount_cents) }.sum.abs

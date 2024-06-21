@@ -2,9 +2,9 @@
 
 <p>Your reports spent <%= render_money @total %> in total this week. Here's a breakdown;</p>
 
-<% @target_users.each do |user_info| %>
+<% @target_users.reject { |user_info| user_info[:total] == 0 }.each do |user_info| %>
     <h2><%= user_info[:user].full_name %></h2>
-    <p><%= user_info[:user].name %> spent <%= render_money(user_info[:txs].pluck(:amount_cents).sum * -1) %> this week</p>
+    <p><%= user_info[:user].name %> spent <%= render_money user_info[:total] %> this week</p>
     <table class="formatted">
       <tr>
         <th>Memo</th>
@@ -41,7 +41,17 @@
     </table>
 <% end %>
 
-<img src="https://i.giphy.com/media/czywuTu3BQSQnqa0CV/giphy.gif">
+<% no_spend_names = @target_users.select { |user_info| user_info[:total] == 0 }.map { |u| u[:user].name } %>
+<p>People who spent no money this week;
+<ul>
+    <% no_spend_names.each do |name| %>
+        <li><%= name %>
+    <% end %>
+</ul>
+
+<% if @total > 10_000_00 %>
+    <img src="https://i.giphy.com/media/czywuTu3BQSQnqa0CV/giphy.gif" style="margin-top: 2rem" width="50%">
+<% end %>
 
 <style>
 table.formatted {
