@@ -102,19 +102,6 @@ $(document).ready(() => {
   }, 3000)
 })
 
-// https://css-tricks.com/snippets/jquery/get-query-params-object/
-BK.getQueryParams = () => {
-  const result = {}
-  const kvPairs = window.location.search.substr(1).split('&')
-  for (let i = 0; i < kvPairs.length; i++) {
-    const [k, v] = kvPairs[i].split('=')
-    if (k) {
-      result[k] = decodeURIComponent(v)
-    }
-  }
-  return result
-}
-
 BK.money = amount => {
   if (typeof amount !== 'number') return '–'
   const localAmount = Math.abs(Math.round(amount) / 100).toLocaleString()

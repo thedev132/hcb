@@ -69,10 +69,6 @@ module ApplicationHelper
     content_tag(:p, text, class: "center mt0 mb0 pt2 pb2 slate bold h3 mx-auto max-width-2 #{options[:class]}", **other_options)
   end
 
-  def filterbar_blankslate(text, options = {})
-    blankslate(text, 'data-behavior': "filterbar_blankslate", class: "mt2 mb2", **options)
-  end
-
   def list_badge_for(count, item, glyph, options = { optional: false, required: false })
     return nil if options[:optional] && count == 0
 
@@ -197,12 +193,6 @@ module ApplicationHelper
     link_to "##{id}", class: "absolute top-0 -left-8 transition-opacity opacity-0 group-hover/summary:opacity-100 group-target/item:opacity-100 anchor-link tooltipped tooltipped--s", 'aria-label': "Copy link", data: { turbo: false, controller: "clipboard", clipboard_text_value: url_for(only_path: false, anchor: id), action: "clipboard#copy" } do
       inline_icon "link", size: 28
     end
-  end
-
-  def filterbar_item(label, name, selected = false)
-    content_tag :a, label, class: "filterbar__item",
-                tabindex: 0, role: "tab", 'aria-selected': selected,
-                data: { name: name.to_s, behavior: "filterbar_item" }
   end
 
   def help_message
