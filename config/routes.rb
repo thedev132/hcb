@@ -350,11 +350,13 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :disbursements, only: [:index, :new, :create, :show, :edit, :update] do
+  resources :disbursements, only: [:new, :create, :show, :edit, :update] do
     post "mark_fulfilled"
     post "reject"
     get "confirmation", to: "disbursements#transfer_confirmation_letter"
   end
+
+  get "disbursements", to: redirect("/admin/disbursements")
 
   resources :comments, only: [:edit, :update]
 

@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class DisbursementPolicy < ApplicationPolicy
-  def index?
-    user.admin?
-  end
-
   def show?
     user.admin?
   end
