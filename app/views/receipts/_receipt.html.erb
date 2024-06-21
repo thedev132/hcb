@@ -95,14 +95,11 @@
       <% end %>
       <% if defined?(show_delete_button) %>
         <%= pop_icon_to "view-close",
-            receipt_path(receipt, popover: local_assigns[:popover]),
-            method: !local_assigns[:turbo_for_deletion] ? :delete : nil,
+            receipt_path(receipt, { popover: local_assigns[:popover], format: (:html unless local_assigns[:turbo_for_deletion]) }.compact),
             data: {
               behavior: "modal_ignore",
-              turbo: local_assigns[:turbo_for_deletion] ? "true" : "false",
-              "turbo-method": "delete",
-              "turbo-confirm": "Are you sure you'd like to delete this receipt?",
-              "confirm": !local_assigns[:turbo_for_deletion] ? "Are you sure you'd like to delete this receipt?" : nil
+              turbo_method: :delete,
+              turbo_confirm: "Are you sure you'd like to delete this receipt?",
             },
             size: 24,
             class: "error tooltipped tooltipped--w",
