@@ -9,6 +9,7 @@ $mono: ui-monospace, 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace
 @import 'components/badges';
 @import 'components/receipts';
 @import 'components/modals';
+@import 'components/tooltips';
 
 @import 'components/buttons';
 
@@ -874,6 +875,18 @@ summary {
 
 .logo {
   height: 36px;
+}
+
+#admin-theme-toggle, #admin-logout-button {
+  color: var(--hcb-link-1);
+  background: none;
+  padding: 0px;
+}
+#admin-theme-toggle:hover, #admin-logout-button:hover {
+  color: var(--hcb-link-2);
+}
+form:has(> #admin-logout-button) {
+  margin: 0px;
 }
 
 @tailwind base;
