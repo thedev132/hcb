@@ -28,6 +28,8 @@
 #  fk_rails_...  (event_id => events.id)
 #
 class CheckDeposit < ApplicationRecord
+  has_paper_trail
+
   REJECTION_DESCRIPTIONS = {
     "incomplete_image"                => "This check was rejected because the photo was incomplete.",
     "duplicate"                       => "This check was rejected as a duplicate.",
@@ -126,6 +128,19 @@ class CheckDeposit < ApplicationRecord
 
   def rejection_description
     REJECTION_DESCRIPTIONS[rejection_reason] || "This check deposit was rejected."
+  end
+
+  def submitted_to_column_at
+    return unless column_id.present?
+
+    @submitted_to_column_at ||= versions.where_object_changes_from(column_id: nil).first&.created_at
+  end
+
+  def estimated_arrival_date
+    estimated = submitted_to_column_at&.+(1.week)&.to_date
+    return nil if Date.today >= estimated
+
+    estimated
   end
 
 end
