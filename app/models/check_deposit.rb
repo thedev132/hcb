@@ -138,6 +138,7 @@ class CheckDeposit < ApplicationRecord
 
   def estimated_arrival_date
     estimated = submitted_to_column_at&.+(1.week)&.to_date
+    return nil if estimated.nil?
     return nil if Date.today >= estimated
 
     estimated
