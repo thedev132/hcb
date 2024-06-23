@@ -145,7 +145,7 @@
       </div>
 
       <div class="actions inline-block mt1">
-        <%= form.submit "Save", 'x-show': "editing", 'x-transition.duration.500ms': "" %>
+        <%= form.submit "Save", ':disabled': "!editing", 'x-transition.duration.500ms': "" %>
       </div>
     <% end %>
   </section>
