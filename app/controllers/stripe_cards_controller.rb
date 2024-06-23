@@ -61,6 +61,14 @@ class StripeCardsController < ApplicationController
     @hcb_codes = @card.hcb_codes
                       .includes(canonical_pending_transactions: [:raw_pending_stripe_transaction], canonical_transactions: :transaction_source)
                       .page(params[:page]).per(25)
+
+    if params[:frame]
+      @frame = true
+      render :show, layout: false
+    else
+      @frame = false
+      render :show
+    end
   end
 
   def new
