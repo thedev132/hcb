@@ -10,7 +10,7 @@
   </span>
 
   <%= pop_icon_to params[:view] == "list" ? "grid" : "list",
-   "?view=#{params[:view] == 'list' ? 'grid' : 'list'}#{"&q=#{@q}" if @q}#{"&status=#{@status}" if @status}" %>
+   "?view=#{params[:view] == 'list' ? 'grid' : 'list'}#{"&q=#{params[:q]}" if params[:q]}#{"&filter=#{params[:filter]}" if params[:filter]}" %>
 
   <% if organizer_signed_in? %>
     <%= pop_icon_to "email", "mailto:#{@all_positions.map { |op| op.user.email_address_with_name }.join(",")}" %>
@@ -32,6 +32,18 @@
 <% end %>
 
 <% if params[:view] == "list" %>
+  <div class="filterbar flex flex-row justify-between items-center width-100" style="gap: 16px">
+    <%= form_with(model: nil, local: true, method: :get, class: "flex-auto md-mr2") do |form| %>
+      <%= form.text_field :q, placeholder: "Search by name or email...", style: "width auto; max-width: none;", value: params[:q] %>
+      <%= form.hidden_field :filter, value: params[:filter] if params[:filter] %>
+      <%= form.hidden_field :view, value: params[:view] if params[:view] %>
+    <% end %>
+    <div style="text-align: center;">
+      <% ["all", "members", "managers"].each do |filter| %>
+        <%= link_to filter.capitalize, "?filter=#{filter}#{'&view=list' if params[:view] == 'list'}#{"&q=#{params[:q]}" if params[:q]}", class: "filterbar__item", "aria-selected": (params[:filter] == filter || !params[:filter] && filter == "all"), role: "tab" %>
+      <% end %>
+    </div>
+  </div>
   <% if @all_positions.any? %>
   <table>
     <thead>
@@ -52,7 +64,7 @@
   </table>
   <%= paginate @positions %>
   <% else %>
-    <%= blankslate "No others on your team yet" %>
+    <%= blankslate "No #{params[:filter] == "all" ? "others" : params[:filter] || "others"} on your team yet" %>
   <% end %>
 <% else %>
 

@@ -275,8 +275,22 @@ class EventsController < ApplicationController
   def team
     authorize @event
 
-    @all_positions = @event.organizer_positions.includes(:user).order(created_at: :desc)
-    @positions = @all_positions.page(params[:page]).per(params[:per] || 10)
+    case params[:filter]
+    when "members"
+      @filter = "member"
+    when "managers"
+      @filter = "manager"
+    end
+
+    @q = params[:q] || ""
+
+    @all_positions = @event.organizer_positions
+                           .joins(:user)
+                           .where(role: @filter || %w[member manager])
+                           .where("users.full_name ILIKE :query OR users.email ILIKE :query", query: "%#{User.sanitize_sql_like(@q)}%")
+                           .order(created_at: :desc)
+
+    @positions = Kaminari.paginate_array(@all_positions).page(params[:page]).per(params[:per] || 10)
 
     @pending = @event.organizer_position_invites.pending.includes(:sender)
   end
