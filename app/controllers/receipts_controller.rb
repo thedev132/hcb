@@ -120,7 +120,7 @@ class ReceiptsController < ApplicationController
       ).run!
       next if @receiptable && !on_transaction_page?
 
-      streams.append(turbo_stream.append(
+      streams.append(turbo_stream.prepend(
                        :receipts_list,
                        partial: "receipts/receipt",
                        locals: { receipt:, show_delete_button: true, show_reimbursements_button: true, link_to_file: true }
