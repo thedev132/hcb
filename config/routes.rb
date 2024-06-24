@@ -622,7 +622,7 @@ Rails.application.routes.draw do
 
   get "/events" => "events#index"
   get "/event_by_airtable_id/:airtable_id" => "events#by_airtable_id"
-  resources :events, except: [:new, :create], path_names: { edit: "settings" }, path: "/" do
+  resources :events, except: [:new, :create, :edit], path: "/" do
     get "edit", to: redirect("/%{event_id}/settings")
     get "breakdown"
     put "toggle_hidden"
@@ -718,6 +718,8 @@ Rails.application.routes.draw do
       get "audit_log"
       post "validate_slug"
       get "termination"
+
+      get "settings(/:tab)", to: "events#edit", as: :edit
     end
 
     get "balance_by_date"
