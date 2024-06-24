@@ -56,7 +56,7 @@
           <% end %>
         </td>
         <td><%= link_to hcb_code.memo, hcb_code.url %></td>
-        <td><%= link_to hcb_code.event.name, hcb_code.event %></td>
+        <td><%= link_to hcb_code.event&.name, hcb_code.event %></td>
         <td>
           <% if hcb_code.stripe_card? && hcb_code.card&.user %>
            <%= link_to hcb_code.card.user.name, hcb_code.card.user %>
