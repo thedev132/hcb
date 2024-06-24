@@ -18,10 +18,10 @@
 
 <%= render partial: "reimbursement/reports/create_form" %>
 
-<div class="statset grid-cols-3 mt3 mb2">
+<div class="statset mt3 mb2">
   <div class="stat">
     <span class="stat__label">Total</span>
-    <span class="stat__value">
+    <span class="stat__value" style="text-wrap: nowrap">
       <%= render_money_amount(@reports.to_calculate_total.sum(&:amount_cents)) %>
     </span>
   </div>
