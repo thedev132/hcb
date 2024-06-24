@@ -367,12 +367,10 @@ class UsersController < ApplicationController
 
     @expired_sessions = @user
                         .user_sessions
-                        .only_deleted
+                        .with_deleted
                         .not_impersonated
-                        .where("deleted_at >= ?", 1.week.ago)
-                        .where
-                        .not(id: current_session)
-                        .sort_by { |s| s.created_at }.reverse!
+                        .where("deleted_at >= ? OR expiration_at >= ?", 1.week.ago, 1.week.ago)
+                        .order(created_at: :desc)
 
     authorize @user
   end
