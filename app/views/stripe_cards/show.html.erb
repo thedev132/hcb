@@ -1,5 +1,5 @@
 <% title @card.activated ? "Card #{@card.last_four}" : "Inactive card" %>
-<%= render "events/nav", selected: :cards unless params[:frame] %>
+<%= render "events/nav", selected: :cards %>
 
 <% admin_tool("mt3") do %>
   <%= link_to "View card on Stripe", @card.stripe_dashboard_url, class: "btn bg-accent" %>
@@ -9,7 +9,7 @@
 <%= render partial: "canceled_warning", locals: { stripe_card: @card } %>
 
 <turbo-frame id="details">
-  <article class="check--form flex <%= "flex-col" if params[:frame] %> items-start justify-center mt3 mb3 gap-4">
+  <article class="check--form flex items-start justify-center mt3 mb3" style="gap: 16px;">
     <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
       <% if @card.card_grant.present? %>
         <% admin_tool do %>

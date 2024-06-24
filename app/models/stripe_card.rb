@@ -121,14 +121,6 @@ class StripeCard < ApplicationRecord
     secret_details[:cvc]
   end
 
-  def url
-    "/stripe_cards/#{hashid}"
-  end
-
-  def popover_url
-    "/stripe_cards/#{hashid}?frame=true"
-  end
-
   def formatted_card_number
     return hidden_card_number_with_last_four unless virtual?
 
