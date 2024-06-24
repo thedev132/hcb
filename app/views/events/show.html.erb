@@ -36,6 +36,9 @@
         (<%= distance_of_time_in_words_to_now meeting_req %> ago).</strong>
         <br>
         Please expect an email from our team soon.
+        <% if 5.days.ago > meeting_req %>
+          (It's been a while - haven't seen us reach out yet? Check your spam folder!)
+        <% end %>
       <% else %>
         <strong>Welcome to Playground Mode</strong>
         <br>
