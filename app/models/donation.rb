@@ -122,7 +122,7 @@ class Donation < ApplicationRecord
     self.stripe_client_secret = payment_intent.client_secret
 
     if status == "succeeded"
-      balance_transaction = payment_intent.charges.data.first.balance_transaction
+      balance_transaction = payment_intent.latest_charge.balance_transaction
       funds_available_at = Time.at(balance_transaction.available_on)
 
       self.payout_creation_queued_for = funds_available_at + 1.day
@@ -275,7 +275,7 @@ class Donation < ApplicationRecord
   end
 
   def remote_donation
-    @remote_donation ||= ::StripeService::PaymentIntent.retrieve(id: stripe_payment_intent_id, expand: ["charges.data.balance_transaction"])
+    @remote_donation ||= ::StripeService::PaymentIntent.retrieve(id: stripe_payment_intent_id, expand: ["charges.data.balance_transaction", "latest_charge.balance_transaction"])
   end
 
   def remote_refunded?

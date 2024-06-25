@@ -222,7 +222,7 @@ class StripeController < ActionController::Base
 
     pi = StripeService::PaymentIntent.retrieve(
       id: donation.stripe_payment_intent_id,
-      expand: ["charges.data.balance_transaction"]
+      expand: ["charges.data.balance_transaction", "latest_charge.balance_transaction"]
     )
     donation.set_fields_from_stripe_payment_intent(pi)
     donation.save!
