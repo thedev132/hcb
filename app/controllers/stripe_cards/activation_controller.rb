@@ -37,7 +37,7 @@ module StripeCards
         end
       end
 
-      @card.update(activated: true)
+      @card.update(activated: true, initially_activated: true)
       @card.defrost!
 
       flash[:success] = "Card activated!"

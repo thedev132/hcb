@@ -7,6 +7,7 @@
 #  id                                  :bigint           not null, primary key
 #  activated                           :boolean          default(FALSE)
 #  card_type                           :integer          default("virtual"), not null
+#  initially_activated                 :boolean          default(FALSE), not null
 #  is_platinum_april_fools_2023        :boolean
 #  last4                               :text
 #  lost_in_shipping                    :boolean          default(FALSE)
