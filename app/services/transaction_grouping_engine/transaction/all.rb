@@ -19,18 +19,10 @@ module TransactionGroupingEngine
 
       def running_balance_by_date
         query = <<~SQL
-          WITH date_range AS (
-            SELECT generate_series('#{Event.find(@event_id).canonical_transactions.order(date: :asc).first&.date || Date.today}'::date, CURRENT_DATE, '1 day'::interval) AS date
-          ),
-          rbt AS (#{running_balance_sql})
-          SELECT date, (
-              SELECT running_balance
-              FROM rbt
-              WHERE rbt.date <= date_range.date AND running_balance IS NOT NULL
-              ORDER BY rbt.date DESC
-              LIMIT 1
-          ) AS running_balance
-          FROM date_range;
+          WITH rbt AS (#{running_balance_sql})
+          SELECT AVG(running_balance) as running_balance, date FROM rbt
+          GROUP BY date
+          ORDER BY date
         SQL
 
         ActiveRecord::Base.connection.execute(query).map { |entry| [entry["date"].to_date, entry["running_balance"]] }.to_h
@@ -42,6 +34,7 @@ module TransactionGroupingEngine
           FROM (
             #{canonical_transactions_grouped_sql}
           ) canonical_transactions_grouped
+          ORDER BY date
         SQL
       end
 
