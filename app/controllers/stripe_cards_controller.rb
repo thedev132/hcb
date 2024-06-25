@@ -62,7 +62,7 @@ class StripeCardsController < ApplicationController
                       .includes(canonical_pending_transactions: [:raw_pending_stripe_transaction], canonical_transactions: :transaction_source)
                       .page(params[:page]).per(25)
 
-    if params[:frame]
+    if params[:frame] == "true"
       @frame = true
       render :show, layout: false
     else
