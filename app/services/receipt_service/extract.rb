@@ -92,6 +92,16 @@ module ReceiptService
         )
       end
 
+      unless @receipt.receiptable
+        @receipt.broadcast_replace_to(
+          [@receipt.user, :receipt_bin],
+          target: nil,
+          targets: "div[data-extracted-data-for='#{@receipt.id}']",
+          partial: "receipts/extracted",
+          locals: { receipt: @receipt, current_user: @receipt.user }
+        )
+      end
+
       @receipt
     end
 

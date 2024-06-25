@@ -19,7 +19,7 @@
     <% end %>
   </p>
 
-  <%= turbo_stream_from current_user, :suggested_pairings %>
+  <%= turbo_stream_from current_user, :receipt_bin %>
   <%= turbo_frame_tag "suggested_pairings", src: suggested_pairings_path %>
 
   <h2>

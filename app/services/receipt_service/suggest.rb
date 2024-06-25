@@ -31,7 +31,7 @@ module ReceiptService
 
         if @receipt.receiptable.nil?
           content = turbo_stream_action_tag(:refresh_suggested_pairings)
-          ActionCable.server.broadcast(stream_name_from([@receipt.user, :suggested_pairings]), content)
+          Turbo::StreamsChannel.broadcast_action_to([@receipt.user, :receipt_bin], action: :refresh_suggested_pairings)
         end
 
         pairings
