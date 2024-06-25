@@ -232,16 +232,15 @@ class EventsController < ApplicationController
   end
 
   def balance_by_date
-    begin
-      authorize @event
-    rescue Pundit::NotAuthorizedError
-      render json: { error: "We couldn’t find that organization!" }
-      return
-    end
+    authorize @event
 
     max = [365, (Date.today - @event.created_at.to_date).to_i + 5].min
 
-    balance_by_date = ::TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).running_balance_by_date
+    balance_by_date = Rails.cache.fetch("balance_by_date_#{@event.id}", expires_in: 5.minutes) do
+      ::TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).running_balance_by_date
+    end
+
+    balance_by_date[0.days.ago.to_date] = @event.balance_v2_cents
 
     begin
       if (balance_by_date[max.days.ago.to_date] || balance_by_date[balance_by_date.keys.first]) > balance_by_date[0.days.ago.to_date]
