@@ -273,7 +273,7 @@ class Invoice < ApplicationRecord
     self.stripe_charge_id = inv&.charge&.id
     self.subtotal = inv.subtotal
     self.tax = inv.tax
-    self.tax_percent = inv.tax_percent
+    # self.tax_percent = inv.tax_percent
     self.total = inv.total
     # https://stripe.com/docs/api/charges/object#charge_object-payment_method_details
     self.payment_method_type = type = inv&.charge&.payment_method_details&.type

@@ -73,7 +73,7 @@ module InvoiceService
         description: invoice.memo,
         status: invoice.status,
         statement_descriptor: invoice.statement_descriptor || "HCB",
-        tax_percent: invoice.tax_percent,
+        # tax_percent: invoice.tax_percent,
         footer:,
         metadata: { event_id: invoice.event.id }
       }
