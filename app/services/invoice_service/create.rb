@@ -68,7 +68,7 @@ module InvoiceService
       {
         customer: sponsor.stripe_customer_id,
         auto_advance: invoice.auto_advance,
-        billing: "send_invoice",
+        collection_method: "send_invoice",
         due_date: invoice.due_date.to_i, # convert to unixtime
         description: invoice.memo,
         status: invoice.status,
