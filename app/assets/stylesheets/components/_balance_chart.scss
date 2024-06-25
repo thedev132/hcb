@@ -2,7 +2,7 @@
   position: absolute;
   opacity: 20%;
   z-index: -5;
-  /* pointer-events: all; */
+  pointer-events: all;
 
   &:hover {
     opacity: 60%;
