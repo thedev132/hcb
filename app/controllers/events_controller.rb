@@ -218,9 +218,11 @@ class EventsController < ApplicationController
   def breakdown
     authorize @event
 
-    @heatmap = BreakdownEngine::Heatmap.new(@event).run
-    @maximum_positive_change = @heatmap.values.map { |change| change[:positive] }.max || 0
-    @maximum_negative_change = @heatmap.values.map { |change| change[:negative] }.min || 0
+    heatmap_engine_response = BreakdownEngine::Heatmap.new(@event).run
+    @heatmap = heatmap_engine_response[:heatmap]
+    @maximum_positive_change = heatmap_engine_response[:maximum_positive_change]
+    @maximum_negative_change = heatmap_engine_response[:maximum_negative_change]
+    @past_year_transactions_count = heatmap_engine_response[:transactions_count]
 
     @merchants = BreakdownEngine::Merchants.new(@event).run
 
