@@ -16,6 +16,10 @@ Rails.application.routes.draw do
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
+  concern :commentable do
+    resources :comments, shallow: true, except: [:show, :index]
+  end
+
   # API documentation
   scope "docs/api" do
     get "v2", to: "docs#v2"
@@ -272,11 +276,9 @@ Rails.application.routes.draw do
     resources :organizer_position_deletion_requests, only: [:new], as: "remove"
   end
 
-  resources :organizer_position_deletion_requests, only: [:index, :show, :create] do
+  resources :organizer_position_deletion_requests, only: [:index, :show, :create], concerns: :commentable do
     post "close"
     post "open"
-
-    resources :comments
   end
 
   resources :g_suite_accounts, only: [:index, :create, :update, :edit, :destroy], path: "g_suite_accounts" do
@@ -288,8 +290,6 @@ Rails.application.routes.draw do
 
   resources :g_suites, except: [:new, :create, :edit, :update] do
     resources :g_suite_accounts, only: [:create]
-
-    resources :comments
   end
 
   resources :sponsors
@@ -304,7 +304,6 @@ Rails.application.routes.draw do
     member do
       post "refund"
     end
-    resources :comments
   end
 
   resources :stripe_cardholders, only: [:new, :create, :update]
@@ -320,9 +319,7 @@ Rails.application.routes.draw do
   end
   resources :emburse_cards, except: %i[new create]
 
-  resources :checks, only: [:show] do
-    resources :comments
-  end
+  resources :checks, only: [:show]
 
   resources :increase_checks, only: [] do
     member do
@@ -347,7 +344,6 @@ Rails.application.routes.draw do
       post "validate_routing_number"
     end
     get "confirmation", to: "ach_transfers#transfer_confirmation_letter"
-    resources :comments
   end
 
   resources :disbursements, only: [:new, :create, :show, :edit, :update] do
@@ -357,8 +353,6 @@ Rails.application.routes.draw do
   end
 
   get "disbursements", to: redirect("/admin/disbursements")
-
-  resources :comments, only: [:edit, :update, :destroy]
 
   resources :documents, except: [:index] do
     collection do
@@ -372,7 +366,7 @@ Rails.application.routes.draw do
     get "reauthenticate"
   end
 
-  resources :hcb_codes, path: "/hcb", only: [:show, :edit, :update] do
+  resources :hcb_codes, path: "/hcb", only: [:show, :edit, :update], concerns: :commentable do
     member do
       post "comment"
       get "attach_receipt"
@@ -384,8 +378,6 @@ Rails.application.routes.draw do
       post "toggle_tag/:tag_id", to: "hcb_codes#toggle_tag", as: :toggle_tag
       post "send_receipt_sms", to: "hcb_codes#send_receipt_sms", as: :send_sms_receipt
     end
-
-    resources :comments
   end
 
   resources :canonical_pending_transactions, only: [:show, :edit] do
@@ -401,8 +393,6 @@ Rails.application.routes.draw do
       post "mark_bank_fee"
       post "set_custom_memo"
     end
-
-    resources :comments
   end
 
   resources :exports do
@@ -412,9 +402,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :transactions, only: [:index, :show, :edit, :update] do
-    resources :comments
-  end
+  resources :transactions, only: [:index, :show, :edit, :update]
+
   namespace :reimbursement do
     resources :reports, only: [:show, :create, :edit, :update, :destroy] do
       post "request_reimbursement"
@@ -438,9 +427,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :reimbursement_reports, path: "reimbursements/reports" do
-    resources :comments
-  end
+  resources :reimbursement_reports, only: [], path: "reimbursements/reports", concerns: :commentable
 
   get "brand_guidelines", to: redirect("branding")
   get "branding", to: "static_pages#branding"
@@ -460,8 +447,6 @@ Rails.application.routes.draw do
     end
     post "reject"
     post "cancel"
-
-    resources :comments
   end
 
   resources :emburse_transfers, except: [:new, :create] do
@@ -471,12 +456,9 @@ Rails.application.routes.draw do
     post "accept"
     post "reject"
     post "cancel"
-    resources :comments
   end
 
-  resources :emburse_transactions, only: [:index, :edit, :update, :show] do
-    resources :comments
-  end
+  resources :emburse_transactions, only: [:index, :edit, :update, :show]
 
   resources :donations, only: [:show] do
     collection do
@@ -492,8 +474,6 @@ Rails.application.routes.draw do
     member do
       post "refund", to: "donations#refund"
     end
-
-    resources :comments
   end
 
   resources :partner_donations, only: [:show] do
@@ -622,7 +602,7 @@ Rails.application.routes.draw do
 
   get "/events" => "events#index"
   get "/event_by_airtable_id/:airtable_id" => "events#by_airtable_id"
-  resources :events, except: [:new, :create, :edit], path: "/" do
+  resources :events, except: [:new, :create, :edit], concerns: :commentable, path: "/" do
     get "edit", to: redirect("/%{event_id}/settings")
     get "breakdown"
     put "toggle_hidden"
@@ -675,7 +655,6 @@ Rails.application.routes.draw do
     resources :invoices, only: [:new, :create, :index]
     resources :tags, only: [:create, :destroy]
     resources :event_tags, only: [:create, :destroy]
-    resources :comments
 
     resources :recurring_donations, only: [:create], path: "recurring" do
       member do

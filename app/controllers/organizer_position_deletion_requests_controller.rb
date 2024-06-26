@@ -16,7 +16,6 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
     authorize @opdr
 
     @commentable = @opdr
-    @comment = Comment.new
     @comments = @commentable.comments
   end
 
