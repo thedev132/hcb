@@ -458,8 +458,8 @@ $(document).on('turbo:frame-load', function () {
   }
 })
 
-$('[data-behavior~=ctrl_enter_submit]').keydown(function (event) {
-  if ((event.ctrlKey || event.metaKey) && event.keyCode === 13) {
+$(document).on('keydown', '[data-behavior~=ctrl_enter_submit]', function (event) {
+  if ((event.ctrlKey || event.metaKey) && event.key == "Enter") {
     $(this).closest('form').get(0).requestSubmit()
   }
 })
