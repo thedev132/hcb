@@ -875,7 +875,7 @@ class EventsController < ApplicationController
   def activate
     authorize @event
 
-    params[:event][:files].each do |file|
+    params[:event][:files]&.each do |file|
       Document.create(user: current_user, event_id: @event.id, name: file.original_filename, file:)
     end
 
