@@ -358,7 +358,7 @@ Rails.application.routes.draw do
 
   get "disbursements", to: redirect("/admin/disbursements")
 
-  resources :comments, only: [:edit, :update]
+  resources :comments, only: [:edit, :update, :destroy]
 
   resources :documents, except: [:index] do
     collection do

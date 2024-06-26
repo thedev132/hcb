@@ -9,6 +9,7 @@
 #  admin_only         :boolean          default(FALSE), not null
 #  commentable_type   :string
 #  content_ciphertext :text
+#  deleted_at         :datetime
 #  has_untracked_edit :boolean          default(FALSE), not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
@@ -34,6 +35,7 @@ class Comment < ApplicationRecord
 
   has_paper_trail skip: [:content] # ciphertext columns will still be tracked
   has_encrypted :content
+  acts_as_paranoid
 
   validates :user, presence: true
   validates :content, presence: true, unless: :has_attached_file?

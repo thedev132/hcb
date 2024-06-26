@@ -1,5 +1,5 @@
 <% if policy(comment).show? %>
-  <div class="mt2 mb2">
+  <div class="mt2 mb2 <%= local_assigns[:class] %>" id="<%= dom_id comment %>">
     <div class="card border pb0 pt0 mb2 max-width-4<%= " current-user" if comment.user == current_user %>  <%= " comment--admin" if comment.admin_only? %>" id="comment-<%= comment.hashid %>">
       <div class="border-bottom card__banner secondary">
         <%= user_mention comment.user, click_to_mention: true %> <%= comment.action_text %>
@@ -12,6 +12,11 @@
             class: "muted tooltipped tooltipped--s",
             'aria-label': "See all edit history" %>
         </action>
+        <% end %>
+        <% if policy(comment).destroy? %>
+          <%= link_to comment, class: "tooltipped tooltipped--s right", 'aria-label': "Delete", data: { turbo_method: :delete, turbo_confirm: "Are you sure you'd like to delete this note?" } do %>
+            <%= inline_icon "delete", size: 24, 'aria-label': "Delete" %>
+          <% end %>
         <% end %>
         <% if policy(comment).edit? %>
           <%= link_to edit_comment_path(comment), class: "tooltipped tooltipped--s right", 'aria-label': "Edit", data: { turbo: false } do %>

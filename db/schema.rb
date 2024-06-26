@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_18_141324) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_26_165737) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -504,6 +504,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_18_141324) do
     t.boolean "has_untracked_edit", default: false, null: false
     t.text "content_ciphertext"
     t.integer "action", default: 0, null: false
+    t.datetime "deleted_at"
     t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["user_id"], name: "index_comments_on_user_id"

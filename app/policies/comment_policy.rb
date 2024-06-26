@@ -32,6 +32,10 @@ class CommentPolicy < ApplicationPolicy
     user.admin? || (users.include?(user) && !record.admin_only)
   end
 
+  def destroy?
+    user.admin? || (users.include?(user) && record.user == user)
+  end
+
   private
 
   def users

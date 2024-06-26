@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:edit, :update]
-  before_action :set_commentable, except: [:edit, :update]
+  before_action :set_comment, only: [:edit, :update, :destroy]
+  before_action :set_commentable, except: [:edit, :update, :destroy]
 
   def new
     authorize @commentable
@@ -43,6 +43,19 @@ class CommentsController < ApplicationController
     else
       @commentable = @comment.commentable
       render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    authorize @comment
+    @comment.destroy!
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.remove(@comment)
+      end
+
+      format.any { redirect_back_or_to @comment.commentable }
     end
   end
 

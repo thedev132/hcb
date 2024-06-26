@@ -7,9 +7,7 @@
     <% comments = policy_scope(@report.comments) %>
     <% (versions + comments).sort_by(&:created_at).each do |item| %>
       <% if item.instance_of?(Comment) %>
-        <div class="conversation_item">
-          <%= render "comments/item", comment: item %>
-        </div>
+        <%= render "comments/item", comment: item, class: "conversation_item" %>
       <% else %>
         <% changes = {
              "submitted"               => ["send", "info", "submitted this report"],
