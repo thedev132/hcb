@@ -121,6 +121,17 @@ html[data-dark='true'] {
   }
 }
 
+.feature-cover-fees {
+  background-color: $smoke;
+  background-size: 4em;
+}
+
+html[data-dark='true'] {
+  .feature-cover-fees {
+    background-color: $black;
+  }
+}
+
 .feature-anonymous-donations {
   background-size: 24em;
   background-color: $snow;

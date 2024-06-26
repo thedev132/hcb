@@ -29,3 +29,12 @@
       description: "Allow donors to appear anonymously in Transparency Mode!",
       event: @event
     } %>
+
+<%= render partial: "features/preview", locals: {
+      id: "cover-fees",
+      classes: ["feature-cover-fees"],
+      feature_flag: :cover_my_fee_2024_06_25,
+      name: "Cover fees on donations",
+      description: "Allow donors to cover HCB's fee on their donation directly",
+      event: @event
+    } %>

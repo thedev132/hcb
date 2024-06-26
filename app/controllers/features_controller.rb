@@ -12,6 +12,7 @@ class FeaturesController < ApplicationController
     user_permissions_2024_03_09: %w[📛 🧑‍💼 🪪 🎉],
     anonymous_donations_2024_01_29: %w[🫂 💳 🤑],
     recently_on_hcb_2024_05_23: %w[👀 🤑 🙈],
+    cover_my_fee_2024_06_25: %w[🙏 ❤️ 💳]
   }.freeze
 
   def enable_feature
