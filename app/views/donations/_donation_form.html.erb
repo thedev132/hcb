@@ -39,7 +39,7 @@
         amount: null,
         get additionalAmountToCoverFee() {
             if (this.amount && !isNaN(this.amount)) {
-                return Math.ceil(((this.amount / (1 - <%= @event.sponsorship_fee %>)) - this.amount) * 100) / 100;
+                return (Math.ceil(((this.amount / (1 - <%= @event.sponsorship_fee %>)) - this.amount) * 100) / 100).toFixed(2);
             }
             return '0.00';
         }
