@@ -15,6 +15,10 @@ class RecurringDonationsController < ApplicationController
   def create
     params[:recurring_donation][:amount] = Monetize.parse(params[:recurring_donation][:amount]).cents
 
+    if params[:recurring_donation][:fee_covered] == "1" && Flipper.enabled?(:cover_my_fee_2024_06_25, @event)
+      params[:recurring_donation][:amount] = (params[:recurring_donation][:amount] / (1 - @event.sponsorship_fee)).ceil
+    end
+
     @recurring_donation = RecurringDonation.new(params.require(:recurring_donation).permit(:name, :email, :amount, :message, :anonymous).merge(event: @event))
 
     authorize @recurring_donation

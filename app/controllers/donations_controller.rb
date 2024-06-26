@@ -74,6 +74,10 @@ class DonationsController < ApplicationController
     d_params = donation_params
     d_params[:amount] = Monetize.parse(donation_params[:amount]).cents
 
+    if d_params[:fee_covered] == "1" && Flipper.enabled?(:cover_my_fee_2024_06_25, @event)
+      d_params[:amount] = (d_params[:amount] / (1 - @event.sponsorship_fee)).ceil
+    end
+
     if d_params[:name] == "aser ras"
       skip_authorization
       redirect_to root_url and return
@@ -82,7 +86,7 @@ class DonationsController < ApplicationController
     d_params[:ip_address] = request.ip
     d_params[:user_agent] = request.user_agent
 
-    @donation = Donation.new(d_params)
+    @donation = Donation.new(d_params.except(:fee_covered))
     @donation.event = @event
 
     authorize @donation
@@ -238,7 +242,7 @@ class DonationsController < ApplicationController
   end
 
   def donation_params
-    params.require(:donation).permit(:email, :name, :amount, :message, :anonymous)
+    params.require(:donation).permit(:email, :name, :amount, :message, :anonymous, :fee_covered)
   end
 
   def redirect_to_404
