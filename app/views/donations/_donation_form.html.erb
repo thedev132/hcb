@@ -67,7 +67,7 @@
         </div>
       </div>
 
-      <% if Flipper.enabled?(:cover_my_fee_2024_06_25, @event) %>
+      <% if Flipper.enabled?(:cover_my_fee_2024_06_25, @event) && @event.sponsorship_fee > 0 %>
         <div class="field field--checkbox mb0">
           <%= form.check_box :fee_covered, style: "margin-left: 0;" %>
           <%= form.label :fee_covered, style: "display: inline; flex-grow: 1;" do %>
