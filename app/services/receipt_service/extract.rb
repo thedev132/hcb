@@ -57,7 +57,7 @@ module ReceiptService
       end
 
       extracted = begin
-        JSON.parse(ai_response).with_indifferent_access # JSON given by ChatGPT, may fail
+        JSON.parse(ai_response).yield_self { |r| r.is_a?(Array) ? r.first : r }.with_indifferent_access # JSON given by ChatGPT, may fail. The `yield_self` handles ChatGPT returning an array.
       rescue JSON::ParserError
         nil
       end
