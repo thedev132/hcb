@@ -54,6 +54,11 @@ class CardGrantsController < ApplicationController
     @card = @card_grant.stripe_card
     @hcb_codes = @card&.hcb_codes
 
+    @frame = params[:frame].present?
+    @force_no_popover = @frame
+
+    render :show, layout: !@frame
+
   rescue Pundit::NotAuthorizedError
     redirect_to auth_users_path(email: @card_grant.user.email, return_to: card_grant_path(@card_grant)), flash: { info: "Please sign in with the same email you received the invitation at." }
   end

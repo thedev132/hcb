@@ -199,7 +199,7 @@ class HcbCode < ApplicationRecord
 
     title = [humanized_type]
     title << amount_preposition << ApplicationController.helpers.render_money(stripe_card? ? amount_cents.abs : amount_cents) if show_amount
-    title << event_preposition << event_name if show_event_name
+    title << event_preposition << event_name if show_event_name && event_name
 
     title.join(" ")
   end
