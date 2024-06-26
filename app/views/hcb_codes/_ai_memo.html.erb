@@ -1,6 +1,6 @@
 <span id="ai_memo">
   <%= turbo_stream_from hcb_code, "ai_memo" %>
-  <% if hcb_code.suggested_memos.any? && hcb_code.custom_memo.nil? && Flipper.enabled?(:ai_memos_2024_06_20, current_user) %>
+  <% if hcb_code.suggested_memos.any? && hcb_code.custom_memo.nil? %>
     <span class="pointer tooltipped tooltipped--w"
       aria-label="Use AI to generate a memo"
       data-controller="navigation"
