@@ -20,7 +20,7 @@ module TransactionGroupingEngine
       def running_balance_by_date
         query = <<~SQL
           WITH rbt AS (#{running_balance_sql})
-          SELECT AVG(running_balance) as running_balance, date FROM rbt
+          SELECT GREATEST(0, AVG(running_balance)) as running_balance, date FROM rbt
           GROUP BY date
           ORDER BY date
         SQL
