@@ -8,11 +8,7 @@ module BreakdownEngine
 
     def run
       RawStripeTransaction.select(
-        "CASE
-           WHEN raw_stripe_transactions.stripe_transaction->'merchant_data'->>'name' SIMILAR TO '(SQ|GOOGLE|TST|RAZ|INF|PayUp|IN|INT|\\*)%'
-             THEN TRIM(UPPER(SPLIT_PART(raw_stripe_transactions.stripe_transaction->'merchant_data'->>'name', '*', 1)))
-           ELSE TRIM(UPPER(raw_stripe_transactions.stripe_transaction->'merchant_data'->>'name'))
-         END AS merchant",
+        "TRIM(UPPER(raw_stripe_transactions.stripe_transaction->'merchant_data'->>'name')) AS merchant",
         "SUM(raw_stripe_transactions.amount_cents) * -1 AS amount_cents"
       )
                           .joins("LEFT JOIN canonical_transactions ct ON raw_stripe_transactions.id = ct.transaction_source_id AND ct.transaction_source_type = 'RawStripeTransaction'")
@@ -20,8 +16,14 @@ module BreakdownEngine
                           .where("event_mapping.event_id = ?", @event.id)
                           .group("merchant")
                           .order(Arel.sql("SUM(raw_stripe_transactions.amount_cents) * -1 DESC"))
-                          .limit(100)
-                          .each_with_object({}) { |merchant, hash| hash[merchant[:merchant].truncate(55).humanize] = merchant[:amount_cents].to_f / 100 }
+                          .limit(15)
+                          .each_with_object([]) do |merchant, array|
+                            array << {
+                              truncated: merchant[:merchant].truncate(15).titleize,
+                              name: merchant[:merchant].titleize,
+                              value: merchant[:amount_cents].to_f / 100
+                            }
+                          end
     end
 
   end

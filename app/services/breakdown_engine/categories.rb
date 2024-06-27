@@ -15,9 +15,15 @@ module BreakdownEngine
                           .joins("LEFT JOIN canonical_event_mappings event_mapping ON ct.id = event_mapping.canonical_transaction_id")
                           .where("event_mapping.event_id = ?", @event.id)
                           .group("category")
-                          .order("amount_cents")
-                          .limit(100)
-                          .each_with_object({}) { |merchant, hash| hash[merchant[:category].truncate(55).humanize] = merchant[:amount_cents].to_f / 100 }
+                          .order(Arel.sql("SUM(raw_stripe_transactions.amount_cents) * -1 DESC"))
+                          .limit(15)
+                          .each_with_object([]) do |merchant, array|
+                            array << {
+                              truncated: merchant[:category].truncate(15).titleize,
+                              name: merchant[:category].titleize,
+                              value: merchant[:amount_cents].to_f / 100
+                            }
+                          end
     end
 
   end

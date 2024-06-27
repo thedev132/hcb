@@ -148,18 +148,17 @@
 <div class="breakdown-row">
   <div class="card--breakdown" style="flex: 1">
     <h3>By User</h3>
-    <%= pie_chart @users, library: pie_chart_config("right"), download: true %>
+    <%= react_component "breakdown/Users", { data: @users }, { camelize_props: false } %>
   </div>
 </div>
 
 <div class="breakdown-row">
   <div class="card--breakdown" style="flex: 1">
-    <h3>By Merchant</h3>
-    <%= column_chart @merchants, colors: ["#EC3750"], xtitle: "Merchant", ytitle: "Amount", id: "merchant-chart", dataset: { borderWidth: 0 }, library: line_chart_config, download: true %>
+    <h3>Top Merchants</h3>
+    <%= react_component "breakdown/Merchants", { data: @merchants }, { camelize_props: false } %>
   </div>
-
   <div class="card--breakdown" style="flex: 1">
-    <h3>By Category</h3>
-    <%= pie_chart @categories, library: pie_chart_config("bottom"), download: true %>
+    <h3>Top Categories</h3>
+    <%= react_component "breakdown/Merchants", { data: @categories }, { camelize_props: false } %>
   </div>
 </div>
