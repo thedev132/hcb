@@ -319,7 +319,7 @@ GEM
       rack (>= 1.4, < 3)
       rack-protection (>= 1.5.3, <= 4.0.0)
       sanitize (< 7)
-    foreman (0.87.2)
+    foreman (0.88.1)
     friendly_id (5.5.0)
       activerecord (>= 4.0.0)
     fugit (1.11.0)
