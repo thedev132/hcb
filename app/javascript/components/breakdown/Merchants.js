@@ -100,7 +100,7 @@ export default function Users({ data }) {
             verticalAnchor="start"
             interval={0}
             angle={'-60'}
-            height={80}
+            height={120}
           />
         ) : (
           <XAxis dataKey={'truncated'} />
