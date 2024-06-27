@@ -94,10 +94,10 @@ GEM
       activesupport (>= 6.1, < 7.2)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
-    ahoy_matey (4.2.1)
-      activesupport (>= 5.2)
-      device_detector
-      safely_block (>= 0.2.1)
+    ahoy_matey (5.1.0)
+      activesupport (>= 6.1)
+      device_detector (>= 1)
+      safely_block (>= 0.4)
     airbrake (13.0.3)
       airbrake-ruby (~> 6.0)
     airbrake-ruby (6.2.0)
@@ -214,7 +214,7 @@ GEM
       railties (>= 6.0.0)
     date (3.3.4)
     declarative (0.0.20)
-    device_detector (1.1.0)
+    device_detector (1.1.2)
     diff-lcs (1.5.1)
     diffy (3.4.2)
     docile (1.4.0)
@@ -269,7 +269,6 @@ GEM
       rainbow
       rubocop
       smart_properties
-    errbase (0.2.2)
     erubi (1.13.0)
     et-orbi (1.2.11)
       tzinfo
@@ -713,8 +712,7 @@ GEM
     ruby-vips (2.1.4)
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
-    safely_block (0.3.0)
-      errbase (>= 0.1.1)
+    safely_block (0.4.0)
     safety_net_attestation (0.4.0)
       jwt (~> 2.0)
     sanitize (6.0.2)
