@@ -41,6 +41,11 @@
         <% end %>
       </div>
     </action>
+  <% end %>
+  <%= pop_icon_to "settings",
+      edit_event_path(@event, tab: "donations"),
+      class: "tooltipped tooltipped--s", "aria-label": "Donations settings" %>
+  <% if @event.donation_page_enabled %>
     <%= link_to start_donation_donations_path(@event), target: "_blank", class: "btn" do %>
       <%= inline_icon "external" %>
       Donate page
