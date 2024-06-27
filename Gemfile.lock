@@ -381,7 +381,7 @@ GEM
       activerecord (>= 4.0)
       hashids (~> 1.0)
     hashids (1.0.6)
-    htmlbeautifier (1.4.2)
+    htmlbeautifier (1.4.3)
     htmlentities (4.3.4)
     http-accept (1.7.0)
     http-cookie (1.0.4)
