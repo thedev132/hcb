@@ -37,4 +37,4 @@
       name: "Cover fees on donations",
       description: "Allow donors to cover HCB's fee on their donation directly",
       event: @event
-    } %>
+    } if @event.sponsorship_fee > 0 %>
