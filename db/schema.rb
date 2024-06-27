@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_26_165737) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_27_144439) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1649,7 +1649,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_165737) do
     t.string "extracted_merchant_url"
     t.string "extracted_merchant_zip_code"
     t.boolean "data_extracted", default: false, null: false
+    t.string "textual_content_bidx"
     t.index ["receiptable_type", "receiptable_id"], name: "index_receipts_on_receiptable_type_and_receiptable_id"
+    t.index ["textual_content_bidx"], name: "index_receipts_on_textual_content_bidx"
     t.index ["user_id"], name: "index_receipts_on_user_id"
   end
 

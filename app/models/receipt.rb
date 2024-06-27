@@ -15,6 +15,7 @@
 #  extracted_total_amount_cents    :integer
 #  receiptable_type                :string
 #  suggested_memo                  :string
+#  textual_content_bidx            :string
 #  textual_content_ciphertext      :text
 #  upload_method                   :integer
 #  created_at                      :datetime         not null
@@ -25,6 +26,7 @@
 # Indexes
 #
 #  index_receipts_on_receiptable_type_and_receiptable_id  (receiptable_type,receiptable_id)
+#  index_receipts_on_textual_content_bidx                 (textual_content_bidx)
 #  index_receipts_on_user_id                              (user_id)
 #
 # Foreign Keys
@@ -33,6 +35,7 @@
 #
 class Receipt < ApplicationRecord
   has_encrypted :textual_content
+  blind_index :textual_content
   has_encrypted :extracted_card_last4
 
   include PublicIdentifiable
@@ -139,6 +142,36 @@ class Receipt < ApplicationRecord
 
   def has_textual_content?
     !!(textual_content || extract_textual_content!)
+  end
+
+  def extracted_incorrect_amount_cents?
+    if receiptable.respond_to?(:amount_cents) && extracted_total_amount_cents
+      return extracted_total_amount_cents.abs != receiptable.amount_cents.abs
+    end
+
+    false
+  end
+
+  def duplicated?
+    if receiptable
+      return Receipt.where.not(receiptable_type:, receiptable_id:)
+                    .where.not(receiptable_id: nil)
+                    .where.not(textual_content: nil)
+                    .where(textual_content:).any?
+    end
+
+    false
+  end
+
+  def duplicates
+    if receiptable
+      return Receipt.where.not(receiptable_type:, receiptable_id:)
+                    .where.not(receiptable_id: nil)
+                    .where.not(textual_content: nil)
+                    .where(textual_content:)
+    end
+
+    Receipt.none
   end
 
   private

@@ -139,6 +139,18 @@
   </table>
 <% end %>
 
+<% if @ach_transfer.local_hcb_code.receipts.any? { |r| r.extracted_incorrect_amount_cents? } %>
+  <div class="warning bold mb2">
+    ⚠️ Please check these receipts closely, we suspect that their amounts don't match
+  </div>
+<% end %>
+
+<% if @ach_transfer.local_hcb_code.receipts.any? { |r| r.duplicated? } %>
+  <div class="warning bold mb2">
+    ⚠️ We suspect that one or more of these receipts have been used before
+  </div>
+<% end %>
+
 <%= render partial: "receipts/receipt", collection: @ach_transfer.local_hcb_code.receipts.order(created_at: :asc), as: :receipt, locals: { link_to_file: true } %>
 
 <hr>
