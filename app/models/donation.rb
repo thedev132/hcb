@@ -10,6 +10,7 @@
 #  amount_received                      :integer
 #  anonymous                            :boolean          default(FALSE), not null
 #  email                                :text
+#  fee_covered                          :boolean          default(FALSE), not null
 #  hcb_code                             :text
 #  in_transit_at                        :datetime
 #  ip_address                           :inet

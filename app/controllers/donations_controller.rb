@@ -86,7 +86,7 @@ class DonationsController < ApplicationController
     d_params[:ip_address] = request.ip
     d_params[:user_agent] = request.user_agent
 
-    @donation = Donation.new(d_params.except(:fee_covered))
+    @donation = Donation.new(d_params)
     @donation.event = @event
 
     authorize @donation

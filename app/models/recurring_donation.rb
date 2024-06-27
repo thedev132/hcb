@@ -9,6 +9,7 @@
 #  anonymous                           :boolean          default(FALSE), not null
 #  canceled_at                         :datetime
 #  email                               :text
+#  fee_covered                         :boolean          default(FALSE), not null
 #  last4_ciphertext                    :text
 #  message                             :text
 #  migrated_from_legacy_stripe_account :boolean          default(FALSE)
