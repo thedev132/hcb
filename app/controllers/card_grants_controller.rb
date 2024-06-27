@@ -13,6 +13,8 @@ class CardGrantsController < ApplicationController
 
     authorize @card_grant
 
+    @prefill_email = params[:email]
+
     last_card_grant = @event.card_grants.order(created_at: :desc).first
 
     if last_card_grant.present?
@@ -20,6 +22,8 @@ class CardGrantsController < ApplicationController
       @card_grant.merchant_lock = last_card_grant.merchant_lock
       @card_grant.category_lock = last_card_grant.category_lock
     end
+
+    @card_grant.amount_cents = params[:amount_cents] if params[:amount_cents]
   end
 
   def create
