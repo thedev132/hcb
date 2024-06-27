@@ -45,11 +45,12 @@ class StripeCardsController < ApplicationController
   def show
     @card = StripeCard.includes(:event, :user).find(params[:id])
 
-    authorize @card
-
     if @card.card_grant.present? && !current_user&.admin?
-      return redirect_to @card.card_grant
+      authorize @card.card_grant
+      return redirect_to card_grant_path(@card.card_grant, frame: params[:frame])
     end
+
+    authorize @card
 
     if params[:show_details] == "true"
       ahoy.track "Card details shown", stripe_card_id: @card.id
