@@ -43,9 +43,20 @@
           </td>
 
           <td>
-            <%= link_to "Details", stripe_card_path(d) if organizer_signed_in? && !@event.demo_mode %>
+
+            <%= link_to "Details", stripe_card_path(d), data: @show_card_popovers && { behavior: "modal_trigger", modal: "card_popover_#{d.id}" } if organizer_signed_in? && !@event.demo_mode %>
           </td>
         </tr>
+
+        <% if @show_card_popovers %>
+          <section class="modal modal--scroll modal--popover modal--popover--sm bg-snow" data-behavior="modal" role="dialog" id="card_popover_<%= d.id %>">
+            <%= modal_header(d.activated ? "Card #{d.last_four}" : "Inactive card", external_link: d.url) %>
+            <%= async_frame_to d.popover_url, as: :span, lazy: true do %>
+              Loading...
+            <% end %>
+          </section>
+        <% end %>
+
       <% end %>
       </tbody>
     </table>
