@@ -3,12 +3,15 @@
 <%= render "events/nav", selected: :reimbursements %>
 
 <h1 class="heading flex">
-  <span style="flex">Reimbursements</span>
+  <span class="flex-grow">Reimbursements</span>
+  <%= pop_icon_to "settings",
+      edit_event_path(@event, tab: "reimbursements"),
+      class: "tooltipped tooltipped--s", "aria-label": "Reimbursements settings" %>
   <% if @event.public_reimbursement_page_enabled? %>
-    <%= link_to reimbursement_start_reimbursement_report_url(@event), target: "_blank", class: "btn" do %>
-      <%= inline_icon "external" %>
-      Public form
-    <% end %>
+    <%= pop_icon_to "external",
+        reimbursement_start_reimbursement_report_url(@event),
+        target: "_blank",
+        class: "tooltipped tooltipped--s", "aria-label": "Public form" %>
   <% end %>
   <%= link_to "#", class: "btn bg-success", data: { behavior: "modal_trigger", modal: "create" } do %>
     <%= inline_icon "plus" %>
