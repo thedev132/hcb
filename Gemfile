@@ -176,7 +176,7 @@ end
 group :development, :staging do
   gem "query_count"
 
-  gem "rack-mini-profiler", "~> 3.1"
+  gem "rack-mini-profiler", "~> 3.3"
   gem "stackprof" # used by `rack-mini-profiler` to provide flamegraphs
 end
 
