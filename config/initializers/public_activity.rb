@@ -58,7 +58,7 @@ class PublicActivity::Activity
   end
 
   def trackable_is_deletable?
-    trackable_type.constantize.in?([Reimbursement::Report, WebauthnCredential])
+    trackable_type.constantize.in?([Reimbursement::Report, WebauthnCredential, Comment])
   end
 
 end
