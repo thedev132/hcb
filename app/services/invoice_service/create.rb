@@ -38,8 +38,8 @@ module InvoiceService
 
         invoice = Invoice.create!(attrs)
 
-        item = StripeService::InvoiceItem.create(remote_invoice_item_attrs)
         remote_invoice = StripeService::Invoice.create(remote_invoice_attrs(invoice:))
+        item = StripeService::InvoiceItem.create(remote_invoice_item_attrs.merge({ invoice: remote_invoice.id }))
 
         invoice.item_stripe_id = item.id
         invoice.stripe_invoice_id = remote_invoice.id
