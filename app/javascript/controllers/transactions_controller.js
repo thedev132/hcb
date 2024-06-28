@@ -7,7 +7,7 @@ export default class extends Controller {
 
   select(event) {
     const target = event.currentTarget
-    if (event.metaKey || event.ctrlKey) {
+    if ((event.metaKey || event.ctrlKey) && !event?.target?.href) {
       this.toggleHcbCode(target)
       this.updateTaggerVisbility()
     }
