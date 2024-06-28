@@ -45,6 +45,19 @@ export function Guide() {
         }}
       >
         @organization
+      </kbd>
+      ,{' '}
+      <kbd
+        style={{
+          borderRadius: '3px',
+          backgroundColor: 'var(--command-bar-reimbursement)',
+          outline: '2px solid var(--command-bar-reimbursement)',
+          paddingLeft: '3px',
+          paddingRight: '3px',
+          color: 'black',
+        }}
+      >
+        @reimbursement
       </kbd>{' '}
       and{' '}
       <kbd

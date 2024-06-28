@@ -7,6 +7,7 @@
   --command-bar-transaction: #f7c6a1;
   --command-bar-user: #f797f1;
   --command-bar-card: #a2e0f2;
+  --command-bar-reimbursement: #5cd2af;
 }
 
 html[data-dark='true'] {
@@ -18,6 +19,7 @@ html[data-dark='true'] {
   --command-bar-transaction: #ff8c37;
   --command-bar-user: #a633d6;
   --command-bar-card: #338eda;
+  --command-bar-reimbursement: #33d6a6;
 }
 
 [role="combobox"] {
