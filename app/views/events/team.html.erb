@@ -1,6 +1,5 @@
 <% title "Team overview" %>
-<% page_md if params[:view] == "list" %>
-<% page_sm unless params[:view] == "list" %>
+<% page_md %>
 <%= render "nav", selected: :team %>
 
 <h1 class="heading">
@@ -70,7 +69,9 @@
 
   <% if @all_positions.any? %>
     <%= turbo_frame_tag "team_position" do %>
-      <%= render partial: "organization_position", collection: @positions, as: :position %>
+      <div class="grid grid-cols-1 lg:grid-cols-2">
+        <%= render partial: "organization_position", collection: @positions, as: :position %>
+      </div>
       <%= paginate @positions %>
     <% end %>
   <% else %>
