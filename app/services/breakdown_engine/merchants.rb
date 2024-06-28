@@ -2,13 +2,16 @@
 
 module BreakdownEngine
   class Merchants
+    include StripeAuthorizationsHelper
+
     def initialize(event)
       @event = event
     end
 
     def run
       RawStripeTransaction.select(
-        "TRIM(UPPER(raw_stripe_transactions.stripe_transaction->'merchant_data'->>'name')) AS merchant",
+        "TRIM(UPPER(raw_stripe_transactions.stripe_transaction->'merchant_data'->>'network_id')) AS merchant",
+        "string_agg(TRIM(UPPER(raw_stripe_transactions.stripe_transaction->'merchant_data'->>'name')), ',') AS names",
         "SUM(raw_stripe_transactions.amount_cents) * -1 AS amount_cents"
       )
                           .joins("LEFT JOIN canonical_transactions ct ON raw_stripe_transactions.id = ct.transaction_source_id AND ct.transaction_source_type = 'RawStripeTransaction'")
@@ -19,8 +22,8 @@ module BreakdownEngine
                           .limit(15)
                           .each_with_object([]) do |merchant, array|
                             array << {
-                              truncated: merchant[:merchant].truncate(15).titleize,
-                              name: merchant[:merchant].titleize,
+                              truncated: (lookup_merchant(merchant[:merchant]) || merchant[:names].split(",").first.strip).truncate(15)&.titleize,
+                              name: (lookup_merchant(merchant[:merchant]) || merchant[:names].split(",").first.strip).titleize,
                               value: merchant[:amount_cents].to_f / 100
                             }
                           end
