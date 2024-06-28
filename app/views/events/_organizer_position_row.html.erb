@@ -7,7 +7,7 @@
   <td>
     <%= copy_to_clipboard(position.user.email, class: "inline-flex items-center g1 line-height-0") do %>
       <%= inline_icon("email", size: 20) %>
-      <%= position.user.email %>
+      <%= organizer_signed_in? ? position.user.email : "Hidden" %>
     <% end %>
     <% if admin_signed_in? %>
       <p class="warning m0">
