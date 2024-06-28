@@ -81,6 +81,13 @@ export const generateEventActions = data => {
       parent: event.slug,
       keywords: 'ach check',
     })),
+    ...data.filter(restrictedFilter).map(event => ({
+      id: `${event.slug}-reimbursements`,
+      name: 'Reimbursements',
+      perform: navigate(`/${event.slug}/reimbursements`),
+      icon: <Icon glyph="attachment" size={16} />,
+      parent: event.slug,
+    })),
     ...data.map(event => ({
       id: `${event.slug}-team`,
       name: 'Team',
