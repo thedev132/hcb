@@ -100,20 +100,15 @@
       <% pos_bg = "rgba(57, 211, 83, #{Math.log(entry[:positive]) / Math.log(@maximum_positive_change)})" %>
       <% neg_bg = "rgba(248, 81, 73, #{Math.log(entry[:negative].abs) / Math.log(@maximum_negative_change.abs)})" %>
 
-      <% if entry[:positive] > 0 && entry[:negative] == 0 %>
+      <% if entry[:positive] > entry[:negative].abs %>
         <div class="grid-item tooltipped tooltipped--s border-muted dark:border-dark"
              aria-label="<%= "#{label}: #{render_money(entry[:positive])}" %>"
              style="background-color: <%= pos_bg %>">
         </div>
-      <% elsif entry[:negative] < 0 && entry[:positive] == 0 %>
+      <% elsif entry[:negative].abs > entry[:positive] %>
         <div class="grid-item tooltipped tooltipped--s border-muted dark:border-dark"
              aria-label="<%= "#{label}: #{render_money(entry[:negative])}" %>"
              style="background-color: <%= neg_bg %>">
-        </div>
-      <% elsif entry[:negative] + entry[:positive] != 0 %>
-        <div class="grid-item tooltipped tooltipped--s border-muted dark:border-dark"
-             aria-label="<%= "#{label}: #{render_money(entry[:positive] - entry[:negative])}" %>"
-             style="background: linear-gradient(135deg, <%= pos_bg %>, <%= pos_bg %> 50%, <%= neg_bg %> 50%)">
         </div>
       <% else %>
         <div class="grid-item tooltipped tooltipped--s bg-snow dark:bg-darkless border-muted dark:border-dark"
