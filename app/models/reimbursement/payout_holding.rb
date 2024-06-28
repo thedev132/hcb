@@ -62,7 +62,7 @@ module Reimbursement
     end
 
     def payout_transfer
-      ach_transfer || increase_check
+      ach_transfer || increase_check || paypal_transfer
     end
 
     private
