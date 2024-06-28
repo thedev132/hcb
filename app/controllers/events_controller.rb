@@ -291,7 +291,7 @@ class EventsController < ApplicationController
                            .where("users.full_name ILIKE :query OR users.email ILIKE :query", query: "%#{User.sanitize_sql_like(@q)}%")
                            .order(created_at: :desc)
 
-    @positions = Kaminari.paginate_array(@all_positions).page(params[:page]).per(params[:per] || 10)
+    @positions = Kaminari.paginate_array(@all_positions).page(params[:page]).per(params[:per] || params[:view] == "list" ? 20 : 10)
 
     @pending = @event.organizer_position_invites.pending.includes(:sender)
   end
