@@ -94,7 +94,7 @@
         <td><%= link_to report.event.name, report.event %></td>
         <td>
           <% if payout_holding.payout_transfer %>
-            <%= link_to render_money(payout_holding.payout_transfer.local_hcb_code.amount), payout_holding.payout_transfer %>
+            <%= link_to render_money(payout_holding.payout_transfer.local_hcb_code.amount), payout_holding.payout_transfer.local_hcb_code %>
             <% if @clearinghouse_transactions.select { |ctx| ctx.hcb_code == tx.local_hcb_code.reimbursement_payout_holding.payout_transfer.hcb_code}.none? %>
               (Not on ledger)
             <% elsif tx.local_hcb_code.reimbursement_payout_holding.payout_transfer.local_hcb_code.amount_cents.abs != tx.local_hcb_code.amount_cents.abs %>
