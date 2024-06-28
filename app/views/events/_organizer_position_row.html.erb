@@ -5,7 +5,7 @@
   </td>
   <td><%= position.role.humanize %></td>
   <td>
-    <%= copy_to_clipboard(position.user.email, class: "inline-flex items-center g1 line-height-0") do %>
+    <%= copy_to_clipboard(organizer_signed_in? ? position.user.email : Faker::Internet.email, class: "inline-flex items-center g1 line-height-0") do %>
       <%= inline_icon("email", size: 20) %>
       <%= organizer_signed_in? ? position.user.email : "Hidden" %>
     <% end %>
