@@ -102,17 +102,17 @@
 
       <% if entry[:positive] > 0 && entry[:negative] == 0 %>
         <div class="grid-item tooltipped tooltipped--s border-muted dark:border-dark"
-             aria-label="<%= label %>"
+             aria-label="<%= "#{label}: #{render_money(entry[:positive])}" %>"
              style="background-color: <%= pos_bg %>">
         </div>
       <% elsif entry[:negative] < 0 && entry[:positive] == 0 %>
         <div class="grid-item tooltipped tooltipped--s border-muted dark:border-dark"
-             aria-label="<%= label %>"
+             aria-label="<%= "#{label}: #{render_money(entry[:negative])}" %>"
              style="background-color: <%= neg_bg %>">
         </div>
       <% elsif entry[:negative] + entry[:positive] != 0 %>
         <div class="grid-item tooltipped tooltipped--s border-muted dark:border-dark"
-             aria-label="<%= label %>"
+             aria-label="<%= "#{label}: #{render_money(entry[:positive] - entry[:negative])}" %>"
              style="background: linear-gradient(135deg, <%= pos_bg %>, <%= pos_bg %> 50%, <%= neg_bg %> 50%)">
         </div>
       <% else %>
