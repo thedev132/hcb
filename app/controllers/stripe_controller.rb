@@ -237,10 +237,10 @@ class StripeController < ActionController::Base
 
   def handle_charge_updated(event)
     # only proceed if charge is related to a donation and not an invoice
-    return unless event.data.metadata[:donation].present?
+    return unless event.data.object.metadata[:donation].present?
 
     # get donation to process
-    donation = Donation.find_by_stripe_payment_intent_id(event.data[:payment_intent])
+    donation = Donation.find_by_stripe_payment_intent_id(event.data.object[:payment_intent])
 
     pi = StripeService::PaymentIntent.retrieve(
       id: donation.stripe_payment_intent_id,
