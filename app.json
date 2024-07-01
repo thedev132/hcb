@@ -53,13 +53,13 @@
       "url": "https://github.com/maxwofford/heroku-buildpack-sourceversion"
     },
     {
-      "url": "https://github.com/gaffneyc/heroku-buildpack-jemalloc.git"
+      "url": "https://github.com/gaffneyc/heroku-buildpack-jemalloc"
     },
     {
       "url": "https://github.com/nickrivadeneira/heroku-buildpack-apt#gobject-introspection-support"
     },
     {
-      "url": "https://github.com/dscout/wkhtmltopdf-buildpack.git"
+      "url": "https://github.com/dscout/wkhtmltopdf-buildpack"
     },
     {
       "url": "heroku/nodejs"
