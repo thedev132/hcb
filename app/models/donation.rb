@@ -123,8 +123,7 @@ class Donation < ApplicationRecord
     self.stripe_client_secret = payment_intent.client_secret
 
     if status == "succeeded"
-      balance_transaction = StripeService::PaymentIntent.retrieve(id: payment_intent.id, expand: ["latest_
-charge.balance_transaction"]).latest_charge.balance_transaction
+      balance_transaction = payment_intent.latest_charge.balance_transaction
       funds_available_at = Time.at(balance_transaction.available_on)
 
       self.payout_creation_queued_for = funds_available_at + 1.day
