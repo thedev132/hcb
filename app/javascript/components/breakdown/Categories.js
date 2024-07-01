@@ -118,7 +118,6 @@ const renderLegend = props => {
     </>
   )
 }
-;<Legend content={renderLegend} />
 
 export default function Users({ data }) {
   let shuffled = shuffle(colors)
