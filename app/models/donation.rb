@@ -122,7 +122,7 @@ class Donation < ApplicationRecord
     self.status = payment_intent.status
     self.stripe_client_secret = payment_intent.client_secret
 
-    if status == "succeeded"
+    if status == "succeeded" && payment_intent.latest_charge.balance_transaction
       balance_transaction = payment_intent.latest_charge.balance_transaction
       funds_available_at = Time.at(balance_transaction.available_on)
 
