@@ -56,7 +56,8 @@
                           class: "error",
                           data: {
                             turbo_frame: "_top",
-                            turbo_method: policy(position).destroy? ? :DELETE : :GET
+                            turbo_method: policy(position).destroy? ? :DELETE : :GET,
+                            turbo_confirm: policy(position).destroy? ? "This will revoke their access to this organization. Their cards will be permanently canceled." : nil,
                           },
                           disabled: !policy(position).can_request_removal? %>
           </div>

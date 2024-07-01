@@ -49,7 +49,8 @@
                       class: "error",
                       data: {
                         turbo_frame: "_top",
-                        turbo_method: :DELETE
+                        turbo_method: :DELETE,
+                        turbo_confirm: "This will revoke their access to this organization. Their cards will be permanently canceled.",
                       } %>
     <% else %>
       <%= pop_icon_to "member-remove",
