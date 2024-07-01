@@ -1,9 +1,9 @@
 <div class="organizer-position card flex flex-col overflow-visible mx-auto w-100">
   <div class="organizer-position__main-info flex">
-    <div class="flex g2" style="flex-grow: 1">
+    <div class="flex g2 items-start grow">
       <div class="flex justify-between">
         <div class="relative">
-          <%= inline_icon("admin-badge", size: 48, class: "avatar-container__admin-bolt") if position.user.admin? %>
+          <%= inline_icon("admin-badge", size: 48, class: "avatar-container__admin-bolt stroke-white dark:stroke-darkless") if position.user.admin? %>
           <%= avatar_for position.user, 64 %>
         </div>
       </div>
