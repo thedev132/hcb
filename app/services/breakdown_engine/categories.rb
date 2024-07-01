@@ -19,7 +19,7 @@ module BreakdownEngine
                           .limit(15)
                           .each_with_object([]) do |merchant, array|
                             array << {
-                              truncated: merchant[:category].truncate(15).titleize,
+                              truncated: merchant[:category].truncate(25).strip.titleize,
                               name: merchant[:category].titleize,
                               value: merchant[:amount_cents].to_f / 100
                             }

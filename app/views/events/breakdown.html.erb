@@ -153,7 +153,7 @@
     <%= react_component "breakdown/Merchants", { data: @merchants }, { camelize_props: false } %>
   </div>
   <div class="card--breakdown" style="flex: 1">
-    <h3>Top Categories</h3>
-    <%= react_component "breakdown/Merchants", { data: @categories }, { camelize_props: false } %>
+    <h3 class="mb2">Top Categories</h3>
+    <%= react_component "breakdown/Categories", { data: @categories }, { camelize_props: false } %>
   </div>
 </div>

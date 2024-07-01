@@ -45,7 +45,6 @@ export const USDollarNoCents = new Intl.NumberFormat('en-US', {
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
-    console.log(payload)
     return (
       <div
         style={{
@@ -81,10 +80,10 @@ export default function Users({ data }) {
   return (
     <ResponsiveContainer
       width="100%"
-      height={360}
+      height={450}
       padding={{ top: 32, left: 32 }}
     >
-      <BarChart data={data} width={256} height={128}>
+      <BarChart data={data} width={256} height={200}>
         <CartesianGrid strokeDasharray="3 3" />
         <YAxis
           tickFormatter={n => USDollarNoCents.format(n)}
