@@ -103,7 +103,7 @@
         <p>
         <strong>Declined</strong>
         <span>
-          <% if reason == "card_inactive" && !@hcb_code.stripe_card.activated? %>
+          <% if reason == "card_inactive" && !@hcb_code.stripe_card.initially_activated? %>
             <em>This transaction was declined by HCB as this card isn't activated.</em>
           <% elsif reason == "card_inactive" %>
             <em>This transaction was declined by HCB as this card is frozen.</em>

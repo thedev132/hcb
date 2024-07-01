@@ -1,4 +1,4 @@
-<% if @reason == "card_inactive" && !@card.activated? %>
+<% if @reason == "card_inactive" && !@card.initially_activated? %>
 A <%= humanized_money_with_symbol @cpt.amount.abs %> charge to your card ending in <%= @card.last4 %> at '<%= @merchant %>' was declined because this card hasn't been activated yet.
 <br><br>
 Activate your new card <%= link_to "here", stripe_card_url(@card) %>!

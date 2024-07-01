@@ -1,7 +1,7 @@
 <%# locals: (stripe_card:) %>
 
 <div class="mt3 flex justify-center g1">
-  <% if !stripe_card.activated? %>
+  <% if !stripe_card.initially_activated? %>
     <%= render "stripe_cards/actions/activate", stripe_card: %>
   <% else %>
     <%= render "stripe_cards/actions/freeze", stripe_card: %>

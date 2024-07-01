@@ -145,7 +145,7 @@ class StripeCard < ApplicationRecord
   end
 
   def hidden_card_number_with_last_four
-    return hidden_card_number unless activated?
+    return hidden_card_number unless initially_activated?
 
     "•••• •••• •••• #{last4}"
   end
@@ -159,7 +159,7 @@ class StripeCard < ApplicationRecord
   end
 
   def status_text
-    return "Inactive" if !activated?
+    return "Inactive" if !initially_activated?
     return "Frozen" if stripe_status == "inactive"
 
     stripe_status.humanize
@@ -171,7 +171,7 @@ class StripeCard < ApplicationRecord
     s = stripe_status.to_sym
     return :success if s == :active
     return :error if s == :deleted
-    return :warning if s == :inactive && !activated?
+    return :warning if s == :inactive && !initially_activated?
 
     :muted
   end
@@ -199,7 +199,7 @@ class StripeCard < ApplicationRecord
   end
 
   def frozen?
-    activated? && stripe_status == "inactive"
+    initially_activated? && stripe_status == "inactive"
   end
 
   def last_frozen_by
@@ -269,8 +269,10 @@ class StripeCard < ApplicationRecord
 
     if stripe_obj[:status] == "active"
       self.activated = true
-    elsif stripe_obj[:status] == "inactive" && !self.activated
+      self.initially_activated = true
+    elsif stripe_obj[:status] == "inactive" && !self.initially_activated
       self.activated = false
+      self.initially_activated = false
     end
 
     if stripe_obj[:shipping]

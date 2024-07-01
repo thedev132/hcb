@@ -20,7 +20,7 @@ module StripeCards
 
       authorize @card, :activate?
 
-      if @card.activated?
+      if @card.initially_activated?
         # Handle cards issued before activation feature launch
         if @card.created_at < Date.new(2024, 2, 22)
           flash[:success] = "Card activated!"

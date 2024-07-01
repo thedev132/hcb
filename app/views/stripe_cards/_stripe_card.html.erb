@@ -36,7 +36,7 @@
 
 <% if @show_card_popovers %>
   <section class="modal modal--scroll modal--popover modal--popover--sm bg-snow" data-behavior="modal" role="dialog" id="card_popover_<%= stripe_card.id %>">
-    <%= modal_header(stripe_card.activated ? "Card #{stripe_card.last_four}" : "Inactive card", external_link: stripe_card.url) %>
+    <%= modal_header(stripe_card.initially_activated ? "Card #{stripe_card.last_four}" : "Inactive card", external_link: stripe_card.url) %>
     <%= async_frame_to stripe_card.popover_url, as: :span, lazy: true do %>
       Loading...
     <% end %>

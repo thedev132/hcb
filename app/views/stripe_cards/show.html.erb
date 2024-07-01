@@ -1,4 +1,4 @@
-<% title @card.activated ? "Card #{@card.last_four}" : "Inactive card" %>
+<% title @card.initially_activated ? "Card #{@card.last_four}" : "Inactive card" %>
 <%= render "events/nav", selected: :cards unless @frame %>
 
 <% admin_tool("mt3") do %>
@@ -22,8 +22,8 @@
       <%= render partial: "actions", locals: { stripe_card: @card } %>
     </section>
 
-    <%= render partial: "details", locals: { stripe_card: @card } if @card.activated? %>
-    <% if @card.physical? && !@card.activated? %>
+    <%= render partial: "details", locals: { stripe_card: @card } if @card.initially_activated? %>
+    <% if @card.physical? && !@card.initially_activated? %>
       <div class="mt2 max-width-2 w-100 mx-auto">
         <div class="grid mb3" style="max-width: 36rem; margin: 0px auto; width: 100%;">
           <%= render partial: "stripe_cards/shipping", locals: { stripe_card: @card } %>
