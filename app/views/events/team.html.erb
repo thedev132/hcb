@@ -57,7 +57,7 @@
     <tbody>
     <% if @all_positions.any? %>
       <%= turbo_frame_tag "team_position" do %>
-        <%= render partial: "organizer_position_row", collection: @positions, as: :position %>
+        <%= render partial: "organizer_positions/organizer_position_row", collection: @positions, as: :organizer_position %>
       <% end %>
     <% end %>
   </table>
@@ -70,7 +70,7 @@
   <% if @all_positions.any? %>
     <%= turbo_frame_tag "team_position" do %>
       <div class="grid grid-cols-1 lg:grid-cols-2">
-        <%= render partial: "organization_position", collection: @positions, as: :position %>
+        <%= render @positions %>
       </div>
       <%= paginate @positions %>
     <% end %>
@@ -86,7 +86,7 @@
   </h2>
 
   <div class="flex flex-col" style="gap: 0.5rem">
-    <%= render partial: "organization_position_invite_pending", collection: @pending, as: :invite %>
+    <%= render @pending %>
   </div>
 <% end %>
 
