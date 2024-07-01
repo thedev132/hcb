@@ -5,6 +5,7 @@
     "node": "22"
   },
   "dependencies": {
+    "@1password/save-button": "^1.3.0",
     "@airbrake/browser": "^2.1.8",
     "@alpinejs/persist": "^3.13.7",
     "@babel/core": "^7.18.6",
