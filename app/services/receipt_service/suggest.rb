@@ -51,8 +51,8 @@ module ReceiptService
           weight: 200,
         },
         date: {
-          value: if (hcb_code.pt&.raw_pending_stripe_transaction&.created_at ||
-            hcb_code.date).to_date - @extracted.extracted_date.to_date <= 1
+          value: if @extracted.extracted_date.present? && ((hcb_code.pt&.raw_pending_stripe_transaction&.created_at ||
+            hcb_code.date).to_date - @extracted.extracted_date.to_date <= 1)
                    0
                  else
                    1
