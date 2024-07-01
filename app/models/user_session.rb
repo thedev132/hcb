@@ -85,6 +85,12 @@ class UserSession < ApplicationRecord
   scope :peacefully_expired, -> { where(peacefully_expired: true) }
   scope :not_peacefully_expired, -> { where.not(peacefully_expired: true) }
 
+  after_create_commit do
+    if fingerprint.present? && user.user_sessions.excluding(self).where(fingerprint:).exists?
+      UserSesssionMailer.with(user_session: self).new_login.deliver_later
+    end
+  end
+
   extend Geocoder::Model::ActiveRecord
   geocoded_by :ip
   after_validation :geocode, if: ->(session){ session.ip.present? and session.ip_changed? }
