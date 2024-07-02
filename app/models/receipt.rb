@@ -177,7 +177,11 @@ class Receipt < ApplicationRecord
   private
 
   def pdf_text
-    doc = Poppler::Document.new(file.download)
+    doc = begin
+      Poppler::Document.new(file.download)
+    rescue
+      Poppler::Document.new(File.read(self.attachment_changes["file"].attachable))
+    end
     doc.pages.map(&:text).join(" ")
   end
 
