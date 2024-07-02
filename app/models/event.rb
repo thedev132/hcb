@@ -96,6 +96,15 @@ class Event < ApplicationRecord
   monetize :total_fees_v2_cents
 
   default_scope { order(id: :asc) }
+
+  scope :active, -> {
+    includes(canonical_event_mappings: :canonical_transaction)
+      .where("canonical_transactions.created_at > ?", 1.year.ago)
+      .references(:canonical_transaction)
+  }
+
+  scope :inactive, -> { where.not(id: Event.active.pluck(:id)) }
+
   scope :pending, -> { where(aasm_state: :pending) }
   scope :transparent, -> { where(is_public: true) }
   scope :not_transparent, -> { where(is_public: false) }

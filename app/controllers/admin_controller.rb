@@ -1266,6 +1266,7 @@ class AdminController < ApplicationController
     @omitted = params[:omitted].present? ? params[:omitted] : "both" # both by default
     @funded = params[:funded].present? ? params[:funded] : "both" # both by default
     @hidden = params[:hidden].present? ? params[:hidden] : "both" # both by default
+    @active = params[:active].present? ? params[:active] : "both" # both by default
     @organized_by = params[:organized_by].presence || "anyone"
     @tagged_with = params[:tagged_with].presence || "anything"
     if params[:category] == "none"
@@ -1295,6 +1296,8 @@ class AdminController < ApplicationController
     relation = relation.not_omitted if @omitted == "not_omitted"
     relation = relation.hidden if @hidden == "hidden"
     relation = relation.not_hidden if @hidden == "not_hidden"
+    relation = relation.active if @active == "active"
+    relation = relation.inactive if @hidden == "inactive"
     relation = relation.funded if @funded == "funded"
     relation = relation.not_funded if @funded == "not_funded"
     relation = relation.organized_by_hack_clubbers if @organized_by == "hack_clubbers"

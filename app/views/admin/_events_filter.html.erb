@@ -15,6 +15,11 @@
     <%= form.select :demo_mode, [["Both", "both"], ["Full", "full"], ["Demo", "demo"]], selected: @demo_mode %>
   <% end %>
 
+  <%= form.label :active do %>
+    Active
+    <%= form.select :active, [["Both", "both"], ["Inactive", "inactive"], ["Active", "active"]], selected: @active %>
+  <% end %>
+
   <%= form.label :hidden do %>
     Hidden
     <%= form.select :hidden, [["Both", "both"], ["Not Hidden", "not_hidden"], ["Hidden", "hidden"]], selected: @hidden %>
