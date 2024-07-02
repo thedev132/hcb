@@ -42,6 +42,7 @@
       <%= card_to "Ledger", ledger_admin_index_path, { badge: CanonicalTransaction.not_stripe_top_up.unmapped.count } %>
       <%= card_to "ACH", ach_admin_index_path, { badge: AchTransfer.pending.count } %>
       <%= card_to "Check", increase_checks_admin_index_path, { badge: IncreaseCheck.pending.count } %>
+      <%= card_to "Check deposits", admin_check_deposits_path, { badge: CheckDeposit.unprocessed.count } %>
       <%= card_to "Grants", grants_admin_index_path, { badge: Grant.admin_action_needed.count } %>
       <%= card_to "PayPal", paypal_transfers_admin_index_path, { badge: PaypalTransfer.pending.count } %>
       <%= card_to "Disbursements", disbursements_admin_index_path, { badge: Disbursement.reviewing.count } %>
@@ -83,7 +84,6 @@
       <%= card_to "Bank Fees", bank_fees_admin_index_path, { badge: BankFee.in_transit_or_pending.count } %>
       <%= card_to "Ledger audits", admin_ledger_audits_path, { badge: Admin::LedgerAudit.pending.count } %>
       <%= render partial: "static_pages/card", locals: { task_path: balances_admin_index_path, human_name: "Organization Balances" } %>
-      <%= card_to "Check deposits", check_deposits_admin_index_path %>
       <%= render partial: "static_pages/card", locals: { task_path: blazer_path, human_name: "BI tool" } %>
       <%= card_to "Column Statements", column_statements_admin_index_path %>
     </ul>

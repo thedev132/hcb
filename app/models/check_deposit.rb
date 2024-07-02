@@ -63,6 +63,9 @@ class CheckDeposit < ApplicationRecord
   validates :amount_cents, numericality: { greater_than: 0, message: "can't be zero!" }, presence: true
   validates :front, attached: true, processable_image: true
   validates :back, attached: true, processable_image: true
+  validates_uniqueness_of :column_id, allow_nil: true
+
+  scope :unprocessed, -> { where(increase_id: nil, column_id: nil) }
 
   enum :increase_status, {
     pending: "pending",
