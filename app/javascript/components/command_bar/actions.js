@@ -52,7 +52,7 @@ export const generateEventActions = data => {
     })),
     ...data.filter(restrictedFilter).map(event => ({
       id: `${event.slug}-account-number`,
-      name: 'Account & routing number',
+      name: 'Account numbers',
       perform: () =>
         (window.location.pathname = `/${event.slug}/account-number`),
       icon: <Icon glyph="bank-account" size={16} />,
