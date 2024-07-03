@@ -18,6 +18,10 @@ class User
       "unknown"
     end
 
+    def title_kind
+      "Unknown"
+    end
+
   end
 
 end

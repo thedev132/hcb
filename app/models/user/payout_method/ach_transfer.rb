@@ -36,6 +36,10 @@ class User
         "ACH transfer"
       end
 
+      def title_kind
+        "ACH Transfer"
+      end
+
     end
   end
 

@@ -34,6 +34,10 @@ class User
         "PayPal"
       end
 
+      def title_kind
+        "PayPal"
+      end
+
     end
   end
 

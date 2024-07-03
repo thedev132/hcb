@@ -42,6 +42,10 @@ class User
         "check"
       end
 
+      def title_kind
+        "Check"
+      end
+
     end
   end
 
