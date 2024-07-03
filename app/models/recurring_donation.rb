@@ -86,7 +86,7 @@ class RecurringDonation < ApplicationRecord
     self.stripe_client_secret = subscription.latest_invoice&.payment_intent&.client_secret
     self.stripe_current_period_end = Time.at(subscription.current_period_end)
     self.stripe_status = subscription.status
-    self.last4 = subscription.default_payment_method&.card&.last4
+    self.last4 = subscription.default_payment_method&.try(:card)&.last4
     self.canceled_at = Time.at(subscription.canceled_at) if subscription.canceled_at
     self.stripe_customer_id = subscription.customer
 
