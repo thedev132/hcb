@@ -87,7 +87,7 @@ class UserSession < ApplicationRecord
 
   after_create_commit do
     if fingerprint.present? && user.user_sessions.excluding(self).where(fingerprint:).exists?
-      UserSessionMailer.with(user_session: self).new_login.deliver_later
+      UserSessionMailer.new_login(user_session: self).deliver_later
     end
   end
 
