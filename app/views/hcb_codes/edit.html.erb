@@ -11,7 +11,7 @@
     <%= form_with model: @hcb_code, data: { turbo: true, controller: "form" }, html: { style: "flex-grow: 1" } do |form| %>
       <div class="flex items-center">
         <button class="pop border-none cursor-pointer mr2 <%= "ai" if @ai_memo %>">
-          <%= inline_icon "checkmark", size: 28 %>
+          <%= inline_icon "check", size: 28 %>
         </button>
 
         <%= form.text_field :memo,
