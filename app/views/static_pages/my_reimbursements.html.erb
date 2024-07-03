@@ -63,9 +63,10 @@
     <% end %>
     <%= link_to "?filter=review_requested", class: "filterbar__item", "aria-selected": params[:filter] == "review_requested", role: "tab" do %>
       Review requested
-      <% unless current_user.assigned_reimbursement_reports.submitted.none? %>
+      <% review_requested = Reimbursement::Report.submitted.where(event: current_user.events, reviewer_id: nil).or(current_user.assigned_reimbursement_reports.submitted) %>
+      <% unless review_requested.none? %>
         <span class="m0 badge <%= params[:filter] != "review_requested" ? "bg-primary" : "bg-snow text-black" %>" style="margin-left: 2px; transform: translateY(-1px)">
-          <%= current_user.assigned_reimbursement_reports.submitted.count %>
+          <%= review_requested.count %>
         </span>
       <% end %>
     <% end %>

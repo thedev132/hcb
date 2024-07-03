@@ -184,7 +184,7 @@ class StaticPagesController < ApplicationController
 
   def my_reimbursements
     @reports = current_user.reimbursement_reports unless params[:filter] == "review_requested"
-    @reports = current_user.assigned_reimbursement_reports if params[:filter] == "review_requested"
+    @reports = Reimbursement::Report.submitted.where(event: current_user.events, reviewer_id: nil).or(current_user.assigned_reimbursement_reports.submitted) if params[:filter] == "review_requested"
     @reports = @reports.search(params[:q]) if params[:q].present?
     @payout_method = current_user.payout_method
   end
