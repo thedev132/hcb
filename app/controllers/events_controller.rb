@@ -204,6 +204,11 @@ class EventsController < ApplicationController
       @mock_total = @transactions.sum(&:amount_cents)
     end
 
+    if current_user && !Flipper.enabled?(:native_changelog_2024_07_03, current_user)
+      @latest_changelog_post = ChangelogPost.latest
+      Flipper.enable(:native_changelog_2024_07_03, current_user)
+    end
+
     if current_user && !Flipper.enabled?(:the_bin_popup_2024_05_17, current_user) && @event.robotics_team? && !@first_time
       Flipper.enable_actor(:the_bin_popup_2024_05_17, current_user)
       @the_bin = true

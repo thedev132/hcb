@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_27_144439) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_03_152158) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -427,6 +427,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_27_144439) do
     t.index ["stripe_card_id"], name: "index_card_grants_on_stripe_card_id"
     t.index ["subledger_id"], name: "index_card_grants_on_subledger_id"
     t.index ["user_id"], name: "index_card_grants_on_user_id"
+  end
+
+  create_table "changelog_posts", force: :cascade do |t|
+    t.string "title"
+    t.integer "headway_id"
+    t.string "markdown"
+    t.datetime "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "check_deposits", force: :cascade do |t|

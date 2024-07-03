@@ -79,6 +79,23 @@ export default class extends Controller {
       },
       '<'
     )
+    this.tl.to(
+      '.welcome__shine_text',
+      {
+        backgroundPosition: '50px 50px',
+        color: '#ec3750',
+        duration: 1,
+      },
+      '<'
+    )
+    this.tl.to(
+      '.welcome__shine_text_head',
+      {
+        opacity: 1,
+        duration: 1,
+      },
+      '<'
+    )
 
     this.hideTl = gsap.timeline({
       paused: true,
