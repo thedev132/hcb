@@ -1388,10 +1388,10 @@
     seed-shuffle "^1.0.0"
     title "^3.5.3"
 
-"@hackclub/icons@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@hackclub/icons/-/icons-0.0.9.tgz"
-  integrity sha512-6doI5dv8BaTjgfDhRMaudOuk0j0ir9DAP1vBn0lXrJ/QCkpoMrGOwILGOkV2Pa1EJ67dVSrbf+k/rvP7c36gAA==
+"@hackclub/icons@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@hackclub/icons/-/icons-0.0.14.tgz#c590432d5a1e4b39c384d577e59e24bffdd94197"
+  integrity sha512-xH/DV6TxlsvLuNGeBIausfKlH4eyp6CYXCckAxcYahL2NOdcZTZoJWKZBG38BzM5WfWnhfFkud/mQ5bqeFQK3g==
 
 "@hotwired/stimulus-webpack-helpers@^1.0.1":
   version "1.0.1"
