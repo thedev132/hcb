@@ -67,7 +67,7 @@ payout_nightly_job:
   class: "PayoutJob::Nightly"
 
 reimbursement_nightly_job:
-  cron: "0 * * * *" # run every hour
+  cron: "*/5 * * * *" # run every 5 minutes
   class: "ReimbursementJob::Nightly"
 
 bank_fee_nightly_job:
