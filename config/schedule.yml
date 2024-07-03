@@ -138,3 +138,7 @@ gauge_online_user_count_job:
 transaction_report_job:
   cron: "0 5 * * mon" # 5 AM every Monday
   class: "TransactionReportJob"
+
+headway_job:
+  cron: "*/5 * * * *"
+  class: "HeadwayJob"
