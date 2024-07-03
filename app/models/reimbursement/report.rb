@@ -108,7 +108,7 @@ module Reimbursement
           end
         end
         after do
-          ReimbursementJob::Nightly.perform_later
+          # ReimbursementJob::Nightly.perform_later
         end
       end
 
@@ -119,7 +119,7 @@ module Reimbursement
           end
         end
         after do
-          ReimbursementJob::Nightly.perform_later
+          # ReimbursementJob::Nightly.perform_later
           ReimbursementMailer.with(report: self).reimbursement_approved.deliver_later
           create_activity(key: "reimbursement_report.approved", owner: user)
         end
