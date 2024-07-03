@@ -61,7 +61,8 @@ class Comment < ApplicationRecord
 
   def edited?
     has_untracked_edit? or
-      versions.where("event = 'update' OR event = 'destroy'").any?
+      versions.any? { |version| %w[update destroy].include?(version.event) }
+    # we're doing this without SQL because versions is pre-loaded. - @sampoder
   end
 
   def has_attached_file?
