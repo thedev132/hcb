@@ -522,6 +522,10 @@ class AdminController < ApplicationController
       "reimbursement_reports.created_at desc"
     )
 
+    render layout: "admin"
+  end
+
+  def reimbursements_status
     @clearinghouse_transactions = TransactionGroupingEngine::Transaction::All.new(event_id: EventMappingEngine::EventIds::REIMBURSEMENT_CLEARING).run
 
     @pending_transactions = PendingTransactionEngine::PendingTransaction::All.new(event_id: EventMappingEngine::EventIds::REIMBURSEMENT_CLEARING).run
@@ -536,7 +540,7 @@ class AdminController < ApplicationController
       )
     }
 
-    render layout: "admin"
+    render layout: false
   end
 
   def ach_start_approval

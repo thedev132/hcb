@@ -182,6 +182,7 @@ Rails.application.routes.draw do
       get "pending_ledger", to: "admin#pending_ledger"
       get "ach", to: "admin#ach"
       get "reimbursements", to: "admin#reimbursements"
+      get "reimbursements_status", to: "admin#reimbursements_status"
       get "checks", to: "admin#checks"
       get "increase_checks", to: "admin#increase_checks"
       get "paypal_transfers", to: "admin#paypal_transfers"
