@@ -17,7 +17,7 @@ module BreakdownEngine
                               })
                        .sum(:amount_cents).to_f / 100 * -1
 
-        array << { name: position.user.first_name, value: amount } if amount > 0
+        array << { name: position.user.initial_name, value: amount } if amount > 0
       end
     end
 
