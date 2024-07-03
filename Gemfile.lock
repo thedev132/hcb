@@ -766,7 +766,7 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     stackprof (0.2.25)
-    statsd-instrument (3.5.12)
+    statsd-instrument (3.8.0)
     statsd-ruby (1.5.0)
     stringio (3.1.0)
     stripe (11.7.0)
@@ -945,7 +945,7 @@ DEPENDENCIES
   solargraph-rails (~> 0.2.0)
   sprockets-rails (~> 3.4)
   stackprof
-  statsd-instrument (~> 3.5, >= 3.5.12)
+  statsd-instrument (~> 3.8)
   stripe (= 11.7.0)
   strong_migrations
   swagger-blocks

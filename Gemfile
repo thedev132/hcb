@@ -144,7 +144,7 @@ gem "bootsnap", ">= 1.4.4", require: false # reduces boot times through caching;
 
 gem "appsignal" # error tracking + performance monitoring
 gem "lograge" # Log formatting
-gem "statsd-instrument", "~> 3.5", ">= 3.5.12" # For reporting to HC Grafana
+gem "statsd-instrument", "~> 3.8" # For reporting to HC Grafana
 
 group :production do
 
