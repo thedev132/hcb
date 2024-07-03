@@ -71,7 +71,7 @@ class ReceiptsController < ApplicationController
   def link_modal
     authorize @receiptable, policy_class: ReceiptablePolicy
 
-    @receipts = Receipt.in_receipt_bin.where(user: current_user).order(created_at: :desc)
+    @receipts = Receipt.in_receipt_bin.with_attached_file.where(user: current_user).order(created_at: :desc)
     @show_link = params[:show_link]
     @streams = defined?(params[:streams]) ? params[:streams] : true
     @suggested_receipt_ids = []
