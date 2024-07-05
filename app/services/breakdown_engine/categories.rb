@@ -16,14 +16,19 @@ module BreakdownEngine
                           .where("event_mapping.event_id = ?", @event.id)
                           .group("category")
                           .order(Arel.sql("SUM(raw_stripe_transactions.amount_cents) * -1 DESC"))
-                          .limit(15)
-                          .each_with_object([]) do |merchant, array|
-                            array << {
-                              truncated: merchant[:category].truncate(25).strip.titleize,
-                              name: merchant[:category].titleize,
-                              value: merchant[:amount_cents].to_f / 100
-                            }
+                          .each_with_object({}) do |merchant, object|
+                            categorizered = BreakdownEngine::Categorizer.new(merchant[:category].downcase).run
+                            if object[categorizered]
+                              object[categorizered][:value] += (merchant[:amount_cents].to_f / 100)
+                            else
+                              object[categorizered] = {
+                                truncated: categorizered.truncate(25).strip.titleize,
+                                name: categorizered.titleize,
+                                value: merchant[:amount_cents].to_f / 100
+                              }
+                            end
                           end
+                          .values
     end
 
   end

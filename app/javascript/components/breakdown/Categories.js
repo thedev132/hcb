@@ -94,8 +94,8 @@ const renderLegend = props => {
   const { payload } = props
   return (
     <>
-      <div style={{ textAlign: 'center', textWrap: 'balance' }}>
-        {payload.slice(0, 7).map((entry, index) => (
+      <div className="category_chart">
+        {payload.slice(0, 10).map((entry, index) => (
           <span
             key={`item-${index}`}
             style={{
@@ -105,16 +105,26 @@ const renderLegend = props => {
               marginRight: '16px',
             }}
           >
-            ●{'\u00A0'}
+            <wbr />●{'\u00A0'}
             {entry.payload.truncated}
           </span>
         ))}
       </div>
-      {payload.length > 7 && (
+      {payload.length > 10 && (
         <div style={{ textAlign: 'center' }} className="muted mt1">
           And {payload.length - 7} additional categories...
         </div>
       )}
+      <style>
+        {`
+        .category_chart {
+          text-align: center;
+          text-wrap: balance!important;
+          white-space: normal;
+        }
+        
+        `}
+      </style>
     </>
   )
 }
