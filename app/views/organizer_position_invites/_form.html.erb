@@ -5,7 +5,7 @@
     <%= form.label :email, class: "mb1" %>
 
     <div class="flex items-center">
-      <%= form.email_field :email, class: "mr1", "x-model": "email" %>
+      <%= form.email_field :email, class: "mr1", "x-model": "email", placeholder: "fiona@hackclub.com" %>
     </div>
     <template x-if="/(team|webmaster|marketing|admin|info|about|support|sales|hq|hello)/.test(email)">
       <div class="warning mt1">⚠️ For security, we discourage team emails on HCB. We recommend individual emails such as <em>ben@hackclub.com</em>!</div>
