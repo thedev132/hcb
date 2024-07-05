@@ -50,6 +50,7 @@ class EventsController < ApplicationController
 
         render json: events
       end
+      format.html { redirect_to root_path }
     end
   end
 
