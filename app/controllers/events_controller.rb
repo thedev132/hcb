@@ -205,7 +205,7 @@ class EventsController < ApplicationController
     end
 
     if current_user && !Flipper.enabled?(:native_changelog_2024_07_03, current_user)
-      @latest_changelog_post = ChangelogPost.latest
+      # @latest_changelog_post = ChangelogPost.latest
       Flipper.enable(:native_changelog_2024_07_03, current_user)
     end
 
