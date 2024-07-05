@@ -16,7 +16,7 @@ class CommentsController < ApplicationController
     authorize @comment
 
     if @comment.save
-      flash[:success] = "Note created."
+      flash[:success] = "Comment created."
       redirect_to @commentable.is_a?(Event) ? edit_event_path(@commentable, tab: :admin) : @commentable
     else
       render :new, status: :unprocessable_entity
@@ -35,7 +35,7 @@ class CommentsController < ApplicationController
     authorize @comment
 
     if @comment.save
-      flash[:success] = "Note successfully updated"
+      flash[:success] = "Comment successfully updated"
       # @commentable is not guaranteed to have a #show,
       # but all commentables effectively have a #show
       # because that's the only place comments show up as a list.
