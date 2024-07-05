@@ -40,7 +40,7 @@ class HeadwayJob < ApplicationJob
       end
     }
 
-    Flipper.disable(:native_changelog_2024_07_03) unless was_new_post
+    Flipper.disable(:native_changelog_2024_07_03) if was_new_post
   end
 
 end
