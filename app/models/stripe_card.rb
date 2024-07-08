@@ -269,10 +269,8 @@ class StripeCard < ApplicationRecord
     self.card_type = stripe_obj[:type]
 
     if stripe_obj[:status] == "active"
-      self.activated = true
       self.initially_activated = true
     elsif stripe_obj[:status] == "inactive" && !self.initially_activated
-      self.activated = false
       self.initially_activated = false
     end
 
