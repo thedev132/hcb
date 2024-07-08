@@ -48,6 +48,7 @@
 #  fk_rails_...  (stripe_cardholder_id => stripe_cardholders.id)
 #
 class StripeCard < ApplicationRecord
+  self.ignored_columns = ["activated"]
   include Hashid::Rails
   include PublicIdentifiable
   set_public_id_prefix :crd
