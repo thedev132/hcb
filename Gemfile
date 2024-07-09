@@ -210,6 +210,8 @@ gem "doorkeeper", "~> 5.6"
 gem "chartkick"
 gem "cssbundling-rails", "~> 1.4"
 
+gem "rtesseract"
+
 gem "sprockets-rails", "~> 3.4"
 
 gem "public_activity"
