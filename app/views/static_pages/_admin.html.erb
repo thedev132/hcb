@@ -70,7 +70,6 @@
     <ul class="grid left-align w-100 mt0" id="perks-grid">
       <%= card_to "Google Workspaces", google_workspaces_admin_index_path, { badge: GSuite.needs_ops_review.count } %>
       <%= card_to "Stickers", link_to_airtable_task(:stickers), { async_badge: :pending_stickers_airtable } %>
-      <%= card_to "Wallets", link_to_airtable_task(:wallets), { async_badge: :pending_wallets_airtable } %>
       <%= card_to "Hackathons", "https://dash.hackathons.hackclub.com/sign_in", { async_badge: :pending_hackathons_airtable } %>
       <%= card_to "Sendy", link_to_airtable_task(:sendy), { async_badge: :pending_sendy_airtable } %>
       <%= card_to "1Password", link_to_airtable_task(:onepassword), { async_badge: :pending_onepassword_airtable } %>
