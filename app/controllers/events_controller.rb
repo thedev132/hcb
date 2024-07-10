@@ -960,6 +960,10 @@ class EventsController < ApplicationController
         :category_lock,
         :invite_message
       ],
+      config_attributes: [
+        :id,
+        :anonymous_donations
+      ]
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend
@@ -998,6 +1002,10 @@ class EventsController < ApplicationController
         :merchant_lock,
         :category_lock,
         :invite_message
+      ],
+      config_attributes: [
+        :id,
+        :anonymous_donations
       ]
     )
 

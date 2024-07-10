@@ -243,6 +243,9 @@ class Event < ApplicationRecord
 
   belongs_to :point_of_contact, class_name: "User", optional: true
 
+  has_one :config, class_name: "Event::Configuration"
+  accepts_nested_attributes_for :config
+
   # Used for tracking slug history
   has_many :slugs, -> { order(id: :desc) }, class_name: "FriendlyId::Slug", as: :sluggable, dependent: :destroy
 
@@ -693,6 +696,10 @@ class Event < ApplicationRecord
 
   def airtable_record
     ApplicationsTable.all(filter: "{HCB ID} = '#{id}'").first
+  end
+
+  def config
+    super || create_config
   end
 
   private
