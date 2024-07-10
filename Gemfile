@@ -11,7 +11,7 @@ gem "rails", "~> 7.1.3"
 gem "puma", "~> 6.4" # app server
 
 gem "pg", ">= 0.18", "< 2.0" # database
-gem "redis", "~> 5.0" # for caching, jobs, etc.
+gem "redis", "~> 5.2" # for caching, jobs, etc.
 gem "sidekiq", "~> 7.1.3" # background jobs
 gem "sidekiq-cron", "~> 1.12" # run Sidekiq jobs at scheduled intervals
 
