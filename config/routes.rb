@@ -383,11 +383,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :canonical_pending_transactions, only: [:show, :edit] do
-    member do
-      post "set_custom_memo"
-    end
-  end
+  resources :canonical_pending_transactions, only: [:show, :edit, :update]
 
   resources :canonical_transactions, only: [:show, :edit] do
     member do
