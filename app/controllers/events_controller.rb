@@ -306,6 +306,7 @@ class EventsController < ApplicationController
   def edit
     @settings_tab = params[:tab]
     authorize @event
+    @activities = PublicActivity::Activity.for_event(@event).order(created_at: :desc).page(params[:page]).per(25) if @settings_tab == "audit_log"
   end
 
   # PATCH/PUT /events/1

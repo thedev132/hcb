@@ -7,6 +7,11 @@ class PublicActivity::Activity
       .or(where(recipient_type: "Event", recipient_id: user.events.pluck(:id)))
   }
 
+  scope :for_event, ->(event) {
+    where(event_id: event.id)
+      .or(where(recipient_type: "Event", recipient_id: event.id))
+  }
+
   include Turbo::Broadcastable
 
   after_create_commit -> {
@@ -22,6 +27,7 @@ class PublicActivity::Activity
         Event.find(event_id).users.each do |user|
           streams << [user, "activities"]
         end
+        streams << [Event.find(event_id), "activities"]
       end
 
       if recipient.is_a?(User)
@@ -32,6 +38,7 @@ class PublicActivity::Activity
         recipient.users.each do |user|
           streams << [user, "activities"]
         end
+        streams << [recipient, "activities"]
       end
 
       User.admin.each do |user|
