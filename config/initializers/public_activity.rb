@@ -26,8 +26,8 @@ class PublicActivity::Activity
       if event_id
         Event.find(event_id).users.each do |user|
           streams << [user, "activities"]
+          streams << [user, Event.find(event_id), "activities"]
         end
-        streams << [Event.find(event_id), "activities"]
       end
 
       if recipient.is_a?(User)
@@ -37,8 +37,8 @@ class PublicActivity::Activity
       if recipient.is_a?(Event)
         recipient.users.each do |user|
           streams << [user, "activities"]
+          streams << [user, recipient, "activities"]
         end
-        streams << [recipient, "activities"]
       end
 
       User.admin.each do |user|
