@@ -261,6 +261,7 @@ class Event < ApplicationRecord
 
   has_many :stripe_cards
   has_many :stripe_authorizations, through: :stripe_cards
+  has_many :stripe_card_personalization_designs, class_name: "StripeCard::PersonalizationDesign", inverse_of: :event
 
   has_many :emburse_cards
   has_many :emburse_card_requests
@@ -372,6 +373,8 @@ class Event < ApplicationRecord
 
   # Explanation: https://github.com/norman/friendly_id/blob/0500b488c5f0066951c92726ee8c3dcef9f98813/lib/friendly_id/reserved.rb#L13-L28
   after_validation :move_friendly_id_error_to_slug
+
+  after_commit :generate_stripe_card_designs, if: -> { name_changed? }
 
   comma do
     id
@@ -573,6 +576,7 @@ class Event < ApplicationRecord
   alias balance_available balance_available_v2_cents
   alias available_balance balance_available
 
+
   # `fee_balance_v2_cents`, but it includes fees on fronted (unsettled) transactions to prevent overspending before fees are charged
   def fronted_fee_balance_v2_cents
     feed_fronted_pts = canonical_pending_transactions
@@ -694,8 +698,26 @@ class Event < ApplicationRecord
     !engaged?
   end
 
+  def generate_stripe_card_designs
+    ActiveRecord::Base.transaction do
+      stripe_card_personalization_designs.update(stale: true)
+
+      URI.open("https://hcb-cc.hackclub.dev/api/embeds/bank?name=#{URI.encode_uri_component(name)}") do |file|
+        ::StripeCardService::PersonalizationDesign::Create.new(file: StringIO.new(file.read), color: :black, event: self).run
+
+        file.rewind
+
+        ::StripeCardService::PersonalizationDesign::Create.new(file: StringIO.new(file.read), color: :white, event: self).run
+      end
+    end
+  end
+
   def airtable_record
     ApplicationsTable.all(filter: "{HCB ID} = '#{id}'").first
+  end
+
+  def default_stripe_card_personalization_design
+    stripe_card_personalization_designs.where("stripe_name like '#{name} Black Card%'").first
   end
 
   def config

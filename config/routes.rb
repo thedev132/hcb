@@ -182,6 +182,9 @@ Rails.application.routes.draw do
       get "pending_ledger", to: "admin#pending_ledger"
       get "ach", to: "admin#ach"
       get "reimbursements", to: "admin#reimbursements"
+      get "stripe_card_personalization_designs", to: "admin#stripe_card_personalization_designs"
+      get "stripe_card_personalization_design_new", to: "admin#stripe_card_personalization_design_new"
+      post "stripe_card_personalization_design_create", to: "admin#stripe_card_personalization_design_create"
       get "reimbursements_status", to: "admin#reimbursements_status"
       get "checks", to: "admin#checks"
       get "increase_checks", to: "admin#increase_checks"
@@ -313,6 +316,13 @@ Rails.application.routes.draw do
 
   namespace :stripe_cards do
     resource :activation, only: [:new, :create], controller: :activation
+
+    resources :personalization_designs, only: [:show] do
+      member do
+        post "make_common"
+        post "make_private"
+      end
+    end
   end
   resources :stripe_cards, only: %i[edit update create index show] do
     member do
@@ -320,6 +330,7 @@ Rails.application.routes.draw do
       post "defrost"
     end
   end
+
   resources :emburse_cards, except: %i[new create]
 
   resources :checks, only: [:show]
