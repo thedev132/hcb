@@ -565,7 +565,7 @@ class AdminController < ApplicationController
 
     @count = relation.count
     relation = relation.page(@page).per(@per).order(
-      Arel.sql("stripe_status = 'review' ASC"),
+      Arel.sql("stripe_status = 'review' DESC"),
       "stripe_card_personalization_designs.created_at desc"
     )
 
