@@ -717,7 +717,7 @@ class Event < ApplicationRecord
   end
 
   def default_stripe_card_personalization_design
-    stripe_card_personalization_designs.where("stripe_name like '#{name} Black Card%'").order(created_at: :desc).first
+    stripe_card_personalization_designs.where("stripe_name like ?", "#{e.name} Black Card%").order(created_at: :desc).first
   end
 
   def config
