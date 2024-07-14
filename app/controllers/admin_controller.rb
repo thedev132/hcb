@@ -530,7 +530,7 @@ class AdminController < ApplicationController
 
     @pending_transactions = PendingTransactionEngine::PendingTransaction::All.new(event_id: EventMappingEngine::EventIds::REIMBURSEMENT_CLEARING).run
 
-    @unidentified_transactions = @clearinghouse_transactions.reject { |tx| tx.local_hcb_code.reimbursement_payout_holding? || tx.local_hcb_code.reimbursement_payout_transfer? }
+    @unidentified_transactions = @clearinghouse_transactions.reject { |tx| (tx.local_hcb_code.reimbursement_payout_holding? || tx.local_hcb_code.reimbursement_payout_transfer?) && tx.hcb_code == "HCB-500-5084" } # https://hackclub.slack.com/archives/C047Y01MHJQ/p1720156952566249
 
     @incomplete_payout_holdings = @clearinghouse_transactions.select { |tx|
       tx.local_hcb_code.reimbursement_payout_holding? && (
