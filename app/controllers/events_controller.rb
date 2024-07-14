@@ -99,19 +99,14 @@ class EventsController < ApplicationController
       search: params[:q],
       tag_id: @tag&.id,
       minimum_amount: @minimum_amount,
-      maximum_amount: @maximum_amount
+      maximum_amount: @maximum_amount,
+      start_date: @start_date,
+      end_date: @end_date
     ).run
 
     if @user
       @all_transactions = @all_transactions.select { |t| t.stripe_cardholder&.user == @user }
       @pending_transactions = @pending_transactions.select { |x| x.stripe_cardholder && x.stripe_cardholder.user.id == @user.id }
-    end
-
-    if @start_date || @end_date
-      in_range = ->(t) { (!@start_date || t.date >= @start_date.to_datetime) && (!@end_date || t.date <= @end_date.to_datetime) }
-
-      @all_transactions = @all_transactions.select(&in_range)
-      @pending_transactions = @pending_transactions.select(&in_range)
     end
 
     @type_filters = {
@@ -1025,7 +1020,9 @@ class EventsController < ApplicationController
       search: params[:q],
       tag_id: @tag&.id,
       minimum_amount: @minimum_amount,
-      maximum_amount: @maximum_amount
+      maximum_amount: @maximum_amount,
+      start_date: @start_date,
+      end_date: @end_date
     ).run
     PendingTransactionEngine::PendingTransaction::AssociationPreloader.new(pending_transactions:, event: @event).run!
     pending_transactions

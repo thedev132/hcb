@@ -3,7 +3,7 @@
 module TransactionGroupingEngine
   module Transaction
     class All
-      def initialize(event_id:, search: nil, tag_id: nil, expenses: false, revenue: false, minimum_amount: nil, maximum_amount: nil)
+      def initialize(event_id:, search: nil, tag_id: nil, expenses: false, revenue: false, minimum_amount: nil, maximum_amount: nil, start_date: nil, end_date: nil)
         @event_id = event_id
         @search = ActiveRecord::Base.connection.quote_string(search || "")
         @tag_id = tag_id
@@ -11,6 +11,8 @@ module TransactionGroupingEngine
         @revenue = revenue
         @minimum_amount = minimum_amount
         @maximum_amount = maximum_amount
+        @start_date = start_date
+        @end_date = end_date
       end
 
       def run
@@ -105,10 +107,32 @@ module TransactionGroupingEngine
         conditions << "q1.amount_cents >= 0" if @revenue
         conditions << "ABS(q1.amount_cents) >= #{@minimum_amount.cents}" if @minimum_amount
         conditions << "ABS(q1.amount_cents) <= #{@maximum_amount.cents}" if @maximum_amount
+        conditions << "#{date_select} >= cast('#{@start_date}' as date)" if @start_date
+        conditions << "#{date_select} <= cast('#{@end_date}' as date)" if @end_date
 
         return if conditions.none?
 
         "#{joins.join(" ")} where #{conditions.join(" and ")}"
+      end
+
+      def date_select
+        <<~SQL
+          (
+            select date
+            from (
+              select date
+              from (
+                select date from canonical_pending_transactions where id = any(q1.pt_ids) order by date asc, id asc limit 1
+              ) pt_raw
+              union
+              select date
+              from (
+                select date from canonical_transactions where id = any(q1.ct_ids) order by date asc, id asc limit 1
+              ) ct_raw
+            ) raw
+            order by date asc limit 1
+          )
+        SQL
       end
 
       def canonical_transactions_grouped_sql
@@ -178,24 +202,6 @@ module TransactionGroupingEngine
             #{search_modifier_for :ct}
           group by
             coalesce(ct.hcb_code, cast(ct.id as text)) -- handle edge case when hcb_code is null
-        SQL
-
-        date_select = <<~SQL
-          (
-            select date
-            from (
-              select date
-              from (
-                select date from canonical_pending_transactions where id = any(q1.pt_ids) order by date asc, id asc limit 1
-              ) pt_raw
-              union
-              select date
-              from (
-                select date from canonical_transactions where id = any(q1.ct_ids) order by date asc, id asc limit 1
-              ) ct_raw
-            ) raw
-            order by date asc limit 1
-          )
         SQL
 
         canonical_pending_transactions_select = <<~SQL
