@@ -3,7 +3,7 @@
 module TransactionGroupingEngine
   module Transaction
     class All
-      def initialize(event_id:, search: nil, tag_id: nil, expenses: false, revenue: false, minimum_amount: nil, maximum_amount: nil, start_date: nil, end_date: nil)
+      def initialize(event_id:, search: nil, tag_id: nil, expenses: false, revenue: false, minimum_amount: nil, maximum_amount: nil, start_date: nil, end_date: nil, user: nil)
         @event_id = event_id
         @search = ActiveRecord::Base.connection.quote_string(search || "")
         @tag_id = tag_id
@@ -13,6 +13,7 @@ module TransactionGroupingEngine
         @maximum_amount = maximum_amount
         @start_date = start_date
         @end_date = end_date
+        @user = user
       end
 
       def run
@@ -91,6 +92,22 @@ module TransactionGroupingEngine
         "and (#{type}.memo ilike '%#{@search}%' or #{type}.custom_memo ilike '%#{@search}%')"
       end
 
+      def user_modifier
+        return "" unless @user.present?
+
+        "and raw_stripe_transactions.stripe_transaction->>'cardholder' = '#{@user&.stripe_cardholder&.stripe_id}'"
+      end
+
+      def user_joins_for(type)
+        return "" unless @user.present?
+
+        type = type.to_s
+
+        return "left join raw_stripe_transactions on raw_stripe_transactions.id = transaction_source_id AND transaction_source_type = 'RawStripeTransaction'" if type == "ct"
+
+        "left join raw_stripe_transactions on raw_stripe_transactions.id = raw_pending_stripe_transaction_id"
+      end
+
       def modifiers
         joins = []
         conditions = []
@@ -145,6 +162,7 @@ module TransactionGroupingEngine
             ,sum(pt.amount_cents / 100.0)::float as amount
           from
             canonical_pending_transactions pt
+          #{user_joins_for :pt}
           where
             fronted = true -- only included fronted pending transactions
             and
@@ -176,6 +194,7 @@ module TransactionGroupingEngine
               where ct.hcb_code = pt.hcb_code and cem.event_id = #{event.id}
             )
             #{search_modifier_for :pt}
+            #{user_modifier}
           group by
             coalesce(pt.hcb_code, cast(pt.id as text)) -- handle edge case when hcb_code is null
         SQL
@@ -189,6 +208,7 @@ module TransactionGroupingEngine
             ,sum(ct.amount_cents / 100.0)::float as amount
           from
             canonical_transactions ct
+          #{user_joins_for :ct}
           where
             ct.id in (
               select
@@ -200,6 +220,7 @@ module TransactionGroupingEngine
                 and cem.subledger_id is null
             )
             #{search_modifier_for :ct}
+            #{user_modifier}
           group by
             coalesce(ct.hcb_code, cast(ct.id as text)) -- handle edge case when hcb_code is null
         SQL

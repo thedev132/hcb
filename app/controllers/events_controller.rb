@@ -100,14 +100,10 @@ class EventsController < ApplicationController
       tag_id: @tag&.id,
       minimum_amount: @minimum_amount,
       maximum_amount: @maximum_amount,
+      user: @user,
       start_date: @start_date,
       end_date: @end_date
     ).run
-
-    if @user
-      @all_transactions = @all_transactions.select { |t| t.stripe_cardholder&.user == @user }
-      @pending_transactions = @pending_transactions.select { |x| x.stripe_cardholder && x.stripe_cardholder.user.id == @user.id }
-    end
 
     @type_filters = {
       "ach_transfer"           => {
@@ -1021,6 +1017,7 @@ class EventsController < ApplicationController
       tag_id: @tag&.id,
       minimum_amount: @minimum_amount,
       maximum_amount: @maximum_amount,
+      user: @user,
       start_date: @start_date,
       end_date: @end_date
     ).run
