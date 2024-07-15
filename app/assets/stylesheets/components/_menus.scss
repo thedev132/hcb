@@ -64,7 +64,7 @@
   }
 
   .menu__toggle--arrowless &,
-  .menu__toggle--arrowless + & {
+  .menu__toggle--arrowless+& {
     top: calc(100% + 5px);
   }
 
@@ -146,6 +146,7 @@
 
     &:hover:not(:focus) {
       @include gradient(info);
+
       &::placeholder {
         color: $white;
       }
@@ -153,7 +154,7 @@
   }
 }
 
-.menu__content > a,
+.menu__content>a,
 .menu__action {
   display: flex;
   align-items: center;
@@ -195,6 +196,7 @@
   &:hover,
   &:focus {
     color: $white;
+
     &:before {
       opacity: 1;
     }
@@ -208,12 +210,12 @@
     margin-right: 6px;
   }
 
-  + .menu__action {
+  +.menu__action {
     border-top: 1px solid map-get($palette, smoke);
   }
 }
 
-.menu__content--compact > a,
+.menu__content--compact>a,
 .menu__content--compact .menu__action {
   padding: 0.25rem 0.5rem !important;
 }
@@ -235,7 +237,7 @@
 
   &[data-label] {
     margin-top: 0.75rem;
-    margin-bottom:0.75rem;
+    margin-bottom: 0.75rem;
 
     &::after {
       content: attr(data-label);

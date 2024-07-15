@@ -400,23 +400,6 @@ $(document).on('turbo:load', function () {
     BK.s('comment')[0].scrollIntoView();
   })  
 
-  if (BK.thereIs('additional_transparency_settings')) {
-    const additionalTransparencySettings = BK.s(
-      'additional_transparency_settings'
-    )
-    const transparencyToggle = $('#event_is_public')
-    $(transparencyToggle).on('change', e => {
-      if (e.target.checked) {
-        // When transparency mode is enabled, also enable indexing by default
-        $('#event_is_indexable').prop('checked', true)
-
-        additionalTransparencySettings.slideDown()
-      } else {
-        additionalTransparencySettings.slideUp()
-      }
-    })
-  }
-
   const tiltElement = $('[data-behavior~=hover_tilt]')
   const enableTilt = () =>
     tiltElement.tilt({
