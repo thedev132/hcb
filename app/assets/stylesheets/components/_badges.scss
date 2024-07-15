@@ -164,7 +164,8 @@ summary.pop::-webkit-details-marker {
 // User mentions, use the user_mention helper
 .mention {
   color: map-get($palette, muted);
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   font-weight: 500;
   margin-right: 0.25rem;
   text-decoration: none;
@@ -187,7 +188,7 @@ summary.pop::-webkit-details-marker {
     margin-right: 0.5rem;
 
     + svg {
-      margin: -0.25rem -0.2rem 0 -0.625rem;
+      margin: 0 -0.2rem 0 -0.625rem;
     }
   }
 
