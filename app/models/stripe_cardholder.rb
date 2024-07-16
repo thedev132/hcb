@@ -106,6 +106,29 @@ class StripeCardholder < ApplicationRecord
     end
   end
 
+  def self.first_name(user)
+    clean_name(user.first_name(legal: true))
+  end
+
+  def self.last_name(user)
+    clean_name(user.last_name(legal: true))
+  end
+
+  def self.clean_name(name)
+    name = ActiveSupport::Inflector.transliterate(name || "")
+
+    # Remove invalid characters
+    requirements = <<~REQ.squish
+      First and Last names must contain at least 1 letter, and may not
+      contain any numbers, non-latin letters, or special characters except
+      periods, commas, hyphens, spaces, and apostrophes.
+    REQ
+    name = name.gsub(/[^a-zA-Z.,\-\s']/, "").strip
+    raise ArgumentError, requirements if name.gsub(/[^a-z]/i, "").blank?
+
+    name
+  end
+
   private
 
   def set_default_billing_address
