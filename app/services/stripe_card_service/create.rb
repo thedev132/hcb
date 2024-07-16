@@ -46,7 +46,7 @@ module StripeCardService
     private
 
     def attrs
-      {
+      attrs = {
         card_type: @card_type,
         subledger: @subledger,
         stripe_cardholder_id: stripe_cardholder.id,
@@ -56,9 +56,12 @@ module StripeCardService
         stripe_shipping_address_country: @stripe_shipping_address_country,
         stripe_shipping_address_line1: @stripe_shipping_address_line1,
         stripe_shipping_address_line2: formatted_stripe_shipping_address_line2,
-        stripe_shipping_address_postal_code: @stripe_shipping_address_postal_code,
-        stripe_card_personalization_design_id: @stripe_card_personalization_design_id
+        stripe_shipping_address_postal_code: @stripe_shipping_address_postal_code
       }.compact
+
+      attrs[:stripe_card_personalization_design_id] = @stripe_card_personalization_design_id if physical?
+
+      attrs
     end
 
     def formatted_stripe_shipping_address_line2
