@@ -50,6 +50,19 @@ html[data-dark='true'] {
   }
 }
 
+.feature-ai-memos {
+  background-color: $snow;
+  background-image: url('feature-ai-memos-light.png');
+  background-size: 8em;
+}
+
+html[data-dark='true'] {
+  .feature-ai-memos {
+    background-color: $black;
+    background-image: url('feature-ai-memos-dark.png');
+  }
+}
+
 .feature-transaction-tags {
   background-size: 24em;
   background-color: $snow;

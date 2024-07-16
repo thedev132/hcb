@@ -10,6 +10,23 @@
     <h2 id="feature-previews">Feature previews</h2>
 
     <%= render partial: "features/preview", locals: {
+          id: "ai_memos",
+          classes: ["feature-ai-memos"],
+          feature_flag: :ai_memos_2024_06_20,
+          name: "AI Receipt Analysis",
+          description: "HCB can now analyze uploaded receipts to provide glancable details and transaction memo suggestions using OpenAI. After opting-in, you'll be able to see information such as the amount, date, and merchant in the receipt details pane, and HCB will suggest memos for transactions with receipts.",
+          footer: "When paired with <a href='#receipt-bin'>Receipt Bin</a>, HCB can also suggest which transaction a receipt belongs to."
+        } %>
+
+    <%= render partial: "features/preview", locals: {
+          id: "receipt-bin",
+          feature_flag: :receipt_bin_2023_04_07,
+          name: "Receipt Bin",
+          description: "Keeping track of receipts for every transaction can be tiring, and it's easy to forget to upload them. We're introducing a new way to manage receipts: Receipt Bin. After uploading receipts to the Receipt Bin, you can link receipts to transactions or save them for later.",
+          footer: "We also support uploading receipts to your Receipt Bin via emailing and texting!"
+        } %>
+
+    <%= render partial: "features/preview", locals: {
           id: "recently_on_hcb",
           feature_flag: :recently_on_hcb_2024_05_23,
           name: "Recently on HCB...",
@@ -28,14 +45,6 @@
           feature_flag: :rename_on_homepage_2023_12_06,
           name: "Rename Transactions on the Ledger",
           description: "This feature flag enables you to directly rename transactions on your organization's home page. Try it out by clicking a transaction, typing out a new memo, and pressing enter!"
-        } %>
-
-    <%= render partial: "features/preview", locals: {
-          id: "receipt-bin",
-          feature_flag: :receipt_bin_2023_04_07,
-          name: "Receipt Bin",
-          description: "Receipts have been a common pain point for HCB's users. Keeping track of receipts for every transaction can be tiring, and it's easy to forget to upload them. We're experimenting with a new way to manage receipts: Receipt Bin. After opting-in, you'll be able to upload receipts to the Receipt Bin, and HCB will attempt to automatically match them to transactions. You can also manually link receipts to transactions or save them for later.",
-          footer: "We also now support uploading receipts to your Receipt Bin via emailing and texting!"
         } %>
 
     <%= render partial: "features/preview", locals: {
