@@ -160,7 +160,7 @@ module StaticPagesHelper
       arcade: {
         id: "app4kCWulfB02bV8Q",
         table: "tblNUDETwMdUlBCSM",
-        query: { filterByFormula: "Status='Awaiting Fulfillment'" },
+        query: { filterByFormula: "AND(Status='Awaiting Fulfillment', OR({Verification Status (from YSWS Verification User)}='Eligible L1', {Verification Status (from YSWS Verification User)}='Eligible L2'))" },
         destination: "https://airtable.com/app4kCWulfB02bV8Q/tblNUDETwMdUlBCSM/viwipTwk0hGHW10Py"
       },
       marketing_shipment_request: {
