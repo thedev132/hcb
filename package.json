@@ -35,7 +35,7 @@
     "chartkick": "^5.0.1",
     "clsx": "^1.2.1",
     "cssnano": "^7.0.3",
-    "fuzzysort": "^3.0.1",
+    "fuzzysort": "^3.0.2",
     "gsap": "^3.12.5",
     "intl": "^1.2.5",
     "js-confetti": "^0.12.0",
