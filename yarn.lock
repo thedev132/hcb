@@ -1362,12 +1362,13 @@
   resolved "https://registry.yarnpkg.com/@github/combobox-nav/-/combobox-nav-2.3.1.tgz#76da4c47f1e33af56392c5c9cf661a28d5b4168e"
   integrity sha512-gwxPzLw8XKecy1nP63i9lOBritS3bWmxl02UX6G0TwMQZbMem1BCS1tEZgYd3mkrkiDrUMWaX+DbFCuDFo3K+A==
 
-"@github/text-expander-element@^2.6.1":
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/@github/text-expander-element/-/text-expander-element-2.6.1.tgz#2e1517af471b2132a965ea167b9fb776ab2d79f0"
-  integrity sha512-i6krPGXJRABfKXut0WArFd365Je4PT0MljtDoXUoCOEp+lGrmdosDMxmO0EfOYc97jBn+Hd2XO1mMsuI5+fwmQ==
+"@github/text-expander-element@^2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@github/text-expander-element/-/text-expander-element-2.7.1.tgz#869ac83d4185881b71472a0b7648285cd9a92e1a"
+  integrity sha512-CWxfYxJRkeWVCUhJveproLs6pHsPrWtK8TsjL8ByYVcSCs8CJmNzF8b7ZawrUgfai0F2jb4aIdw2FoBTykj9XA==
   dependencies:
     "@github/combobox-nav" "^2.0.2"
+    dom-input-range "^1.1.6"
 
 "@github/webauthn-json@^2.1.1":
   version "2.1.1"
@@ -2847,6 +2848,11 @@ dom-helpers@^5.0.1:
   dependencies:
     "@babel/runtime" "^7.8.7"
     csstype "^3.0.2"
+
+dom-input-range@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/dom-input-range/-/dom-input-range-1.1.6.tgz#4335639d5b3c7087552251193e560d198a439297"
+  integrity sha512-4o/SkTpscD0n81BeErrrtmE58lG8vTks++92vk//ld0NmkQTb4AVJ2rexh2yor6rtBf5IMte26u+fF3EgCppPQ==
 
 dom-serializer@^2.0.0:
   version "2.0.0"
