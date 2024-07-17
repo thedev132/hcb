@@ -740,6 +740,7 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
+    simpleidn (0.2.3)
     smart_properties (1.17.0)
     solargraph (0.50.0)
       backport (~> 1.2)
@@ -803,8 +804,9 @@ GEM
     unf_ext (0.0.8.1)
     unicode-display_width (2.5.0)
     uniform_notifier (1.16.0)
-    validates_email_format_of (1.7.2)
-      i18n
+    validates_email_format_of (1.8.2)
+      i18n (>= 0.8.0)
+      simpleidn
     validates_zipcode (0.5.2)
       activemodel (>= 4.2.0)
     web-console (4.2.1)
