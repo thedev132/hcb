@@ -40,10 +40,12 @@
           <strong>Security key</strong>
         <% end %>
       <% end %>
-      <%= form.radio_button :login_preference, "totp", required: true, data: { "webauthn-auth-target" => "loginPreferenceWebauthnInput", "action" => "form-disable#run", "form-disable-target" => "radioButton" } %>
-      <%= form.label :login_preference, value: "totp", class: "cursor-pointer" do %>
-        <%= inline_icon "clock", size: 28 %>
-        <strong>TOTP</strong>
+      <% if @totp_available %>
+        <%= form.radio_button :login_preference, "totp", required: true, data: { "webauthn-auth-target" => "loginPreferenceWebauthnInput", "action" => "form-disable#run", "form-disable-target" => "radioButton" } %>
+        <%= form.label :login_preference, value: "totp", class: "cursor-pointer" do %>
+          <%= inline_icon "clock", size: 28 %>
+          <strong>TOTP</strong>
+        <% end %>
       <% end %>
       <%= form.radio_button :login_preference, "email", required: true, data: { "webauthn-auth-target" => "loginPreferenceWebauthnInput", "action" => "form-disable#run", "form-disable-target" => "radioButton" } %>
       <%= form.label :login_preference, value: "email", class: "cursor-pointer" do %>
