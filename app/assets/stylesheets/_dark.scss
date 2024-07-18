@@ -445,3 +445,7 @@ html[data-dark='true'] {
     font-weight: 400;
   }
 }
+
+.recharts-rectangle.recharts-tooltip-cursor {
+  opacity: 0.2;
+}
