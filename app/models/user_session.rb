@@ -86,7 +86,7 @@ class UserSession < ApplicationRecord
   scope :not_peacefully_expired, -> { where.not(peacefully_expired: true) }
 
   after_create_commit do
-    if fingerprint.present? && user.user_sessions.excluding(self).where(fingerprint:).exists?
+    if fingerprint.present? && user.user_sessions.excluding(self).where(fingerprint:).none?
       UserSessionMailer.new_login(user_session: self).deliver_later
     end
   end
