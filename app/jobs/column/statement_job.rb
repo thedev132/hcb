@@ -65,8 +65,8 @@ module Column
         column_statement.file.attach(io: File.open(file), filename: "column_statement_report_#{end_date.iso8601}.csv")
         column_statement.start_date = start_date
         column_statement.end_date = end_date
-        first_txn = transactions_by_report.last.transactions.first
-        last_txn = transactions_by_report.first.transactions.last
+        first_txn = transactions_by_report[transactions_by_report.keys.last].first
+        last_txn = transactions_by_report[transactions_by_report.keys.first].last
         comunn_statement.starting_balance = first_txn["available_balance"] - first_txn["available_amount"]
         comunn_statement.closing_balance = last_txn["available_balance"]
         column_statement.save!
