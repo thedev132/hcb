@@ -101,6 +101,12 @@
       </tbody>
     </table>
   </article>
+
+  <%= paginate @reports %>
+
+  <p class="italic muted text-center">
+    <%= page_entries_info @reports, entry_name: "reports" %>.
+  </p>
 <% end %>
 
 <%= form_with(model: Reimbursement::Report, class: "display-none", method: :post, url: quick_expense_reimbursement_reports_path, data: { controller: "file-drop form", "file-drop-title-value": "Drop to start a report." }) do |form| %>

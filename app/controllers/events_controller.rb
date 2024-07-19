@@ -765,6 +765,7 @@ class EventsController < ApplicationController
     @reports = @reports.where(aasm_state: ["reimbursement_approved", "reimbursed"]) if params[:filter] == "reimbursed"
     @reports = @reports.rejected if params[:filter] == "rejected"
     @reports = @reports.search(params[:q]) if params[:q].present?
+    @reports = @reports.order(created_at: :desc).page(params[:page] || 1).per(params[:per] || 25)
   end
 
   def reimbursements_pending_review_icon
