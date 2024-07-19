@@ -30,6 +30,8 @@ module Column
                          "TRANSACTION"
                        }],
         [:amount_cents, ->(t) { t["available_amount"] }],
+        [:bank_account_id, ->(t) { t["bank_account_id"] }],
+        [:available_balance, ->(t) { t["available_balance"] }],
         [:check_number, ->(t) {
           transaction_id = t["transaction_id"]
           if transaction_id.start_with? "chkt"
