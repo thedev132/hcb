@@ -288,6 +288,8 @@ class AchTransfer < ApplicationRecord
       return now.change(hour: 15, minute: 0, second: 0) if now < now.change(hour: 13, min: 30, sec: 0)
     end
 
+    return 0.business_days.after(now).change(hour: 5, min: 30, sec: 0) unless now.workday?
+
     return 1.business_day.after(now).change(hour: 5, min: 30, sec: 0)
   end
 
