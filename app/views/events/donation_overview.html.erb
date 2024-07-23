@@ -13,14 +13,6 @@
           "mailto:?bcc=#{@donations.not_pending.pluck(:email).uniq.compact.join(',')}",
           target: "_blank",
           class: "tooltipped tooltipped--s", "aria-label": "Email donors" %>
-      <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
-        <%= inline_icon "download" %>
-        <div class="menu__content h5" data-behavior="menu_content">
-          <%= link_to "Export donations (CSV)", export_donations_path(event: @event, format: :csv), target: :_blank %>
-          <%= link_to "Export donations (JSON)", export_donations_path(event: @event, format: :json), target: :_blank %>
-          <%= link_to "Export donors (CSV)", export_donors_donations_path(event: @event, format: :csv), target: :_blank %>
-        </div>
-      </action>
     <% end %>
   <% end %>
   <% if @event.donation_page_enabled %>
@@ -184,8 +176,25 @@
   </div>
 <% end %>
 
-<h2 class="heading mt4 pb1" style="margin-bottom: 16px;">
+<h2 class="heading mt4 pb1 w-full inline-flex justify-between" style="margin-bottom: 16px;">
   Past donations
+
+    <div data-controller="menu" data-menu-placement-value="bottom-end">
+      <button
+        type="button"
+        class="btn bg-info menu__toggle menu__toggle--arrowless overflow-visible z1"
+        data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown"
+        data-menu-target="toggle">
+          <%= inline_icon "download", size: 16 %>
+          Export
+      </button>
+      <div class="menu__content menu__content--2 h5" data-menu-target="content">
+        <%= link_to "Export donations (CSV)", export_donations_path(event: @event, format: :csv), target: :_blank %>
+        <%= link_to "Export donations (JSON)", export_donations_path(event: @event, format: :json), target: :_blank %>
+        <%= link_to "Export donors (CSV)", export_donors_donations_path(event: @event, format: :csv), target: :_blank %>
+      </div>
+    </div>
+
 </h2>
 
 <div class="flex items-center gap-4 flex-col-reverse sm:flex-row">
