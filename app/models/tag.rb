@@ -26,7 +26,9 @@ class Tag < ApplicationRecord
   has_many :hcb_codes, through: :hcb_code_tags
 
   validates :label, presence: true, uniqueness: { scope: :event_id, case_sensitive: false }
-  validates_format_of :color, with: /\A#(?:\h{3}){1,2}\z/, allow_nil: true, message: "must be a color hex code"
+
+  COLORS = %w[muted red orange yellow green cyan blue purple].freeze
+  validates :color, inclusion: { in: COLORS }
 
   include PgSearch::Model
   pg_search_scope :search_label, against: :label

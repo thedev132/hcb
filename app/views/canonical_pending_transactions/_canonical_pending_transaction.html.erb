@@ -64,15 +64,15 @@
       </div>
 
       <% if !defined?(receipt_upload_button) && !defined?(hide_tags) && organizer_signed_in? && !pt.instance_of?(OpenStruct) && Flipper.enabled?(:transaction_tags_2022_07_29, @event || pt.local_hcb_code.event) %>
-        <div class="overflow-visible relative flex items-center" style="margin-left: 0.5rem;" data-controller="menu" data-menu-append-to-value="turbo-frame#ledger">
+        <div class="overflow-visible relative" style="margin-left: 0.5rem;" data-controller="menu" data-menu-append-to-value="turbo-frame#ledger">
           <button class="list-badge add-tag-badge ml0 menu__toggle menu__toggle--arrowless" data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">+ Add tag</button>
           <div class="menu__content menu__content--2 menu__content--compact menu__content--left h6" data-menu-target="content">
             <% (@event || pt.local_hcb_code.event).tags.each do |tag| %>
               <div class="flex items-center" data-tag="<%= tag.id %>">
                 <%= button_to toggle_tag_hcb_code_path(id: pt.local_hcb_code.hashid, tag_id: tag.id), class: "menu__action #{tag_dom_id(pt.local_hcb_code, tag, "_toggle")}", form_class: "flex-auto", form: { "data-turbo" => "true" } do %>
-                  <%= "✓" if tagged_with.include?(tag) %>
-
+                  <div class="w-3 h-3 rounded-full mr-2 tag-darker tag-<%= tag.color || "muted" %>"></div>
                   <%= tag.label %>
+                  <%= "✓" if tagged_with.include?(tag) %>
                 <% end %>
                 <%= button_to event_tag_path(@event || pt.local_hcb_code.event, tag), class: "menu__action", method: :delete, title: "Delete this tag", form: { "data-turbo" => "true", "data-turbo-confirm" => tag.removal_confirmation_message } do %>
                   <%= inline_icon "delete", size: 16, style: "margin: 0" %>
@@ -82,14 +82,10 @@
             <% if (@event || pt.local_hcb_code.event).tags.any? %>
               <div class="menu__divider tags__divider"></div>
             <% end %>
-            <%= form_with url: event_tags_path(@event || pt.local_hcb_code.event), data: { turbo: true } do |form| %>
-              <%= form.hidden_field :hcb_code_id, value: pt.local_hcb_code.hashid %>
-              <%= form.text_field :label, data: { "behavior" => (@event || pt.local_hcb_code.event).tags.none? ? "autofocus" : "" }, class: "menu__input", placeholder: "+ Create tag", autocomplete: "off", required: true %>
-            <% end %>
+            <%= render partial: "hcb_codes/create_tag", locals: { button: pt.local_hcb_code.hashid } %>
           </div>
         </div>
       <% end %>
-
       <% if pt.local_hcb_code %>
         <%= list_badge_for admin_signed_in? ? pt.local_hcb_code.comments.size : pt.local_hcb_code.not_admin_only_comments_count, "comment", "post", optional: true %>
         <%= list_badge_for pt.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: pt.local_hcb_code.receipt_optional?, required: pt.local_hcb_code.missing_receipt? %>
