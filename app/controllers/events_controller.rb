@@ -579,6 +579,8 @@ class EventsController < ApplicationController
       deposited: relation.where(aasm_state: [:in_transit, :deposited]).sum(:amount),
     }
 
+    @all_donations = relation.where(aasm_state: [:in_transit, :deposited])
+
     if params[:filter] == "refunded"
       relation = relation.refunded
     else
