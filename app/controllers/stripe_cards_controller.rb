@@ -30,6 +30,18 @@ class StripeCardsController < ApplicationController
     end
   end
 
+  def cancel
+    @card = StripeCard.find(params[:id])
+    authorize @card
+
+    if @card.cancel!
+      flash[:success] = "Card cancelled"
+      redirect_back_or_to @card
+    else
+      render :show, status: :unprocessable_entity
+    end
+  end
+
   def defrost
     @card = StripeCard.find(params[:id])
     authorize @card

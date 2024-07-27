@@ -328,6 +328,7 @@ Rails.application.routes.draw do
     member do
       post "freeze"
       post "defrost"
+      post "cancel"
     end
   end
 

@@ -17,6 +17,10 @@ class StripeCardPolicy < ApplicationPolicy
     freeze?
   end
 
+  def cancel?
+    user&.admin?
+  end
+
   def activate?
     user&.admin? || organizer_and_cardholder?
   end
