@@ -122,7 +122,7 @@ class OrganizerPositionInvite < ApplicationRecord
         organizer_position.spending_controls.create!
 
         # Create allowance
-        organizer_position.active_spending_control.allowances.create!(authorized_by_id: sender_id, amount_cents: initial_control_allowance_amount_cents, memo: "Initial allowance")
+        organizer_position.active_spending_control.allowances.create!(authorized_by_id: sender_id, amount_cents: initial_control_allowance_amount_cents, memo: "Initial allowance") unless initial_control_allowance_amount_cents.zero?
       end
 
       true
