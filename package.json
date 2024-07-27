@@ -10,7 +10,7 @@
     "@alpinejs/persist": "^3.14.1",
     "@babel/core": "^7.18.6",
     "@babel/preset-env": "^7.24.7",
-    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-react": "^7.24.7",
     "@csstools/postcss-sass": "^5.1.1",
     "@fingerprintjs/fingerprintjs": "^3.3.0",
     "@floating-ui/dom": "^1.6.8",
