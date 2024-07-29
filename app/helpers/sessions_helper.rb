@@ -89,7 +89,7 @@ module SessionsHelper
     @organizer_signed_in ||= Hash.new do |h, key|
       h[key] = run.call(**key)
     end
-    key = { event:, as: }
+    key = { inner_event: event, inner_as: as }
     @organizer_signed_in[key]
   end
 
