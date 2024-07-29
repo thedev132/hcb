@@ -102,11 +102,10 @@
 
   <%= form.hidden_field :stripe_cardholder_id, value: current_user&.stripe_cardholder&.id %>
 
-  <p class="h5 muted mt2">By submitting, you agree to the
-    <a href="https://stripe.com/legal/issuing/celtic-authorized-user-terms" target="_blank">
-      Card User Terms
-    </a>. Your name, birthday, and contact information is shared with Stripe and
-    their banking partners.
+  <p class="h5 muted mt2">
+    By submitting, you agree to Stripe's
+    <a href="https://stripe.com/legal/issuing/celtic-authorized-user-terms" target="_blank">cardholder terms</a>.
+    Your name, birthday, and contact information is shared with them and their banking partners.
   </p>
   <div class="actions">
     <%= form.submit "Issue my card", disabled: @event&.demo_mode? %>
