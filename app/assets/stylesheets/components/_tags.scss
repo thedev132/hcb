@@ -4,6 +4,15 @@
   aspect-ratio: 1 / 1;
 }
 
+.tag__preview {
+  @extend .tag-darker;
+  width: 0.7rem;
+  height: 0.7rem;
+  flex-shrink: 0;
+  border-radius: 100%;
+  margin-right: 0.5rem;
+}
+
 .radio__control {
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -65,15 +74,23 @@ $colors: (
       background-color: lighten($color, 10%);
     }
 
+    &.badge.tag-muted {
+      background: rgba(lighten($color, 30%), 0.45);
+    }
+
     [data-dark="true"] & {
       background-color: darken($color, 30%);
       color: lighten($color, 30%);
+
+      &.tag-muted {
+        background: rgba(mix($color, $muted, 50%), 0.2);
+      }
 
       &.tag-darker {
         background-color: saturate(darken($color, 5%), 50%);
 
         &.tag-muted {
-          background-color: darken($color, 5%)
+          background-color: darken($color, 25%)
         }
       }
     }

@@ -37,7 +37,7 @@
         <span class="xs-hide sm-hide md-hide flex items-center">
           <span class="nowrap">Filtered by</span>
           <span style="background-color: rgba(0, 0, 0, 0.3); color: #f9fafc" class="nowrap badge regular ml1">
-            <div class="w-3 h-3 rounded-full mr-2 tag-darker tag-<%= @tag.color || "muted" %>"></div>
+            <div class="tag__preview tag-<%= @tag.color || "muted" %>"></div>
             <%= @tag.label %>
           </span>
         </span>
@@ -100,7 +100,7 @@
           <% @event.tags.each do |tag| %>
             <div class="flex items-center" data-tag="<%= tag.id %>">
               <%= link_to "?#{{ tag: tag.label, q: params[:q] }.compact.to_query}", class: "flex-auto menu__action" do %>
-                  <div class="w-3 h-3 rounded-full mr-2 tag-darker tag-<%= tag.color || "muted" %>"></div>
+                  <div class="tag__preview tag-<%= tag.color || "muted" %>"></div>
                   <%= tag.label %>
               <% end %>
               <% if organizer_signed_in? %>
