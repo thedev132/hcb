@@ -369,7 +369,7 @@ class UsersController < ApplicationController
                         .user_sessions
                         .with_deleted
                         .not_impersonated
-                        .where("deleted_at >= ? OR expiration_at >= ?", 1.week.ago, 1.week.ago)
+                        .where("deleted_at >= ? OR (expiration_at >= ? AND expiration_at < ?)", 1.week.ago, 1.week.ago, Time.now.utc)
                         .order(created_at: :desc)
 
     authorize @user
