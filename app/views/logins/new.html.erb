@@ -24,9 +24,9 @@
     <span class="h3 caps secondary block">Hack Club</span>
     <span class="primary">Sign in to HCB</span>
   </h1>
-  <%= form_tag auth_users_path, 'data-action': "webauthn-auth#submit", 'data-webauthn-auth-target': "authForm" do %>
+  <%= form_tag logins_path, 'data-action': "webauthn-auth#submit", 'data-webauthn-auth-target': "authForm" do %>
     <div data-webauthn-auth-target="error" class="mb2 display-none">
-      <p class="flash error mb1">Security key authentication failed.</p>
+      <p class="flash error mb1 mx-auto">Security key authentication failed.</p>
     </div>
 
     <%= label_tag :email, "Enter your email…", class: "left-align" %>
@@ -36,7 +36,7 @@
       <%= submit_tag "Continue", data: { "webauthn-auth-target" => "continueButton" } %>
     </div>
 
-    <%= link_to "Sign in another way", choose_login_preference_users_path(return_to: @return_to), class: "display-none block mt2", data: { "webauthn-auth-target" => "loginCode" } %>
+    <%= link_to "Sign in another way", choose_login_preference_logins_path(return_to: @return_to), class: "display-none block mt2", data: { "webauthn-auth-target" => "loginCode" } %>
   <% end %>
   <p class="h5 muted mt5">Need help? <%= help_email %></p>
   <p class="h5 mt2"><a href="https://hackclub.com/hcb?ref=hcb_auth">What’s HCB?</a></p>

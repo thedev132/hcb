@@ -1271,6 +1271,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_16_023501) do
     t.index ["user_session_id"], name: "index_login_tokens_on_user_session_id"
   end
 
+  create_table "logins", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "user_session_id"
+    t.string "aasm_state"
+    t.jsonb "authentication_factors"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "browser_token"
+    t.index ["user_id"], name: "index_logins_on_user_id"
+    t.index ["user_session_id"], name: "index_logins_on_user_session_id"
+  end
+
   create_table "mailbox_addresses", force: :cascade do |t|
     t.string "address", null: false
     t.string "aasm_state"

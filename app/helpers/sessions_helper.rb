@@ -43,6 +43,8 @@ module SessionsHelper
 
     user_session.save!
     self.current_user = user
+
+    user_session
   end
 
   def signed_in?

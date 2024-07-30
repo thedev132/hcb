@@ -96,19 +96,8 @@ Rails.application.routes.draw do
 
   resources :users, only: [:edit, :update] do
     collection do
-      get "auth", to: "users#auth"
-      post "auth", to: "users#auth_submit"
-      get "auth/login_preference", to: "users#choose_login_preference", as: :choose_login_preference
-      post "auth/login_preference", to: "users#set_login_preference", as: :set_login_preference
-      post "webauthn", to: "users#webauthn_auth"
+      get "auth", to: "logins#new"
       get "webauthn/auth_options", to: "users#webauthn_options"
-      post "login_code", to: "users#login_code"
-      post "exchange_login_code", to: "users#exchange_login_code"
-
-      # TOTP
-      get "totp"
-      post "totp"
-      post "totp_auth"
 
       # SMS Auth
       post "start_sms_auth_verification", to: "users#start_sms_auth_verification"
@@ -160,6 +149,26 @@ Rails.application.routes.draw do
         get "verify"
         get "authorize", to: "email_updates#authorize_change"
       end
+    end
+  end
+
+  resources :logins, only: [:new, :create] do
+    collection do
+      get "login_preference", to: "logins#choose_login_preference", as: :choose_login_preference
+      post "complete" # for webauthn
+    end
+    member do
+      get "/", to: "logins#choose_login_preference", as: :choose_login_preference
+      post "login_preference", to: "logins#set_login_preference", as: :set_login_preference
+
+      # Request a login code
+      post "login_code"
+
+      # TOTP
+      get "totp"
+      post "totp"
+
+      post "complete"
     end
   end
 

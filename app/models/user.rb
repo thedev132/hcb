@@ -68,6 +68,7 @@ class User < ApplicationRecord
     :superadmin,
   ], scopes: false, default: :user
 
+  has_many :logins
   has_many :login_codes
   has_many :login_tokens
   has_many :user_sessions, dependent: :destroy
@@ -323,6 +324,10 @@ class User < ApplicationRecord
 
   def last_login_at
     user_sessions.maximum(:created_at)
+  end
+
+  def using_2fa?
+    Flipper.enabled?(:two_factor_authentication_2024_05_22, self) && phone_number_verified
   end
 
   def email_charge_notifications_enabled?

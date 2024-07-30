@@ -2,15 +2,17 @@
 
 require "rails_helper"
 
-describe UsersController do
+describe LoginsController do
   describe "#login_code" do
     context "when not sent by sms" do
       it "calls LoginCodeService::Request but does not call twilio" do
         expect(LoginCodeService::Request).to receive(:new).and_call_original
         expect(TwilioVerificationService).to_not receive(:new)
-
+        user = create(:user)
         params = {
-          email: "test@example.com"
+          email: user.email,
+          id: user.logins.create.hashid,
+          method: :login_code
         }
 
         post :login_code, params:
@@ -26,7 +28,9 @@ describe UsersController do
         # need to update after the fact because of User callback on_phone_number_update resetting this value
         user.update(use_sms_auth: true)
         params = {
-          email: user.email
+          email: user.email,
+          id: user.logins.create.hashid,
+          method: :login_code
         }
 
         post :login_code, params:

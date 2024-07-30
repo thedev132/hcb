@@ -11,15 +11,21 @@
 
   <%= render partial: "users/sms_auth_notice" %>
 
-  <p>We just sent a login code to <%= @use_sms_auth ? "your phone number ending in: " + @phone_last_four : @email %></p>
+  <p>
+    <% if @login.authentication_factors_count > 0 %>
+      For additional security (two factor authentication), we've just sent a login code to
+    <% else %>
+      We just sent a login code to
+    <% end %>
+    <%= @use_sms_auth ? "your phone number ending in: " + @phone_last_four : @email %>
+  </p>
   <% if Rails.env.development? %>
     <p class="h5"><%= link_to "Seems like you're in development. Check your dev email outbox here!", letter_opener_web_path, target: :_blank %></p>
   <% end %>
-   <%= form_tag exchange_login_code_users_path do %>
+   <%= form_tag complete_login_path(@login) do %>
     <%= label_tag :login_code, "Enter your login code", class: "left-align" %>
     <%= telephone_field_tag :login_code, "", placeholder: "Login code", autofocus: true, autocomplete: "off", class: "left-align mb2", required: true %>
-    <%= hidden_field_tag :email, @email %>
-    <%= hidden_field_tag :user_id, @user_id %>
+    <%= hidden_field_tag :method, :login_code %>
     <%= hidden_field_tag :fingerprint %>
     <%= hidden_field_tag :device_info %>
     <%= hidden_field_tag :os_info %>
@@ -40,11 +46,11 @@
     <div data-controller="form">
       <p>Don't have access to your phone?
         Click
-        <%= link_to "here", login_code_users_path, data: { action: "form#submit:prevent" } %>
+        <%= link_to "here", login_code_login_path(@login), data: { action: "form#submit:prevent" } %>
         to send a login code to your
         email instead</p>
 
-      <%= form_with id: "use_email_form", url: login_code_users_path, class: "display-none", data: { form_target: "form" } do |form| %>
+      <%= form_with id: "use_email_form", url: login_code_login_path(@login), class: "display-none", data: { form_target: "form" } do |form| %>
         <%= form.hidden_field :force_use_email, value: true %>
         <%= form.hidden_field :email, value: @email %>
       <% end %>
@@ -52,7 +58,7 @@
   <% end %>
 
   <% if @webauthn_available || @totp_available %>
-    <%= link_to "Sign in another way", choose_login_preference_users_path(return_to: @return_to), class: "block mt2" %>
+    <%= link_to "Sign in another way", choose_login_preference_login_path(@login, return_to: @return_to), class: "block mt2" %>
   <% end %>
 </article>
 <%= javascript_include_tag "fingerprint.js" %>
