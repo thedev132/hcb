@@ -27,6 +27,7 @@ class HcbCode
         return ach_payment_memo if ach_payment?
         return grant_memo if grant?
         return outgoing_fee_reimbursement_memo if outgoing_fee_reimbursement?
+        return yellowpages_memo if stripe_card? && yellowpages_memo
 
         ct.try(:smart_memo) || pt.try(:smart_memo) || ""
       end
@@ -116,6 +117,10 @@ class HcbCode
 
       def reimbursement_payout_transfer_memo
         "Payout transfer for reimbursement report #{reimbursement_payout_transfer.reimbursement_payout_holding.report.hashid}"
+      end
+
+      def yellowpages_memo
+        YellowPages::Merchant.lookup_name(network_id: stripe_merchant["network_id"])
       end
 
     end
