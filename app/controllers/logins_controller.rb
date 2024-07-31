@@ -19,7 +19,7 @@ class LoginsController < ApplicationController
   def create
     user = User.find_or_create_by!(email: params[:email])
     login = user.logins.create
-    cookies.signed[:browser_token] = login.browser_token
+    cookies.signed[:browser_token] = { value: login.browser_token, expires: Login::EXPIRATION.from_now }
 
     has_webauthn_enabled = user&.webauthn_credentials&.any?
     login_preference = session[:login_preference]
@@ -170,7 +170,7 @@ class LoginsController < ApplicationController
   def set_login
     if params[:id]
       begin
-        @login = Login.incomplete.find_by_hashid!(params[:id])
+        @login = Login.incomplete.active.find_by_hashid!(params[:id])
       rescue ActiveRecord::RecordNotFound
         return redirect_to auth_users_path, flash: { error: "Please start again." }
       end
@@ -181,7 +181,7 @@ class LoginsController < ApplicationController
       end
     elsif session[:auth_email]
       @login = User.find_by_email(session[:auth_email]).logins.create
-      cookies.signed[:browser_token] = @login.browser_token
+      cookies.signed[:browser_token] = { value: @login.browser_token, expires: Login::EXPIRATION.from_now }
     else
       raise ActionController::ParameterMissing.new("Missing login.")
     end

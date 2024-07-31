@@ -29,6 +29,10 @@ class Login < ApplicationRecord
 
   store :authentication_factors, accessors: [:sms, :email, :webauthn, :totp], prefix: :authenticated_with
 
+  EXPIRATION = 15.minutes
+
+  scope :active, -> { where(created_at: EXPIRATION.ago..) }
+
   has_paper_trail
 
   validate do
