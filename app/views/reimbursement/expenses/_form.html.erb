@@ -12,7 +12,7 @@
     <% end %>
     <div class="ml1">
       <%= form.label :value, expense.value_label, class: "bold" %>
-      <%= form.number_field :value, placeholder: "500.00", step: 0.01, min: 0.01, value: number_with_precision(expense.value, precision: 2), data: { controller: "truncate-decimal", action: "truncate-decimal#truncate", "expense-form-target": "field", "behavior": "ctrl_enter_submit" } %>
+      <%= form.number_field :value, placeholder: "500.00", step: 0.01, min: 0.01, value: number_with_precision(expense.value, precision: 2), data: { controller: "truncate-decimal", action: "truncate-decimal#truncate", "expense-form-target": "field", "behavior": "ctrl_enter_submit select_if_empty" } %>
     </div>
   </div>
   <div class="field mt1 flex flex-col flex-grow">

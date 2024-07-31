@@ -447,6 +447,12 @@ $(document).on('keydown', '[data-behavior~=ctrl_enter_submit]', function (event)
   }
 })
 
+$(document).on('focus', '[data-behavior~=select_if_empty]', function (event) {
+  if(event.target.value === "0.00") {
+    event.target.select()
+  }
+})
+
 function hidePWAPrompt() {
   document.body.classList.add("hide__pwa__prompt")
 }
