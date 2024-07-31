@@ -72,10 +72,6 @@ class LoginsController < ApplicationController
       return redirect_to auth_users_path
     end
 
-    if resp[:login_code].present?
-      cookies.signed[:"browser_token_#{resp[:login_code].id}"] = { value: resp[:browser_token], expires: LoginCode::EXPIRATION.from_now }
-    end
-
     render status: :unprocessable_entity
 
   rescue ActionController::ParameterMissing
@@ -115,7 +111,6 @@ class LoginsController < ApplicationController
         user_id: @login.user.id,
         login_code: params[:login_code],
         sms: params[:sms],
-        cookies:
       ).run
 
       if params[:sms]
@@ -148,15 +143,8 @@ class LoginsController < ApplicationController
       # user failed webauthn & has a phone number
       redirect_to login_code_login_path(@login), status: :temporary_redirect
     end
-  rescue Errors::InvalidLoginCode, Errors::BrowserMismatch => e
-    message = case e
-              when Errors::InvalidLoginCode
-                "Invalid login code!"
-              when Errors::BrowserMismatch
-                "Looks like this isn't the browser that requested that code!"
-              end
-
-    flash.now[:error] = message
+  rescue Errors::InvalidLoginCode => e
+    flash.now[:error] = "Invalid login code!"
     initialize_sms_params
     return render :login_code, status: :unprocessable_entity
   rescue WebAuthn::SignCountVerificationError, WebAuthn::Error => e
