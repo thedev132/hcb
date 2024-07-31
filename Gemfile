@@ -202,7 +202,7 @@ group :development do
   gem "bullet"
 end
 
-gem "jbuilder", "~> 2.11"
+gem "jbuilder", "~> 2.12"
 
 gem "ledgerjournal"
 gem "doorkeeper", "~> 5.6"
