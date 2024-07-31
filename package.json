@@ -9,7 +9,7 @@
     "@airbrake/browser": "^2.1.8",
     "@alpinejs/persist": "^3.14.1",
     "@babel/core": "^7.18.6",
-    "@babel/preset-env": "^7.24.7",
+    "@babel/preset-env": "^7.25.3",
     "@babel/preset-react": "^7.24.7",
     "@csstools/postcss-sass": "^5.1.1",
     "@fingerprintjs/fingerprintjs": "^3.3.0",
