@@ -1295,6 +1295,32 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def email
+    @message_id = params[:message_id]
+
+    respond_to do |format|
+      format.html { render inline: "<%== Ahoy::Message.find(@message_id).html_content %>" }
+    end
+  end
+
+  def emails
+    @page = params[:page] || 1
+    @per = params[:per] || 100
+    @q = params[:q].presence
+    @user_id = params[:user_id]
+
+    messages = Ahoy::Message.all
+    messages = messages.where(user: User.find(@user_id)) if @user_id
+
+    messages = messages.search_subject(@q) if @q
+
+    @count = messages.count
+
+    @messages = messages.page(@page).per(@per).order(sent_at: :desc)
+
+    render layout: "admin"
+  end
+
   private
 
   def stream_data(content_type, filename, data, download = true)

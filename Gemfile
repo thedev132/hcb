@@ -222,3 +222,5 @@ gem "audits1984"
 gem "rotp"
 
 gem "ruby-limiter"
+
+gem "ahoy_email", "~> 2.3"

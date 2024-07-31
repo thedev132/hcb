@@ -216,6 +216,8 @@ Rails.application.routes.draw do
       get "column_statements", to: "admin#column_statements"
       get "hq_receipts", to: "admin#hq_receipts"
       get "account_numbers", to: "admin#account_numbers"
+      get "emails", to: "admin#emails"
+      get "email", to: "admin#email"
 
       resources :grants, only: [] do
         post "approve"
