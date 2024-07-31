@@ -1,6 +1,6 @@
 <%# locals: (expense:, new: false) -%>
 
-<%= form_with(model: expense.becomes(Reimbursement::Expense), url: reimbursement_expense_path(expense), class: "mb3", style: "max-width: 600px;", local: true, data: { "expense-form-target": "form", turbo: true }) do |form| %>
+<%= form_with(model: expense.becomes(Reimbursement::Expense), url: reimbursement_expense_path(expense), class: "h-100 flex flex-col", style: "max-width: 600px;", local: true, data: { "expense-form-target": "form", turbo: true }) do |form| %>
   <div class="flex flex-row items-center">
     <div style="flex-grow: 1;">
       <%= form.label :memo, "Memo", class: "bold" %>
@@ -15,14 +15,14 @@
       <%= form.number_field :value, placeholder: "500.00", step: 0.01, min: 0.01, value: number_with_precision(expense.value, precision: 2), data: { controller: "truncate-decimal", action: "truncate-decimal#truncate", "expense-form-target": "field", "behavior": "ctrl_enter_submit" } %>
     </div>
   </div>
-  <div class="field mt2">
+  <div class="field mt1 flex flex-col flex-grow">
     <div class="flex flex-row items-center justify-between mb1 flex-wrap gap-x-3">
       <%= form.label :description, "Description", class: "bold" %>
       <span class="h5 muted mt0 mb0 flex items-center">
         <%= inline_icon "markdown", size: 32 %> Additional context for this expense
       </span>
     </div>
-    <%= form.text_area :description, placeholder: "This was for...", class: "w-100 fit", data: { "expense-form-target": "field" } %>
+    <%= form.text_area :description, placeholder: "This was for...", class: "w-100 fit flex-grow", data: { "expense-form-target": "field" } %>
   </div>
   <% if policy(expense).approve? %>
     <% if !expense.approved? && expense.report.submitted? %>
