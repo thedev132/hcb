@@ -30,8 +30,13 @@
       </span>
     </div>
     <div class="avatar-row">
-      <% event.organizer_positions.each do |position| %>
+      <% event.organizer_positions.first(8).each do |position| %>
         <%= avatar_for position.user, 24 %>
+      <% end %>
+      <% if event.organizer_positions.size > 8 %>
+        <div class="rounded-full text-white bg-gray-500 justify-center items-center flex" style="width:24px;height:24px;font-weight: 300;font-size:10px">
+          +<%= event.organizer_positions.size - 8 %>
+        </div>
       <% end %>
     </div>
   </li>
