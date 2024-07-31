@@ -211,7 +211,7 @@ GEM
     crass (1.0.6)
     css_parser (1.17.1)
       addressable
-    cssbundling-rails (1.4.0)
+    cssbundling-rails (1.4.1)
       railties (>= 6.0.0)
     csv (3.3.0)
     date (3.3.4)
@@ -832,7 +832,7 @@ GEM
     wkhtmltopdf-binary (0.12.6.6)
     xxhash (0.5.0)
     yard (0.9.36)
-    zeitwerk (2.6.16)
+    zeitwerk (2.6.17)
 
 PLATFORMS
   ruby
