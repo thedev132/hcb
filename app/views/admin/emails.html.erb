@@ -29,7 +29,7 @@
   <tbody>
     <% @messages.each do |msg| %>
       <section class="modal bg-snow" style="height: 60vh;" data-behavior="modal" role="dialog" id="message_<%= msg.id %>">
-        <%= modal_header "Email to #{msg.user.name}" %>
+        <%= modal_header "Email to #{msg.user&.name || "unknown user"}" %>
         <iframe loading="lazy" src="<%= url_for(controller: "admin", action: "email", message_id: msg.id) %>" class="w-full h-full absolute border-none -mt-8 -ml-8 pb-24">iframes are not supported</iframe>
       </section>
       <tr>
