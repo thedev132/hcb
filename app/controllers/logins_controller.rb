@@ -19,7 +19,7 @@ class LoginsController < ApplicationController
   def create
     user = User.find_or_create_by!(email: params[:email])
     login = user.logins.create
-    cookies.signed[:browser_token] = { value: login.browser_token, expires: Login::EXPIRATION.from_now }
+    cookies.signed["browser_token_#{login.hashid}"] = { value: login.browser_token, expires: Login::EXPIRATION.from_now }
 
     has_webauthn_enabled = user&.webauthn_credentials&.any?
     login_preference = session[:login_preference]
@@ -169,7 +169,7 @@ class LoginsController < ApplicationController
       end
     elsif session[:auth_email]
       @login = User.find_by_email(session[:auth_email]).logins.create
-      cookies.signed[:browser_token] = { value: @login.browser_token, expires: Login::EXPIRATION.from_now }
+      cookies.signed["browser_token_#{@login.hashid}"] = { value: @login.browser_token, expires: Login::EXPIRATION.from_now }
     else
       raise ActionController::ParameterMissing.new("Missing login.")
     end
@@ -219,9 +219,9 @@ class LoginsController < ApplicationController
   def valid_browser_token?
     return true if Rails.env.test?
     return true unless @login.browser_token
-    return false unless cookies.signed[:browser_token]
+    return false unless cookies.signed["browser_token_#{@login.hashid}"]
 
-    ActiveSupport::SecurityUtils.secure_compare(@login.browser_token, cookies.signed[:browser_token])
+    ActiveSupport::SecurityUtils.secure_compare(@login.browser_token, cookies.signed["browser_token_#{@login.hashid}"])
   end
 
 end
