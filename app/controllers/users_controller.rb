@@ -387,19 +387,4 @@ class UsersController < ApplicationController
     params.require(:user).permit(attributes)
   end
 
-  # HCB used to run on bank.hackclub.com— this ensures that any old references to `bank.` URLs are translated into `hcb.`
-  def migrate_return_to
-    if params[:return_to].present?
-      uri = URI(params[:return_to])
-
-      if uri&.host == "bank.hackclub.com"
-        uri.host = "hcb.hackclub.com"
-        params[:return_to] = uri.to_s
-      end
-    end
-
-  rescue URI::InvalidURIError
-    params.delete(:return_to)
-  end
-
 end
