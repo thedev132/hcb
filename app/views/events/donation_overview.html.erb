@@ -36,6 +36,7 @@
   <% end %>
   <%= pop_icon_to "settings",
       edit_event_path(@event, tab: "donations"),
+      data: Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) && organizer_signed_in? ? { turbo_frame: "_top", behavior: "modal_trigger", modal: "donation_settings" } : {},
       class: "tooltipped tooltipped--s", "aria-label": "Donations settings" %>
   <% if @event.donation_page_enabled %>
     <%= link_to start_donation_donations_path(@event), target: "_blank", class: "btn" do %>
@@ -265,3 +266,12 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <%= javascript_include_tag "donation_qr_codes.js" %>
+
+<% if Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) && organizer_signed_in? %>
+  <section class="modal modal--scroll modal--popover modal--popover--sm bg-snow" data-behavior="modal" role="dialog" id="donation_settings">
+    <%= modal_header("Settings", external_link: edit_event_path(@event, tab: "donations")) %>
+    <%= async_frame_to edit_event_path(@event, tab: "donations", params: { frame: true }), lazy: true, as: :div do %>
+      <strong>Loading...</strong>
+    <% end %>
+  </section>
+<% end %>
