@@ -32,7 +32,7 @@ gem "country_select", "~> 8.0"
 
 gem "faraday" # web requests
 
-gem "increase", "~> 0.3.1"
+gem "increase", "~> 0.3.3"
 gem "stripe", "11.7.0"
 gem "plaid", "~> 29.0"
 gem "yellow_pages", github: "hackclub/yellow_pages", ref: "117d13e"
