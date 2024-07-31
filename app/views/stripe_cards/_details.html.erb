@@ -48,7 +48,7 @@
             <%= inline_icon @show_card_details ? "view-fill" : "view", class: "align-middle" %>
           <% end %>
         <% else %>
-          <%= stripe_card.hidden_card_number %>
+          <%= stripe_card.hidden_card_number_with_last_four %>
           <div class="right tooltipped tooltipped--w" aria-label="Hidden to protect security">
             <%= inline_icon "private", size: 32, class: "muted" %>
           </div>
