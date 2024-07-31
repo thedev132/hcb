@@ -48,6 +48,12 @@ class StripeCardholder < ApplicationRecord
   validates :stripe_billing_address_city, presence: true, on: :update
   validates :stripe_billing_address_country, presence: true, on: :update
 
+  validates_comparison_of :stripe_billing_address_country, equal_to: "US"
+  validates :stripe_billing_address_state, inclusion: {
+    in: ->(cardholder) { ISO3166::Country[cardholder.stripe_billing_address_country].subdivisions.keys },
+    message: ->(cardholder, data) { "is not a state/province in #{ISO3166::Country[cardholder.stripe_billing_address_country].common_name}" },
+  }, if: -> { stripe_billing_address_country.present? }
+
   alias_attribute :address_line1, :stripe_billing_address_line1
   alias_attribute :address_line2, :stripe_billing_address_line2
   alias_attribute :address_city, :stripe_billing_address_city
