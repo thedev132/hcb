@@ -7,12 +7,6 @@
   <%= render partial: "hcb_codes/rich_metadata" %>
 </div>
 
-<% if @hcb_code.canonical_transactions.any? {|ct| ct.amount_cents.positive? } && !@hcb_code.event&.hcb_internals? %>
-  <% admin_tool("mt3") do %>
-    <%= link_to "View Usage Breakdown", breakdown_hcb_code_path(@hcb_code, format: :pdf), class: "btn bg-accent" %>
-  <% end %>
-<% end %>
-
 <% if @hcb_code.accepts_receipts? %>
   <%= render "receipts/list_v2" %>
   <% admin_tool_if @hcb_code.receipt_optional? do %>

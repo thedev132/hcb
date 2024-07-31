@@ -242,33 +242,4 @@ class HcbCodesController < ApplicationController
     redirect_to personal_tx.invoice
   end
 
-  def breakdown
-    @hcb_code = HcbCode.find_by(hcb_code: params[:id]) || HcbCode.find(params[:id])
-    authorize @hcb_code
-
-    unless @hcb_code.canonical_transactions.any? { |ct| ct.amount_cents.positive? }
-      return redirect_to @hcb_code
-    end
-
-    @event = @hcb_code.event
-    @event = @hcb_code.disbursement.destination_event if @hcb_code.disbursement?
-
-    usage_breakdown = @hcb_code.usage_breakdown
-
-    @spent_on = usage_breakdown[:spent_on]
-    @available = usage_breakdown[:available]
-
-    respond_to do |format|
-
-      format.html do
-        redirect_to @hcb_code
-      end
-
-      format.pdf do
-        render pdf: "breakdown", page_height: "11in", page_width: "8.5in"
-      end
-
-    end
-  end
-
 end
