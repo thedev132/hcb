@@ -25,7 +25,7 @@ textarea {
   width: 100%;
   max-width: 24rem;
 
-  &:focus {
+  &:focus-within {
     border-color: map-get($palette, info);
   }
 
