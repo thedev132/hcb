@@ -18,7 +18,7 @@ class StripeCardPolicy < ApplicationPolicy
   end
 
   def cancel?
-    user&.admin?
+    admin_or_manager? || organizer_and_cardholder?
   end
 
   def activate?
