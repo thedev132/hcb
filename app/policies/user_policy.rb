@@ -13,6 +13,10 @@ class UserPolicy < ApplicationPolicy
     user.admin? || record == user
   end
 
+  def generate_totp?
+    user.admin? || record == user
+  end
+
   def enable_totp?
     user.admin? || record == user
   end

@@ -130,6 +130,7 @@ Rails.application.routes.draw do
       post "unimpersonate"
     end
     post "delete_profile_picture", to: "users#delete_profile_picture"
+    post "generate_totp"
     post "enable_totp"
     post "disable_totp"
     patch "stripe_cardholder_profile", to: "stripe_cardholders#update_profile"
