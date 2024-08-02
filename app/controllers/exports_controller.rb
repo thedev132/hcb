@@ -60,6 +60,10 @@ class ExportsController < ApplicationController
             @withdrawn -= ct.amount
           end
         end
+
+        headers["Content-Type"] = "application/pdf"
+        headers["Content-disposition"] = "attachment; filename=#{helpers.possessive(@event.name)} #{@start.strftime("%B %Y")} Statement.pdf"
+
         render pdf: "statement", page_height: "11in", page_width: "8.5in"
       end
     end

@@ -45,6 +45,8 @@ class User < ApplicationRecord
 
   include Turbo::Broadcastable
 
+  include ApplicationHelper
+
   has_paper_trail only: [:access_level, :email]
 
   include PublicActivity::Model
@@ -223,7 +225,7 @@ class User < ApplicationRecord
   end
 
   def possessive_name
-    "#{name}'s"
+    possessive(name)
   end
 
   def initials
