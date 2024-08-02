@@ -17,7 +17,9 @@ Rails.application.routes.draw do
   end
 
   concern :commentable do
-    resources :comments, shallow: true, except: [:show, :index]
+    resources :comments, shallow: true, except: [:show, :index] do
+      resources :reactions, only: [:update], controller: "comment/reactions", action: "react"
+    end
   end
 
   # API documentation

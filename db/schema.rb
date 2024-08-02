@@ -517,6 +517,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_22_213027) do
     t.integer "closing_balance"
   end
 
+  create_table "comment_reactions", force: :cascade do |t|
+    t.string "emoji", null: false
+    t.bigint "reactor_id", null: false
+    t.bigint "comment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_comment_reactions_on_comment_id"
+    t.index ["emoji"], name: "index_comment_reactions_on_emoji"
+    t.index ["reactor_id"], name: "index_comment_reactions_on_reactor_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.string "commentable_type"
     t.bigint "commentable_id"
@@ -2179,6 +2190,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_22_213027) do
   add_foreign_key "checks", "lob_addresses"
   add_foreign_key "checks", "users", column: "creator_id"
   add_foreign_key "column_account_numbers", "events"
+  add_foreign_key "comment_reactions", "comments"
+  add_foreign_key "comment_reactions", "users", column: "reactor_id"
   add_foreign_key "disbursements", "events"
   add_foreign_key "disbursements", "events", column: "source_event_id"
   add_foreign_key "disbursements", "users", column: "fulfilled_by_id"

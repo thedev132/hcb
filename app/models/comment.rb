@@ -37,6 +37,8 @@ class Comment < ApplicationRecord
   has_encrypted :content
   acts_as_paranoid
 
+  has_many :reactions, dependent: :destroy
+
   validates :user, presence: true
   validates :content, presence: true, unless: :has_attached_file?
 
@@ -67,6 +69,19 @@ class Comment < ApplicationRecord
 
   def has_attached_file?
     file.attached?
+  end
+
+  def reactions_by_emoji
+    reactions.joins(:reactor)
+             .select("comment_reactions.reactor_id, comment_reactions.emoji, users.*")
+             .order(created_at: :asc)
+             .group_by(&:emoji)
+  end
+
+  def reacted_by(emoji)
+    max_users = 5
+    user_names = reactions_by_emoji[emoji]&.map(&:reactor)&.map(&:name) || []
+    user_names.count > max_users ? "#{user_names.first(max_users).join(", ")} +#{user_names.count - max_users} more" : user_names.to_sentence
   end
 
   def action_text
