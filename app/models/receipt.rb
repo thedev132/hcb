@@ -68,7 +68,8 @@ class Receipt < ApplicationRecord
     # and to suggest pairings
     unless Receipt::SYNCHRONOUS_SUGGESTION_UPLOAD_METHODS.include?(upload_method.to_s)
       # certain interfaces run suggestions synchronously
-      ReceiptJob::ExtractTextualContent.perform_later(self)
+      # ReceiptJob::ExtractTextualContent.perform_later(self)
+      # see https://github.com/hackclub/hcb/issues/7123
       ReceiptJob::SuggestPairings.perform_later(self)
     end
   end
