@@ -141,7 +141,7 @@ export default class extends Controller {
       this.memoTarget.classList.remove('muted')
     } else {
       this.memoTarget.classList.remove('warning')
-      this.memoTarget.classList.add('muted')
+      // this.memoTarget.classList.add('muted')
     }
   }
 
