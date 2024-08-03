@@ -692,6 +692,7 @@ Rails.application.routes.draw do
     resources :card_grants, only: [:new, :create], path: "card-grants" do
       member do
         post "cancel"
+        post "topup"
       end
     end
 

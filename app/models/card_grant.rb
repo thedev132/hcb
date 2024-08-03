@@ -104,6 +104,23 @@ class CardGrant < ApplicationRecord
     stripe_card.nil?
   end
 
+  def topup!(amount_cents:, topped_up_by: User.find(sent_by_id))
+    raise ArgumentError.new("Topups must be positive.") unless amount_cents.positive?
+
+    ActiveRecord::Base.transaction do
+      DisbursementService::Create.new(
+        source_event_id: event_id,
+        destination_event_id: event_id,
+        name: "Topup of funds for grant to #{user.name}",
+        amount: amount_cents / 100,
+        destination_subledger_id: subledger_id,
+        requested_by_id: topped_up_by.id,
+      ).run
+
+      update!(amount_cents: self.amount_cents + amount_cents)
+    end
+  end
+
   def cancel!(canceled_by)
     if balance > 0
       custom_memo = "Return of funds from cancellation of grant to #{user.name}"
