@@ -27,7 +27,7 @@ module Reimbursement
     end
 
     def draft?
-      (admin || manager || creator) && open
+      ((admin || manager || creator) && open) || ((admin || manager) && record.rejected?)
     end
 
     def request_reimbursement?

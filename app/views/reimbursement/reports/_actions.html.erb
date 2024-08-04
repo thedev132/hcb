@@ -192,6 +192,12 @@
 
     </div>
   <% end %>
+  <% if report.rejected? && !member_viewing %>
+    <%= link_to reimbursement_report_draft_path(report_id: report.id), class: "btn bg-muted mt2", method: :post do %>
+      <%= inline_icon "view-reload" %>
+      Re-open report for review
+    <% end %>
+  <% end %>
   <% if report.expenses.any? %>
     <div class="card mt2 <%= "closed" if report.closed? || member_viewing %>" id="summary">
       <div class="stat stat--small" style="flex-shrink: 0;">

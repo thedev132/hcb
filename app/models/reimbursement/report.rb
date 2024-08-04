@@ -133,7 +133,7 @@ module Reimbursement
       end
 
       event :mark_draft do
-        transitions from: [:submitted, :reimbursement_requested], to: :draft
+        transitions from: [:submitted, :reimbursement_requested, :rejected], to: :draft
       end
 
       event :mark_reimbursed do

@@ -108,7 +108,7 @@ module Reimbursement
 
       begin
         @report.mark_draft!
-        flash[:success] = "Report marked as a draft, you can now make edits."
+        flash[:success] = "Report marked as a draft."
       rescue => e
         flash[:error] = e.message
       end
