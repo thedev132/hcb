@@ -160,7 +160,7 @@
                 <%= recurring_donation.name %>
               <% end %>
               <% if organizer_signed_in? %>
-                <span class="muted h5"><%= recurring_donation.email %></span>
+                <%= mail_to recurring_donation.email, class: "muted h5" %>
               <% end %>
             </td>
             <td><%= format_date recurring_donation.created_at %></td>
