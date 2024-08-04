@@ -93,16 +93,19 @@ html[data-dark='true'] .feature-transaction-tags {
   }
 }
 
-.feature-reimbursements  {
+.feature-reimbursements {
   background-color: $snow;
-  background-image:
-    linear-gradient(to right, rgba($snow, 0.9), rgba($snow, 0.9)),
+  background-image: linear-gradient(
+      to right,
+      rgba($snow, 0.9),
+      rgba($snow, 0.9)
+    ),
     url('feature-reimbursements.png');
   background-size: 4em;
 }
 
 html[data-dark='true'] {
-  .feature-reimbursements  {
+  .feature-reimbursements {
     background-color: $black;
     background-image: url('feature-reimbursements.png');
   }
@@ -110,8 +113,11 @@ html[data-dark='true'] {
 
 .feature-turbo {
   background-color: $snow;
-  background-image:
-    linear-gradient(to right, rgba($snow, 0.9), rgba($snow, 0.9)),
+  background-image: linear-gradient(
+      to right,
+      rgba($snow, 0.9),
+      rgba($snow, 0.9)
+    ),
     url('feature-turbo.png');
   background-size: 4em;
 }

@@ -209,15 +209,15 @@ details[open] .flip-when-open {
 }
 
 table.strikeable {
-  border-collapse: collapse
+  border-collapse: collapse;
 }
 
 tr.strikethrough td {
-  position: relative
+  position: relative;
 }
 
 tr.strikethrough td:before {
-  content: " ";
+  content: ' ';
   position: absolute;
   left: 0;
   top: 50%;

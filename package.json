@@ -69,8 +69,8 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "lint": "eslint app/javascript/",
-    "format:check": "prettier --check app/javascript/",
-    "format": "prettier --write app/javascript/",
+    "format:check": "prettier --check app/javascript/ app/assets/stylesheets/",
+    "format": "prettier --write app/javascript/ app/assets/stylesheets/",
     "build:css": "postcss app/assets/stylesheets/{application,admin,mailer}.scss --base app/assets/stylesheets --dir app/assets/builds --ext css"
   },
   "browserslist": [

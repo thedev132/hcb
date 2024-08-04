@@ -8,7 +8,7 @@
     margin-right: -5px;
     box-shadow: 0 0 0 2px $white;
 
-    html[data-dark="true"] & {
+    html[data-dark='true'] & {
       box-shadow: 0 0 0 2px $darkless;
     }
   }
@@ -21,7 +21,9 @@
 @media (prefers-reduced-motion: no-preference) {
   .avatar-row {
     img {
-      transition: 0.125s margin-right ease-in-out, 0.5s transform ease-in-out;
+      transition:
+        0.125s margin-right ease-in-out,
+        0.5s transform ease-in-out;
     }
 
     img:hover {
