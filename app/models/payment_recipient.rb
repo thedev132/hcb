@@ -7,6 +7,7 @@
 #  id                        :bigint           not null, primary key
 #  account_number_ciphertext :text
 #  bank_name_ciphertext      :string
+#  email                     :text
 #  name                      :string
 #  routing_number_ciphertext :string
 #  created_at                :datetime         not null
@@ -44,6 +45,7 @@ class PaymentRecipient < ApplicationRecord
     {
       id:,
       name:,
+      email:,
       masked_account_number:,
       bank_name:,
       routing_number:,
