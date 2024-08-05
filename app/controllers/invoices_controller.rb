@@ -221,6 +221,8 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.find(params[:id])
     @hcb_code = @invoice.local_hcb_code
 
+    authorize @invoice
+
     ::InvoiceService::Refund.new(invoice_id: @invoice.id, amount: Monetize.parse(params[:amount]).cents).run
 
     redirect_to hcb_code_path(@hcb_code.hashid), flash: { success: "The refund process has been queued for this invoice." }

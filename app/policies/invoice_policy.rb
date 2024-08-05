@@ -48,6 +48,10 @@ class InvoicePolicy < ApplicationPolicy
     admin_or_user
   end
 
+  def refund?
+    user&.admin?
+  end
+
   private
 
   def admin_or_user
