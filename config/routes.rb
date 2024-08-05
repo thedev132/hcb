@@ -55,25 +55,28 @@ Rails.application.routes.draw do
 
   scope :my do
     get "/", to: redirect("/"), as: :my
+
     get "settings", to: "users#edit", as: :my_settings
     get "settings/address", to: "users#edit_address"
     get "settings/payouts", to: "users#edit_payout"
     get "settings/previews", to: "users#edit_featurepreviews"
     get "settings/security", to: "users#edit_security"
     get "settings/admin", to: "users#edit_admin"
-    get "inbox", to: "static_pages#my_inbox", as: :my_inbox
-    get "receipt_bin/suggested_pairings", to: "static_pages#suggested_pairings", as: :suggested_pairings
-    get "reimbursements", to: "static_pages#my_reimbursements", as: :my_reimbursements
-    get "activities", to: "static_pages#my_activities", as: :my_activities
-    get "draft_reimbursements_icon", to: "static_pages#my_draft_reimbursements_icon", as: :my_draft_reimbursements_icon
-    post "receipts/upload", to: "static_pages#receipt", as: :my_receipts_upload
-    get "missing_receipts", to: "static_pages#my_missing_receipts_list", as: :my_missing_receipts_list
-    get "missing_receipts_icon", to: "static_pages#my_missing_receipts_icon", as: :my_missing_receipts_icon
+
+    get "inbox", to: "my#inbox", as: :my_inbox
+    get "activities", to: "my#activities", as: :my_activities
+    get "reimbursements", to: "my#reimbursements", as: :my_reimbursements
+    get "reimbursements_icon", to: "my#reimbursements_icon", as: :my_reimbursements_icon
+
     get "receipts", to: redirect("/my/inbox")
+    post "receipts/upload", to: "static_pages#receipt", as: :my_receipts_upload
+    get "missing_receipts", to: "my#missing_receipts_list", as: :my_missing_receipts_list
+    get "missing_receipts_icon", to: "my#missing_receipts_icon", as: :my_missing_receipts_icon
+    get "receipt_bin/suggested_pairings", to: "static_pages#suggested_pairings", as: :suggested_pairings
 
     post "receipt_report", to: "users#receipt_report", as: :trigger_receipt_report
 
-    get "cards", to: "static_pages#my_cards", as: :my_cards
+    get "cards", to: "my#cards", as: :my_cards
     get "cards/shipping", to: "stripe_cards#shipping", as: :my_cards_shipping
   end
 

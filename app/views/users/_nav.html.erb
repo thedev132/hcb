@@ -40,7 +40,7 @@
       my_reimbursements_path,
       tooltip: "See expense reimbursements",
       icon: "attachment",
-      async_badge: my_draft_reimbursements_icon_path,
+      async_badge: my_reimbursements_icon_path,
       selected: local_assigns[:selected] == :reimbursements %>
     <%= dock_item "Settings",
       my_settings_path,
@@ -72,7 +72,7 @@
     </h4>
   <% end %>
 
-  <%= render partial: "static_pages/my_activities" if Flipper.enabled?(:recently_on_hcb_2024_05_23, current_user) && @activities %>
+  <%= render partial: "my/activities" if Flipper.enabled?(:recently_on_hcb_2024_05_23, current_user) && @activities %>
 
   <% if current_user.events.not_demo_mode.funded.exists? && Flipper.enabled?(:bank_wrapped, current_user) %>
     <div id="bank-wrapped-dialog" style="display: none;">
