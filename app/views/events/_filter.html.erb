@@ -84,7 +84,7 @@
         <span class="xs-hide sm-hide md-hide nowrap">Filter</span>
       <% end %>
     </button>
-    <div class="menu__content menu__content--2 menu__content--compact h5" style="width:290px" data-menu-target="content" data-controller="filter">
+    <div class="menu__content menu__content--2 menu__content--compact h5" style="width: 290px; padding: 0.5rem;" data-menu-target="content" data-controller="filter">
     <div data-controller="tabs" data-tabs-default-tab-value="<%= @tag ? "tag" : @user ? "user" : @type ? "type" : @start_date || @end_date ? "date" : @maximum_amount || @minimum_amount ? "amount" : Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0 ? "tags" : "user" %>">
       <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0 %>
         <button id="tags" data-tabs-target="btn" data-action="click->tabs#select">Tag</button>
