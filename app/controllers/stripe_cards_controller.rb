@@ -92,7 +92,7 @@ class StripeCardsController < ApplicationController
   end
 
   def create
-    event = Event.friendly.find(params[:stripe_card][:event_id])
+    event = Event.find(params[:stripe_card][:event_id])
     authorize event, :create_stripe_card?, policy_class: EventPolicy
 
     sc = stripe_card_params

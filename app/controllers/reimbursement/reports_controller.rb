@@ -10,7 +10,7 @@ module Reimbursement
 
     # POST /reimbursement_reports
     def create
-      @event = Event.friendly.find(report_params[:event_id])
+      @event = Event.find(report_params[:event_id])
       user = User.find_or_create_by!(email: report_params[:email])
       @report = @event.reimbursement_reports.build(report_params.except(:email, :receipt_id, :value).merge(user:, inviter: current_user))
 
@@ -35,7 +35,7 @@ module Reimbursement
     end
 
     def quick_expense
-      @event = Event.friendly.find(report_params[:event_id])
+      @event = Event.find(report_params[:event_id])
       @report = @event.reimbursement_reports.build({ user: current_user, inviter: current_user })
 
       authorize @report, :create?
