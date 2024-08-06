@@ -86,7 +86,7 @@ class ColumnService
 
   def self.bank_account_summary_report_url(from_date: 1.month.ago, to_date: Date.today)
     if report = bank_account_summary_report(from_date:, to_date:)
-      return get("/documents/#{report.first["csv_document_id"]}")["url"]
+      return get("/documents/#{report["csv_document_id"]}")["url"]
     else
       schedule_bank_account_summary_report(from_date:, to_date:)
       return nil
