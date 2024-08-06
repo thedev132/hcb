@@ -1,3 +1,5 @@
+/* global BK, $, loadTextExpander */
+
 const whenViewed = (element, callback) => new IntersectionObserver(([entry]) => entry.isIntersecting && callback(), { threshold: 1 }).observe(element);
 const loadModals = element => {
   $(element).on('click', '[data-behavior~=modal_trigger]', function (e) {
@@ -170,7 +172,7 @@ $(document).keydown(function (e) {
 
 $(document).on('click', '[data-behavior~=toggle_theme]', () => BK.toggleDark())
 
-function loadAsyncFrames(){
+function loadAsyncFrames() {
   $.each(BK.s('async_frame'), (i, frame) => {
     const loadFrame = () => {
       $.get($(frame).data('src'), data => {
@@ -182,7 +184,7 @@ function loadAsyncFrames(){
         $(frame).children('.shimmer').first().addClass('shimmer--error')
       })
     }
-  
+
     if ($(frame).data('loading') == "lazy") {
       whenViewed(frame, loadFrame);
     } else loadFrame();
@@ -210,11 +212,13 @@ $(document).on('turbo:load', function () {
         if ((email = localStorage.getItem('login_email'))) {
           BK.s('login').find('input[type=email]').val(email)
         }
-      } catch (e) { }
+      } catch (e) {
+        console.log(e)
+      }
     }
 
     // auto fill @hackclub.com email addresses on submit
-    BK.s('login').submit(e => {
+    BK.s('login').submit(() => {
       const val = $('input[name=email]').val()
       // input must end with '@h'
       if (val.endsWith('@h')) {
@@ -263,7 +267,7 @@ $(document).on('turbo:load', function () {
     if (value.lastIndexOf('.') != -1) {
       let cents = value.substring(value.lastIndexOf('.'), value.length)
       cents = cents
-        .replace(/[\.\,]/g, '')
+        .replace(/[.,]/g, '')
         .substring(0, cents.length > 2 ? 2 : 1)
 
       removeExtraCents =
@@ -332,7 +336,7 @@ $(document).on('turbo:load', function () {
       if (e.target.checked) shippingInputs.slideUp()
     })
   }
-  
+
   if (BK.s('reimbursement_report_create_form_type_selection').length) {
     const dropdownInput = $('#reimbursement_report_user_email')
     const emailInput = $('#reimbursement_report_email')
@@ -345,7 +349,7 @@ $(document).on('turbo:load', function () {
 
     const externalInputWrapper = $('#external_contributor_wrapper')
 
-    const hideAllInputs = () => [dropdownInput, emailInput,maxInput, inviteInput].forEach(input => input.hide());
+    const hideAllInputs = () => [dropdownInput, emailInput, maxInput, inviteInput].forEach(input => input.hide());
     hideAllInputs();
 
     externalInputWrapper.slideUp()
@@ -358,7 +362,7 @@ $(document).on('turbo:load', function () {
         emailInput.val(emailInput[0].attributes["value"].value)
       }
     })
-    
+
     $(forOrganizerInput).on('change', e => {
       if (e.target.checked) {
         emailInput.val(dropdownInput.val());
@@ -373,7 +377,7 @@ $(document).on('turbo:load', function () {
         });
       }
     })
-    
+
     $(forExternalInput).on('change', e => {
       if (e.target.checked) {
         externalInputWrapper.slideUp({
@@ -389,7 +393,7 @@ $(document).on('turbo:load', function () {
 
       }
     })
-    
+
     $(dropdownInput).on('change', e => {
       emailInput.val(e.target.value)
     })
@@ -398,7 +402,7 @@ $(document).on('turbo:load', function () {
   $('[data-behavior~=mention]').on('click', e => {
     BK.s('comment').val(`${BK.s('comment').val() + (BK.s('comment').val().length > 0 ? " " : "")}${e.target.dataset.mentionValue || e.target.innerText}`)
     BK.s('comment')[0].scrollIntoView();
-  })  
+  })
 
   const tiltElement = $('[data-behavior~=hover_tilt]')
   const enableTilt = () =>
@@ -448,12 +452,12 @@ $(document).on('keydown', '[data-behavior~=ctrl_enter_submit]', function (event)
 })
 
 $(document).on('focus', '[data-behavior~=select_if_empty]', function (event) {
-  if(event.target.value === "0.00") {
+  if (event.target.value === "0.00") {
     event.target.select()
   }
 })
 
-function hidePWAPrompt() {
+window.hidePWAPrompt = () => {
   document.body.classList.add("hide__pwa__prompt")
 }
 
@@ -471,7 +475,7 @@ $(document).on('click', '[data-behavior~=expand_receipt]', function (e) {
   selected_receipt.classList.add("receipt--expanded")
 })
 
-function unexpandReceipt() {
+window.unexpandReceipt = () => {
   document.querySelectorAll(`.receipt--expanded`)[0]?.classList?.remove('receipt--expanded');
   document.querySelector('.modal--popover.modal--popover--receipt-expanded')?.classList?.remove('modal--popover--receipt-expanded');
 }
@@ -503,7 +507,7 @@ document.addEventListener("turbo:before-stream-render", ((event) => {
       });
     } else if (streamElement.action == "close_modal") {
       $.modal.close().remove()
-      
+
     } else if (streamElement.action == "load_new_async_frames") {
       loadAsyncFrames()
     } else {

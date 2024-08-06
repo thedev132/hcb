@@ -1,5 +1,3 @@
-/* eslint-disable no-unreachable */
-
 import { Controller } from '@hotwired/stimulus'
 import sparkline from '@fnando/sparkline'
 
