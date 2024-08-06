@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class ExportsController < ApplicationController
+  include SetEvent
+  before_action :set_event, only: [:transactions]
   skip_before_action :signed_in_user
   skip_after_action :verify_authorized, only: :collect_email
 
   def transactions
-    @event = Event.friendly.find(params[:event])
-
     authorize @event, :show?
 
     should_queue = @event.canonical_transactions.size > 300

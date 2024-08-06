@@ -3,7 +3,7 @@
 class InvoicesController < ApplicationController
   include SetEvent
 
-  before_action :set_event, only: [:index, :new]
+  before_action :set_event, only: [:index, :new, :create]
   skip_before_action :signed_in_user
 
   def index
@@ -100,8 +100,6 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    @event = Event.friendly.find(params[:event_id])
-
     authorize @event, policy_class: InvoicePolicy
 
     sponsor_attrs = filtered_params[:sponsor_attributes]
@@ -138,7 +136,6 @@ class InvoicesController < ApplicationController
   rescue => e
     notify_airbrake(e)
 
-    @event = Event.friendly.find(params[:event_id])
     @sponsor = Sponsor.new(event: @event)
     @invoice = Invoice.new(sponsor: @sponsor)
 

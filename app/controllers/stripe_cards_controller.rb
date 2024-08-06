@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class StripeCardsController < ApplicationController
+  include SetEvent
+  before_action :set_event, only: [:new]
+
   def index
     @cards = StripeCard.all
     authorize @cards
@@ -85,8 +88,6 @@ class StripeCardsController < ApplicationController
   end
 
   def new
-    @event = Event.friendly.find(params[:event_id])
-
     authorize @event, :new_stripe_card?, policy_class: EventPolicy
   end
 

@@ -9,7 +9,7 @@ class DonationsController < ApplicationController
   skip_after_action :verify_authorized, only: [:export, :show, :refund, :qr_code, :finish_donation, :finished]
   skip_before_action :signed_in_user
   before_action :set_donation, only: [:show]
-  before_action :set_event, only: [:start_donation, :make_donation, :qr_code]
+  before_action :set_event, only: [:start_donation, :make_donation, :qr_code, :export, :export_donors]
   before_action :check_dark_param
   before_action :check_background_param
   before_action :hide_seasonal_decorations
@@ -148,8 +148,6 @@ class DonationsController < ApplicationController
   end
 
   def export
-    @event = Event.friendly.find(params[:event])
-
     authorize @event.donations.first
 
     respond_to do |format|
@@ -159,8 +157,6 @@ class DonationsController < ApplicationController
   end
 
   def export_donors
-    @event = Event.friendly.find(params[:event])
-
     authorize @event.donations.first
 
     respond_to do |format|
