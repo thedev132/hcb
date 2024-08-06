@@ -94,8 +94,12 @@ receipt_report_monthly_job:
   cron: "0 0 3 * *" # run first day of each month
   class: "ReceiptReportJob::Monthly"
 
-column_statement_monthly_job:
+column_reporting_monthly_job:
   cron: "0 0 1 * *" # run first day of each month
+  class: "Column::ReportingJob"
+
+column_statement_monthly_job:
+  cron: "0 0 3 * *" # run third day of each month
   class: "Column::StatementJob"
 
 stripe_card_nightly_job:
