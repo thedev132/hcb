@@ -159,27 +159,28 @@ class UsersController < ApplicationController
   def generate_totp
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     authorize @user
-    @user.totp&.destroy!
-    @totp = @user.build_totp
-    @totp.validate
+    @user.totp&.mark_expired!
+    @user.unverified_totp&.destroy!
+    @totp = @user.create_unverified_totp
   end
 
   def enable_totp
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     authorize @user
-    @totp = @user.build_totp(secret: params[:secret])
-    if @totp.verify(params[:code], drift_behind: 15, after: @user.totp&.last_used_at)
-      @totp.save!
+    @totp = @user.unverified_totp
+    if @totp.may_mark_verified? && @totp.verify(params[:code], drift_behind: 15, after: @user.totp&.last_used_at)
+      @user.totp&.mark_expired!
+      @totp.mark_verified!
       redirect_back_or_to security_user_path(@user), flash: { success: "Your time-based OTP has been successfully configured." }
     else
-      redirect_back_or_to security_user_path(@user), flash: { success: "One time password was invalid, please try again." }
+      redirect_back_or_to security_user_path(@user), flash: { success: "One time password was invalid / code has expired, please try again." }
     end
   end
 
   def disable_totp
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     authorize @user
-    @user.totp&.destroy!
+    @user.totp&.mark_expired!
     redirect_back_or_to security_user_path(@user)
   end
 

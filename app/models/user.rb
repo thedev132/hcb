@@ -114,7 +114,8 @@ class User < ApplicationRecord
   has_one_attached :profile_picture
 
   has_one :partner, inverse_of: :representative
-  has_one :totp, class_name: "User::Totp"
+  has_one :unverified_totp, -> { where(aasm_state: :unverified) }, class_name: "User::Totp", inverse_of: :user
+  has_one :totp, -> { where(aasm_state: :verified) }, class_name: "User::Totp", inverse_of: :user
 
   # a user does not actually belong to its payout method,
   # but this is a convenient way to set up the association.
