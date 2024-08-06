@@ -69,8 +69,8 @@ module Column
         column_statement.end_date = end_date
         first_txn = transactions_by_report[transactions_by_report.keys.last].first
         last_txn = transactions_by_report[transactions_by_report.keys.first].last
-        column_statement.starting_balance = first_txn["available_balance"] - first_txn["available_amount"]
-        column_statement.closing_balance = last_txn["available_balance"]
+        column_statement.starting_balance = ::ColumnService.balance_over_time(from_date: start_date, to_date: end_date)[:starting]
+        column_statement.closing_balance = ::ColumnService.balance_over_time(from_date: start_date, to_date: end_date)[:closing]
         column_statement.save!
       end
 
