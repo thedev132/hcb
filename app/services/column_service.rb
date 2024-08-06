@@ -63,6 +63,15 @@ class ColumnService
     end
   end
 
+  def self.schedule_bank_account_summary_report(from_date: 1.month.ago, to_date: Date.today)
+    post(
+      "/reporting",
+      type: "bank_account_summary",
+      from_date: from_date.to_date.iso8601,
+      to_date: to_date.to_date.iso8601,
+    )
+  end
+
   def self.bank_account_summary_report_url(from_date: 1.month.ago, to_date: Date.today)
     # 1: fetch monthly report from Column
     reports = ColumnService.get(
@@ -73,9 +82,12 @@ class ColumnService
       to_date: to_date.to_date.iso8601,
     )["reports"].select { |r| r["from_date"] == from_date.to_date.iso8601 && r["to_date"] == to_date.to_date.iso8601 && r["row_count"]&.>(0) }
 
-    return nil unless reports.first
-
-    return get("/documents/#{reports.first["csv_document_id"]}")["url"]
+    if reports.first
+      return get("/documents/#{reports.first["csv_document_id"]}")["url"]
+    else
+      schedule_bank_account_summary_report(from_date:, to_date:)
+      return nil
+    end
   end
 
   def self.ach_transfer(id)
