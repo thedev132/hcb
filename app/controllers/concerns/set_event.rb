@@ -11,6 +11,9 @@ module SetEvent
     def set_event
       id = params[:event_name] || params[:event_id] || params[:id]
       @event = Event.friendly.find(id)
+
+      notify_airbrake("Event accessed by ID #{request.env["PATH_INFO"]}") if @event.id == id && !admin_signed_in?
+
       @organizer_position = @event.organizer_positions.find_by(user: current_user) if signed_in?
       @first_time = params[:first_time] || @organizer_position&.first_time?
 
