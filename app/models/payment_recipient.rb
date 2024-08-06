@@ -35,6 +35,9 @@ class PaymentRecipient < ApplicationRecord
 
   scope :order_by_last_used, -> { includes(:ach_transfers).order("ach_transfers.created_at DESC") }
 
+  validates_email_format_of :email
+  normalizes :email, with: ->(email) { email.strip.downcase }
+
   def masked_account_number
     return account_number if account_number.length <= 4
 
