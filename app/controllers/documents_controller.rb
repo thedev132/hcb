@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class DocumentsController < ApplicationController
-  before_action :set_event, only: [:index, :new, :fiscal_sponsorship_letter]
+  include SetEvent
+
+  before_action :set_event, only: [:index, :new, :fiscal_sponsorship_letter], if: -> { params[:id] || params[:event_id] }
   before_action :set_document, except: [:common_index, :index, :new, :create, :fiscal_sponsorship_letter]
   skip_after_action :verify_authorized, only: [:index]
 
@@ -115,17 +117,6 @@ class DocumentsController < ApplicationController
   def set_document
     @document = Document.friendly.find(params[:id] || params[:document_id])
     @event = @document.event
-  end
-
-  def set_event
-    event_id = params[:id] || params[:event_id]
-
-    if event_id
-      @event = Event.friendly.find(event_id)
-    else
-      # this happens for common documents, shared across all events
-      nil
-    end
   end
 
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AchTransfersController < ApplicationController
+  include SetEvent
+
   before_action :set_ach_transfer, except: [:new, :create, :index, :validate_routing_number]
   before_action :set_event, only: [:new, :create]
   skip_before_action :signed_in_user, except: [:validate_routing_number]
@@ -112,10 +114,6 @@ class AchTransfersController < ApplicationController
   def set_ach_transfer
     @ach_transfer = AchTransfer.find(params[:id] || params[:ach_transfer_id])
     @event = @ach_transfer.event
-  end
-
-  def set_event
-    @event = Event.friendly.find(params[:event_id])
   end
 
   def ach_transfer_params
