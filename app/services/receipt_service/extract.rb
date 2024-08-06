@@ -12,7 +12,7 @@ module ReceiptService
       # this line acts as a rate limit of sort.
       # see https://github.com/hackclub/hcb/issues/7167.
       return if @receipt.user.receipts.where(created_at: 1.hour.ago, data_extracted: true).count > 50 ||
-                @receipt.receiptable.receipts.where(data_extracted: true).count > 5
+                (@receipt.receiptable.present? && @receipt.receiptable.receipts.where(data_extracted: true).count > 5)
 
       @textual_content = @receipt.textual_content || @receipt.extract_textual_content!
       if @textual_content.nil?
