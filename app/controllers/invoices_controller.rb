@@ -111,7 +111,7 @@ class InvoicesController < ApplicationController
                           filtered_params["due_date(3i)"].to_i)
 
     @invoice = ::InvoiceService::Create.new(
-      event_id: params[:event_id],
+      event_id: @event.id,
       due_date:,
       item_description: filtered_params[:item_description],
       item_amount: filtered_params[:item_amount],

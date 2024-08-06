@@ -124,7 +124,7 @@ module StripeCardService
     end
 
     def event
-      @event ||= Event.friendly.find(@event_id)
+      @event ||= Event.find(@event_id)
     end
 
     def virtual?
