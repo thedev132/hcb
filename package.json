@@ -33,7 +33,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "chart.js": "^4.4.3",
     "chartkick": "^5.0.1",
-    "clsx": "^1.2.1",
+    "clsx": "^2.1.1",
     "cssnano": "^7.0.4",
     "fuzzysort": "^3.0.2",
     "gsap": "^3.12.5",
