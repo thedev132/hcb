@@ -4,6 +4,11 @@
 <% admin_tool("mt3") do %>
   <%= link_to "View card on Stripe", @card.stripe_dashboard_url, class: "btn bg-accent" %>
   <%= link_to "View cardholder on Stripe", @card.cardholder.stripe_dashboard_url, class: "btn bg-accent" %>
+  <% if @card.cash_withdrawal_enabled? %>
+    <%= link_to "Disable cash withdrawals", disable_feature_path(feature: :cash_withdrawals_2024_08_07, stripe_card_id: @card.id), method: :post, class: "btn bg-error" %>
+  <% elsif @card.physical? %>
+    <%= link_to "Enable cash withdrawals", enable_feature_path(feature: :cash_withdrawals_2024_08_07, stripe_card_id: @card.id), method: :post, class: "btn bg-success" %>
+  <% end %>
 <% end %>
 
 <%= render partial: "canceled_warning", locals: { stripe_card: @card } %>

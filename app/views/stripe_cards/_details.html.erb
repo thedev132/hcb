@@ -26,9 +26,19 @@
     <% else %>
       <p>
         <strong>Activation status</strong>
-        <span class="flex items-baseline">
+        <span class="flex items-baseline g-1">
           <%= status_badge stripe_card.status_badge_type %>
           <%= stripe_card.status_text.capitalize %>
+        </span>
+      </p>
+    <% end %>
+
+    <% if stripe_card.cash_withdrawal_enabled? %>
+      <p>
+        <strong>Cash withdrawals</strong>
+        <span class="flex items-baseline g-1">
+          <%= status_badge :success %>
+          Enabled
         </span>
       </p>
     <% end %>

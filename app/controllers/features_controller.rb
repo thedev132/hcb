@@ -15,10 +15,17 @@ class FeaturesController < ApplicationController
     cover_my_fee_2024_06_25: %w[🙏 ❤️ 💳],
     spending_controls_2024_06_03: %w[✅ ❌ 💷],
     ai_memos_2024_06_20: %w[✨ 🔮 🪄],
+    cash_withdrawals_2024_08_07: %w[💵 💴 💶 💷],
   }.freeze
 
   def enable_feature
-    actor = params[:event_id] ? Event.find(params[:event_id]) : current_user
+    actor = if params[:event_id]
+              Event.find(params[:event_id])
+            elsif params[:stripe_card_id]
+              StripeCard.find(params[:stripe_card_id])
+            else
+              current_user
+            end
     feature = params[:feature]
     authorize actor
     if FEATURES.key?(feature.to_sym) || current_user.admin?
@@ -35,7 +42,13 @@ class FeaturesController < ApplicationController
   end
 
   def disable_feature
-    actor = params[:event_id] ? Event.find(params[:event_id]) : current_user
+    actor = if params[:event_id]
+              Event.find(params[:event_id])
+            elsif params[:stripe_card_id]
+              StripeCard.find(params[:stripe_card_id])
+            else
+              current_user
+            end
     feature = params[:feature]
     authorize actor
     if FEATURES.key?(feature.to_sym) || current_user.admin?
