@@ -138,7 +138,7 @@ class Transaction < ApplicationRecord
   end
 
   def self.total_volume
-    self.includes(fee_relationship: :event).where(events: { omit_stats: false }).sum("@amount").to_i
+    self.includes(fee_relationship: :event).where(events: { omit_stats: false }).sum("abs(amount)").to_i
   end
 
   def self.during(start_time, end_time)
@@ -147,7 +147,7 @@ class Transaction < ApplicationRecord
   end
 
   def self.volume_during(start_time, end_time)
-    self.during(start_time, end_time).sum("@amount").to_i
+    self.during(start_time, end_time).sum("abs(amount)").to_i
   end
 
   def self.raised_during(start_time, end_time)

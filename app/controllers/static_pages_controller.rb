@@ -27,7 +27,7 @@ class StaticPagesController < ApplicationController
 
     end
     if admin_signed_in?
-      @transaction_volume = CanonicalTransaction.included_in_stats.sum("@amount_cents")
+      @transaction_volume = CanonicalTransaction.included_in_stats.sum("abs(amount_cents)")
     end
   end
 

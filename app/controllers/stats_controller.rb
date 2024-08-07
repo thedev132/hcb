@@ -63,7 +63,7 @@ class StatsController < ApplicationController
         # entire time period. this remains to prevent breaking changes to existing systems that use this endpoint
         raised: tx_all.revenue.sum(:amount_cents) + pending_tx_all.incoming.sum(:amount_cents),
         transactions_count: tx_all.size,
-        transactions_volume: tx_all.sum("@amount_cents") + pending_tx_all.sum("@amount_cents"),
+        transactions_volume: tx_all.sum("abs(amount_cents)") + pending_tx_all.sum("abs(amount_cents)"),
 
         # entire (all), year, quarter, and month time periods
         all: CanonicalTransactionService::Stats::During.new.run,
