@@ -10,6 +10,7 @@ module SetEvent
 
     def set_event
       id = params[:event_name] || params[:event_id] || params[:id]
+      id ||= params[:event] if params[:event].is_a?(String) # sometimes params[:event] is a hash with nested attributes
       @event = Event.friendly.find(id)
 
       notify_airbrake("Event accessed by ID #{request.env["PATH_INFO"]}") if @event.id == id && !admin_signed_in?
