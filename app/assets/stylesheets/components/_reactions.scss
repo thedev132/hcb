@@ -49,7 +49,23 @@
   align-items: center;
   justify-content: center;
 
-  &:hover {
+  height: 32px;
+  width: 32px;
+
+  // prevent weird overflow hidden + background color when it's reacted
+  &:not(.reactions-btn--reacted):hover {
     transform: scale(1.5);
+  }
+
+  &.reactions-btn--reacted {
+    background-color: mix(
+      map-get($palette, white),
+      map-get($palette, info),
+      90%
+    );
+
+    [data-dark='true'] & {
+      background-color: mix($darkless, map-get($palette, info), 90%);
+    }
   }
 }
