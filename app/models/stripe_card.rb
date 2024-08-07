@@ -389,6 +389,10 @@ class StripeCard < ApplicationRecord
     Time.now.utc > Time.new(stripe_exp_year, stripe_exp_month).end_of_month
   end
 
+  def cash_withdrawal_enabled?
+    Flipper.enabled?(:cash_withdrawals_2024_08_07, self)
+  end
+
   private
 
   def canonical_transaction_hcb_codes

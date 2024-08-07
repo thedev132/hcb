@@ -54,10 +54,6 @@ module StripeAuthorizationService
         auth[:merchant_data][:category_code] == "6011"
       end
 
-      def cash_withdrawals_not_allowed?
-        Flipper.enabled?(:cash_withdrawals_2024_08_07, card)
-      end
-
       def approve?
         return decline_with_reason!("inadequate_balance") if card_balance_available < amount_cents
 
@@ -69,7 +65,7 @@ module StripeAuthorizationService
           return decline_with_reason!("merchant_not_allowed")
         end
 
-        return decline_with_reason!("cash_withdrawals_not_allowed") if cash_withdrawal? && cash_withdrawals_not_allowed?
+        return decline_with_reason!("cash_withdrawals_not_allowed") if cash_withdrawal? && !card.cash_withdrawal_enabled?
 
         set_metadata!
 
