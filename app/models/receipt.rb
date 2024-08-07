@@ -195,7 +195,7 @@ class Receipt < ApplicationRecord
 
   def tesseract_ocr_text
     file.blob.open do |tempfile|
-      words = ::RTesseract.new(tempfile.path).to_box
+      words = ::RTesseract.new(ImageProcessing::MiniMagick.source(tempfile.path).convert!("png").path).to_box
       words = words.select { |w| w[:confidence] > 85 }
       words = words.map { |w| w[:word] }
       text = words.join(" ")
