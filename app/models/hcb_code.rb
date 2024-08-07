@@ -228,6 +228,10 @@ class HcbCode < ApplicationRecord
     ct&.stripe_refund? && (stripe_force_capture? || (stripe_card? && amount_cents > 0))
   end
 
+  def stripe_cash_withdrawal?
+    stripe_merchant&.[]("category_code") == "6011"
+  end
+
   def stripe_auth_dashboard_url
     pt.try(:stripe_auth_dashboard_url) || ct.try(:stripe_auth_dashboard_url)
   end
