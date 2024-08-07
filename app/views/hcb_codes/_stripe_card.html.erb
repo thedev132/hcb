@@ -1,4 +1,4 @@
-<% title "#{render_money(@hcb_code.amount_cents.abs)} #{@hcb_code.stripe_refund? ? "refund" : "charge"} for #{@hcb_code.memo}" %>
+<% title "#{render_money(@hcb_code.amount_cents.abs)} #{@hcb_code.stripe_refund? ? "refund" : @hcb_code.stripe_cash_withdrawal? ? "withdrawal" : "charge"} for #{@hcb_code.memo}" %>
 <% instance = @hcb_code.hashid %>
 
 <% admin_tool("mt1") do %>
@@ -30,9 +30,19 @@
               data-action="dblclick->navigation#navigate"
               data-navigation-location-param="<%= edit_hcb_code_path(@hcb_code) %>"
               data-navigation-frame-param="<%= dom_id(@hcb_code) %>">
-          <span data-memo-for="<%= dom_id(@hcb_code) %>"><%= @hcb_code.memo %></span>
-          <span class="regular muted"> <%= @hcb_code.stripe_refund? ? "refunded" : "for" %> </span>
-          <%= number_to_currency(@hcb_code.amount.abs) %>
+          <% if @hcb_code.stripe_cash_withdrawal? && @hcb_code.custom_memo.nil? %>
+            <span>
+              <%= number_to_currency(@hcb_code.amount.abs) %>
+            </span>
+            <span class="regular muted">
+              withdrawn from
+            </span>
+            <span data-memo-for="<%= dom_id(@hcb_code) %>"><%= @hcb_code.memo %></span>
+          <% else %>
+            <span data-memo-for="<%= dom_id(@hcb_code) %>"><%= @hcb_code.memo %></span>
+            <span class="regular muted"> <%= @hcb_code.stripe_refund? ? "refunded" : "for" %> </span>
+            <%= number_to_currency(@hcb_code.amount.abs) %>
+          <% end %>
         </span>
 
         <%= render "hcb_codes/memo_stream", hcb_code: @hcb_code %>
