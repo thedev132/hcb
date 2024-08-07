@@ -63,7 +63,7 @@ class Comment < ApplicationRecord
 
   def edited?
     has_untracked_edit? or
-      versions.any? { |version| %w[update destroy].include?(version.event) }
+      versions.any? { |version| %w[update destroy].include?(version.event) && version.object_changes.present? }
     # we're doing this without SQL because versions is pre-loaded. - @sampoder
   end
 
