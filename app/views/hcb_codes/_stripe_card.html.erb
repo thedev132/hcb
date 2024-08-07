@@ -121,6 +121,8 @@
             <em>This transaction was declined by HCB due to failed suspected fraud / failed checks.</em>
           <% elsif reason == "webhook_declined" && webhook_declined_reason == "merchant_not_allowed" %>
             <em>This transaction was declined by HCB because this merchant is not allowed.</em>
+          <% elsif reason == "webhook_declined" && webhook_declined_reason == "cash_withdrawals_not_allowed" %>
+            <em>This transaction was declined by HCB because cash withdrawals were not enabled on the card.</em>
           <% elsif reason == "webhook_declined" %>
             <em>This transaction was declined by HCB due to insufficient funds.</em>
           <% else %>
