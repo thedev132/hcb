@@ -200,7 +200,7 @@ module StaticPagesHelper
 
             needed_role_num = OrganizerPosition.roles[v]
 
-            OrganizerPosition.roles.each do |_role, role_num|
+            OrganizerPosition.roles.each_value do |role_num|
               if role_num >= needed_role_num
                 concat content_tag(:td, "✅")
               else

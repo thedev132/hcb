@@ -52,7 +52,7 @@ module Column
 
       rows = []
 
-      transactions_by_report.each do |report_id, transactions|
+      transactions_by_report.each_value do |transactions|
         transactions.reverse.each_with_index do |transaction, transaction_index|
           rows << serializer.call(transaction).values
         end

@@ -270,7 +270,7 @@ module ApplicationHelper
   def commit_time
     @commit_time ||= begin
       heroku_time = ENV["HEROKU_RELEASE_CREATED_AT"]
-      git_time = `git log -1 --format=%at 2> /dev/null`&.chomp
+      git_time = `git log -1 --format=%at 2> /dev/null`.chomp
 
       return nil if heroku_time.blank? && git_time.blank?
 

@@ -22,8 +22,8 @@ module EventService
 
     def run
       raise ArgumentError, "name required" unless @name.present?
-      raise ArgumentError, "approved must be true or false" unless (@approved == true || @approved == false)
-      raise ArgumentError, "sponsorship_fee must be 0 to 0.5" unless (@sponsorship_fee >= 0.0 && @sponsorship_fee <= 0.5)
+      raise ArgumentError, "approved must be true or false" unless @approved == true || @approved == false
+      raise ArgumentError, "sponsorship_fee must be 0 to 0.5" unless @sponsorship_fee >= 0.0 && @sponsorship_fee <= 0.5
 
       ActiveRecord::Base.transaction do
         event = ::Event.create!(attrs)

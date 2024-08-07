@@ -170,11 +170,11 @@
                 <% end %>
                 <p>
                   <strong>Zip</strong>
-                  <span><%= (@hcb_code.stripe_merchant["postal_code"] or "Unknown") %></span>
+                  <span><%= @hcb_code.stripe_merchant["postal_code"] or "Unknown" %></span>
                 </p>
                 <p>
                   <strong>State</strong>
-                  <span><%= (@hcb_code.stripe_merchant["state"]&.upcase or "Unknown") %></span>
+                  <span><%= @hcb_code.stripe_merchant["state"]&.upcase or "Unknown" %></span>
                 </p>
                 <p>
                   <strong>Country</strong>
@@ -273,7 +273,7 @@
           </p>
         <% end %>
       <% end %>
-      <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
+      <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: @event || @hcb_code.event %>
     </section>
 
     <%= render "hcb_codes/stripe_card_receipts" %>
@@ -318,11 +318,11 @@
         <% end %>
         <p>
           <strong>Zip</strong>
-          <span><%= (@hcb_code.stripe_merchant["postal_code"] or "Unknown") %></span>
+          <span><%= @hcb_code.stripe_merchant["postal_code"] or "Unknown" %></span>
         </p>
         <p>
           <strong>State</strong>
-          <span><%= (@hcb_code.stripe_merchant["state"]&.upcase or "Unknown") %></span>
+          <span><%= @hcb_code.stripe_merchant["state"]&.upcase or "Unknown" %></span>
         </p>
         <p>
           <strong>Country</strong>
