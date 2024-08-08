@@ -45,6 +45,7 @@ module Reimbursement
                 creator: User.find_by(email: "bank@hackclub.com"),
                 company_name: payout_holding.report.event.name[0...16],
                 company_entry_description: "REIMBURSE",
+                same_day: true
               )
               ach_transfer.save!
               begin
