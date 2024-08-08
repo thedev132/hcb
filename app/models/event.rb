@@ -392,6 +392,7 @@ class Event < ApplicationRecord
     "WHEN id = 689 THEN '3'     "\
     "WHEN id = 636 THEN '4'     "\
     "WHEN id = 506 THEN '5'     "\
+    "WHEN id = 4318 THEN '6'    "\
     "ELSE 'z' || name END ASC   "
   )
 
