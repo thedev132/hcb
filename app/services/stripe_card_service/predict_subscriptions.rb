@@ -66,6 +66,7 @@ module StripeCardService
           card,
           hcb_codes,
           last_hcb_code,
+          avg(unnested_date_differences),
           last_amount_cents,
           last_date,
           amount_cents,#{' '}
@@ -89,7 +90,8 @@ module StripeCardService
           merchant: row[0],
           card: row[1],
           hcb_codes: row[2],
-          last_hcb_code: row[3]
+          last_hcb_code: row[3],
+          average_date_difference: row[4]
         }
       end
 
