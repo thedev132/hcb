@@ -37,6 +37,17 @@ module Reimbursement
     belongs_to :local_hcb_code, foreign_key: "hcb_code", primary_key: "hcb_code", class_name: "HcbCode", inverse_of: :reimbursement_payout_holding, optional: true
     has_many :canonical_transactions, through: :local_hcb_code
 
+    after_create do
+      CanonicalPendingTransaction.create!(
+        reimbursement_payout_holding: self,
+        event: EventMappingEngine::EventIds::REIMBURSEMENT_CLEARING,
+        amount_cents:,
+        memo: hcb_code,
+        date: created_at,
+        fronted: true
+      )
+    end
+
     aasm do
       state :pending, initial: true
       state :in_transit

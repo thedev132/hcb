@@ -29,6 +29,7 @@
 #  raw_pending_partner_donation_transaction_id      :bigint
 #  raw_pending_stripe_transaction_id                :bigint
 #  reimbursement_expense_payout_id                  :bigint
+#  reimbursement_payout_holding_id                  :bigint
 #
 # Indexes
 #
@@ -46,6 +47,7 @@
 #  index_canonical_pending_txs_on_raw_pending_partner_dntn_tx_id    (raw_pending_partner_donation_transaction_id)
 #  index_canonical_pending_txs_on_raw_pending_stripe_tx_id          (raw_pending_stripe_transaction_id)
 #  index_canonical_pending_txs_on_reimbursement_expense_payout_id   (reimbursement_expense_payout_id)
+#  index_canonical_pending_txs_on_reimbursement_payout_holding_id   (reimbursement_payout_holding_id)
 #  index_cpts_on_raw_pending_incoming_disbursement_transaction_id   (raw_pending_incoming_disbursement_transaction_id)
 #  index_cpts_on_raw_pending_outgoing_disbursement_transaction_id   (raw_pending_outgoing_disbursement_transaction_id)
 #
@@ -75,6 +77,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   belongs_to :check_deposit, optional: true
   belongs_to :grant, optional: true
   belongs_to :reimbursement_expense_payout, class_name: "Reimbursement::ExpensePayout", optional: true
+  belongs_to :reimbursement_payout_holding, class_name: "Reimbursement::PayoutHolding", optional: true
 
   has_one :canonical_pending_event_mapping
   has_one :event, through: :canonical_pending_event_mapping
@@ -102,6 +105,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :incoming_disbursement, -> { where("raw_pending_incoming_disbursement_transaction_id is not null") }
   scope :outgoing_disbursement, -> { where("raw_pending_outgoing_disbursement_transaction_id is not null") }
   scope :reimbursement_expense_payout, -> { where.not(reimbursement_expense_payout_id: nil) }
+  scope :reimbursement_payout_holding, -> { where.not(reimbursement_payout_holding_id: nil) }
   scope :ach_payment, -> { where.not(ach_payment: nil) }
   scope :unmapped, -> { includes(:canonical_pending_event_mapping).where(canonical_pending_event_mappings: { canonical_pending_transaction_id: nil }) }
   scope :mapped, -> { includes(:canonical_pending_event_mapping).where.not(canonical_pending_event_mappings: { canonical_pending_transaction_id: nil }) }
@@ -325,10 +329,6 @@ class CanonicalPendingTransaction < ApplicationRecord
 
   def emburse_transfer
     nil # TODO
-  end
-
-  def reimbursement_payout_holding
-    nil
   end
 
   def url
