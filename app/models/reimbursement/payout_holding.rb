@@ -43,6 +43,7 @@ module Reimbursement
       state :settled
       state :sent
       state :failed
+      state :reversed
 
       event :mark_in_transit do
         transitions from: :pending, to: :in_transit
@@ -59,10 +60,44 @@ module Reimbursement
       event :mark_failed do
         transitions from: [:sent, :settled], to: :failed
       end
+
+      event :mark_reversed do
+        transitions from: :failed, to: :reversed
+      end
     end
 
     def payout_transfer
       ach_transfer || increase_check || paypal_transfer
+    end
+
+    def reverse!
+      raise ArgumentError, "must be a reimbursed report" unless report.reimbursed?
+      raise ArgumentError, "must be a failed payout holding" unless failed?
+      raise ArgumentError, "ACH must have been rejected / failed" unless ach_transfer.nil? || ach_transfer.failed? || ach_transfer.rejected?
+      raise ArgumentError, "PayPal transfer must have been rejected" unless paypal_transfer.nil? || paypal_transfer.rejected?
+      raise ArgumentError, "a check is present" if increase_check.present?
+
+      ActiveRecord::Base.transaction do
+
+        mark_reversed!
+
+        # these are reversed because this is reverse!
+        sender_bank_account_id = ColumnService::Accounts.id_of(book_transfer_receiving_account)
+        receiver_bank_account_id = ColumnService::Accounts.id_of(book_transfer_originating_account)
+
+        ColumnService.post "/transfers/book",
+                           amount: amount_cents.abs,
+                           currency_code: "USD",
+                           sender_bank_account_id:,
+                           receiver_bank_account_id:,
+                           description: "HCB-#{local_hcb_code.short_code}"
+      end
+
+      expense_payouts.each do |expense_payout|
+        expense_payout.reverse!
+      end
+
+      report.mark_reversed!
     end
 
     private

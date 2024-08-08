@@ -19,6 +19,7 @@
              "draft"                   => ["docs", "muted", "converted this report to a draft"],
              "draft_created"           => ["plus", "success", "created this draft report"],
              "reimbursed"              => ["docs", "purple", "initiated a #{render_money @report.amount_cents} transfer to #{@report.user.name}"],
+             "reversed"                => ["sad", "warning", "cancelled this reimbursement"],
            } %>
         <% state_change = item.changeset["aasm_state"]&.second %>
         <% if state_change %>

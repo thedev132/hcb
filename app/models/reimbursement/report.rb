@@ -81,6 +81,7 @@ module Reimbursement
       state :reimbursement_approved
       state :reimbursed
       state :rejected
+      state :reversed
 
       event :mark_submitted do
         transitions from: [:draft, :reimbursement_requested], to: :submitted do
@@ -139,6 +140,10 @@ module Reimbursement
       event :mark_reimbursed do
         transitions from: :reimbursement_approved, to: :reimbursed
       end
+
+      event :mark_reversed do
+        transitions from: :reimbursed, to: :reversed
+      end
     end
 
     def status_text
@@ -147,6 +152,7 @@ module Reimbursement
       return "⚠️ Processing" if reimbursed? && payout_holding&.failed?
       return "In Transit" if reimbursement_approved?
       return "In Transit" if reimbursed? && !payout_holding.sent?
+      return "Cancelled" if reversed?
 
       aasm_state.humanize.titleize
     end
@@ -163,7 +169,7 @@ module Reimbursement
       return "info" if submitted?
       return "error" if rejected?
       return "purple" if reimbursement_requested?
-      return "warning" if reimbursed? && payout_holding&.failed?
+      return "warning" if reimbursed? && payout_holding&.failed? || reversed?
       return "success" if reimbursement_approved? || reimbursed?
 
       return "primary"
