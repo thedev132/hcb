@@ -34,11 +34,12 @@
   <%= render "hcb_codes/icon", tx: pt, authorless: local_assigns[:authorless] %>
   <td>
     <% if subscription %>
-      Every
       <% if subscription[:average_date_difference] > 29 && subscription[:average_date_difference] < 31 %>
-        month
+        Monthly
+      <% elsif subscription[:average_date_difference] > 360 && subscription[:average_date_difference] < 370 %>
+        Annually
       <% else %>
-        <%= subscription[:average_date_difference].ceil %> days
+        Every <%= subscription[:average_date_difference].ceil %> days
       <% end %>
     <% else %>
       <%= format_date pt.date %>
