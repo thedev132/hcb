@@ -70,9 +70,9 @@
 <div class="card mb3" id="1password">
   <div class="card__banner card__banner--top flex justify-between items-center promo-1password">
     <%= image_tag "1password.svg", width: 210, class: "p2" %>
-    <%= link_to "Apply",
+    <%= link_to "Temporarily closed",
       @perks_available ? fillout_form("1EVMTc9d1Zus", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Your Name" => current_user.name, "Email" => current_user.email }, prefix: "prefill_") : root_path,
-      class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
+      class: "btn bg-success mr1 disabled",
       target: :_blank %>
   </div>
 
