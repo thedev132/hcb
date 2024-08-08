@@ -34,13 +34,20 @@
   <%= render "hcb_codes/icon", tx: ct, authorless: local_assigns[:authorless] %>
   <td>
     <% if subscription %>
+      <% label = "" %>
       <% if subscription[:average_date_difference] > 29 && subscription[:average_date_difference] < 31 %>
-        Monthly
+        <% label += "Monthly" %>
       <% elsif subscription[:average_date_difference] > 360 && subscription[:average_date_difference] < 370 %>
-        Annually
+        <% label += "Annually" %>
       <% else %>
-        Every <%= subscription[:average_date_difference].ceil %> days
+        <% label += "Every #{subscription[:average_date_difference].ceil} days" %>
       <% end %>
+      <% if (ct.date + subscription[:average_date_difference].days) < Time.now + 2.days %>
+        <% label += ", expected soon" %>
+      <% else %>
+        <% label += ", in #{distance_of_time_in_words(Time.now, ct.date + subscription[:average_date_difference].days, only: :days)}" %>
+      <% end %>
+      <%= label %>
     <% else %>
       <%= format_date ct.date %>
     <% end %>
