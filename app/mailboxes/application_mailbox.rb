@@ -15,6 +15,9 @@ class ApplicationMailbox < ActionMailbox::Base
   # receipts@hcb.hackclub.com or receipts@hcb.gg
   routing /^receipts/i => :receipt_bin
 
+  # reimburse@hcb.hackclub.com or reimbursements@hcb.hackclub.com
+  routing /^reimburse/i => :reimbursement
+
   # fallback
   routing all: :fallback
 
