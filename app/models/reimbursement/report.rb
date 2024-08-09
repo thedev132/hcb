@@ -191,7 +191,7 @@ module Reimbursement
     end
 
     def closed?
-      reimbursement_approved? || reimbursed? || rejected?
+      reimbursement_approved? || reimbursed? || rejected? || reversed?
     end
 
     def amount_cents
