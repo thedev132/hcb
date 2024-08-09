@@ -35,7 +35,7 @@ class ReceiptBinMailbox < ApplicationMailbox
   private
 
   def set_user
-    if mail.to.first.starts_with("receipts@")
+    if mail.to.first.start_with?("receipts@")
       @user = User.find_by(email: mail.from[0])
     else
       @user = MailboxAddress.activated.find_by(address: mail.to.first)&.user
