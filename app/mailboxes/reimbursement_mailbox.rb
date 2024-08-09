@@ -27,7 +27,7 @@ class ReimbursementMailbox < ApplicationMailbox
       upload_method: :email_reimbursement
     ).run!
 
-    expense.update(memo: receipts.first.suggested_memo, amount_cents: receipts.first.extracted_total_amount_cents) if receipts.first.suggested_memo
+    expense.update(memo: receipts.first.suggested_memo, value: receipts.first.extracted_total_amount_cents / 100) if receipts.first.suggested_memo
 
     Reimbursement::MailboxMailer.with(
       mail: inbound_email,
