@@ -38,7 +38,7 @@ class TwilioController < ActionController::Base
     end
 
     if reimbursement?
-      reply_with("Attached #{receipts.count} #{"receipt".pluralize(receipts.count)} to a new reimbursement report: (#{reimbursement_report_url(@report)})!")
+      reply_with("Attached #{receipts.count} #{"receipt".pluralize(receipts.count)} to a new reimbursement report: #{reimbursement_report_url(@report)}!")
     elsif @receiptable
       reply_with("Attached #{receipts.count} #{"receipt".pluralize(receipts.count)} to #{@receiptable.memo} (#{hcb_code_url(@receiptable)})!")
     else
