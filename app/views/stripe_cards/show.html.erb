@@ -1,4 +1,4 @@
-<% title @card.initially_activated ? "Card #{@card.last_four}" : "Inactive card" %>
+<% title @card.initially_activated ? "Card #{@card.last_four} (#{@card.user.name}, #{@event.name})" : "Inactive card" %>
 <%= render "events/nav", selected: :cards unless @frame %>
 
 <% admin_tool("mt3") do %>
