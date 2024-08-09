@@ -61,7 +61,7 @@ class Receipt < ApplicationRecord
     end
   end
 
-  SYNCHRONOUS_SUGGESTION_UPLOAD_METHODS = %w[quick_expense email_receipt_bin email_hcb_code].freeze
+  SYNCHRONOUS_SUGGESTION_UPLOAD_METHODS = %w[quick_expense email_receipt_bin email_hcb_code email_reimbursement].freeze
 
   after_create_commit do
     # Queue async job to extract text from newly upload receipt
@@ -94,6 +94,7 @@ class Receipt < ApplicationRecord
     quick_expense: 15,
     transaction_popover: 16,
     transaction_popover_drag_and_drop: 17,
+    email_reimbursement: 18
   }
 
   enum textual_content_source: {

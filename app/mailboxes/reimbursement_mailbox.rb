@@ -16,19 +16,24 @@ class ReimbursementMailbox < ApplicationMailbox
 
     # All good, now let's create the receipts
 
-    result = ::ReceiptService::Create.new(
-      # `receiptable` is intentionally `nil` to send it to the Receipt Bin
+    report = @user.reimbursement_reports.create(inviter: @user)
+
+    expense = report.expenses.create!(amount_cents: 0)
+
+    receipts = ::ReceiptService::Create.new(
+      receiptable: expense,
       uploader: @user,
       attachments: @attachments,
-      upload_method: "email_receipt_bin"
+      upload_method: :email_reimbursement
     ).run!
 
-    return bounce_error if result.empty?
+    expense.update(memo: receipt.first.suggested_memo, amount_cents: receipt.first.extracted_total_amount_cents) if receipts.first.suggested_memo
 
     Reimbursement::MailboxMailer.with(
       mail: inbound_email,
       reply_to: mail.to.first,
-      receipts_count: result.size
+      report:,
+      receipts_count: receipts.size
     ).bounce_success.deliver_now
   end
 

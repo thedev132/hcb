@@ -21,8 +21,9 @@ module Reimbursement
     end
 
     def bounce_success
+      @report = params[:report]
       @receipts_count = params[:receipts_count]
-      mail subject: @inbound_mail&.mail&.subject || "Thank you for your #{"receipt".pluralize(@receipts_count)}!"
+      mail subject: @inbound_mail&.mail&.subject || "We've created your reimbursement report!"
     end
 
     def bounce_error
