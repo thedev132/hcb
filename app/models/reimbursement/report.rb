@@ -72,7 +72,7 @@ module Reimbursement
     include Hashid::Rails
 
     include PublicActivity::Model
-    tracked owner: proc{ |controller, record| controller&.current_user }, recipient: proc { |controller, record| record.user }, event_id: proc { |controller, record| record.event.id }, only: [:create]
+    tracked owner: proc{ |controller, record| controller&.current_user }, recipient: proc { |controller, record| record.user }, event_id: proc { |controller, record| record.event&.id }, only: [:create]
 
     broadcasts_refreshes_to ->(report) { report }
 
@@ -233,7 +233,7 @@ module Reimbursement
       users << self.user
 
       if comment.admin_only?
-        users << self.event.point_of_contact
+        users << self.event.point_of_contact if self.event
         return users.uniq.select(&:admin?).reject(&:no_threads?).excluding(comment.user).collect(&:email_address_with_name)
       end
 
@@ -244,7 +244,7 @@ module Reimbursement
       users = []
       users += self.comments.includes(:user).map(&:user)
       users += self.comments.flat_map(&:mentioned_users)
-      users += self.event.users
+      users += self.event.users if self.event
       users << self.user
 
       users.uniq
