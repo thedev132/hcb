@@ -22,6 +22,9 @@
     "REDIS_URL": {
       "required": true
     },
+    "REDIS_CACHE_URL": {
+      "required": true
+    },
     "SECRET_KEY_BASE": {
       "required": true
     }
@@ -46,6 +49,13 @@
       "options": {
         "version": "7"
       }
+    },
+    {
+      "plan": "heroku-redis",
+      "options": {
+        "version": "7"
+      },
+      "as": "REDIS_CACHE"
     }
   ],
   "buildpacks": [
