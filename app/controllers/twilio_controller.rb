@@ -30,7 +30,7 @@ class TwilioController < ActionController::Base
       receiptable: @receiptable,
       uploader: @user,
       attachments: @attachments,
-      upload_method: "sms"
+      upload_method: reimbursement? ? "sms_reimbursement" : "sms"
     ).run!
 
     if reimbursement? && receipts.first.suggested_memo
