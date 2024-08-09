@@ -34,7 +34,7 @@ class TwilioController < ActionController::Base
     ).run!
 
     if reimbursement? && receipts.first.suggested_memo
-      @receiptable.update(memo: receipts.first.suggested_memo, amount_cents: receipts.first.extracted_total_amount_cents)
+      @receiptable.update(memo: receipts.first.suggested_memo, value: receipts.first.extracted_total_amount_cents.to_f / 100)
     end
 
     if reimbursement?
