@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_08_220819) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_09_163220) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1789,7 +1789,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_08_220819) do
 
   create_table "reimbursement_reports", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "event_id", null: false
+    t.bigint "event_id"
     t.bigint "invited_by_id"
     t.text "invite_message"
     t.text "name"

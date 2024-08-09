@@ -66,7 +66,7 @@ module Reimbursement
       authorize @report
       @commentable = @report
       @comments = @commentable.comments
-      @use_user_nav = current_user == @user && !@event.users.include?(@user) && !admin_signed_in?
+      @use_user_nav = @event.nil? || current_user == @user && !@event.users.include?(@user) && !admin_signed_in?
       @editing = params[:edit].to_i
 
     end
