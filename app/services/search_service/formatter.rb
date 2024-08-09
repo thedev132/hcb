@@ -51,7 +51,7 @@ module SearchService
       end
 
       if item.instance_of?(Reimbursement::Report)
-        formatted[:path] = "/reimbursements/reports/#{item.hashid}/"
+        formatted[:path] = "/reimbursement/reports/#{item.hashid}/"
         formatted[:user] = item.user.name
         formatted[:event] = item&.event&.name
       end
