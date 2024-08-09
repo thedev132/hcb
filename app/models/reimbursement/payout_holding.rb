@@ -36,6 +36,7 @@ module Reimbursement
     after_create :set_and_create_hcb_code
     belongs_to :local_hcb_code, foreign_key: "hcb_code", primary_key: "hcb_code", class_name: "HcbCode", inverse_of: :reimbursement_payout_holding, optional: true
     has_many :canonical_transactions, through: :local_hcb_code
+    has_one :canonical_pending_transaction, foreign_key: "reimbursement_payout_holding_id", inverse_of: :reimbursement_payout_holding
 
     after_create do
       CanonicalPendingTransaction.create!(

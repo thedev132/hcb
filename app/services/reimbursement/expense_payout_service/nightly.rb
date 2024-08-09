@@ -37,7 +37,7 @@ module Reimbursement
         end
 
         Reimbursement::PayoutHolding.in_transit.find_each(batch_size: 100) do |payout_holding|
-          if payout_holding.canonical_transactions.any?
+          if payout_holding.canonical_transactions.any? || payout_holding.canonical_pending_transaction.present?
             payout_holding.mark_settled!
           end
         end
