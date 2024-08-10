@@ -1,5 +1,5 @@
 <p>
-We got your <%= "receipt".pluralize(@receipts_count) %>, thanks! And we've used them start a reimbursement report, you can access it <%= link_to "here", @report %>.
+We got your <%= "receipt".pluralize(@receipts_count) %>, thanks! And we've used <%= @receipts_count == 1 ? "it" : "them" %> start a reimbursement report, you can access it <%= link_to "here", @report %>.
 </p>
 
 <p>
