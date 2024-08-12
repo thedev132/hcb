@@ -34,7 +34,7 @@
               data-navigation-frame-param="<%= dom_id(@hcb_code) %>">
           <% if @hcb_code.stripe_cash_withdrawal? && @hcb_code.custom_memo.nil? %>
             <span>
-              <%= number_to_currency(renderable_amount_cents) %>
+              <%= render_money(renderable_amount_cents) %>
             </span>
             <span class="regular muted">
               withdrawal from
@@ -43,7 +43,7 @@
           <% else %>
             <span data-memo-for="<%= dom_id(@hcb_code) %>"><%= @hcb_code.memo %></span>
             <span class="regular muted"> <%= @hcb_code.stripe_refund? ? "refunded" : "for" %> </span>
-            <%= number_to_currency(@hcb_code.amount.abs) %>
+            <%= render_money(renderable_amount_cents) %>
           <% end %>
         </span>
 
