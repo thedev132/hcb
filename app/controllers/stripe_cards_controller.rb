@@ -155,7 +155,7 @@ class StripeCardsController < ApplicationController
 
     ahoy.track "Card details shown", stripe_card_id: card.id
 
-    render json: { ephemeralKeySecret: @ephemeral_key.secret, stripe_id: card.stripe_id }
+    render json: { ephemeralKeySecret: ephemeral_key.secret, stripe_id: card.stripe_id }
   end
 
   private
