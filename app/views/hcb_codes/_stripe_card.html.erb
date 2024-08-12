@@ -1,4 +1,6 @@
-<% title "#{render_money(@hcb_code.amount_cents.abs)} #{@hcb_code.stripe_refund? ? "refund" : @hcb_code.stripe_cash_withdrawal? ? "withdrawal" : "charge"} for #{@hcb_code.memo}" %>
+<% renderable_amount_cents = @hcb_code.stripe_atm_fee ? @hcb_code.amount_cents.abs - @hcb_code.stripe_atm_fee : @hcb_code.amount_cents.abs %>
+
+<% title "#{render_money(renderable_amount_cents)} #{@hcb_code.stripe_refund? ? "refund" : @hcb_code.stripe_cash_withdrawal? ? "withdrawal" : "charge"} for #{@hcb_code.memo}" %>
 <% instance = @hcb_code.hashid %>
 
 <% admin_tool("mt1") do %>
@@ -32,7 +34,7 @@
               data-navigation-frame-param="<%= dom_id(@hcb_code) %>">
           <% if @hcb_code.stripe_cash_withdrawal? && @hcb_code.custom_memo.nil? %>
             <span>
-              <%= number_to_currency(@hcb_code.amount.abs) %>
+              <%= number_to_currency(renderable_amount_cents) %>
             </span>
             <span class="regular muted">
               withdrawal from
