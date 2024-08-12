@@ -84,6 +84,10 @@ module EventsHelper
     return value
   end
 
+  def render_audit_log_field(field)
+    field.delete_suffix("_cents").humanize
+  end
+
   def render_audit_log_value(field, value, color:)
     return tag.span "unset", class: "muted" if value.nil? || value.try(:empty?)
 
