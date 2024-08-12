@@ -243,7 +243,7 @@ module Reimbursement
 
       @report.destroy
 
-      if organizer_signed_in?
+      if organizer_signed_in? && @event
         redirect_to event_reimbursements_path(@event)
       else
         redirect_to my_reimbursements_path
