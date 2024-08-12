@@ -1310,7 +1310,7 @@ class AdminController < ApplicationController
     @user_id = params[:user_id]
 
     messages = Ahoy::Message.all
-    messages = messages.where(user: User.find(@user_id)) if @user_id
+    messages = messages.where(user: User.find(@user_id)) if @user_id.present?
 
     messages = messages.search_subject(@q) if @q
 
