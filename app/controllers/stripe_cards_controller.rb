@@ -153,7 +153,7 @@ class StripeCardsController < ApplicationController
 
     ephemeral_key = card.ephemeral_key(nonce: params[:nonce])
 
-    ahoy.track "Card details shown", stripe_card_id: @card.id
+    ahoy.track "Card details shown", stripe_card_id: card.id
 
     render json: { ephemeralKeySecret: @ephemeral_key.secret, stripe_id: card.stripe_id }
   end
