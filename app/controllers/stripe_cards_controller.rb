@@ -146,6 +146,18 @@ class StripeCardsController < ApplicationController
     redirect_to stripe_card_url(card)
   end
 
+  def ephemeral_keys
+    card = StripeCard.find(params[:id])
+
+    authorize card
+
+    ephemeral_key = card.ephemeral_key(nonce: params[:nonce])
+
+    ahoy.track "Card details shown", stripe_card_id: @card.id
+
+    render json: { ephemeralKeySecret: @ephemeral_key.secret, stripe_id: card.stripe_id }
+  end
+
   private
 
   def suggested(field)

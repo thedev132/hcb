@@ -393,6 +393,10 @@ class StripeCard < ApplicationRecord
     Flipper.enabled?(:cash_withdrawals_2024_08_07, self)
   end
 
+  def ephemeral_key(nonce:)
+    Stripe::EphemeralKey.create({ nonce:, issuing_card: stripe_id }, { stripe_version: "2020-03-02" })
+  end
+
   private
 
   def canonical_transaction_hcb_codes

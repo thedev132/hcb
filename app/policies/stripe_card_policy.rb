@@ -42,7 +42,7 @@ class StripeCardPolicy < ApplicationPolicy
   end
 
   def ephemeral_keys?
-    cardholder?
+    cardholder? || user&.admin?
   end
 
   def enable_feature?

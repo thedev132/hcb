@@ -346,6 +346,7 @@ Rails.application.routes.draw do
       post "freeze"
       post "defrost"
       post "cancel"
+      get "ephemeral_keys"
     end
   end
 

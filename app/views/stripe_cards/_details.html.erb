@@ -86,6 +86,16 @@
       </div>
     </div>
 
+    <% if stripe_card.cash_withdrawal_enabled? %>
+      <div class="fs-mask" data-controller="pin" data-pin-card-id-value="<%= stripe_card.id %>" data-pin-stripe-id-value="<%= stripe_card.stripe_id %>" data-pin-stripe-api-key-value="<%= StripeService.publishable_key %>">
+        <strong>PIN</strong>
+        <div class="flex justify-between font-mono items-center">
+          <span id="card-pin">••••</span>
+          <%= inline_icon @show_card_details ? "view-fill" : "view", class: "align-middle", "data-action": "click->pin#view" %>
+        </div>
+      </div>
+    <% end %>
+
     <div class="fs-mask">
       <strong>Expiration date</strong>
       <%= render_exp_date stripe_card %>
