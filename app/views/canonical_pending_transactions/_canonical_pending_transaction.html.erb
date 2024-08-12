@@ -92,12 +92,20 @@
       <% end %>
     </div>
   </td>
-  <td class="nowrap">
+  <td class="nowrap text-right">
     <%= render_transaction_amount pt.amount %>
   </td>
   <% if @show_running_balance %>
     <td></td>
   <% end %>
+
+  <% unless local_assigns[:hide_author_column] %>
+    <% author = pt.local_hcb_code.author %>
+    <td class="<%= "tooltipped tooltipped--w" if author&.name %> text-center" aria-label="<%= author&.name %>">
+      <%= avatar_for author, 24, { class: "align-middle" } if author.present? %>
+    </td>
+  <% end %>
+
   <td>
     <%= link_to "Details", pt.url, data: Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) && !@force_no_popover ? { turbo_frame: "_top", behavior: "modal_trigger", modal: "transaction_details_#{instance}" } : { turbo_frame: "_top" } if organizer_signed_in? || defined?(force_display_details) %>
   </td>

@@ -120,7 +120,7 @@ class HcbCode
       end
 
       def yellowpages_memo
-        YellowPages::Merchant.lookup_name(network_id: stripe_merchant["network_id"])
+        YellowPages::Merchant.lookup(network_id: stripe_merchant["network_id"]).name
       end
 
     end

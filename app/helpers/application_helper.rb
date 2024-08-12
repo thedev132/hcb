@@ -189,6 +189,29 @@ module ApplicationHelper
     doc.to_html.html_safe
   end
 
+  def merchant_icon(yellow_pages_merchant, **options)
+    @icon_svg_cache ||= {}
+
+    unless @icon_svg_cache.key?(yellow_pages_merchant)
+      icon = yellow_pages_merchant.icon
+      @icon_svg_cache[yellow_pages_merchant] = icon.present? ? Nokogiri::HTML::DocumentFragment.parse(icon) : nil
+    end
+
+    icon = @icon_svg_cache[yellow_pages_merchant]
+    return nil if icon.nil?
+
+    doc = icon.dup
+    svg = doc.at_css "svg"
+    options[:style] ||= ""
+    if options[:size]
+      options[:width] ||= options[:size]
+      options[:height] ||= options[:size]
+      options.delete(:size)
+    end
+    options.each { |key, value| svg[key.to_s] = value }
+    doc.to_html.html_safe
+  end
+
   def anchor_link(id)
     link_to "##{id}", class: "absolute top-0 -left-8 transition-opacity opacity-0 group-hover/summary:opacity-100 group-target/item:opacity-100 anchor-link tooltipped tooltipped--s", 'aria-label': "Copy link", data: { turbo: false, controller: "clipboard", clipboard_text_value: url_for(only_path: false, anchor: id), action: "clipboard#copy" } do
       inline_icon "link", size: 28

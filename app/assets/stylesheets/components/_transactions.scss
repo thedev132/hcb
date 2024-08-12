@@ -83,10 +83,6 @@ html[data-dark='true'] {
     }
   }
 
-  + td {
-    text-align: right; // right-align amount
-  }
-
   .add-tag-badge {
     @extend .mr1;
     visibility: hidden;

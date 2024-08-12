@@ -536,4 +536,8 @@ class HcbCode < ApplicationRecord
     receipts.pluck(:suggested_memo).compact
   end
 
+  def author
+    stripe_cardholder&.user || ach_transfer&.creator || increase_check&.user || disbursement&.requested_by || reimbursement_expense_payout&.expense&.report&.user
+  end
+
 end

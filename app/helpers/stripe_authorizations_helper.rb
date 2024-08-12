@@ -15,7 +15,7 @@ module StripeAuthorizationsHelper
   def lookup_merchant(network_id)
     ahoy = Ahoy::Tracker.new
 
-    result = YellowPages::Merchant.lookup_name(network_id:)
+    result = YellowPages::Merchant.lookup(network_id:).name
 
     ahoy.track("Merchant Network ID not found", network_id:) unless result
 
