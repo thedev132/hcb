@@ -450,3 +450,7 @@ html[data-dark='true'] {
 .recharts-rectangle.recharts-tooltip-cursor {
   opacity: 0.2;
 }
+
+#card-pin {
+  filter: invert(1);
+}
