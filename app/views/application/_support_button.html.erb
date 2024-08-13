@@ -1,0 +1,24 @@
+<div data-controller="menu" data-menu-placement-value="<%= content_for?(:nav) ? "bottom-start" : "bottom-center" %>">
+  <button data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown" data-menu-target="toggle" type="button" class="support-menu__button fixed z-10 bottom-0 right-0 m-5 pop tooltipped tooltipped--w embedded-display-none" aria-label="Need help?" data-action="class#toggle focus#focus">
+    <%= inline_icon "question-mark", size: 18 %>
+  </button>
+  <div data-menu-target="content" class="menu__content menu__content--2 menu__content--compact">
+    <a class="support-menu__item" href="mailto:hcb@hackclub.com" target="_blank">
+      <%= inline_icon "email", size: 24 %> Contact us
+    </a>
+    <% if current_user&.events&.not_demo_mode&.any? %>
+      <a class="support-menu__item" href="https://hack.af/bank-userfeedback?prefill_Name=#{current_user&.name}&prefill_Email=#{current_user&.email}&prefill_Organization=#{current_user&.events&.first&.name}" target="_blank">
+        <%= inline_icon "message-simple", size: 24 %> Share Feedback
+      </a>
+    <% end %>
+    <a class="support-menu__item" href="<%= faq_path %>" target="_blank">
+      <%= inline_icon "docs", size: 24 %> Help Center
+    </a>
+    <a class="support-menu__item" href="<%= branding_path %>" target="_blank">
+      <%= inline_icon "bank-account", size: 24 %> Brand Guidelines
+    </a>
+    <a class="support-menu__item" href="<%= v3_path %>" target="_blank">
+      <%= inline_icon "code", size: 24 %> API Docs
+    </a>
+  </div>
+</div>
