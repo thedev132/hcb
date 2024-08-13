@@ -140,18 +140,20 @@
         <%= link_to "Reimbursements", event_reimbursements_path(@event) if policy(@event).reimbursements? %>
       </div>
     </button>
-    <div class="dock__overflow">
-      <action type="button" class="pop primary menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
-        <%= inline_icon "more" %>
-        <div class="menu__content" data-behavior="menu_content">
-          <%= link_to "Team", event_team_path(event_id: @event.slug) %>
-          <%= link_to "Promotions & perks", event_promotions_path(event_id: @event.slug) if policy(@event).promotions? %>
-          <%= link_to "Google Workspace", event_g_suite_overview_path(event_id: @event.slug) if policy(@event).g_suite_overview? %>
-          <%= link_to "Documents", event_documentation_path(event_id: @event.slug) %>
-          <%= link_to "Settings", edit_event_path(@event) %>
-        </div>
-      </action>
-    </div>
+    <button class="dock__item bg-transparent border-none menu__toggle" data-behavior="menu_toggle">
+      <div class="line-height-0 relative"><%= inline_icon "more", size: 32, class: "primary" %></div>
+      <span class="line-height-3">More</span>
+
+      <div class="menu__content" data-behavior="menu_content">
+        <h4 class="mb0 h5 muted left-align pl1 mt1">More</h4>
+        <div class="menu__divider"></div>
+        <%= link_to "Team", event_team_path(event_id: @event.slug) %>
+        <%= link_to "Promotions & perks", event_promotions_path(event_id: @event.slug) if policy(@event).promotions? %>
+        <%= link_to "Google Workspace", event_g_suite_overview_path(event_id: @event.slug) if policy(@event).g_suite_overview? %>
+        <%= link_to "Documents", event_documentation_path(event_id: @event.slug) %>
+        <%= link_to "Settings", edit_event_path(@event) %>
+      </div>
+    </button>
   </nav>
 <% end %>
 <% content_for(:container) do %>

@@ -1,8 +1,8 @@
 <div data-controller="menu" data-menu-placement-value="<%= content_for?(:nav) ? "bottom-start" : "bottom-center" %>">
-  <button data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown" data-menu-target="toggle" type="button" class="support-menu__button fixed z-10 bottom-0 right-0 m-5 pop tooltipped tooltipped--w embedded-display-none" aria-label="Need help?" data-action="class#toggle focus#focus">
+  <button data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown" data-menu-target="toggle" type="button" class="support-menu__button fixed bottom-0 right-0 m-5 pop tooltipped tooltipped--w embedded-display-none" style="z-index: 2" aria-label="Need help?" data-action="class#toggle focus#focus">
     <%= inline_icon "question-mark", size: 18 %>
   </button>
-  <div data-menu-target="content" class="menu__content menu__content--2 menu__content--compact">
+  <div data-menu-target="content" class="menu__content menu__content--2 menu__content--compact" style="padding: 0.5rem;">
     <a class="support-menu__item" href="mailto:hcb@hackclub.com" target="_blank">
       <%= inline_icon "email", size: 24 %> Contact us
     </a>
