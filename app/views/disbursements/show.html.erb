@@ -75,7 +75,7 @@
       <% if @hcb_code.disbursement.scheduled_on.present? %>
         <% admin_tool("", "p") do %>
           <strong>Scheduled for</strong>
-          <%= format_datetime @disbursement.scheduled_on %>
+          <%= @disbursement.scheduled_on.strftime("%B %e, %Y") %>
         <% end %>
       <% end %>
 
