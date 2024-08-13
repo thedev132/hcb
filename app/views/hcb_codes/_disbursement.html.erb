@@ -130,6 +130,12 @@
         <% end %>
       <% end %>
 
+      <% if @hcb_code.disbursement.scheduled? %>
+        <% admin_tool "w-fit" do %>
+          <%= button_to "Cancel transfer", disbursement_cancel_path(@hcb_code.disbursement), class: "btn bg-error" %>
+        <% end %>
+      <% end %>
+
       <p class="my0 italic">
         HCB transfers are immediately reflected in your account balance.
       </p>
@@ -137,11 +143,3 @@
   <% end %>
 
 </article>
-
-<% admin_tool do %>
-  <% if @hcb_code.disbursement.scheduled? %>
-    <section class="card__banner card__darker border-top overflow-hidden">
-      <%= button_to "Cancel transfer", disbursement_cancel_path(@hcb_code.disbursement), class: "btn bg-error" %>
-    </section>
-  <% end %>
-<% end %>

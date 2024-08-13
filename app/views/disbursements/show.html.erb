@@ -94,9 +94,7 @@
 
     <% if @disbursement.scheduled? %>
       <% admin_tool("mt2") do %>
-        <section class="card__banner card__darker border-top overflow-hidden">
-          <%= button_to "Cancel transfer", disbursement_cancel_path(@disbursement), class: "btn bg-error" %>
-        </section>
+        <%= button_to "Cancel transfer", disbursement_cancel_path(@disbursement), class: "btn bg-error" %>
       <% end %>
     <% end %>
 
