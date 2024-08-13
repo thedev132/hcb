@@ -99,7 +99,7 @@ class DisbursementsController < ApplicationController
   end
 
   def cancel
-    @disbursement = Disbursement.find(params[:id])
+    @disbursement = Disbursement.find(params[:disbursement_id])
     authorize @disbursement
     @disbursement.mark_rejected!
     redirect_to @disbursement.local_hcb_code
