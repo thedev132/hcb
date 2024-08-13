@@ -2,8 +2,6 @@
 
 module BreakdownEngine
   class Merchants
-    include StripeAuthorizationsHelper
-
     def initialize(event)
       @event = event
     end
@@ -21,9 +19,10 @@ module BreakdownEngine
                           .order(Arel.sql("SUM(raw_stripe_transactions.amount_cents) * -1 DESC"))
                           .limit(15)
                           .each_with_object([]) do |merchant, array|
+                            name = YellowPages::Merchant.lookup(network_id: merchant[:merchant]).name || merchant[:names].split(",").first.strip
                             array << {
-                              truncated: (lookup_merchant(merchant[:merchant]) || merchant[:names].split(",").first.strip).truncate(15)&.titleize,
-                              name: (lookup_merchant(merchant[:merchant]) || merchant[:names].split(",").first.strip).titleize,
+                              truncated: name.truncate(15)&.titleize,
+                              name: name.titleize,
                               value: merchant[:amount_cents].to_f / 100
                             }
                           end
