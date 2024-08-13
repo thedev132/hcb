@@ -72,17 +72,33 @@
         <%= format_datetime @disbursement.created_at %>
       </p>
 
-    <% if @disbursement.fulfilled? %>
-      <p>
-        <strong>Confirmation letter</strong>
-          <span class="muted">
-            <a href="/disbursements/<%= @disbursement.id %>/confirmation.pdf" target="_blank">
-            <%= organizer_signed_in? ? "View confirmation letter" : "Sign in to view" %>
-            </a>
-          </span>
-      </p>
-    <% end %>
+      <% if @hcb_code.disbursement.scheduled_on.present? %>
+        <% admin_tools("", "p") do %>
+          <strong>Scheduled for</strong>
+          <%= format_datetime @disbursement.scheduled_on %>
+        <% end %>
+      <% end %>
+
+      <% if @disbursement.fulfilled? %>
+        <p>
+          <strong>Confirmation letter</strong>
+            <span class="muted">
+              <a href="/disbursements/<%= @disbursement.id %>/confirmation.pdf" target="_blank">
+              <%= organizer_signed_in? ? "View confirmation letter" : "Sign in to view" %>
+              </a>
+            </span>
+        </p>
+      <% end %>
+
     </section>
+
+    <% if @disbursement.scheduled? %>
+      <% admin_tools("mt2") do %>
+        <section class="card__banner card__darker border-top overflow-hidden">
+          <%= button_to "Cancel transfer", cancel_disbursement_path(@disbursement), class: "btn bg-error" %>
+        </section>
+      <% end %>
+    <% end %>
 
     <% if @disbursement.pending? %>
       <% admin_tool("mt2") do %>

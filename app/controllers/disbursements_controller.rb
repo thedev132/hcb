@@ -61,11 +61,18 @@ class DisbursementsController < ApplicationController
 
     authorize @disbursement
 
+    if current_user.admin? && disbursement_params["scheduled_on(1i)"].present?
+      scheduled_on = Date.new(disbursement_params["scheduled_on(1i)"].to_i,
+                              disbursement_params["scheduled_on(2i)"].to_i,
+                              disbursement_params["scheduled_on(3i)"].to_i)
+    end
+
     disbursement = DisbursementService::Create.new(
       name: disbursement_params[:name],
       destination_event_id: @destination_event.id,
       source_event_id: @source_event.id,
       amount: disbursement_params[:amount],
+      scheduled_on:,
       requested_by_id: current_user.id,
       should_charge_fee: disbursement_params[:should_charge_fee] == "1",
     ).run
@@ -89,6 +96,13 @@ class DisbursementsController < ApplicationController
 
   def update
     authorize @disbursement
+  end
+
+  def cancel
+    @disbursement = Disbursement.find(params[:id])
+    authorize @disbursement
+    @disbursement.mark_rejected!
+    redirect_to @disbursement.local_hcb_code
   end
 
   def mark_fulfilled
@@ -128,6 +142,7 @@ class DisbursementsController < ApplicationController
       :event_id,
       :amount,
       :name,
+      :scheduled_on,
     ]
     attributes << :should_charge_fee if admin_signed_in?
 

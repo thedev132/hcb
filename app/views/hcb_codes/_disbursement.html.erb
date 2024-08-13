@@ -58,6 +58,13 @@
     </p>
 
     <% admin_tool("", "p") do %>
+      <% if @hcb_code.disbursement.scheduled_on.present? && !@hcb_code.disbursement.processed? %>
+        <strong>Scheduled at</strong>
+        <%= format_datetime @hcb_code.disbursement.scheduled_on %>
+      <% end %>
+    <% end %>
+
+    <% admin_tool("", "p") do %>
       <strong>Disbursement ID</strong>
       <%= link_to @hcb_code.disbursement.id, @hcb_code.disbursement %>
     <% end %>
@@ -112,6 +119,7 @@
           </span>
       </p>
     <% end %>
+
   </section>
 
   <% if @event.can_front_balance? %>
@@ -129,3 +137,11 @@
   <% end %>
 
 </article>
+
+<% admin_tools do %>
+  <% if @hcb_code.disbursement.scheduled? %>
+    <section class="card__banner card__darker border-top overflow-hidden">
+      <%= button_to "Cancel transfer", cancel_disbursement_path(@hcb_code.disbursement), class: "btn bg-error" %>
+    </section>
+  <% end %>
+<% end %>

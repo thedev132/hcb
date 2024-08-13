@@ -62,6 +62,14 @@
     <span class="muted">This is to help HCB keep record of our transactions. It will be used as the memo on your transaction list.</span>
   </div>
 
+  <% admin_tools do %>
+    <div class="field">
+      <%= form.label :scheduled_on, "Schedule for" %>
+      <%= form.date_select :scheduled_on, prompt: true, order: [:month, :day, :year], start_year: Date.today.year %>
+      <p class="h5 muted mt0 mb1">Leave blank to send instantly</p>
+    </div>
+  <% end %>
+
   <div
       class="<%= "actions inline-block #{"tooltipped tooltipped--e" if disabled}" %>"
       aria-label="<%= @event&.demo_mode? ? "Transfers are disabled in Playground mode" : disabled ? "Only managers can make transfers!" : nil %>">

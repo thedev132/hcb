@@ -382,6 +382,7 @@ Rails.application.routes.draw do
   resources :disbursements, only: [:new, :create, :show, :edit, :update] do
     post "mark_fulfilled"
     post "reject"
+    post "cancel"
     get "confirmation", to: "disbursements#transfer_confirmation_letter"
   end
 
