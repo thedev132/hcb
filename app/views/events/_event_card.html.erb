@@ -34,7 +34,7 @@
         <%= avatar_for position.user, 24 %>
       <% end %>
       <% if event.organizer_positions.size > 9 %>
-        <div class="rounded-full text-white bg-gray-500 justify-center items-center flex" style="width:24px;height:24px;font-weight: 300;font-size:10px">
+        <div class="rounded-full text-white justify-center items-center flex" style="width: 24px; height: 24px; font-weight: 300; font-size: 10px; background: #273444;">
           +<%= event.organizer_positions.size - 8 %>
         </div>
       <% end %>
