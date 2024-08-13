@@ -138,7 +138,7 @@
 
 </article>
 
-<% admin_tools do %>
+<% admin_tool do %>
   <% if @hcb_code.disbursement.scheduled? %>
     <section class="card__banner card__darker border-top overflow-hidden">
       <%= button_to "Cancel transfer", cancel_disbursement_path(@hcb_code.disbursement), class: "btn bg-error" %>

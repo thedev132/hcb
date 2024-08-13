@@ -73,7 +73,7 @@
       </p>
 
       <% if @hcb_code.disbursement.scheduled_on.present? %>
-        <% admin_tools("", "p") do %>
+        <% admin_tool("", "p") do %>
           <strong>Scheduled for</strong>
           <%= format_datetime @disbursement.scheduled_on %>
         <% end %>
@@ -93,7 +93,7 @@
     </section>
 
     <% if @disbursement.scheduled? %>
-      <% admin_tools("mt2") do %>
+      <% admin_tool("mt2") do %>
         <section class="card__banner card__darker border-top overflow-hidden">
           <%= button_to "Cancel transfer", cancel_disbursement_path(@disbursement), class: "btn bg-error" %>
         </section>

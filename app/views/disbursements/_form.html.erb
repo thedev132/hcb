@@ -62,7 +62,7 @@
     <span class="muted">This is to help HCB keep record of our transactions. It will be used as the memo on your transaction list.</span>
   </div>
 
-  <% admin_tools do %>
+  <% admin_tool do %>
     <div class="field">
       <%= form.label :scheduled_on, "Schedule for" %>
       <%= form.date_select :scheduled_on, prompt: true, order: [:month, :day, :year], start_year: Date.today.year %>
