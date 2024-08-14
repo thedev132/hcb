@@ -212,7 +212,7 @@ gem "cssbundling-rails", "~> 1.4"
 
 gem "rtesseract"
 
-gem "sprockets-rails", "~> 3.4"
+gem "sprockets-rails", "~> 3.5"
 
 gem "public_activity"
 
