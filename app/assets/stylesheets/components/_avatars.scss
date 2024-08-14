@@ -31,7 +31,8 @@
       transform: rotate(-180deg);
     }
 
-    &:hover img {
+    &:hover img,
+    &:hover div {
       margin-right: 4px;
     }
   }
