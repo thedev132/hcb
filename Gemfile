@@ -20,7 +20,7 @@ gem "mini_magick"
 
 
 gem "jsbundling-rails", "~> 1.3"
-gem "terser", "~> 1.1" # JS compressor
+gem "terser", "~> 1.2" # JS compressor
 gem "jquery-rails"
 gem "react-rails"
 gem "turbo-rails", "~> 2.0.5"
