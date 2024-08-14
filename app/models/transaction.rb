@@ -425,6 +425,10 @@ class Transaction < ApplicationRecord
     previous.save
   end
 
+  def receipt_required?
+    false
+  end
+
   private
 
   def try_pair_invoice

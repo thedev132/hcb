@@ -234,6 +234,10 @@ class CanonicalTransaction < ApplicationRecord
     nil
   end
 
+  def receipt_required?
+    false
+  end
+
   def display_name # in deprecated system this is the renamed transaction name
     smart_memo
   end
