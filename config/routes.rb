@@ -224,6 +224,7 @@ Rails.application.routes.draw do
       get "account_numbers", to: "admin#account_numbers"
       get "emails", to: "admin#emails"
       get "email", to: "admin#email"
+      get "merchant_memo_check", to: "admin#merchant_memo_check"
 
       resources :grants, only: [] do
         post "approve"

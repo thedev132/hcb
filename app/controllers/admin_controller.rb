@@ -1321,6 +1321,18 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def merchant_memo_check
+    @data = YellowPages::Merchant.merchants.map do |network_id, merchant|
+      {
+        yp_name: merchant[:name],
+        yp_network_id: network_id,
+        memos: RawStripeTransaction
+          .where("stripe_transaction->'merchant_data'->>'network_id' = '#{network_id}'")
+          .pluck(Arel.sql("stripe_transaction->'merchant_data'->'name'"))
+      }
+    end
+  end
+
   private
 
   def stream_data(content_type, filename, data, download = true)
