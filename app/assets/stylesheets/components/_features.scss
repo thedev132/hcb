@@ -63,6 +63,32 @@ html[data-dark='true'] {
   }
 }
 
+.feature-two-factor-authentication {
+  background-color: $snow;
+  background-image: url('feature-two-factor-authentication-light.png');
+  background-size: 150px;
+}
+
+html[data-dark='true'] {
+  .feature-two-factor-authentication {
+    background-color: $black;
+    background-image: url('feature-two-factor-authentication-dark.png');
+  }
+}
+
+.feature-totp {
+  background-color: $snow;
+  background-image: url('feature-totp-light.png');
+  background-size: 8em;
+}
+
+html[data-dark='true'] {
+  .feature-totp {
+    background-color: $black;
+    background-image: url('feature-totp-dark.png');
+  }
+}
+
 .feature-transaction-tags {
   background-size: 24em;
   background-color: $snow;
