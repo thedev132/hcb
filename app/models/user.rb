@@ -399,7 +399,7 @@ class User < ApplicationRecord
 
   def sync_with_loops
     new_user = full_name_before_last_save.blank? && !onboarding?
-    UserService::SyncWithLoops.new(user_id: id, new_user:).run if teenager?
+    UserService::SyncWithLoops.new(user_id: id, new_user:).run
   end
 
 end
