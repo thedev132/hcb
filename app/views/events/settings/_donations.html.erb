@@ -36,6 +36,12 @@
               <%= config.check_box :anonymous_donations, disabled: !policy(event).update?, switch: true %>
               <%= config.label :anonymous_donations, "Allow donors to donate anonymously" %>
             </div>
+            <% if event.sponsorship_fee > 0 %>
+              <div class="field field--checkbox">
+                <%= config.check_box :cover_donation_fees, disabled: !policy(event).update?, switch: true %>
+                <%= config.label :cover_donation_fees, "Allow donors to cover your donation fees" %>
+              </div>
+            <% end %>
           <% end %>
         </div>
       </div>

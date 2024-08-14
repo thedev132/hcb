@@ -959,7 +959,8 @@ class EventsController < ApplicationController
       ],
       config_attributes: [
         :id,
-        :anonymous_donations
+        :anonymous_donations,
+        :cover_donation_fees
       ]
     )
 
@@ -1002,7 +1003,8 @@ class EventsController < ApplicationController
       ],
       config_attributes: [
         :id,
-        :anonymous_donations
+        :anonymous_donations,
+        :cover_donation_fees
       ]
     )
 

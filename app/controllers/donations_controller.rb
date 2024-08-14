@@ -74,7 +74,7 @@ class DonationsController < ApplicationController
     d_params = donation_params
     d_params[:amount] = Monetize.parse(donation_params[:amount]).cents
 
-    if d_params[:fee_covered] == "1" && Flipper.enabled?(:cover_my_fee_2024_06_25, @event)
+    if d_params[:fee_covered] == "1" && @event.config.cover_donation_fees
       d_params[:amount] = (d_params[:amount] / (1 - @event.sponsorship_fee)).ceil
     end
 
