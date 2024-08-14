@@ -5,6 +5,10 @@ g_suite_mark_verifieds_job:
 g_suite_verify_all_job:
   cron: "0 */1 * * *" # run every 1 hour
   class: "GSuiteJob::VerifyAll"
+
+g_suite_scan_verified_dns_job:
+  cron: "0 12 * * *" # run every 1 day
+  class: "GSuiteJob::ScanVerifiedDNS"
   
 pending_transaction_engine_nightly_job:
   cron: "0 */3 * * *" # run every 3 hour
