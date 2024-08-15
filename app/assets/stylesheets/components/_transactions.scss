@@ -108,6 +108,7 @@ html[data-dark='true'] {
   padding-top: 0;
   padding-bottom: 0;
   line-height: 0;
+  color: map-get($palette, muted);
 
   img,
   svg {
