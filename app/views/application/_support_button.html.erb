@@ -7,9 +7,9 @@
       <%= inline_icon "email", size: 24 %> Contact us
     </a>
     <% if current_user&.events&.not_demo_mode&.any? %>
-      <a class="support-menu__item" href="https://hack.af/bank-userfeedback?prefill_Name=#{current_user&.name}&prefill_Email=#{current_user&.email}&prefill_Organization=#{current_user&.events&.first&.name}" target="_blank">
+       <%= link_to "https://hack.af/bank-userfeedback?prefill_Name=#{current_user&.name}&prefill_Email=#{current_user&.email}&prefill_Organization=#{current_user&.events&.first&.name}", class: "support-menu__item", target: "_blank" do %>
         <%= inline_icon "message-simple", size: 24 %> Share Feedback
-      </a>
+      <% end %>
     <% end %>
     <a class="support-menu__item" href="https://help.hcb.hackclub.com/" target="_blank">
       <%= inline_icon "docs", size: 24 %> Help Center
