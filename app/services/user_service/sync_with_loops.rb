@@ -10,6 +10,8 @@ module UserService
     end
 
     def run
+      return if @user.onboarding?
+
       body = {
         email: @user.email,
         firstName: @user.first_name(legal: true),
