@@ -55,7 +55,7 @@ class Comment < ApplicationRecord
   }
 
   include PublicActivity::Model
-  tracked owner: proc{ |controller, record| controller&.current_user }, event_id: proc { |controller, record| record.admin_only? ? nil : record.commentable.try(:event)&.id }, only: [:create, :update, :destroy]
+  tracked owner: proc{ |controller, record| controller&.current_user || record&.user }, event_id: proc { |controller, record| record.admin_only? ? nil : record.commentable.try(:event)&.id }, only: [:create, :update, :destroy]
 
   after_create_commit :send_notification_email
 
