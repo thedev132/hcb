@@ -1,13 +1,22 @@
 <div data-controller="menu" data-menu-placement-value="<%= content_for?(:nav) ? "bottom-start" : "bottom-center" %>">
-  <button data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown" data-menu-target="toggle" type="button" class="support-menu__button fixed bottom-0 right-0 m-5 pop tooltipped tooltipped--w embedded-display-none" style="z-index: 2" aria-label="Need help?" data-action="class#toggle focus#focus">
+  <button data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown" data-menu-target="toggle" type="button" class="support-menu__button fixed bottom-0 right-0 m-5 pop tooltipped tooltipped--w embedded-display-none cursor-pointer" style="z-index: 2" aria-label="Need help?" data-action="class#toggle focus#focus">
     <%= inline_icon "question-mark", size: 18 %>
   </button>
   <div data-menu-target="content" class="menu__content menu__content--2 menu__content--compact" style="padding: 0.5rem;">
     <a class="support-menu__item" href="mailto:hcb@hackclub.com" target="_blank">
-      <%= inline_icon "email", size: 24 %> Contact us
+      <%= inline_icon "email", size: 24 %> Contact Us
     </a>
     <% if current_user&.events&.not_demo_mode&.any? %>
-       <%= link_to "https://hack.af/bank-userfeedback?prefill_Name=#{current_user&.name}&prefill_Email=#{current_user&.email}&prefill_Organization=#{current_user&.events&.first&.name}", class: "support-menu__item", target: "_blank" do %>
+      <% routing = Rails.application.routes.recognize_path(request.original_fullpath) %>
+
+      <% url_params = {
+           name: current_user&.name,
+           email: current_user&.email,
+           url: "#{request.base_url}#{request.original_fullpath}",
+           location: "#{routing[:controller]}##{routing[:action]} #{routing[:id]}".strip,
+         } %>
+
+      <%= link_to "https://forms.hackclub.com/hcb-feedback?#{url_params.to_query}", class: "support-menu__item", target: "_blank" do %>
         <%= inline_icon "message-simple", size: 24 %> Share Feedback
       <% end %>
     <% end %>
