@@ -42,7 +42,7 @@
     <% end %>
     <%= submit_tag "Submit" %>
   <% end %>
-  <% if @use_sms_auth %>
+  <% if @use_sms_auth && !@login&.authenticated_with_email %>
     <div data-controller="form">
       <p>Don't have access to your phone?
         Click
