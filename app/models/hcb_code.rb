@@ -490,6 +490,7 @@ class HcbCode < ApplicationRecord
     users += self.comments.map(&:user)
     users += self.comments.flat_map(&:mentioned_users)
     users += self.events.flat_map(&:users).reject(&:my_threads?)
+    users += [author] if author
 
     if comment.admin_only?
       users += self.events.map(&:point_of_contact)
