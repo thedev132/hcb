@@ -17,6 +17,9 @@
   );
   background-attachment: fixed;
   color: $black;
+  > td > .author {
+    display: none;
+  }
 }
 
 .transaction--icy {

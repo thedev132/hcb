@@ -126,7 +126,7 @@
   <% if local_assigns[:show_author_column] %>
     <% author = ct.local_hcb_code.author %>
     <td class="<%= "tooltipped tooltipped--w" if author&.name %> text-center" aria-label="<%= author&.name %>">
-      <%= avatar_for author, 24, { class: "align-middle" } if author.present? %>
+      <%= avatar_for author, 24, { class: "align-middle author" } if author.present? %>
     </td>
   <% end %>
 
