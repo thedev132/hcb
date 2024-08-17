@@ -38,7 +38,7 @@
       </div>
     <% end %>
   <% end %>
-  <% if Flipper.enabled?(:totp_2024_06_13, current_user) %>
+  <% if Flipper.enabled?(:totp_2024_06_13, @user) %>
     <div>
       <legend class="flex flex-row justify-start items-center mt3 pb2">
         <span class="h2">Time-based one time passwords</span>
