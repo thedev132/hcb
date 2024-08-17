@@ -32,7 +32,7 @@
   <% end %>
   <%= render "hcb_codes/icon", tx: pt, authorless: local_assigns[:authorless] %>
   <td>
-    <%= format_date pt.date %>
+    <%= format_date pt.created_at %>
   </td>
   <td class="transaction__memo">
     <div>

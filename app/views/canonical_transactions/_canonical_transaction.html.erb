@@ -51,7 +51,7 @@
       <% end %>
       <%= label %>
     <% else %>
-      <%= format_date ct.date %>
+      <%= Date.parse(ct.date).strftime("%b %e, %Y") %>
     <% end %>
   </td>
 
