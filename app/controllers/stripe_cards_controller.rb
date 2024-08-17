@@ -80,6 +80,7 @@ class StripeCardsController < ApplicationController
 
     if params[:frame] == "true"
       @frame = true
+      @force_no_popover = true
       render :show, layout: false
     else
       @frame = false
