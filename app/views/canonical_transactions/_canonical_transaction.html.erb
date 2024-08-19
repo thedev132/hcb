@@ -62,11 +62,7 @@
           <%= turbo_frame_tag "#{ct.local_hcb_code.hashid}:memo_frame", class: "memo-frame flex", style: "width:100%; overflow:hidden; text-overflow:ellipsis; flex-grow: 1" do %>
             <span class="inline-flex g-2 items-center" title="<%= transaction_memo(ct) %>" style="flex-grow: 1;">
               <%= ct.local_hcb_code.card_grant? && !organizer_signed_in? ? link_to(transaction_memo(ct), spending_card_grant_path(ct.local_hcb_code.disbursement.card_grant), data: { turbo_frame: "_top", behavior: "modal_trigger", modal: "card_grant_details_#{instance}" }) : content_tag(:span, class: "inline-flex gap-2 items-center") do %>
-                <% if Flipper.enabled?(:rename_on_homepage_2023_12_06, current_user) && !defined?(disable_rename) %>
-                  <%= render "hcb_codes/memo", hcb_code: ct.local_hcb_code, location: "ledger" %>
-                <% else %>
-                  <%= transaction_memo(ct) %>
-                <% end %>
+                <%= render "hcb_codes/memo", hcb_code: ct.local_hcb_code, location: "ledger", ledger_instance: instance, force_display_details: defined?(force_display_details) %>
               <% end %>
             </span>
           <% end %>
@@ -129,12 +125,6 @@
       <%= avatar_for author, 24, { class: "align-middle author" } if author.present? %>
     </td>
   <% end %>
-
-  <td>
-    <% details_link = ct.local_hcb_code.card_grant? ? spending_card_grant_path(ct.local_hcb_code.disbursement.card_grant) : ct.local_hcb_code.url %>
-    <% modal = ct.local_hcb_code.card_grant? ? "card_grant_details_#{instance}" : "transaction_details_#{instance}" %>
-    <%= link_to "Details", details_link, data: Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) && !@force_no_popover ? { turbo_frame: "_top", behavior: "modal_trigger", modal: } : { turbo_frame: "_top" } if organizer_signed_in? || defined?(force_display_details) %>
-  </td>
 
   <% if local_assigns[:receipt_upload_button] %>
     <td style="width: 1%">
