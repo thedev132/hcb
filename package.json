@@ -14,7 +14,7 @@
     "@csstools/postcss-sass": "^5.1.1",
     "@fingerprintjs/fingerprintjs": "^3.4.2",
     "@floating-ui/dom": "^1.6.10",
-    "@floating-ui/react-dom": "^2.1.1",
+    "@floating-ui/react-dom": "1.0.0",
     "@fnando/sparkline": "^0.3.10",
     "@github/text-expander-element": "^2.7.1",
     "@github/webauthn-json": "^2.1.1",
