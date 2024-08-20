@@ -27,14 +27,9 @@
           <% end %>
           </p>
         </div>
-        <div data-controller="menu" class="inline-flex">
-          <button
-            class="pop menu__toggle"
-            data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown"
-            data-menu-target="toggle">
-            <%= inline_icon "more" %>
-          </button>
-          <div class="menu__content menu__content--bottom" data-menu-target="content">
+        <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
+          <%= inline_icon "more" %>
+          <div class="menu__content" data-behavior="menu_content">
             <% if account.accepted? && organizer_signed_in? %>
             <%= link_to "Reset password",
                 g_suite_account_reset_password_path(account.id),
@@ -53,7 +48,7 @@
               'data-confirm': "Deleting #{account.address} is *permanent, irreversible, and does not back up any data*. Think carefully before you click ok.",
               class: "admin-tools" if admin_signed_in? %>
           </div>
-        </div>
+        </action>
       </li>
     <% end %>
   </ul>

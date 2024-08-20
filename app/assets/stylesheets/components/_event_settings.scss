@@ -28,8 +28,7 @@
     top: 0;
     right: 0;
     margin: 1rem;
-    background-color: white !important;
-    border-radius: 999px;
+    background-color: $smoke !important;
   }
 
   & > .event_settings__banner--logo {
@@ -47,7 +46,7 @@
       position: absolute;
       top: -12px;
       right: -12px;
-      background-color: white !important;
+      background-color: $smoke !important;
     }
   }
 }
