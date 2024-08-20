@@ -25,6 +25,7 @@ class HcbCode < ApplicationRecord
 
   include Commentable
   include Receiptable
+  include UsersHelper
 
   include Turbo::Broadcastable
 
@@ -538,7 +539,20 @@ class HcbCode < ApplicationRecord
   end
 
   def author
-    stripe_cardholder&.user || ach_transfer&.creator || increase_check&.user || disbursement&.requested_by || reimbursement_expense_payout&.expense&.report&.user
+    return ach_transfer&.creator if ach_transfer?
+    return check&.creator if check?
+    return increase_check&.user if increase_check?
+    return disbursement&.requested_by if disbursement?
+    return stripe_cardholder&.user if stripe_card?
+    return reimbursement_expense_payout&.expense&.report&.user if reimbursement_expense_payout?
+    return paypal_transfer&.user if paypal_transfer?
+  end
+
+  def fallback_avatar
+    return gravatar_url(donation.email, donation.name, donation.email.to_i, 48) if donation? && !donation.anonymous?
+    return gravatar_url(invoice.sponsor.contact_email, invoice.sponsor.name, invoice.sponsor.contact_email.to_i, 48) if invoice?
+
+    nil
   end
 
 end
