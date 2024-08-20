@@ -404,6 +404,31 @@ $(document).on('turbo:load', function () {
     BK.s('comment')[0].scrollIntoView();
   })
 
+  $('.input-group').on('click', (e) => {
+    // focus on the input when clicking on the input-group
+    e.currentTarget.querySelector('input').focus()
+  })
+
+  // click events trigger weird behavior
+  $('[data-behavior~=clear').on('mouseup', e => {
+    e.currentTarget.parentElement.querySelector('input').value = ''
+  })
+
+  document.body.addEventListener('keydown', e => {
+    const el = document.querySelector('[data-behavior~=search]');
+    if (el && e.key === '/') {
+      // if a text input is focused, don't trigger the search
+      if (document.activeElement.tagName === 'INPUT') return;
+      if (document.activeElement.tagName === 'TEXTAREA') return;
+      // if a modal is open, don't trigger the search
+      if (document.querySelector('.jquery-modal.current.blocker')) return;
+      e.preventDefault()
+      el.focus()
+      // move the cursor to the end of the input
+      el.setSelectionRange(el.value.length, el.value.length)
+    }
+  })
+
   const tiltElement = $('[data-behavior~=hover_tilt]')
   const enableTilt = () =>
     tiltElement.tilt({

@@ -20,12 +20,13 @@ html[data-dark='true'] {
   input[type='text'],
   input[type='url'],
   select,
+  .input,
   textarea {
     background-color: $darkless;
     color: map-get($palette, white);
     border-color: $darkless;
 
-    &:focus {
+    &:focus-within {
       border-color: map-get($palette, info);
     }
   }

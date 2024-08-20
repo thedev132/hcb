@@ -36,6 +36,24 @@ textarea {
   }
 }
 
+.input-group {
+  display: flex;
+  gap: 0.2rem;
+  align-items: center;
+  padding-top: 0;
+  padding-bottom: 0;
+
+  & input {
+    border: 0;
+    padding-left: 0.25rem;
+    max-width: none;
+  }
+
+  & svg {
+    @extend .muted;
+  }
+}
+
 select {
   min-height: 2.5rem;
   padding: 0.25rem 0.5rem;
