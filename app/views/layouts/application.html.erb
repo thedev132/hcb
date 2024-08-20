@@ -81,8 +81,7 @@
                         id: @tour&.id,
                         step: @tour&.step || 0,
                         options: @tour&.tourable&.try(:tourable_options) || {},
-                        # back_to_tour: @back_to_tour https://github.com/hackclub/hcb/issues/7580
-                        back_to_tour: false %>
+                        back_to_tour: @back_to_tour %>
     <% if current_session&.impersonated? %>
       <div class="w-100 px4 bg-white transparency-banner">
         <p class="h5 medium center mt1 mb1">
