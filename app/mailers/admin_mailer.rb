@@ -9,6 +9,12 @@ class AdminMailer < ApplicationMailer
     mail to:, subject: "[OPDR] #{@opdr.event.name} / #{@opdr.organizer_position.user.name}"
   end
 
+  def cash_withdrawal_notification
+    @hcb_code = params[:hcb_code]
+
+    mail to:, subject: "[CASH WITHDRAWN] #{@hcb_code.event.name} / #{@hcb_code.stripe_card.user.name}"
+  end
+
   def reminders
     @tasks = []
 
