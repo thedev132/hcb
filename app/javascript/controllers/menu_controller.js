@@ -43,15 +43,21 @@ export default class extends Controller {
     this.content = this.contentTarget.cloneNode(true)
     this.content.dataset.turboTemporary = true
     if (this.hasContentIdValue) this.content.id = this.contentIdValue
-    ;(
-      (this.appendToValue && document.querySelector(this.appendToValue)) ||
-      document.body
-    ).appendChild(this.content)
+    const parent = document.body
+
+    if (window.innerWidth <= 800) {
+      const overlay = document.createElement('div')
+      overlay.classList.add('menu__overlay')
+      parent.appendChild(overlay)
+    }
+    parent.appendChild(this.content)
+
     Object.assign(this.content.style, {
       position: 'absolute',
       display: 'block',
       left: 0,
       top: 0,
+      zIndex: 1000000,
     })
 
     this.computePosition(true)
@@ -86,8 +92,10 @@ export default class extends Controller {
       )
         return
 
+      this.content && $('.menu__overlay').remove()
       this.content && this.content.remove()
     } else {
+      this.content && $('.menu__overlay').remove()
       this.content && this.content.remove()
     }
 

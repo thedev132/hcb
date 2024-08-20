@@ -299,32 +299,6 @@ $(document).on('turbo:load', function () {
       this.style.height = this.scrollHeight + 1 + 'px'
     })
 
-  // Popover menus
-  BK.openMenuSelector = '[data-behavior~=menu_toggle][aria-expanded=true]'
-  BK.toggleMenu = function (m) {
-    // The menu content might either be a child or a sibling of the button.
-    $(m).find('[data-behavior~=menu_content]').slideToggle(100)
-    $(m).siblings('[data-behavior~=menu_content]').slideToggle(100)
-
-    const o = $(m).attr('aria-expanded') === 'true'
-    if (o) {
-      // The menu is closing
-      // Clear all inputs in the menu
-      $(m)
-        .siblings('[data-behavior~=menu_content]')
-        .find('input[data-behavior~=menu_input')
-        .val('')
-    } else {
-      // The menu is opening
-      // Autofocus any inputs that should be autofocused
-      $(m)
-        .siblings('[data-behavior~=menu_content]')
-        .find('input[data-behavior~=menu_input--autofocus')
-        .focus()
-    }
-    return $(m).attr('aria-expanded', !o)
-  }
-
   if (BK.thereIs('shipping_address_inputs')) {
     const shippingInputs = BK.s('shipping_address_inputs')
     const physicalInput = $('#stripe_card_card_type_physical')

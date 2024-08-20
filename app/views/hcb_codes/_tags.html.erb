@@ -7,8 +7,9 @@
       </div>
 
       <% unless defined?(@frame) && @frame %>
-        <div data-controller="menu">
-          <button class="list-badge add-tag-badge ml0 menu__toggle menu__toggle--arrowless h-full" style="height: 1.6rem" data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">+ Add tag</button>
+        <div class="overflow-visible relative line-height-0" data-controller="menu">
+          <button class="list-badge add-tag-badge ml0 menu__toggle" data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">+ Add tag</button>
+
           <div class="menu__content menu__content--2 menu__content--compact menu__content--left h6" data-menu-target="content">
             <% @event.tags.each do |tag| %>
               <div class="flex items-center" data-tag="<%= tag.id %>">

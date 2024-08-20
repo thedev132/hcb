@@ -8,12 +8,14 @@
       <% end %>
 
       <% if policy(@event).update? %>
-       <button
-          type="button"
-          data-behavior="menu_toggle" aria-expanded="false" tabindex="0"
-          class="pop menu__toggle z1 event_settings__banner--edit">
-          <%= inline_icon "photo", size: 24 %>
-          <div class="menu__content h5" data-behavior="menu_content">
+        <div data-controller="menu" class="event_settings__banner--edit" data-menu-placement-value="bottom-right">
+          <button
+            data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown"
+            data-menu-target="toggle"
+            class="pop menu__toggle z1 event_settings__banner--edit">
+            <%= inline_icon "photo", size: 24 %>
+          </button>
+          <div class="menu__content menu__content--bottom" data-menu-target="content">
             <div class="field--fileupload">
               <%= form.label :background_image, "Choose file", class: "field--fileupload__label" %>
               <%= form.file_field :background_image, accept: "image/*,image/heic", class: "field--fileupload__field" %>
@@ -23,7 +25,7 @@
               <%= link_to "Remove background image", event_remove_background_image_path(@event), method: :post, style: "padding: 0.25rem 0.5rem" %>
             <% end %>
           </div>
-        </button>
+        </div>
       <% end %>
 
       <div class="event_settings__banner--logo">
@@ -34,12 +36,14 @@
         <% end %>
 
         <% if policy(@event).update? %>
-          <button
-            type="button"
-            data-behavior="menu_toggle" aria-expanded="false" tabindex="0"
-            class="pop menu__toggle z1 event_settings__logo--edit">
-            <%= inline_icon "photo", size: 24 %>
-            <div class="menu__content menu__content--left h5" data-behavior="menu_content">
+          <div data-controller="menu" class="event_settings__logo--edit rounded-full">
+            <button
+              data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown"
+              data-menu-target="toggle"
+              class="pop menu__toggle z1 event_settings__logo--edit">
+              <%= inline_icon "photo", size: 24 %>
+            </button>
+            <div class="menu__content menu__content--bottom" data-menu-target="content">
               <div class="field--fileupload">
                 <%= form.label :logo, "Choose file", class: "field--fileupload__label" %>
                 <%= form.file_field :logo, accept: "image/*,image/heic", class: "field--fileupload__field" %>
@@ -49,7 +53,7 @@
                 <%= link_to "Remove logo", event_remove_logo_path(@event), method: :post, style: "padding: 0.25rem 0.5rem" %>
               <% end %>
             </div>
-          </button>
+          </div>
         <% end %>
       </div>
     </div>
