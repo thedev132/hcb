@@ -237,6 +237,10 @@ class HcbCode < ApplicationRecord
     pt&.raw_pending_stripe_transaction&.stripe_transaction&.dig("amount_details")&.dig("atm_fee") || ct&.raw_stripe_transaction&.stripe_transaction&.dig("amount_details")&.dig("atm_fee")
   end
 
+  def stripe_reversed_by_merchant?
+    pt&.raw_pending_stripe_transaction&.stripe_transaction&.dig("status") == "reversed"
+  end
+
   def stripe_auth_dashboard_url
     pt.try(:stripe_auth_dashboard_url) || ct.try(:stripe_auth_dashboard_url)
   end

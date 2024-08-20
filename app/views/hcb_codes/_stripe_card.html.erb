@@ -133,6 +133,8 @@
             <em>This transaction was declined by HCB because cash withdrawals were not enabled on the card.</em>
           <% elsif reason == "webhook_declined" %>
             <em>This transaction was declined by HCB due to insufficient funds.</em>
+          <% elsif @hcb_code.stripe_reversed_by_merchant? %>
+            <em>This transaction was reversed by the merchant.</em>
           <% else %>
             <em>This transaction was declined.</em>
           <% end %>
