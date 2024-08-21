@@ -96,18 +96,16 @@
   <% end %>
 
   <% if local_assigns[:show_author_column] %>
-    <% Rails.cache.fetch("#{pt.hcb_code}_author_icon", expires_in: 12.hours) do %>
-      <% author = pt.local_hcb_code.author %>
-      <td class="<%= "tooltipped tooltipped--w" if author&.name %>" aria-label="<%= author&.name %>">
-        <div class="flex items-center justify-center">
-          <% if author.present? %>
-            <%= avatar_for author, 24, { class: "align-middle author" } %>
-          <% elsif pt.local_hcb_code.fallback_avatar %>
-            <%= image_tag(pt.local_hcb_code.fallback_avatar, loading: "lazy", width: 24, height: 24, class: "rounded-full shrink-none") %>
-          <% end %>
-        </div>
-      </td>
-    <% end %>
+    <% author = pt.local_hcb_code.author %>
+    <td class="<%= "tooltipped tooltipped--w" if author&.name %>" aria-label="<%= author&.name %>">
+      <div class="flex items-center justify-center">
+        <% if author.present? %>
+          <%= avatar_for author, 24, { class: "align-middle author" } %>
+        <% elsif pt.local_hcb_code.fallback_avatar %>
+          <%= image_tag(pt.local_hcb_code.fallback_avatar, loading: "lazy", width: 24, height: 24, class: "rounded-full shrink-none") %>
+        <% end %>
+      </div>
+    </td>
   <% end %>
 
   <% if local_assigns[:receipt_upload_button] %>
