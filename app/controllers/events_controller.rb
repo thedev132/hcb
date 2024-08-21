@@ -105,6 +105,10 @@ class EventsController < ApplicationController
       end_date: @end_date
     ).run
 
+    if (@minimum_amount || @maximum_amount) && !organizer_signed_in?
+      @all_transactions.reject!(&:likely_account_verification_related?)
+    end
+
     @type_filters = {
       "ach_transfer"           => {
         "settled" => ->(t) { t.local_hcb_code.ach_transfer? },
