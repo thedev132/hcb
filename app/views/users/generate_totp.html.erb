@@ -19,7 +19,7 @@
     </p>
     <div>
       <%= form_tag user_enable_totp_path(@user), data: { turbo_frame: "_top" } do %>
-        <%= telephone_field_tag :code, "", placeholder: "OTP code", autofocus: true, autocomplete: "off", class: "center-align mb2", required: true %>
+        <%= telephone_field_tag :code, "", placeholder: "OTP code", autofocus: true, class: "center-align mb2", autocomplete: "one-time-code", required: true %>
         <%= hidden_field_tag :secret, @totp.secret %>
         <%= submit_tag "Submit" %>
       <% end %>
