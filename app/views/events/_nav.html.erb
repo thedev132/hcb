@@ -99,7 +99,7 @@
       disabled: !policy(@event).g_suite_overview?,
       selected: local_assigns[:selected] == :google_workspace if organizer_signed_in? %>
     <%= dock_item "Documents",
-      event_documentation_path(event_id: @event.slug),
+      event_documents_path(event_id: @event.slug),
       tooltip: "View legal documents, financial statements, and FAQ",
       icon: "docs",
       selected: local_assigns[:selected] == :documentation %>
@@ -150,7 +150,7 @@
         <%= link_to "Team", event_team_path(event_id: @event.slug) %>
         <%= link_to "Promotions & perks", event_promotions_path(event_id: @event.slug) if policy(@event).promotions? %>
         <%= link_to "Google Workspace", event_g_suite_overview_path(event_id: @event.slug) if policy(@event).g_suite_overview? %>
-        <%= link_to "Documents", event_documentation_path(event_id: @event.slug) %>
+        <%= link_to "Documents", event_documents_path(event_id: @event.slug) %>
         <%= link_to "Settings", edit_event_path(@event) %>
       </div>
     </button>

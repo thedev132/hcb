@@ -662,7 +662,7 @@ Rails.application.routes.draw do
     get "connect_gofundme"
     get "sell_merch"
 
-    get "documentation"
+    get "documentation", to: redirect("/%{event_id}/documents", status: 302)
     get "transfers"
     get "statements"
     get "promotions"
