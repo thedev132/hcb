@@ -11,10 +11,10 @@ module StripeCardsHelper
                        class: "muted #{options[:size] <= 24 ? 'pr1' : ''}"
     if organizer_signed_in? || stripe_card.user == current_user
       text = content_tag :span, stripe_card.last_four
-      return link_to(stripe_card, class: "mention") { icon + text }
+      return link_to(stripe_card, class: "mention", data: { turbo_frame: "_top" }) { icon + text }
     else
       text = content_tag :span, "XXXX"
-      return link_to(root_path, class: "mention") { icon + text }
+      return link_to(root_path, class: "mention", data: { turbo_frame: "_top" }) { icon + text }
     end
   end
 
