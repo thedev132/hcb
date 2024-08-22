@@ -172,7 +172,7 @@ GEM
     blind_index (2.5.0)
       activesupport (>= 6.1)
       argon2-kdf (>= 0.1.1)
-    bootsnap (1.18.3)
+    bootsnap (1.18.4)
       msgpack (~> 1.2)
     brakeman (5.4.1)
     browser (5.3.1)
