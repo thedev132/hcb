@@ -2,17 +2,18 @@
 
 class AdminMailer < ApplicationMailer
   include Rails.application.routes.url_helpers
+  default to: -> { Rails.application.credentials.admin_email[:slack] }
 
   def opdr_notification
     @opdr = params[:opdr]
 
-    mail to:, subject: "[OPDR] #{@opdr.event.name} / #{@opdr.organizer_position.user.name}"
+    mail subject: "[OPDR] #{@opdr.event.name} / #{@opdr.organizer_position.user.name}"
   end
 
   def cash_withdrawal_notification
     @hcb_code = params[:hcb_code]
 
-    mail to:, subject: "[CASH WITHDRAWN] #{@hcb_code.event.name} / #{@hcb_code.stripe_card.user.name}"
+    mail subject: "[CASH WITHDRAWN] #{@hcb_code.event.name} / #{@hcb_code.stripe_card.user.name}"
   end
 
   def reminders
@@ -75,13 +76,7 @@ class AdminMailer < ApplicationMailer
 
     return if @tasks.none?
 
-    mail to:, subject: "24 Hour Reminders for the Operations Team"
-  end
-
-  private
-
-  def to
-    "hcb-promotions-aaaafacn32rulnb3zkd3h75afm@hackclub.slack.com"
+    mail subject: "24 Hour Reminders for the Operations Team"
   end
 
 end
