@@ -167,7 +167,7 @@ input[type='search']::-webkit-search-decoration {
 }
 
 .field {
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .field--money {
@@ -318,6 +318,7 @@ legend {
 
   &.trio {
     grid-template-columns: repeat(3, 1fr);
+    max-width: 36rem;
   }
 
   strong {
