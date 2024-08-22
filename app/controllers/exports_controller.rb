@@ -132,17 +132,17 @@ class ExportsController < ApplicationController
 
   def set_file_headers_csv
     headers["Content-Type"] = "text/csv"
-    headers["Content-disposition"] = "attachment; filename=transactions.csv"
+    headers["Content-disposition"] = "attachment; filename=#{@event.slug}_transactions_#{Time.now.strftime("%Y%m%d%H%M")}.csv"
   end
 
   def set_file_headers_json
     headers["Content-Type"] = "application/json"
-    headers["Content-disposition"] = "attachment; filename=transactions.json"
+    headers["Content-disposition"] = "attachment; filename=#{@event.slug}_transactions_#{Time.now.strftime("%Y%m%d%H%M")}.json"
   end
 
   def set_file_headers_ledger
     headers["Content-Type"] = "text/ledger"
-    headers["Content-disposition"] = "attachment; filename=transactions.ledger"
+    headers["Content-disposition"] = "attachment; filename=#{@event.slug}_transactions_#{Time.now.strftime("%Y%m%d%H%M")}.ledger"
   end
 
   def transactions_csv
