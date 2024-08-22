@@ -74,6 +74,13 @@ class AdminMailer < ApplicationMailer
       end
     end
 
+    CheckDeposit.manual_submission_required.find_each do |check_deposit|
+      @tasks << {
+        url: admin_check_deposit_url(check_deposit),
+        label: "[Check Deposit] #{ApplicationController.helpers.render_money check_deposit.amount} for #{check_deposit.event.name} (Submitted by #{check_deposit.created_by&.name || "Unknown User"})"
+      }
+    end
+
     return if @tasks.none?
 
     mail subject: "24 Hour Reminders for the Operations Team"

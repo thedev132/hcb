@@ -270,6 +270,7 @@ Rails.application.routes.draw do
     resources :ledger_audits, only: [:index, :show]
     resources :check_deposits, only: [:index, :show] do
       post "submit", on: :member
+      post "reject", on: :member
     end
   end
 
