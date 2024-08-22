@@ -48,7 +48,7 @@ class CardGrant < ApplicationRecord
   has_one :card_grant_setting, through: :event, required: true
   alias_method :setting, :card_grant_setting
 
-  enum :status, [:active, :canceled], default: :active
+  enum :status, [:active, :canceled, :expired], default: :active
 
   before_validation :create_card_grant_setting, on: :create
   before_create :create_user
@@ -77,7 +77,7 @@ class CardGrant < ApplicationRecord
   end
 
   def state
-    if canceled?
+    if canceled? || expired?
       "muted"
     elsif pending_invite?
       "info"
@@ -91,6 +91,8 @@ class CardGrant < ApplicationRecord
   def state_text
     if canceled?
       "Canceled"
+    elsif expired?
+      "Expired"
     elsif pending_invite?
       "Invitation sent"
     elsif stripe_card.frozen?
@@ -121,9 +123,14 @@ class CardGrant < ApplicationRecord
     end
   end
 
-  def cancel!(canceled_by)
+  def expire!
+    hcb_user = User.find_by!(email: "hcb@hackclub.com")
+    cancel!(hcb_user, expired: true)
+  end
+
+  def cancel!(canceled_by, expired: false)
     if balance > 0
-      custom_memo = "Return of funds from cancellation of grant to #{user.name}"
+      custom_memo = "Return of funds from #{expired ? "expiration" : "cancellation"} of grant to #{user.name}"
 
       disbursement = DisbursementService::Create.new(
         source_event_id: event_id,
@@ -139,7 +146,8 @@ class CardGrant < ApplicationRecord
 
     end
 
-    update!(status: :canceled)
+    update!(status: :canceled) unless expired
+    update!(status: :expired) if expired
 
     stripe_card&.freeze!
   end
@@ -164,6 +172,14 @@ class CardGrant < ApplicationRecord
 
   def allowed_categories
     (category_lock + (setting&.category_lock || [])).uniq
+  end
+
+  def expires_after
+    card_grant_setting.read_attribute_before_type_cast(:expiration_preference)
+  end
+
+  def expires_on
+    created_at + expires_after.days
   end
 
   private
