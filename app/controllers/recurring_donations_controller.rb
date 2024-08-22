@@ -16,7 +16,7 @@ class RecurringDonationsController < ApplicationController
     params[:recurring_donation][:amount] = Monetize.parse(params[:recurring_donation][:amount]).cents
 
     if params[:recurring_donation][:fee_covered] == "1" && @event.config.cover_donation_fees
-      params[:recurring_donation][:amount] = (params[:recurring_donation][:amount] / (1 - @event.sponsorship_fee)).ceil
+      params[:recurring_donation][:amount] = (params[:recurring_donation][:amount] / (1 - @event.revenue_fee)).ceil
     end
 
     tax_deductible = params[:recurring_donation][:goods].nil? ? true : params[:recurring_donation][:goods] == "0"

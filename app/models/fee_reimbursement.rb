@@ -113,15 +113,15 @@ class FeeReimbursement < ApplicationRecord
   def calculate_fee_amount
     if amount < 100
       if invoice.present?
-        return (amount * self.invoice.event.sponsorship_fee) + (100 - amount)
+        return (amount * self.invoice.event.revenue_fee) + (100 - amount)
       else
-        return (amount * self.donation.event.sponsorship_fee) + (100 - amount)
+        return (amount * self.donation.event.revenue_fee) + (100 - amount)
       end
     else
       if invoice.present?
-        return amount * self.invoice.event.sponsorship_fee
+        return amount * self.invoice.event.revenue_fee
       else
-        return amount * self.donation.event.sponsorship_fee
+        return amount * self.donation.event.revenue_fee
       end
     end
   end

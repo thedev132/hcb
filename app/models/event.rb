@@ -699,6 +699,15 @@ class Event < ApplicationRecord
     !engaged?
   end
 
+  def sponsorship_fee
+    Airbrake.notify("Deprecated Event#sponsorship_fee used.")
+    revenue_fee
+  end
+
+  def revenue_fee
+    self[:sponsorship_fee]
+  end
+
   def generate_stripe_card_designs
     ActiveRecord::Base.transaction do
       stripe_card_personalization_designs.update(stale: true)

@@ -19,7 +19,7 @@ module InvoicesHelper
   end
 
   def invoice_hcb_percent(humanized = true, invoice = @invoice)
-    percent = invoice.event.sponsorship_fee
+    percent = invoice.event.revenue_fee
     percent ||= invoice.payout.t_transaction.fee_relationship.fee_percent
 
     return nil if percent == 0

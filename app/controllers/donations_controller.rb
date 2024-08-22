@@ -79,7 +79,7 @@ class DonationsController < ApplicationController
     d_params[:amount] = Monetize.parse(donation_params[:amount]).cents
 
     if d_params[:fee_covered] == "1" && @event.config.cover_donation_fees
-      d_params[:amount] = (d_params[:amount] / (1 - @event.sponsorship_fee)).ceil
+      d_params[:amount] = (d_params[:amount] / (1 - @event.revenue_fee)).ceil
     end
 
     if d_params[:name] == "aser ras"

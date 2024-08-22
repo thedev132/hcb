@@ -21,7 +21,7 @@
                       [
                         current_user.admin? ? event.admin_dropdown_description : event.disbursement_dropdown_description,
                         event.id,
-                        { "data-fee" => event.sponsorship_fee.to_s },
+                        { "data-fee" => event.revenue_fee.to_s },
                       ]
                     end,
                     { prompt: "Select one…" },

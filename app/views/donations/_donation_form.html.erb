@@ -39,7 +39,7 @@
         amount: null,
         get additionalAmountToCoverFee() {
             if (this.amount && !isNaN(this.amount)) {
-                return (Math.ceil(((this.amount / (1 - <%= @event.sponsorship_fee %>)) - this.amount) * 100) / 100).toFixed(2);
+                return (Math.ceil(((this.amount / (1 - <%= @event.revenue_fee %>)) - this.amount) * 100) / 100).toFixed(2);
             }
             return '0.00';
         }
@@ -75,7 +75,7 @@
         </a>
       </div>
 
-      <% if @event.config.cover_donation_fees && @event.sponsorship_fee > 0 %>
+      <% if @event.config.cover_donation_fees && @event.revenue_fee > 0 %>
         <div class="field field--checkbox mb0">
           <%= form.check_box :fee_covered, style: "margin-left: 0;" %>
           <%= form.label :fee_covered, style: "display: inline; flex-grow: 1;" do %>
