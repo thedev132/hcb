@@ -63,7 +63,7 @@
       <span class="xs-hide sm-hide md-hide flex items-center">
         <span class="nowrap">Filtered by</span>
         <span style="background-color: rgba(0, 0, 0, 0.3); color: #f9fafc" class="nowrap badge regular ml1">
-          <%= @type.humanize.titleize.gsub("Ach", "ACH") %>
+          <%= @type.humanize.gsub("Ach", "ACH") %>
         </span>
       </span>
       <% elsif @start_date || @end_date %>
@@ -136,7 +136,7 @@
         <% ["ach_transfer", "mailed_check", "account_transfer", "card_charge", "check_deposit", "donation", "invoice", "refund", "fiscal_sponsorship_fee", "reimbursement"].each do |type| %>
           <div class="flex items-center">
               <%= link_to({ type:, q: params[:q] }.compact, class: "flex-auto menu__action #{"menu__action--active" if @type == type}") do %>
-                <%= type.humanize.titleize.gsub("Ach", "ACH") %>
+                <%= type.humanize.gsub("Ach", "ACH") %>
               <% end %>
           </div>
         <% end %>
