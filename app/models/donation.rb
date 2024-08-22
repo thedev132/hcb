@@ -23,6 +23,7 @@
 #  payout_creation_queued_for           :datetime
 #  status                               :string
 #  stripe_client_secret                 :string
+#  tax_deductible                       :boolean          default(TRUE), not null
 #  url_hash                             :string
 #  user_agent                           :text
 #  created_at                           :datetime         not null

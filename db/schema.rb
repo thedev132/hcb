@@ -690,6 +690,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_163511) do
     t.inet "ip_address"
     t.datetime "in_transit_at"
     t.boolean "anonymous", default: false, null: false
+    t.boolean "tax_deductible", default: true, null: false
     t.boolean "fee_covered", default: false, null: false
     t.index ["event_id"], name: "index_donations_on_event_id"
     t.index ["fee_reimbursement_id"], name: "index_donations_on_fee_reimbursement_id"
@@ -1736,6 +1737,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_163511) do
     t.boolean "migrated_from_legacy_stripe_account", default: false
     t.text "message"
     t.boolean "anonymous", default: false, null: false
+    t.boolean "tax_deductible", default: true, null: false
     t.boolean "fee_covered", default: false, null: false
     t.index ["event_id"], name: "index_recurring_donations_on_event_id"
     t.index ["stripe_subscription_id"], name: "index_recurring_donations_on_stripe_subscription_id", unique: true

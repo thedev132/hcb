@@ -67,6 +67,14 @@
         </div>
       </div>
 
+      <div class="field field--checkbox mb0">
+        <%= form.check_box :goods, style: "margin-left: 0;" %>
+        <%= form.label :goods, "I'm receiving goods for this donation.", style: "display: inline; flex-grow: 1;", checked: false %>
+        <a class="tooltipped tooltipped--w link--ignore flex" aria-label='Per IRS guidelines, for a contribution to be tax-deductible <%= "in the US" unless @event.country_US? %>, you agree that no goods or services will be provided in return for this gift.' tabindex="0">
+          <%= inline_icon "info", width: 24 %>
+        </a>
+      </div>
+
       <% if @event.config.cover_donation_fees && @event.sponsorship_fee > 0 %>
         <div class="field field--checkbox mb0">
           <%= form.check_box :fee_covered, style: "margin-left: 0;" %>
@@ -83,16 +91,12 @@
     <% if @event.config.anonymous_donations %>
       <div class="field field--checkbox mb0">
         <%= form.check_box :anonymous, style: "margin-left: 0;" %>
-        <%= form.label :anonymous, "Keep my donation private", style: "display: inline; flex-grow: 1;" %>
+        <%= form.label :anonymous, "Keep my donation private.", style: "display: inline; flex-grow: 1;" %>
         <a class="tooltipped tooltipped--w link--ignore flex" aria-label='When you donate anonymously, you will appear as "Anonymous donor" on public pages. Team members, however, can still see your name.' tabindex="0">
           <%= inline_icon "info", width: 24 %>
         </a>
       </div>
     <% end %>
-
-    <p class="muted h5 mt1 mb1">
-      Your contribution is tax-deductible<% if !@event.country_US? %> in the US<% end %>.
-    </p>
 
     <% if @background.present? %>
       <%# @background is defined in the donations controller's check_background_param method %>
@@ -102,9 +106,9 @@
     <% end %>
 
     <% if @event.demo_mode? %>
-      <%= form.submit "Continue →", class: "w-100 bg-success", disabled: "true" %>
+      <%= form.submit "Continue →", class: "w-100 bg-success mt1", disabled: "true" %>
     <% else %>
-      <%= form.submit "Continue →", class: "w-100 bg-success" %>
+      <%= form.submit "Continue →", class: "w-100 bg-success mt1" %>
     <% end %>
   <% end %>
 <% end %>

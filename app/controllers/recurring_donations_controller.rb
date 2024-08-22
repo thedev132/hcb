@@ -19,7 +19,11 @@ class RecurringDonationsController < ApplicationController
       params[:recurring_donation][:amount] = (params[:recurring_donation][:amount] / (1 - @event.sponsorship_fee)).ceil
     end
 
-    @recurring_donation = RecurringDonation.new(params.require(:recurring_donation).permit(:name, :email, :amount, :message, :anonymous, :fee_covered).merge(event: @event))
+    tax_deductible = params[:recurring_donation][:goods].nil? ? true : params[:recurring_donation][:goods] == "0"
+
+    @recurring_donation = RecurringDonation.new(
+      params.require(:recurring_donation).permit(:name, :email, :amount, :message, :anonymous, :fee_covered).merge(event: @event, tax_deductible:)
+    )
 
     authorize @recurring_donation
 

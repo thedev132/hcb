@@ -44,6 +44,8 @@ class DonationsController < ApplicationController
       return not_found
     end
 
+    tax_deductible = params[:goods].nil? ? true : params[:goods] == "0"
+
     @donation = Donation.new(
       name: params[:name],
       email: params[:email],
@@ -51,7 +53,8 @@ class DonationsController < ApplicationController
       message: params[:message],
       event: @event,
       ip_address: request.ip,
-      user_agent: request.user_agent
+      user_agent: request.user_agent,
+      tax_deductible:
     )
 
     authorize @donation
@@ -64,6 +67,7 @@ class DonationsController < ApplicationController
         email: params[:email],
         amount: params[:amount],
         message: params[:message],
+        tax_deductible:
       )
     end
 
@@ -86,7 +90,9 @@ class DonationsController < ApplicationController
     d_params[:ip_address] = request.ip
     d_params[:user_agent] = request.user_agent
 
-    @donation = Donation.new(d_params)
+    tax_deductible = d_params[:goods].nil? ? true : d_params[:goods] == "0"
+
+    @donation = Donation.new(d_params.except(:goods).merge({ tax_deductible: }))
     @donation.event = @event
 
     authorize @donation
@@ -238,7 +244,7 @@ class DonationsController < ApplicationController
   end
 
   def donation_params
-    params.require(:donation).permit(:email, :name, :amount, :message, :anonymous, :fee_covered)
+    params.require(:donation).permit(:email, :name, :amount, :message, :anonymous, :goods, :fee_covered)
   end
 
   def redirect_to_404
