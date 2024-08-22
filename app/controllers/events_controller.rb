@@ -497,7 +497,9 @@ class EventsController < ApplicationController
     # result[4] = mx3
     # result[5] = mx4
     # result[6] = mx5
-    @result = [false, false, false, false, false, false, false]
+    # result[7] = DKIM
+    # result[8] = DMARC
+    @result = [false, false, false, false, false, false, false, false, false]
 
     if @g_suite&.verification_error?
       Resolv::DNS.open do |dns|
@@ -508,6 +510,20 @@ class EventsController < ApplicationController
           end
           if record.data.include?("v=spf1") && record.data.include?("include:_spf.google.com")
             @result[1] = true
+          end
+        end
+        if @g_suite.dkim_key.present?
+          records = dns.getresources("google._domainkey.#{@g_suite.domain}", Resolv::DNS::Resource::IN::TXT)
+          records.each do |record|
+            if record.data.include?(@g_suite.dkim_key)
+              @result[7] = true
+            end
+          end
+          records = dns.getresources("_DMARC.#{@g_suite.domain}", Resolv::DNS::Resource::IN::TXT)
+          records.each do |record|
+            if record.data.include?("v=DMARC1;")
+              @result[8] = true
+            end
           end
         end
       end

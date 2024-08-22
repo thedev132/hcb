@@ -130,15 +130,21 @@
                   <td>1</td>
                   <td><%= copy_to_clipboard("v=spf1 include:_spf.google.com ~all", tooltip_direction: "w") %></td>
                 </tr>
-                <% unless @g_suite.dkim_key.blank? %>
-                  <tr class="shade-neutral">
+                <% if @g_suite.dkim_key.present? %>
+                  <tr class="shade-neutral <%= "muted strikethrough" if @result[7] %>">
+                    <% if @g_suite.verification_error? %>
+                      <td><input type="checkbox" disabled <%= "checked" if @result[7] %>></td>
+                    <% end %>
                     <td>google._domainkey.<%= @g_suite.domain %></td>
                     <td>3600</td>
                     <td>TXT</td>
                     <td>1</td>
                     <td><%= copy_to_clipboard(@g_suite.dkim_key, tooltip_direction: "w") %></td>
                   </tr>
-                  <tr class="shade-neutral">
+                  <tr class="<%= "muted strikethrough" if @result[8] %>">
+                    <% if @g_suite.verification_error? %>
+                      <td><input type="checkbox" disabled <%= "checked" if @result[8] %>></td>
+                    <% end %>
                     <td>_DMARC.<%= @g_suite.domain %></td>
                     <td>3600</td>
                     <td>TXT</td>
