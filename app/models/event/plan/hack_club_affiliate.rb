@@ -21,9 +21,13 @@
 #
 class Event
   class Plan
-    class TwoPointNinePercent < Standard
-      def revenue_fee
-        0.029
+    class HackClubAffiliate < FeeWaived
+      def label
+        "Hack Club affiliated project"
+      end
+
+      def description
+        "Has access to all standard features with no fees."
       end
 
     end
