@@ -44,8 +44,7 @@ module Reimbursement
                 bank_name: (ColumnService.get("/institutions/#{payout_holding.report.user.payout_method.routing_number}")["full_name"] rescue "Bank Account"),
                 creator: User.find_by(email: "bank@hackclub.com"),
                 company_name: payout_holding.report.event.name[0...16],
-                company_entry_description: "REIMBURSE",
-                same_day: true
+                company_entry_description: "REIMBURSE"
               )
               ach_transfer.save!
               begin

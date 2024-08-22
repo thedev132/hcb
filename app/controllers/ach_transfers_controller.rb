@@ -121,7 +121,6 @@ class AchTransfersController < ApplicationController
 
     if admin_signed_in?
       permitted_params << :scheduled_on
-      permitted_params << :same_day
     end
 
     params.require(:ach_transfer).permit(*permitted_params)
