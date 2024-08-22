@@ -471,24 +471,6 @@ class EventsController < ApplicationController
     render :async_balance, layout: false
   end
 
-  # (@msw) these pages are for the WIP resources page.
-  def connect_gofundme
-    @event_name = @event.name
-    @document_title = "Connect a GoFundMe Campaign"
-    @document_subtitle = "Receive payouts from GoFundMe directly into HCB"
-    @document_image = "https://cloud-jl944nr65-hack-club-bot.vercel.app/004e072bbe1.png"
-    authorize @event
-  end
-
-  # (@msw) these pages are for the WIP resources page.
-  def sell_merch
-    event_name = @event.name
-    @document_title = "Sell Merch with Redbubble"
-    @document_subtitle = "Connect your online merch shop to HCB"
-    @document_image = "https://cloud-fodxc88eu-hack-club-bot.vercel.app/0placeholder.png"
-    authorize @event
-  end
-
   def account_number
     @transactions = if @event.column_account_number.present?
                       CanonicalTransaction.where(transaction_source_type: "RawColumnTransaction", transaction_source_id: RawColumnTransaction.where("column_transaction->>'account_number_id' = '#{@event.column_account_number.column_id}'").pluck(:id)).order(created_at: :desc)

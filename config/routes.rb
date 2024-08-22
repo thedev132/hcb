@@ -658,10 +658,6 @@ Rails.application.routes.draw do
     get "async_balance"
     get "reimbursements_pending_review_icon"
 
-    # (@eilla1) these pages are for the wip resources page and will be moved later
-    get "connect_gofundme"
-    get "sell_merch"
-
     get "documentation", to: redirect("/%{event_id}/documents", status: 302)
     get "transfers"
     get "statements"
