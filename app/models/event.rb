@@ -243,6 +243,10 @@ class Event < ApplicationRecord
 
   belongs_to :point_of_contact, class_name: "User", optional: true
 
+  # we keep a papertrail of historic plans
+  has_many :plans, class_name: "Event::Plan", inverse_of: :event
+  has_one :plan, -> { where(aasm_state: :active) }, class_name: "Event::Plan", inverse_of: :event
+
   has_one :config, class_name: "Event::Configuration"
   accepts_nested_attributes_for :config
 
@@ -601,6 +605,8 @@ class Event < ApplicationRecord
   def plan_name
     if demo_mode?
       "playground mode"
+    elsif plan.present?
+      plan.label
     elsif unapproved?
       "pending approval"
     elsif hack_club_hq?
@@ -704,8 +710,12 @@ class Event < ApplicationRecord
     revenue_fee
   end
 
+  def plan
+    super&.becomes(super.plan_type&.constantize)
+  end
+
   def revenue_fee
-    self[:sponsorship_fee]
+    plan&.revenue_fee || self[:sponsorship_fee]
   end
 
   def generate_stripe_card_designs

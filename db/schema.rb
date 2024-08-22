@@ -809,6 +809,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_163511) do
     t.index ["event_id"], name: "index_event_configurations_on_event_id"
   end
 
+  create_table "event_plans", force: :cascade do |t|
+    t.string "plan_type"
+    t.string "aasm_state"
+    t.bigint "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_plans_on_event_id"
+  end
+
   create_table "event_tags", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
@@ -2225,6 +2234,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_163511) do
   add_foreign_key "emburse_transfers", "users", column: "creator_id"
   add_foreign_key "emburse_transfers", "users", column: "fulfilled_by_id"
   add_foreign_key "event_configurations", "events"
+  add_foreign_key "event_plans", "events"
   add_foreign_key "events", "partners"
   add_foreign_key "events", "users", column: "point_of_contact_id"
   add_foreign_key "fee_relationships", "events"

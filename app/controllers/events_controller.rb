@@ -332,6 +332,13 @@ class EventsController < ApplicationController
     end
     fixed_user_event_params.delete(:hidden)
 
+    if fixed_event_params[:plan_type] && fixed_event_params[:plan_type] != @event.plan&.plan_type
+      @event.plan&.mark_inactive! # deactivate old plan
+      @event.create_plan!(plan_type: fixed_event_params[:plan_type]) # start a new plan
+    end
+
+    fixed_event_params.delete(:plan_type)
+
     if @event.update(current_user.admin? ? fixed_event_params : fixed_user_event_params)
       flash[:success] = "Organization successfully updated."
       redirect_back fallback_location: edit_event_path(@event.slug)
@@ -939,6 +946,7 @@ class EventsController < ApplicationController
       :website,
       :background_image,
       :stripe_card_shipping_type,
+      :plan_type,
       card_grant_setting_attributes: [
         :merchant_lock,
         :category_lock,

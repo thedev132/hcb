@@ -1,5 +1,5 @@
 <p>
-  <%= @event.name %> is on the <strong><%= @event.plan_name %></strong> plan, with a <strong><%= number_to_percentage(@event.revenue_fee * 100, significant: true, strip_insignificant_zeros: true) %></strong> fee on revenue.
+  <%= @event.name %> is on the <strong><%= @event.plan_name %></strong> plan.
 
   <% if @event.high_school_hackathon? && @event.revenue_fee == 0 %>
     The <strong><a
