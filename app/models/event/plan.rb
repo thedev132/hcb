@@ -57,6 +57,12 @@ class Event
       Event::Plan.descendants
     end
 
+    validate do
+      if Event::Plan.where(event_id:, aasm_state: :active).excluding(self).any?
+        errors.add(:base, "An event can only have one active plan at a time.")
+      end
+    end
+
   end
 
 end
