@@ -6,23 +6,50 @@
   Receipt Center
   <%= badge_for @count %>
 </h1>
-<p class="muted h3">Manage your receipts and transactions awaiting receipts.</p>
 
 <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
+  <section class="grid grid--split grid--spacious">
+    <div>
+      <label for="sms_number">Send in via SMS</label>
+      <p class="h5 muted mt0 mb1">
+        Message photos from your phone.
+      </p>
+      <div class="relative block" data-controller="clipboard" data-clipboard-text-value="+1-864-548-4225">
+        <input id="sms_number" type="tel" value="+1-864-548-4225" readonly style="cursor: text;" class="fit">
+        <button
+          type="button"
+          class="pointer pop mr2 align-middle tooltipped tooltipped--n"
+          style="position: absolute; top: 50%; right: -8px; transform: translateY(-50%) scale(0.9);"
+          aria-label="Copy number"
+          data-action="clipboard#copy:prevent">
+          <%= inline_icon "copy", size: 28 %>
+        </button>
+      </div>
+    </div>
 
-  <p class="muted h3">
-    Alternatively, text your receipts to <%= sms_to "+1-864-548-4225", class: "break-none" %>
-    <% if @mailbox_address %>
-      or email them to <%= mail_to @mailbox_address.address, class: "break-none" %>.
-    <% else %>
-      or configure an email for receipt uploads in <%= link_to "your settings", my_settings_path %>.
+    <%= form_for current_user do |form| %>
+      <%= form.label :receipt_identifier, "Send in via email" %>
+      <p class="h5 muted mt0 mb1">
+        Send from in-store terminals, or forward emails later.
+      </p>
+
+      <%= turbo_frame_tag "mailbox_address" do %>
+        <% if @mailbox_address %>
+          <%= render @mailbox_address %>
+        <% else %>
+          <%= link_to "Choose an email address",
+              mailbox_addresses_path,
+              class: "btn btn-small pl2 pr2",
+              data: { turbo: true, "turbo-method" => "post" } %>
+        <% end %>
+      <% end %>
     <% end %>
-  </p>
+  </section>
 
   <%= turbo_stream_from current_user, :receipt_bin %>
   <%= turbo_frame_tag "suggested_pairings", src: suggested_pairings_path %>
 
-  <h2>
+  <h2 class="border-none">
     Receipt Bin
   </h2>
 

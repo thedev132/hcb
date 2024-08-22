@@ -47,7 +47,7 @@
   }
   &.bg-muted {
     background-color: rgba(map-get($palette, muted), 0.125);
-    color: map-get($palette, muted);
+    color: map-get($palette, slate);
   }
   &.muted {
     background-color: map-get($palette, muted);
@@ -69,6 +69,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .heading > & {
+    margin-left: 0;
   }
 }
 
