@@ -70,7 +70,7 @@
       <div class="field field--checkbox mb0">
         <%= form.check_box :goods, style: "margin-left: 0;" %>
         <%= form.label :goods, "I'm receiving goods for this donation.", style: "display: inline; flex-grow: 1;", checked: false %>
-        <a class="tooltipped tooltipped--w link--ignore flex" aria-label='Per IRS guidelines, for a contribution to be tax-deductible <%= "in the US" unless @event.country_US? %>, you agree that no goods or services will be provided in return for this gift.' tabindex="0">
+        <a class="tooltipped tooltipped--w link--ignore flex" aria-label='Per IRS guidelines, for a contribution to be tax-deductible<%= " in the US" unless @event.country_US? %>, you agree that no goods or services will be provided in return for this gift.' tabindex="0">
           <%= inline_icon "info", width: 24 %>
         </a>
       </div>
