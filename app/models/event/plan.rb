@@ -54,11 +54,7 @@ class Event
     end
 
     def self.available_plans
-      plans = Event::Plan.subclasses
-      Event::Plan.subclasses.each do |subclass|
-        plans += subclass.subclasses
-      end
-      plans
+      Event::Plan.descendants
     end
 
   end
