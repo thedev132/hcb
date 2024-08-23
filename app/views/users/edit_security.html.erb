@@ -1,4 +1,4 @@
-<% title "Account Settings" %>
+<% title "Account settings" %>
 <% page_md %>
 <%= render "users/nav", selected: :settings %>
 
@@ -7,15 +7,14 @@
 </h1>
 <turbo-frame id="settings" autoscroll data-autoscroll-behavior="smooth">
 <%= render "settings_nav", active: "security" %>
-<h2>Security</h2>
 <fieldset>
   <% unless @user.phone_number.blank? %>
     <%= turbo_frame_tag :sms_auth_card do %>
-      <legend class="flex flex-row justify-start items-center mt3 pb2">
-        <span class="h2">Login codes</span>
+      <legend class="flex flex-row justify-start items-center mt0 pb2">
+        <span class="h2 bold">Login codes</span>
         <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: "bg-muted" %>
       </legend>
-      <div class="card border b--info mt1 mb3">
+      <div class="card border b--info mt0 mb3">
         <% if @user.phone_number_verified %>
           <% if @user.use_sms_auth %>
             You are currently receiving login codes via SMS. Email codes can still be sent as a backup.<br>
@@ -41,10 +40,10 @@
   <% if Flipper.enabled?(:totp_2024_06_13, @user) %>
     <div>
       <legend class="flex flex-row justify-start items-center mt3 pb2">
-        <span class="h2">Time-based one time passwords</span>
+        <span class="h2 bold">Time-based one time passwords</span>
       </legend>
       <%= turbo_frame_tag :totp_auth_card do %>
-        <div class="card border b--info mt1 mb3">
+        <div class="card border b--info mt0 mb3">
           <% if @user.totp.present? %>
             <p>
               You set up time-based one time passwords on <%= format_date @user.totp.created_at %>; if you'd like to reset your TOTP secret, <%= link_to "click here", user_generate_totp_path(@user), data: { turbo_method: :POST } %>. A new TOTP secret will invalidate your current TOTP secret. <%= link_to "Click here to disable TOTP.", user_disable_totp_path(@user), data: { turbo_method: :POST } %>
@@ -60,7 +59,7 @@
   <% end %>
   <div class="flex items-center justify-between flex-wrap gap-x-5 gap-y-2 mt3 pb2" id="security-keys">
     <legend class="flex flex-row justify-start items-center">
-      <span class="h2">Security keys</span>
+      <span class="h2 bold">Security keys</span>
       <%= badge_for @user.webauthn_credentials.count, class: "bg-muted" %>
     </legend>
     <button class="btn px2 h4" data-behavior="modal_trigger" data-modal="webauthn_register">
@@ -81,7 +80,7 @@
   <% end %>
   <div class="flex items-center justify-between flex-wrap gap-x-5 gap-y-2 mt3 pb2">
     <legend class="flex flex-row justify-start items-center">
-      <span class="h2">Sessions</span>
+      <span class="h2 bold">Sessions</span>
       <%= badge_for @all_sessions.count, class: "bg-muted" %>
     </legend>
     <%= link_to logout_all_users_path, method: :delete,

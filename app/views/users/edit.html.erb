@@ -15,8 +15,6 @@
   <section>
     <% if @onboarding %>
       <p>Complete your profile to get started.</p>
-    <% else %>
-      <h2>Account details</h2>
     <% end %>
     <%= form_with(model: @user, local: true, html: { onsubmit: "onSubmit()" }, data: { turbo_frame: "_top" }) do |form| %>
       <%= form_errors @user, "profile", "We couldn't update your" %>

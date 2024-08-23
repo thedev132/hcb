@@ -1,4 +1,4 @@
-<% title "Account Settings" %>
+<% title "Account settings" %>
 <% page_md %>
 <%= render "users/nav", selected: :settings %>
 <h1>
@@ -7,8 +7,6 @@
 <turbo-frame id="settings" autoscroll data-autoscroll-behavior="smooth">
   <%= render "settings_nav", active: "notifications" %>
   <section>
-    <h2 id="notifications">Notifications</h2>
-
     <%= form_with model: @user, data: { turbo_frame: "_top" } do |form| %>
       <fieldset class="field">
         <%= form.label :receipt_report_option, "Receipt reminders" %>

@@ -1,4 +1,4 @@
-<% title "Account Settings" %>
+<% title "Account settings" %>
 <% page_md %>
 <%= render "users/nav", selected: :settings %>
 <h1>
@@ -7,7 +7,6 @@
 <turbo-frame id="settings" autoscroll data-autoscroll-behavior="smooth">
   <%= render "settings_nav", active: "previews" %>
   <section>
-    <h2 id="feature-previews">Feature previews</h2>
 
     <%= render partial: "features/preview", locals: {
           id: "ai_memos",
