@@ -13,7 +13,7 @@ module SetEvent
       id ||= params[:event] if params[:event].is_a?(String) # sometimes params[:event] is a hash with nested attributes
       @event = Event.friendly.find(id)
 
-      notify_airbrake("Event accessed by ID #{request.env["PATH_INFO"]}") if @event.id == id && !admin_signed_in?
+      notify_airbrake("Event accessed by ID #{request.env["PATH_INFO"]}") if @event.id.to_s == id && !admin_signed_in?
 
       @organizer_position = @event.organizer_positions.find_by(user: current_user) if signed_in?
       @first_time = params[:first_time] || @organizer_position&.first_time?
