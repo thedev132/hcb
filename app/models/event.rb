@@ -245,7 +245,7 @@ class Event < ApplicationRecord
 
   # we keep a papertrail of historic plans
   has_many :plans, class_name: "Event::Plan", inverse_of: :event
-  has_one :plan, -> { where(aasm_state: :active) }, class_name: "Event::Plan", inverse_of: :event
+  has_one :plan, -> { where(aasm_state: :active) }, class_name: "Event::Plan", inverse_of: :event, required: true
 
   has_one :config, class_name: "Event::Configuration"
   accepts_nested_attributes_for :config
@@ -368,7 +368,12 @@ class Event < ApplicationRecord
     self.activated_at = Time.now
   end
 
+  before_validation do
+    build_plan(plan_type: Event::Plan::Standard) if plan.nil?
+  end
+
   before_validation(if: :outernet_guild?, on: :create) { self.donation_page_enabled = false }
+
   validate do
     if outernet_guild? && donation_page_enabled?
       errors.add(:donation_page_enabled, "donation page can't be enabled for Outernet guilds")
