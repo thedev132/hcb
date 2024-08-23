@@ -5,11 +5,9 @@
 
   <p class="text-center text-xs">
     <% if commit_hash.present? %>
+      Build <em><%= commit_name %></em>
       <% if commit_duration.present? %>
-        Build <em aria-label="<%= commit_hash %>" class="tooltipped tooltipped--n tooltipped--lg"><%= commit_name %></em>
         from <%= commit_duration %> ago.
-      <% else %>
-        Build <em aria-label="<%= commit_hash %>" class="tooltipped tooltipped--n tooltipped--lg"><%= commit_name %></em>.
       <% end %>
     <% end %>
     <% unless Rails.env.production? %>
