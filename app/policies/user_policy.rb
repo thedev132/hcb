@@ -41,6 +41,10 @@ class UserPolicy < ApplicationPolicy
     user.admin? || record == user
   end
 
+  def edit_notifications?
+    user.admin? || record == user
+  end
+
   def edit_admin?
     user.admin? || (record == user && user.admin_override_pretend?)
   end

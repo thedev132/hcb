@@ -129,75 +129,9 @@
         </fieldset>
       <% end %>
 
-      <% unless @onboarding %>
-        <h2 class="mb-4">Notifications</h2>
-        <fieldset class="field">
-          <%= form.label :receipt_report_option, "Receipt reminders" %>
-          <p class="h5 muted mt0 mb1">
-            Get a regular email roundup of your transactions awaiting receipts.
-          </p>
-          <%= form.select :receipt_report_option,
-                          (User.receipt_report_options.map { |k, v| [k.humanize, k] }) %>
-        </fieldset>
-        <fieldset class="field">
-          <legend class="font-medium">Transaction comments</legend>
-          <p class="h5 muted mt-0 mb-3">
-            Get an email when someone comments on a transaction or reimbursement report.
-          </p>
-          <div class="field field--options field--green trio">
-            <%= form.radio_button :comment_notifications, :all_threads %>
-            <%= form.label :comment_notifications, value: :all_threads do %>
-              <%= inline_icon "notification", size: 28 %>
-              <strong>All transactions</strong>
-            <% end %>
-            <%= form.radio_button :comment_notifications, :my_threads %>
-            <%= form.label :comment_notifications, value: :my_threads do %>
-              <%= inline_icon "person", size: 32 %>
-              <strong>My transactions</strong>
-            <% end %>
-            <%= form.radio_button :comment_notifications, :no_threads %>
-            <%= form.label :comment_notifications, value: :no_threads do %>
-              <%= inline_icon "forbidden", size: 28 %>
-              <strong>None</strong>
-            <% end %>
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend class="font-medium">Card charges</legend>
-          <p class="h5 muted mt-0 mb-3">
-            Get a notification when there’s a charge on any of your cards.
-          </p>
-          <div class="field field--options max-width-3 grid grid--narrow">
-            <%= form.radio_button :charge_notifications, :email_and_sms %>
-            <%= form.label :charge_notifications, value: :email_and_sms do %>
-              <%= inline_icon "announcement", size: 28 %>
-              <strong>Email & SMS</strong>
-            <% end %>
-            <%= form.radio_button :charge_notifications, :email %>
-            <%= form.label :charge_notifications, value: :email do %>
-              <%= inline_icon "email", size: 28 %>
-              <strong>Email</strong>
-            <% end %>
-            <%= form.radio_button :charge_notifications, :sms %>
-            <%= form.label :charge_notifications, value: :sms do %>
-              <%= inline_icon "message", size: 28 %>
-              <strong>SMS</strong>
-            <% end %>
-            <%= form.radio_button :charge_notifications, :nothing %>
-            <%= form.label :charge_notifications, value: :nothing do %>
-              <%= inline_icon "forbidden", size: 28 %>
-              <strong>None</strong>
-            <% end %>
-          </div>
-        </fieldset>
-      <% end %>
-
       <div class="actions flex">
         <%= form.submit @onboarding ? "Start using HCB" : "Save settings" %>
       </div>
-    <% end %>
-    <% unless @onboarding %>
-
     <% end %>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js" integrity="sha512-QMUqEPmhXq1f3DnAVdXvu40C8nbTgxvBGvNruP6RFacy3zWKbNTmx7rdQVVM2gkd2auCWhlPYtcW2tHwzso4SA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw==" crossorigin="anonymous" referrerpolicy="no-referrer">

@@ -16,6 +16,7 @@ class UsersController < ApplicationController
                                                :receipt_report,
                                                :edit_featurepreviews,
                                                :edit_security,
+                                               :edit_notifications,
                                                :edit_admin,
                                                :toggle_sms_auth,
                                                :complete_sms_auth_verification,
@@ -153,6 +154,11 @@ class UsersController < ApplicationController
                         .where("deleted_at >= ? OR (expiration_at >= ? AND expiration_at < ?)", 1.week.ago, 1.week.ago, Time.now.utc)
                         .order(created_at: :desc)
 
+    authorize @user
+  end
+
+  def edit_notifications
+    @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     authorize @user
   end
 

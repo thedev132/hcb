@@ -59,6 +59,7 @@ Rails.application.routes.draw do
     get "settings/payouts", to: "users#edit_payout"
     get "settings/previews", to: "users#edit_featurepreviews"
     get "settings/security", to: "users#edit_security"
+    get "settings/notifications", to: "users#edit_notifications"
     get "settings/admin", to: "users#edit_admin"
 
     get "inbox", to: "my#inbox", as: :my_inbox
@@ -125,6 +126,7 @@ Rails.application.routes.draw do
       get "payouts", to: "users#edit_payout"
       get "previews", to: "users#edit_featurepreviews"
       get "security", to: "users#edit_security"
+      get "notifications", to: "users#edit_notifications"
       get "admin", to: "users#edit_admin"
 
       post "impersonate"

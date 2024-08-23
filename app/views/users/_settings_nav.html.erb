@@ -2,6 +2,9 @@
   <%= settings_tab active: active == "general" do %>
     <%= link_to "General", @user == current_user ? my_settings_path : edit_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
   <% end %>
+  <%= settings_tab active: active == "notifications" do %>
+    <%= link_to "Notifications", @user == current_user ? settings_notifications_path : notifications_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
+  <% end %>
   <% if @user.stripe_cardholder.present? %>
     <%= settings_tab active: active == "address" do %>
       <%= link_to "Billing address", @user == current_user ? settings_address_path : address_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
