@@ -22,7 +22,7 @@ class StripeCardPolicy < ApplicationPolicy
   end
 
   def activate?
-    (user&.admin? || organizer_and_cardholder?) && !record&.cancelled?
+    (user&.admin? || organizer_and_cardholder?) && !record&.canceled?
   end
 
   def show?
