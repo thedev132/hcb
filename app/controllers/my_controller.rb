@@ -65,9 +65,9 @@ class MyController < ApplicationController
   end
 
   def reimbursements
-    @reports = current_user.reimbursement_reports unless params[:filter] == "review_requested"
-    @reports = Reimbursement::Report.submitted.where(event: current_user.events, reviewer_id: nil).or(current_user.assigned_reimbursement_reports.submitted) if params[:filter] == "review_requested"
-    @reports = @reports.search(params[:q]) if params[:q].present?
+    @my_reports = current_user.reimbursement_reports
+    @my_reports = @my_reports.search(params[:q]) if params[:q].present?
+    @reports_to_review = Reimbursement::Report.submitted.where(event: current_user.events, reviewer_id: nil).or(current_user.assigned_reimbursement_reports.submitted)
     @payout_method = current_user.payout_method
   end
 
