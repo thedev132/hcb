@@ -128,7 +128,7 @@ class CardGrant < ApplicationRecord
     cancel!(hcb_user, expired: true)
   end
 
-  def cancel!(canceled_by, expired: false)
+  def cancel!(canceled_by = User.find_by!(email: "hcb@hackclub.com"), expired: false)
     if balance > 0
       custom_memo = "Return of funds from #{expired ? "expiration" : "cancellation"} of grant to #{user.name}"
 
