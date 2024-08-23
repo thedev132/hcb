@@ -27,7 +27,7 @@ class Event
       end
 
       def label
-        "Full Fiscal Sponsorship (#{revenue_fee_label})"
+        "full fiscal sponsorship (#{revenue_fee_label})"
       end
 
       def description

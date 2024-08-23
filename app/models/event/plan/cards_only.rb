@@ -23,7 +23,7 @@ class Event
   class Plan
     class CardsOnly < Standard
       def label
-        "Card-Only Plan (#{revenue_fee_label})"
+        "card-only plan (#{revenue_fee_label})"
       end
 
       def description
