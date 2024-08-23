@@ -3,8 +3,7 @@
 <%= render "users/nav", selected: :receipts %>
 
 <h1 class="heading">
-  Receipt Center
-  <%= badge_for @count %>
+  My receipts
 </h1>
 
 <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
@@ -49,16 +48,14 @@
   <%= turbo_stream_from current_user, :receipt_bin %>
   <%= turbo_frame_tag "suggested_pairings", src: suggested_pairings_path %>
 
-  <h2 class="border-none">
-    Receipt Bin
-  </h2>
-
-  <%= render partial: "receipts/form_v3", locals: {
-        upload_method: "receipt_center",
-        restricted_dropzone: true,
-        turbo: true,
-        global_paste: true
-      } %>
+  <div class="mt2">
+    <%= render partial: "receipts/form_v3", locals: {
+          upload_method: "receipt_center",
+          restricted_dropzone: true,
+          turbo: true,
+          global_paste: true
+        } %>
+  </div>
 
   <%= render partial: "receipts/blankslate", locals: { count: @receipts.size } %>
 
@@ -72,8 +69,9 @@
 
 <% end %>
 
-<h2>
+<h2 class="flex items-center mb2">
   Transactions
+  <%= badge_for @count %>
 </h2>
 
 <% @cards.each do |card| %>
