@@ -76,7 +76,7 @@ class Disbursement < ApplicationRecord
   validates :amount, numericality: { greater_than: 0 }
   validate :events_are_different
   validate :events_are_not_demos, on: :create
-  validate :scheduled_on_must_be_in_the_future
+  validate :scheduled_on_must_be_in_the_future, on: :create
 
   scope :processing, -> { in_transit }
   scope :fulfilled, -> { deposited }
