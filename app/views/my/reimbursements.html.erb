@@ -8,7 +8,7 @@
   </span>
 
   <% if @payout_method.present? %>
-    <%= link_to settings_payouts_path, class: "btn bg-muted" do %>
+    <%= link_to settings_payouts_path, class: "btn bg-info" do %>
       <%= inline_icon @payout_method.icon %>
       Payout settings
     <% end %>
@@ -29,26 +29,43 @@
 
 <%= render partial: "reimbursement/reports/create_form" %>
 
-<div class="statset mt3 mb2">
-  <div class="stat stat--small">
-    <span class="stat__label">Total</span>
-    <span class="stat__value">
-      <%= render_money_amount(current_user.reimbursement_reports.to_calculate_total.sum(&:amount_cents)) %>
-    </span>
+<section class="grid grid--split grid--spacious mb2">
+  <div>
+    <label for="sms_number">Start a report via SMS</label>
+    <p class="h5 muted mt0 mb1">
+      Message photos from your phone.
+    </p>
+    <div class="relative block" data-controller="clipboard" data-clipboard-text-value="+1-864-548-4225">
+      <input id="sms_number" type="tel" value="+1-864-548-4225" readonly style="cursor: text;" class="fit">
+      <button
+        type="button"
+        class="pointer pop mr2 align-middle tooltipped tooltipped--n"
+        style="position: absolute; top: 50%; right: -8px; transform: translateY(-50%) scale(0.9);"
+        aria-label="Copy number"
+        data-action="clipboard#copy:prevent">
+        <%= inline_icon "copy", size: 28 %>
+      </button>
+    </div>
   </div>
-  <div class="stat stat--small">
-    <span class="stat__label">Reimbursed</span>
-    <span class="stat__value">
-      <%= render_money_amount(current_user.reimbursement_reports.reimbursed.sum(&:amount_cents)) %>
-    </span>
+
+  <div>
+    <label for="email_address">Start a report via email</label>
+    <p class="h5 muted mt0 mb1">
+      Send from in-store terminals, or forward emails later.
+    </p>
+    <div class="relative block" data-controller="clipboard" data-clipboard-text-value="reimburse@hcb.gg">
+      <input id="email_address" type="email" value="reimburse@hcb.gg" readonly style="cursor: text;" class="fit">
+      <button
+        type="button"
+        class="pointer pop mr2 align-middle tooltipped tooltipped--n"
+        style="position: absolute; top: 50%; right: -8px; transform: translateY(-50%) scale(0.9);"
+        aria-label="Copy email address"
+        data-action="clipboard#copy:prevent">
+        <%= inline_icon "copy", size: 28 %>
+      </button>
+    </div>
   </div>
-  <div class="stat stat--small">
-    <span class="stat__label">Pending</span>
-    <span class="stat__value">
-      <%= render_money_amount(current_user.reimbursement_reports.draft.sum(&:amount_cents)) %>
-    </span>
-  </div>
-</div>
+</section>
 
 <%= form_with(model: nil, local: true, method: :get) do |form| %>
   <div class="filterbar flex items-center width-100">
