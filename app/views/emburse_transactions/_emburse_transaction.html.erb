@@ -35,7 +35,7 @@
     <%= list_badge_for admin_signed_in? ? et.comments.size : et.comments.not_admin_only.size, "comment", "post", optional: true %>
     <%= list_badge_for et.receipts.size, "receipt", "payment-docs", required: true unless et.is_transfer? %>
   </td>
-  <td class="nowrap">
+  <td class="nowrap tabular-nums">
     <%= render_transaction_amount et.amount %>
   </td>
   <% if organizer_signed_in? || !@event %>
