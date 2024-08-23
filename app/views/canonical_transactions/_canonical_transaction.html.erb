@@ -7,7 +7,6 @@
                          end %> <%= ct.local_hcb_code.disbursement.special_appearance[:css_class] if !ct.amount.negative? && ct.local_hcb_code.disbursement&.special_appearance? %>"
   id="<%= ct.local_hcb_code.hashid %>"
   <% if defined?(selectable) && selectable %>
-    data-action="click->transactions#select"
     data-transactions-target="transaction"
   <% end %>
   <% if local_assigns[:receipt_upload_button] %>
@@ -32,7 +31,7 @@
     </td>
   <% end %>
 
-  <%= render "hcb_codes/icon", tx: ct, authorless: local_assigns[:authorless] %>
+  <%= render "hcb_codes/icon", tx: ct, authorless: local_assigns[:authorless], selects: defined?(selectable) && selectable && ct.local_hcb_code.hashid %>
 
   <td>
     <% if subscription %>

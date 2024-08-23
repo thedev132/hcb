@@ -65,6 +65,10 @@
     <% icon = inline_icon "cash" %>
   <% end %>
 
-<td class="transaction__icon tooltipped tooltipped--e <%= "transaction__fee_icon" if fee %>" aria-label="<%= label %>">
+<td class="transaction__icon tooltipped tooltipped--e <%= "transaction__fee_icon" if fee %>" aria-label="<%= label %>"
+    <% if defined?(selects) %>
+      data-action="click->transactions#select"
+      data-transaction="<%= selects %>"
+    <% end %>>
   <%= icon %>
 </td>

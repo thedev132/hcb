@@ -6,7 +6,6 @@
                                end %>"
   id="<%= pt.local_hcb_code.hashid %>"
   <% if defined?(selectable) && selectable %>
-    data-action="click->transactions#select"
     data-transactions-target="transaction"
   <% end %>
   <% if local_assigns[:receipt_upload_button] %>
@@ -30,7 +29,7 @@
       <%= inline_icon "checkmark" %>
     </td>
   <% end %>
-  <%= render "hcb_codes/icon", tx: pt, authorless: local_assigns[:authorless] %>
+  <%= render "hcb_codes/icon", tx: pt, authorless: local_assigns[:authorless], selects: defined?(selectable) && selectable && pt.local_hcb_code.hashid %>
   <td>
     <%= format_date pt.created_at %>
   </td>
