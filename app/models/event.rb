@@ -597,7 +597,7 @@ class Event < ApplicationRecord
 
     feed_fronted_balance = sum_fronted_amount(feed_fronted_pts)
 
-    fee_balance_v2_cents + (feed_fronted_balance * sponsorship_fee).ceil
+    fee_balance_v2_cents + (feed_fronted_balance * revenue_fee).ceil
   end
 
   # This intentionally does not include fees on fronted transactions to make sure they aren't actually charged
@@ -618,7 +618,7 @@ class Event < ApplicationRecord
       "Hack Club affiliated project"
     elsif salary?
       "salary account"
-    elsif sponsorship_fee == 0
+    elsif revenue_fee == 0
       "full fiscal sponsorship (fee waived)"
     else
       "full fiscal sponsorship"
