@@ -18,7 +18,7 @@ module StripeCards
         redirect_back fallback_location: new_stripe_cards_activation_path and return
       end
 
-      if @card.cancelled?
+      if @card.canceled?
         flash[:error] = "Card has been cancelled, it can't be activated."
         skip_authorization
         redirect_back fallback_location: new_stripe_cards_activation_path and return
