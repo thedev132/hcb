@@ -244,7 +244,7 @@
                 <% end %>
               <% end %>
               <% if @g_suite.configuring? || @g_suite.verification_error? %>
-                <%= link_to @g_suite.verification_error? ? "Retry Verification" : "Verify", event_g_suite_verify_path(event_id: @event.id), method: :put, class: "btn" %>
+                <%= link_to @g_suite.verification_error? ? "Retry Verification" : "Verify", event_g_suite_verify_path(@event), method: :put, class: "btn" %>
               <% end %>
               <% if @g_suite.verifying? %>
                 <span class="h4 ml0 pending badge">Verifying…</span>
@@ -295,7 +295,7 @@
       If you <strong>already own</strong> a domain you would like to use, you can connect it to Google Workspace below.
     </p>
     <hr>
-    <%= form_with(local: true, url: event_g_suite_create_path(event_id: @event.id), method: :post) do %>
+    <%= form_with(local: true, url: event_g_suite_create_path(@event), method: :post) do %>
       <%= hidden_field_tag :event_id, @event.id %>
       <%= hidden_field_tag :creator_id, current_user.id %>
       <div class="field">
