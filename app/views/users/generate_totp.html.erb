@@ -12,7 +12,17 @@
         class="h-8 -translate-x-[5px]"
         slot="icon">
     </qr-code>
-    <pre><%= @totp.secret %></pre>
+    <div class="relative block mt2" data-controller="clipboard" data-clipboard-text-value="<%= @totp.secret %>">
+      <input type="text" value="<%= @totp.secret %>" readonly style="cursor: text;" class="fit">
+      <button
+        type="button"
+        class="pointer pop mr2 align-middle tooltipped tooltipped--n"
+        style="position: absolute; top: 50%; right: -8px; transform: translateY(-50%) scale(0.9);"
+        aria-label="Copy secret"
+        data-action="clipboard#copy:prevent">
+        <%= inline_icon "copy", size: 28 %>
+      </button>
+    </div>
     <p>
       Then, enter an OTP to verify that it's been successfully configured.
     </p>
