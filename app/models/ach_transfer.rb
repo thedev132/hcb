@@ -203,6 +203,13 @@ class AchTransfer < ApplicationRecord
     save!
   end
 
+  # reason must be listed on https://column.com/docs/api/#ach-transfer/reverse
+  def reverse!(reason)
+    raise ArgumentError, "must have been sent" unless column_id
+
+    ColumnService.post "/transfers/ach/#{column_id}/reverse", reason:
+  end
+
   def pending_expired?
     local_hcb_code.has_pending_expired?
   end
