@@ -223,11 +223,11 @@ module ApplicationHelper
   end
 
   def help_email
-    mail_to "hcb@hackclub.com"
+    mail_to "hcb@hackclub.com", class: "nowrap"
   end
 
   def help_phone
-    phone_to "+18442372290", "+1 (844) 237 2290"
+    phone_to "+18442372290", "+1 (844) 237 2290", class: "nowrap"
   end
 
   def format_date(date)
