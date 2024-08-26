@@ -18,7 +18,7 @@ class AdminController < ApplicationController
         color = size == 0 ? "muted" : "accent"
 
         render html: helpers.turbo_frame_tag(params[:task_name]) {
-          helpers.badge_for size, class: "pr2 bg-#{color}"
+          helpers.badge_for size, class: "bg-#{color}"
         }
       end
     end
