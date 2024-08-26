@@ -168,6 +168,7 @@ td {
   padding: 0.5rem;
   white-space: nowrap;
   -webkit-text-size-adjust: 100%;
+  font-variant-numeric: tabular-nums;
 
   &:first-child {
     padding-left: 1rem;
