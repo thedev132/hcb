@@ -350,7 +350,7 @@ class Event < ApplicationRecord
 
   validate :demo_mode_limit, if: proc{ |e| e.demo_mode_limit_email }
 
-  validates :name, :sponsorship_fee, :organization_identifier, presence: true
+  validates :name, :organization_identifier, presence: true
   validates :slug, presence: true, format: { without: /\s/ }
   validates :slug, format: { without: /\A\d+\z/ }
   validates_uniqueness_of_without_deleted :slug
@@ -359,7 +359,6 @@ class Event < ApplicationRecord
 
   validates :website, format: URI::DEFAULT_PARSER.make_regexp(%w[http https]), if: -> { website.present? }
 
-  validates :sponsorship_fee, numericality: { in: 0..0.5, message: "must be between 0 and 0.5" }
   validates :postal_code, zipcode: { country_code_attribute: :country, message: "is not valid" }, allow_blank: true
 
   before_create { self.increase_account_id ||= IncreaseService::AccountIds::FS_MAIN }
@@ -388,7 +387,7 @@ class Event < ApplicationRecord
   comma do
     id
     name
-    sponsorship_fee
+    revenue_fee
     slug "url" do |slug| "https://hcb.hackclub.com/#{slug}" end
     country
     is_public "transparent"
