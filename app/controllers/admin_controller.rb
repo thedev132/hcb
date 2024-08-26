@@ -1109,6 +1109,8 @@ class AdminController < ApplicationController
         user: current_user
       ).run
 
+      CanonicalPendingTransactionService::Unsettle.new(canonical_pending_transaction: paypal_transfer.canonical_pending_transaction).run
+
       CanonicalPendingTransactionService::Settle.new(
         canonical_transaction:,
         canonical_pending_transaction: paypal_transfer.canonical_pending_transaction
