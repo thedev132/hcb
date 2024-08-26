@@ -295,10 +295,11 @@ class EventsController < ApplicationController
   # GET /events/1/edit
   def edit
     @settings_tab = params[:tab]
+    @frame = params[:frame]
     authorize @event
     @activities = PublicActivity::Activity.for_event(@event).order(created_at: :desc).page(params[:page]).per(25) if @settings_tab == "audit_log"
 
-    render :edit, layout: !params[:frame]
+    render :edit, layout: !@frame
   end
 
   # PATCH/PUT /events/1
