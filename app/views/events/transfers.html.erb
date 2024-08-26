@@ -16,7 +16,7 @@
   <% end %>
 </h1>
 
-<div class="statset mt3 mb2">
+<div class="statset mt3 mb3">
   <div class="stat">
     <span class="stat__label">Total</span>
     <span class="stat__value"><%= render_money_amount @stats[:deposited] %></span>
@@ -30,8 +30,6 @@
     <span class="stat__value"><%= render_money_amount @stats[:canceled] %></span>
   </div>
 </div>
-
-<hr>
 
 <div class="flex items-center gap-4 flex-col-reverse sm:flex-row mb2">
   <%= form_with(model: nil, local: true, method: :get, class: "flex-1 w-full sm:w-auto") do |form| %>
@@ -48,7 +46,7 @@
   <div>
     <%= link_to "All", "?filter=all", class: "filterbar__item", "aria-selected": !["deposited", "in_transit", "canceled"].include?(params[:filter]), role: "tab" %>
     <%= link_to "Deposited", "?filter=deposited", class: "filterbar__item", "aria-selected": params[:filter] == "deposited", role: "tab" %>
-    <%= link_to "In Transit", "?filter=in_transit", class: "filterbar__item", "aria-selected": params[:filter] == "in_transit", role: "tab" %>
+    <%= link_to "In transit", "?filter=in_transit", class: "filterbar__item", "aria-selected": params[:filter] == "in_transit", role: "tab" %>
     <%= link_to "Canceled", "?filter=canceled", class: "filterbar__item", "aria-selected": params[:filter] == "canceled", role: "tab" %>
   </div>
 </div>

@@ -22,7 +22,7 @@
 
 <%= render partial: "reimbursement/reports/create_form" %>
 
-<div class="statset mt3 mb2">
+<div class="statset mt3 mb3">
   <div class="stat">
     <span class="stat__label">Total</span>
     <span class="stat__value" style="text-wrap: nowrap"><%= render_money_amount(@event.reimbursement_reports.to_calculate_total.sum(&:amount_cents)) %></span>
@@ -36,8 +36,6 @@
     <span class="stat__value"><%= render_money_amount(@event.reimbursement_reports.pending.reimbursed.sum(&:amount_cents)) %></span>
   </div>
 </div>
-
-<hr>
 
 <div class="flex items-center gap-4 flex-col-reverse sm:flex-row mb2">
   <%= form_with(model: nil, local: true, method: :get, class: "flex-1 w-full sm:w-auto") do |form| %>

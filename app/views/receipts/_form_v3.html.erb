@@ -119,8 +119,6 @@
     <% end %>
   </div>
 
-  <hr>
-
   <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
     <% if defined?(enable_linking) && defined?(receiptable) && !defined?(inline_linking) %>
       <section class="modal modal--huge modal--scroll bg-snow" data-behavior="modal" role="dialog" id="link_receipt_<%= instance %>">
