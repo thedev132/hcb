@@ -179,7 +179,8 @@ class UsersController < ApplicationController
       @totp.mark_verified!
       redirect_back_or_to security_user_path(@user), flash: { success: "Your time-based OTP has been successfully configured." }
     else
-      redirect_back_or_to security_user_path(@user), flash: { success: "One time password was invalid / code has expired, please try again." }
+      @invalid = true
+      render :generate_totp
     end
   end
 
