@@ -340,6 +340,7 @@ class Event < ApplicationRecord
   has_one_attached :donation_header_image
   has_one_attached :background_image
   has_one_attached :logo
+  has_one_attached :stripe_card_logo
 
   include HasMetrics
 
@@ -382,7 +383,7 @@ class Event < ApplicationRecord
   # Explanation: https://github.com/norman/friendly_id/blob/0500b488c5f0066951c92726ee8c3dcef9f98813/lib/friendly_id/reserved.rb#L13-L28
   after_validation :move_friendly_id_error_to_slug
 
-  after_commit :generate_stripe_card_designs, if: -> { name_previously_changed? && !Rails.env.test? }
+  after_commit :generate_stripe_card_designs, if: -> { stripe_card_logo&.blob&.saved_changes? && !Rails.env.test? }
 
   comma do
     id
@@ -725,13 +726,9 @@ class Event < ApplicationRecord
   def generate_stripe_card_designs
     ActiveRecord::Base.transaction do
       stripe_card_personalization_designs.update(stale: true)
-
-      URI.open("https://hcb-cc.hackclub.dev/api/embeds/bank?name=#{URI.encode_uri_component(name)}") do |file|
-        ::StripeCardService::PersonalizationDesign::Create.new(file: StringIO.new(file.read), color: :black, event: self).run
-
-        file.rewind
-
-        ::StripeCardService::PersonalizationDesign::Create.new(file: StringIO.new(file.read), color: :white, event: self).run
+      stripe_card_logo.blob.open do |file|
+        ::StripeCardService::PersonalizationDesign::Create.new(file:, color: :black, event: self).run
+        ::StripeCardService::PersonalizationDesign::Create.new(file:, color: :white, event: self).run
       end
     end
   end

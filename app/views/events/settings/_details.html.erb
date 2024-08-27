@@ -130,6 +130,25 @@
     <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
   </div>
 
+  <% if Flipper.enabled?(:card_logos_2024_08_27, current_user) %>
+    <h3 class="mb1" id="cards_heading">Cards</h3>
+    <div class="card mb3">
+      <div class="field mt3">
+        <%= form.label :stripe_card_logo %>
+        <p class="h5 muted mt0 mb1">
+          Displayed on each of your organization's Stripe cards.
+        </p>
+        <% if @event.stripe_card_logo.attached? %>
+          <%= image_tag @event.stripe_card_logo, width: 256 %>
+        <% end %>
+        <div class="field--fileupload">
+          <%= form.label :stripe_card_logo, "Choose File", class: "field--fileupload__label" %>
+          <%= form.file_field :stripe_card_logo, accept: "image/*,image/heic", class: "field--fileupload__field" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
   <h3 class="mb1">Danger zone</h3>
   <div class="card border b--warning mb3"
     data-controller="external-validation"

@@ -941,6 +941,7 @@ class EventsController < ApplicationController
       :logo,
       :website,
       :background_image,
+      :stripe_card_logo,
       :stripe_card_shipping_type,
       :plan_type,
       card_grant_setting_attributes: [
@@ -988,6 +989,7 @@ class EventsController < ApplicationController
       :logo,
       :website,
       :background_image,
+      :stripe_card_logo,
       card_grant_setting_attributes: [
         :merchant_lock,
         :category_lock,
