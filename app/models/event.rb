@@ -726,10 +726,10 @@ class Event < ApplicationRecord
   def generate_stripe_card_designs
     ActiveRecord::Base.transaction do
       stripe_card_personalization_designs.update(stale: true)
-      stripe_card_logo.blob.open do |file|
-        ::StripeCardService::PersonalizationDesign::Create.new(file:, color: :black, event: self).run
-        ::StripeCardService::PersonalizationDesign::Create.new(file:, color: :white, event: self).run
-      end
+      file = attachment_changes["stripe_card_logo"]&.attachable || StringIO.new(stripe_card_logo.blob.open { |f| f.read })
+      ::StripeCardService::PersonalizationDesign::Create.new(file: StringIO.new(file.read), color: :black, event: self).run
+      file.rewind
+      ::StripeCardService::PersonalizationDesign::Create.new(file: StringIO.new(file.read), color: :white, event: self).run
     end
   end
 

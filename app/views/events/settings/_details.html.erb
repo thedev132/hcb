@@ -131,21 +131,22 @@
   </div>
 
   <% if Flipper.enabled?(:card_logos_2024_08_27, current_user) %>
-    <h3 class="mb1" id="cards_heading">Cards</h3>
+    <h3 class="mb1" id="cards_heading">Card issuing</h3>
     <div class="card mb3">
-      <div class="field mt3">
-        <%= form.label :stripe_card_logo %>
-        <p class="h5 muted mt0 mb1">
-          Displayed on each of your organization's Stripe cards.
+      <div class="field">
+        <%= form.label :stripe_card_logo, "Card logo" %>
+        <p class="h5 muted mt0 mb2">
+          Displayed in the top right of each of your organization's cards.
         </p>
         <% if @event.stripe_card_logo.attached? %>
-          <%= image_tag @event.stripe_card_logo, width: 256 %>
+          <%= image_tag @event.stripe_card_logo, width: 48 %>
         <% end %>
-        <div class="field--fileupload">
+        <div class="field--fileupload mt2">
           <%= form.label :stripe_card_logo, "Choose File", class: "field--fileupload__label" %>
           <%= form.file_field :stripe_card_logo, accept: "image/*,image/heic", class: "field--fileupload__field" %>
         </div>
       </div>
+      <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
     </div>
   <% end %>
 
