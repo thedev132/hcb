@@ -731,6 +731,8 @@ class Event < ApplicationRecord
       file.rewind
       ::StripeCardService::PersonalizationDesign::Create.new(file: StringIO.new(file.read), color: :white, event: self).run
     end
+  rescue Stripe::InvalidRequestError
+    StripeCardMailer.with(event: self, reason: "malformatted_image").design_rejected.deliver_later
   end
 
   def airtable_record

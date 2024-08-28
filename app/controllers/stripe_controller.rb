@@ -294,8 +294,16 @@ class StripeController < ActionController::Base
     design.sync_from_stripe!
   end
 
+  def handle_issuing_personalization_design_rejected(event)
+    design = StripeCard::PersonalizationDesign.find_by(stripe_id: event.data.object.id)
+    return unless design
+
+    design.sync_from_stripe!
+
+    StripeCardMailer.with(event: design.event, reason: event.data.object["rejection_reasons"]["card_logo"].first).design_rejected.deliver_later if design.event
+  end
+
   alias_method :handle_issuing_personalization_design_activated, :handle_issuing_personalization_design_updated
-  alias_method :handle_issuing_personalization_design_rejected, :handle_issuing_personalization_design_updated
   alias_method :handle_issuing_personalization_design_deactivated, :handle_issuing_personalization_design_updated
 
   def handle_issuing_dispute_funds_reinstated
