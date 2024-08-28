@@ -82,7 +82,7 @@ class DisbursementsController < ApplicationController
     if current_user.admin?
       redirect_to disbursements_admin_index_path
     else
-      redirect_to event_transfers_path(event_id: @source_event.id)
+      redirect_to event_transfers_path(@source_event)
     end
 
   rescue ArgumentError, ActiveRecord::RecordInvalid => e
