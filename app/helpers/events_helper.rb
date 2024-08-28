@@ -95,6 +95,6 @@ module EventsHelper
   end
 
   def show_org_switcher?
-    signed_in? && Flipper.enabled?(:org_switcher_2024_01_31, current_user) && current_user.events.not_hidden.count > 1
+    signed_in? && current_user.events.not_hidden.count > 1
   end
 end
