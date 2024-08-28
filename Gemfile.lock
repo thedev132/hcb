@@ -839,7 +839,7 @@ GEM
     websocket-extensions (0.1.5)
     wicked_pdf (2.8.0)
       activesupport
-    wkhtmltopdf-binary (0.12.6.6)
+    wkhtmltopdf-binary (0.12.6.8)
     xxhash (0.5.0)
     yard (0.9.36)
     zeitwerk (2.6.17)
@@ -974,7 +974,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webauthn (~> 3.1)
   wicked_pdf
-  wkhtmltopdf-binary (= 0.12.6.6)
+  wkhtmltopdf-binary (= 0.12.6.8)
   xxhash
   yellow_pages!
 
