@@ -724,6 +724,8 @@ class Event < ApplicationRecord
   end
 
   def generate_stripe_card_designs
+    raise ArgumentError.new("This method requires a stripe_card_logo to be attached.") unless stripe_card_logo.attached?
+
     ActiveRecord::Base.transaction do
       stripe_card_personalization_designs.update(stale: true)
       file = attachment_changes["stripe_card_logo"]&.attachable || StringIO.new(stripe_card_logo.blob.open { |f| f.read })
