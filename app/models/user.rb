@@ -341,6 +341,11 @@ class User < ApplicationRecord
     charge_notifications_sms? || charge_notifications_email_and_sms?
   end
 
+  def sync_with_loops
+    new_user = full_name_before_last_save.blank? && !onboarding?
+    UserService::SyncWithLoops.new(user_id: id, new_user:).run
+  end
+
   private
 
   def update_stripe_cardholder
@@ -395,11 +400,6 @@ class User < ApplicationRecord
     unless payout_method_type.nil? || payout_method.is_a?(User::PayoutMethod::Check) || payout_method.is_a?(User::PayoutMethod::AchTransfer) || payout_method.is_a?(User::PayoutMethod::PaypalTransfer)
       errors.add(:payout_method, "is an invalid method, must be check or ACH transfer")
     end
-  end
-
-  def sync_with_loops
-    new_user = full_name_before_last_save.blank? && !onboarding?
-    UserService::SyncWithLoops.new(user_id: id, new_user:).run
   end
 
 end
