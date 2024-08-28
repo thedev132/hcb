@@ -383,7 +383,7 @@ class Event < ApplicationRecord
   # Explanation: https://github.com/norman/friendly_id/blob/0500b488c5f0066951c92726ee8c3dcef9f98813/lib/friendly_id/reserved.rb#L13-L28
   after_validation :move_friendly_id_error_to_slug
 
-  after_commit :generate_stripe_card_designs, if: -> { stripe_card_logo&.blob&.saved_changes? && !Rails.env.test? }
+  after_commit :generate_stripe_card_designs, if: -> { stripe_card_logo&.blob&.saved_changes? && stripe_card_logo.attached? && !Rails.env.test? }
 
   comma do
     id
@@ -733,7 +733,7 @@ class Event < ApplicationRecord
     end
   rescue Stripe::InvalidRequestError
     StripeCardMailer.with(event: self, reason: "malformatted_image").design_rejected.deliver_later
-    stripe_card_logo.purge_later
+    stripe_card_logo.delete
   end
 
   def airtable_record
