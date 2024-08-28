@@ -6,7 +6,7 @@
   <span class="inline-flex items-center justify-center">
     <%= @organizer_position.user.name %>'s Spending
     <% if @active_control %>
-      <% admin_tool("w-fit badge", "span") do %>
+      <% admin_tool("w-fit h5 ml1 muted", "span") do %>
         Control ID: <%= @active_control&.id %>
       <% end %>
     <% end %>
