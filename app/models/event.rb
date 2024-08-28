@@ -733,6 +733,7 @@ class Event < ApplicationRecord
     end
   rescue Stripe::InvalidRequestError
     StripeCardMailer.with(event: self, reason: "malformatted_image").design_rejected.deliver_later
+    stripe_card_logo.purge_later
   end
 
   def airtable_record
