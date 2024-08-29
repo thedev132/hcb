@@ -76,6 +76,7 @@ module StripeCardService
       attrs = {
         cardholder: stripe_cardholder.stripe_id,
         type: @card_type,
+        second_line: event.name,
         currency: "usd",
         status: "active",
         spending_controls: {
