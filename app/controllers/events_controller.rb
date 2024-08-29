@@ -334,12 +334,16 @@ class EventsController < ApplicationController
     end
 
     fixed_event_params.delete(:plan_type)
-
-    if @event.update(current_user.admin? ? fixed_event_params : fixed_user_event_params)
-      flash[:success] = "Organization successfully updated."
+    begin
+      if @event.update(current_user.admin? ? fixed_event_params : fixed_user_event_params)
+        flash[:success] = "Organization successfully updated."
+        redirect_back fallback_location: edit_event_path(@event.slug)
+      else
+        render :edit, status: :unprocessable_entity
+      end
+    rescue Errors::InvalidStripeCardLogoError => e
+      flash[:error] = e.message
       redirect_back fallback_location: edit_event_path(@event.slug)
-    else
-      render :edit, status: :unprocessable_entity
     end
   end
 
