@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MyController < ApplicationController
-  skip_after_action :verify_authorized, only: [:activities, :cards, :missing_receipts_list, :missing_receipts_icon, :inbox, :reimbursements, :reimbursements_icon] # do not force pundit
+  skip_after_action :verify_authorized, only: [:activities, :cards, :missing_receipts_list, :missing_receipts_icon, :inbox, :reimbursements, :reimbursements_icon, :tasks] # do not force pundit
 
   def activities
     if admin_signed_in?
@@ -14,6 +14,10 @@ class MyController < ApplicationController
   def cards
     @stripe_cards = current_user.stripe_cards.includes(:event)
     @emburse_cards = current_user.emburse_cards.includes(:event)
+  end
+
+  def tasks
+    @tasks = current_user.tasks
   end
 
   # async frame

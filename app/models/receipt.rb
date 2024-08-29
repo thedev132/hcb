@@ -42,7 +42,7 @@ class Receipt < ApplicationRecord
   include PublicIdentifiable
   set_public_id_prefix :rct
 
-  belongs_to :receiptable, polymorphic: true, optional: true
+  belongs_to :receiptable, polymorphic: true, optional: true, touch: true
 
   belongs_to :user, class_name: "User", optional: true
   alias_method :uploader, :user

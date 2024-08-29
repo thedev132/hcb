@@ -344,6 +344,8 @@ class Event < ApplicationRecord
 
   include HasMetrics
 
+  include HasTasks
+
   validate :point_of_contact_is_admin
 
   include ::UserService::CanOpenDemoMode

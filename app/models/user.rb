@@ -128,6 +128,8 @@ class User < ApplicationRecord
 
   include HasMetrics
 
+  include HasTasks
+
   before_create :format_number
   before_save :on_phone_number_update
 

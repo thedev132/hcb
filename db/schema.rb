@@ -1970,6 +1970,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_163511) do
     t.index ["event_id"], name: "index_tags_on_event_id"
   end
 
+  create_table "tasks", force: :cascade do |t|
+    t.string "type", null: false
+    t.boolean "complete", default: false
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "assignee_type", null: false
+    t.bigint "assignee_id", null: false
+    t.string "taskable_type", null: false
+    t.bigint "taskable_id", null: false
+    t.index ["assignee_type", "assignee_id"], name: "index_tasks_on_assignee"
+    t.index ["taskable_type", "taskable_id"], name: "index_tasks_on_taskable"
+  end
+
   create_table "tours", force: :cascade do |t|
     t.string "name"
     t.boolean "active", default: true
