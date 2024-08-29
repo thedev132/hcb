@@ -1330,7 +1330,7 @@ class AdminController < ApplicationController
         yp_network_id: network_id,
         memos: RawStripeTransaction
           .where("stripe_transaction->'merchant_data'->>'network_id' = '#{network_id}'")
-          .pluck(Arel.sql("stripe_transaction->'merchant_data'->'name'"))
+          .pluck(Arel.sql("distinct(stripe_transaction->'merchant_data'->'name')"))
       }
     end
   end
