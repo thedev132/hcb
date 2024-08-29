@@ -446,12 +446,13 @@ html[data-dark='true'] {
   .transaction--positive > td > span > span > span.success-dark.medium {
     font-weight: 400;
   }
-}
 
-.recharts-rectangle.recharts-tooltip-cursor {
-  opacity: 0.2;
-}
+  .recharts-rectangle.recharts-tooltip-cursor {
+    opacity: 0.2;
+  }
 
-#card-pin {
-  filter: invert(1);
+  #card-pin {
+    color: #1f2d3d !important;
+    filter: invert(1);
+  }
 }
