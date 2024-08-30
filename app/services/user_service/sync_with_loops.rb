@@ -20,6 +20,10 @@ module UserService
         birthday: format_unix(@user.birthday),
         hcbLastSeenAt: format_unix(@user.last_seen_at),
         hcbLastLoginAt: format_unix(@user.last_login_at),
+        mailingLists: {
+          # https://loops.so/docs/contacts/mailing-lists#api
+          Rails.application.credentials.loops[:mailing_list_id] => true
+        }
       }.compact_blank
 
       body[:userGroup] = @user.teenager? ? "Hack Clubber" : "HCB Adult"
@@ -54,7 +58,7 @@ module UserService
 
       resp = conn.send(:get) do |req|
         req.url("api/v1/contacts/find")
-        req.headers["Authorization"] = "Bearer #{Rails.application.credentials.loops_key}"
+        req.headers["Authorization"] = "Bearer #{Rails.application.credentials.loops[:key]}"
         req.params[:email] = @user.email
       end
 
@@ -71,7 +75,7 @@ module UserService
         req.url("api/v1/contacts/update")
         req.body = body.to_json
         req.headers["Content-Type"] = "application/json"
-        req.headers["Authorization"] = "Bearer #{Rails.application.credentials.loops_key}"
+        req.headers["Authorization"] = "Bearer #{Rails.application.credentials.loops[:key]}"
       end
 
     end
