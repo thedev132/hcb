@@ -48,10 +48,13 @@ class MyController < ApplicationController
 
   def inbox
     @count = current_user.transactions_missing_receipt.count
-    @hcb_codes = current_user.transactions_missing_receipt.page(params[:page]).per(params[:per] || 15)
+    hcb_code_ids_missing_receipt = current_user.hcb_code_ids_missing_receipt
+    @hcb_codes = Kaminari.paginate_array(HcbCode.where(id: hcb_code_ids_missing_receipt)
+                 .includes(:canonical_transactions, canonical_pending_transactions: :raw_pending_stripe_transaction) # HcbCode#card uses CT and PT
+                 .index_by(&:id).slice(*hcb_code_ids_missing_receipt).values)
+                         .page(params[:page]).per(params[:per] || 15)
 
-    @card_hcb_codes = @hcb_codes.includes(:canonical_transactions, canonical_pending_transactions: :raw_pending_stripe_transaction) # HcbCode#card uses CT and PT
-                                .group_by { |hcb| hcb.card.to_global_id.to_s }
+    @card_hcb_codes = @hcb_codes.group_by { |hcb| hcb.card.to_global_id.to_s }
     @cards = GlobalID::Locator.locate_many(@card_hcb_codes.keys, includes: :event)
                               # Order by cards with least transactions first
                               .sort_by { |card| @card_hcb_codes[card.to_global_id.to_s].count }
