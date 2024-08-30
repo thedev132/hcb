@@ -93,6 +93,9 @@ module Reimbursement
 
         mark_reversed!
 
+        canonical_pending_transaction.update(fronted: false)
+        canonical_pending_transaction.decline!
+
         # these are reversed because this is reverse!
         sender_bank_account_id = ColumnService::Accounts.id_of(book_transfer_receiving_account)
         receiver_bank_account_id = ColumnService::Accounts.id_of(book_transfer_originating_account)
