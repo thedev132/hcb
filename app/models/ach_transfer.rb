@@ -101,7 +101,7 @@ class AchTransfer < ApplicationRecord
 
   scope :scheduled_for_today, -> { scheduled.where(scheduled_on: ..Date.today) }
 
-  after_initialize do
+  before_create do
     same_day = true
   end
 
