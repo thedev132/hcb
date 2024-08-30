@@ -2,9 +2,11 @@
 
 user = User.first
 
+email = Rails.env.staging? ? "staging@bank.engineering" : "admin@bank.engineering"
+
 if user.nil?
-  puts "Woah there, there aren't any users! Creating an user (admin@example.com)."
-  user = User.create!(email: "admin@example.com")
+  puts "Woah there, there aren't any users! Creating an user (#{email})."
+  user = User.create!(email:)
 end
 
 puts "Continuing with #{user.email}..."
