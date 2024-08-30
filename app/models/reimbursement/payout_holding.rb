@@ -93,7 +93,6 @@ module Reimbursement
 
         mark_reversed!
 
-        canonical_pending_transaction.update(fronted: false)
         canonical_pending_transaction.decline!
 
         # these are reversed because this is reverse!
