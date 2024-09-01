@@ -32,7 +32,7 @@
         <% if receipt.extracted_date %>
           <div class="fs-mask" style="grid-template-columns: 7rem auto;">
             <strong style="font-weight: 600;">Date</strong>
-            <%= format_date receipt.extracted_date %>
+            <%= receipt.extracted_date.strftime("%b %e, %Y") %>
           </div>
         <% end %>
 
