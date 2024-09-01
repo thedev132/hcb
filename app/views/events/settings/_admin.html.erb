@@ -42,7 +42,12 @@
       <div class="field">
         <%= form.label :plan_type, capture { %>
           <% if @event.plan.present? %>
-            Current plan (started on <%= format_date @event.plan&.created_at %>)
+            Current plan
+            <% if !@event.plan.was_backfilled? %>
+              (started on <%= format_date @event.plan.created_at %>)
+            <% else %>
+              (backfilled)
+            <% end %>
           <% else %>
             Assign a plan
           <% end %>

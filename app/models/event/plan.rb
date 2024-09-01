@@ -38,6 +38,10 @@ class Event
       plan_type == Event::Plan::Standard.name
     end
 
+    def was_backfilled?
+      created_at < Date.new(2024, 8, 24)
+    end
+
     def revenue_fee_label
       ActionController::Base.helpers.number_to_percentage(revenue_fee * 100, precision: 1)
     end
