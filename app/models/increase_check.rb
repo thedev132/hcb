@@ -266,7 +266,7 @@ class IncreaseCheck < ApplicationRecord
                                           postal_code: address_zip,
                                           country_code: "US",
                                         }.compact_blank,
-                                        payor_name: event.name[0...40],
+                                        payor_name: event.short_name(length: 40),
                                         payor_address: {
                                           line_1: "8605 Santa Monica Blvd #86294",
                                           city: "West Hollywood",

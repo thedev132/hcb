@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_19_163511) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_01_193319) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -885,6 +885,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_163511) do
     t.text "public_reimbursement_page_message"
     t.string "postal_code"
     t.boolean "reimbursements_require_organizer_peer_review", default: false, null: false
+    t.string "short_name"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true
     t.index ["partner_id"], name: "index_events_on_partner_id"

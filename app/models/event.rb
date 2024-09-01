@@ -88,6 +88,7 @@ class Event < ApplicationRecord
 
   validates_email_format_of :donation_reply_to_email, allow_nil: true, allow_blank: true
   validates :donation_thank_you_message, length: { maximum: 500 }
+  validates :short_name, length: { maximum: 16 }, allow_blank: true
 
   include AASM
   include PgSearch::Model
@@ -750,6 +751,12 @@ class Event < ApplicationRecord
 
   def config
     super || create_config
+  end
+
+  def short_name(length: 16)
+    return name if length >= name.length
+
+    self[:short_name] || name[0...length]
   end
 
   private

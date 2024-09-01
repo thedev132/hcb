@@ -912,6 +912,7 @@ class EventsController < ApplicationController
   def event_params
     result_params = params.require(:event).permit(
       :name,
+      :short_name,
       :description,
       :start,
       :end,
@@ -971,6 +972,7 @@ class EventsController < ApplicationController
 
   def user_event_params
     result_params = params.require(:event).permit(
+      :short_name,
       :description,
       :address,
       :slug,
