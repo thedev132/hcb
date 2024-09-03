@@ -128,9 +128,9 @@ module Reimbursement
           end
         end
         after do
-          # ReimbursementJob::Nightly.perform_later
           ReimbursementMailer.with(report: self).reimbursement_approved.deliver_later
           create_activity(key: "reimbursement_report.approved", owner: user)
+          reimburse!
         end
       end
 
@@ -282,6 +282,24 @@ module Reimbursement
       user_id = versions.where_object_changes_to(...).last&.whodunnit
 
       user_id && User.find(user_id)
+    end
+
+    def reimburse!
+      expense_payouts = []
+
+      expenses.approved.each do |expense|
+        expense_payouts << Reimbursement::ExpensePayout.create!(amount_cents: -expense.amount_cents, event: expense.report.event, expense:)
+      end
+
+      return if expense_payouts.empty?
+
+      Reimbursement::PayoutHolding.create!(
+        expense_payouts:,
+        amount_cents: expense_payouts.sum { |payout| -payout.amount_cents },
+        report: self
+      )
+
+      mark_reimbursed!
     end
 
   end
