@@ -21,17 +21,17 @@
 #
 class Event
   class Plan
-    class CardsOnly < Standard
+    class SpendOnly < Standard
       def label
-        "card-only"
+        "spend-only"
       end
 
       def description
-        "Only has access to cards for spending and can't raise money, often used for one-off events like Outernet or Winter Hardware Wonderland."
+        "All incoming money is blocked."
       end
 
       def features
-        %w[cards]
+        %w[cards transfers promotions google_workspace documentation settings reimbursements]
       end
 
     end
