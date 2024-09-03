@@ -123,7 +123,7 @@ class LoginsController < ApplicationController
         @user.totp.update!(last_used_at: DateTime.now)
         @login.update(authenticated_with_totp: true)
       else
-        return redirect_to totp_users_path(email: @user.email), flash: { error: "Invalid TOTP code, please try again." }
+        return redirect_to totp_login_path(@login), flash: { error: "Invalid TOTP code, please try again." }
       end
     end
 
