@@ -375,14 +375,6 @@ class Event < ApplicationRecord
     build_plan(plan_type: Event::Plan::Standard) if plan.nil?
   end
 
-  before_validation(if: :outernet_guild?, on: :create) { self.donation_page_enabled = false }
-
-  validate do
-    if outernet_guild? && donation_page_enabled?
-      errors.add(:donation_page_enabled, "donation page can't be enabled for Outernet guilds")
-    end
-  end
-
   # Explanation: https://github.com/norman/friendly_id/blob/0500b488c5f0066951c92726ee8c3dcef9f98813/lib/friendly_id/reserved.rb#L13-L28
   after_validation :move_friendly_id_error_to_slug
 
@@ -751,6 +743,10 @@ class Event < ApplicationRecord
 
   def config
     super || create_config
+  end
+
+  def donation_page_available?
+    donation_page_enabled && plan.donations_enabled?
   end
 
   def short_name(length: 16)

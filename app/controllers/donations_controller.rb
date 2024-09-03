@@ -40,7 +40,7 @@ class DonationsController < ApplicationController
   end
 
   def start_donation
-    if !@event.donation_page_enabled
+    unless @event.donation_page_available?
       return not_found
     end
 

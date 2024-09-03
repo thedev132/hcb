@@ -15,7 +15,7 @@
         disabled: @all_donations.not_pending.none? %>
     </div>
   <% end %>
-  <% if @event.donation_page_enabled %>
+  <% if @event.donation_page_available? %>
     <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
       <%= inline_icon "share" %>
       <div class="menu__content" data-behavior="menu_content">
@@ -38,7 +38,7 @@
       edit_event_path(@event, tab: "donations"),
       data: { turbo_frame: "_top", behavior: "modal_trigger", modal: "donation_settings" },
       class: "tooltipped tooltipped--s", "aria-label": "Donations settings" %>
-  <% if @event.donation_page_enabled %>
+  <% if @event.donation_page_available? %>
     <%= link_to start_donation_donations_path(@event), target: "_blank", class: "btn" do %>
       <%= inline_icon "external" %>
       Donate page
@@ -46,7 +46,7 @@
   <% end %>
 </h1>
 
-<% if @event.donation_page_enabled %>
+<% if @event.donation_page_available? %>
   <section class="modal" data-behavior="modal" role="dialog" id="qr_code">
     <%= modal_header "Donations QR code" %>
     <div class="flex flex-wrap gap-4">
