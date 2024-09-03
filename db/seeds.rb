@@ -23,7 +23,6 @@ demo_event = Event.create_with(
   slug: "devhacks",
   can_front_balance: true,
   point_of_contact: user,
-  sponsorship_fee: 0.07,
   category: 4,
   demo_mode: true,
   organization_identifier: "bank_#{SecureRandom.hex}",
@@ -41,7 +40,6 @@ non_transparent_event = Event.create_with(
   slug: "expensicon23",
   can_front_balance: true,
   point_of_contact: user,
-  sponsorship_fee: 0.07,
   category: 2,
   organization_identifier: "bank_#{SecureRandom.hex}",
   created_at: 10.days.ago
@@ -58,7 +56,6 @@ transparent_event = Event.create_with(
   slug: "hack_the_seas",
   can_front_balance: true,
   point_of_contact: user,
-  sponsorship_fee: 0.00,
   category: 7,
   organization_identifier: "bank_#{SecureRandom.hex}",
   created_at: 14.days.ago

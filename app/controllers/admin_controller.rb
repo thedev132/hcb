@@ -99,7 +99,6 @@ class AdminController < ApplicationController
       @organization = Event.create!(
         partner: @partner,
         name: @partnered_signup.organization_name,
-        sponsorship_fee: @partner.default_org_sponsorship_fee,
         organization_identifier: SecureRandom.hex(30) + @partnered_signup.organization_name,
       )
 

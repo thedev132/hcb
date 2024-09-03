@@ -886,7 +886,10 @@ class EventsController < ApplicationController
       Document.create(user: current_user, event_id: @event.id, name: file.original_filename, file:)
     end
 
-    if @event.update(event_params.except(:files).merge({ demo_mode: false }))
+    @event.plan&.mark_inactive! # deactivate any old plans
+    @event.create_plan!(plan_type: event_params[:plan_type]) # start a new plan
+
+    if @event.update(event_params.except(:files, :plan_type).merge({ demo_mode: false }))
       flash[:success] = "Organization successfully activated."
       redirect_to event_path(@event)
     else
