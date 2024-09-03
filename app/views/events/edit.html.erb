@@ -11,11 +11,15 @@
       <%= link_to "Organization details", edit_event_path(@event, tab: "details"), data: { turbo: true, turbo_action: "advance" } %>
     <% end %>
     <% unless @event.unapproved? %>
-      <%= settings_tab active: @settings_tab == "donations" do %>
-        <%= link_to "Donations", edit_event_path(@event, tab: "donations"), data: { turbo: true, turbo_action: "advance" } %>
+      <% if @event.plan.donations_enabled? %>
+        <%= settings_tab active: @settings_tab == "donations" do %>
+          <%= link_to "Donations", edit_event_path(@event, tab: "donations"), data: { turbo: true, turbo_action: "advance" } %>
+        <% end %>
       <% end %>
-      <%= settings_tab active: @settings_tab == "reimbursements" do %>
-        <%= link_to "Reimbursements", edit_event_path(@event, tab: "reimbursements"), data: { turbo: true, turbo_action: "advance" } %>
+      <% if @event.plan.reimbursements_enabled? %>
+        <%= settings_tab active: @settings_tab == "reimbursements" do %>
+          <%= link_to "Reimbursements", edit_event_path(@event, tab: "reimbursements"), data: { turbo: true, turbo_action: "advance" } %>
+        <% end %>
       <% end %>
       <% if @event.card_grant_setting.present? %>
         <%= settings_tab active: @settings_tab == "card_grants" do %>
