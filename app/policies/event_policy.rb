@@ -153,7 +153,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def account_number?
-    admin_or_manager?
+    (manager? && record.plan.account_number_enabled?) || admin?
   end
 
   def toggle_event_tag?
@@ -199,7 +199,7 @@ class EventPolicy < ApplicationPolicy
   private
 
   def admin_or_user?
-    user&.admin? || record.users.include?(user)
+    admin? || user?
   end
 
   def admin?
@@ -210,8 +210,12 @@ class EventPolicy < ApplicationPolicy
     record.users.include?(user)
   end
 
+  def manager?
+    OrganizerPosition.find_by(user:, event: record)&.manager?
+  end
+
   def admin_or_manager?
-    user&.admin? || OrganizerPosition.find_by(user:, event: record)&.manager?
+    admin? || manager?
   end
 
   def is_not_demo_mode?
