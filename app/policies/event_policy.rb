@@ -61,7 +61,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def card_overview?
-    is_public || admin_or_user?
+    ((is_public || user?) && record.approved? && record.plan.cards_enabled?) || admin?
   end
 
   def new_stripe_card?
@@ -105,7 +105,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def transfers?
-    is_public || admin_or_user?
+    ((is_public || user?) && record.plan.transfers_enabled?) || admin?
   end
 
   def promotions?
@@ -117,7 +117,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def reimbursements?
-    admin_or_user?
+    (user? && record.plan.reimbursements_enabled?) || admin?
   end
 
   def expensify?
