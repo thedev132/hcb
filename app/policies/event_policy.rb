@@ -125,7 +125,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def donation_overview?
-    is_public || admin_or_user?
+    ((is_public || user?) && record.approved? && record.plan.donations_enabled?) || admin?
   end
 
   def partner_donation_overview?
@@ -200,6 +200,14 @@ class EventPolicy < ApplicationPolicy
 
   def admin_or_user?
     user&.admin? || record.users.include?(user)
+  end
+
+  def admin?
+    user&.admin?
+  end
+
+  def user?
+    record.users.include?(user)
   end
 
   def admin_or_manager?

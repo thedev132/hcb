@@ -39,7 +39,7 @@
       tooltip: "Receive donations online",
       icon: "support",
       data: { tour_step: "donations" },
-      selected: local_assigns[:selected] == :donations if @event.approved? %>
+      selected: local_assigns[:selected] == :donations if policy(@event).donation_overview? %>
     <%= dock_item "Invoices",
       event_invoices_path(event_id: @event.slug),
       tooltip: "Collect sponsor payments",
@@ -122,7 +122,7 @@
       <div class="menu__content" data-behavior="menu_content">
         <h4 class="mb0 h5 muted left-align pl1 mt1">Receive</h4>
         <div class="menu__divider"></div>
-        <%= link_to "Donations", event_donation_overview_path(@event) %>
+        <%= link_to "Donations", event_donation_overview_path(@event) if policy(@event).donation_overview? %>
         <%= link_to "Invoices", event_invoices_path(@event) %>
         <%= link_to "Account numbers", account_number_event_path(@event) if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
         <%= link_to "Check deposits", event_check_deposits_path(@event) if Flipper.enabled?(:check_deposits_2023_04_17, @event) %>
