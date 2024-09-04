@@ -7,7 +7,7 @@ module Reimbursement
     end
 
     def create?
-      !record.event.demo_mode && (record.event.public_reimbursement_page_enabled? || admin || team_member)
+      !record.event.demo_mode && (record.event.public_reimbursement_page_available? || admin || team_member)
     end
 
     def show?

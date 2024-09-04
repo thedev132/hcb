@@ -749,6 +749,10 @@ class Event < ApplicationRecord
     donation_page_enabled && plan.donations_enabled?
   end
 
+  def public_reimbursement_page_available?
+    public_reimbursement_page_enabled && plan.reimbursements_enabled?
+  end
+
   def short_name(length: 16)
     return name if length >= name.length
 

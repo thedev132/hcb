@@ -72,7 +72,7 @@ module Reimbursement
     end
 
     def start
-      if !@event.public_reimbursement_page_enabled?
+      unless @event.public_reimbursement_page_available?
         return not_found
       end
     end
