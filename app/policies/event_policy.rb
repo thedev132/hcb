@@ -73,7 +73,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def documentation?
-    is_public || admin_or_user?
+    (is_public || admin_or_user?) && record.plan.documentation_enabled?
   end
 
   def statements?
@@ -93,15 +93,15 @@ class EventPolicy < ApplicationPolicy
   end
 
   def g_suite_overview?
-    admin_or_user? && is_not_demo_mode? && !record.hardware_grant?
+    admin_or_user? && is_not_demo_mode? && record.plan.google_workspace_enabled?
   end
 
   def g_suite_create?
-    admin_or_manager? && is_not_demo_mode? && !record.hardware_grant?
+    admin_or_manager? && is_not_demo_mode? && record.plan.google_workspace_enabled?
   end
 
   def g_suite_verify?
-    admin_or_user? && is_not_demo_mode? && !record.hardware_grant?
+    admin_or_user? && is_not_demo_mode? && record.plan.google_workspace_enabled?
   end
 
   def transfers?
@@ -109,7 +109,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def promotions?
-    (is_public || admin_or_user?) && !record.hardware_grant? && !record.outernet_guild?
+    (is_public || admin_or_user?) && record.plan.promotions_enabled?
   end
 
   def reimbursements_pending_review_icon?

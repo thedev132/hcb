@@ -31,7 +31,7 @@ class Event
       end
 
       def features
-        %w[cards transfers promotions google_workspace documentation settings reimbursements]
+        %w[cards transfers promotions google_workspace documentation reimbursements]
       end
 
     end

@@ -26,6 +26,10 @@ class Event
         "2024 Argosy grantee spend-only"
       end
 
+      def features
+        super - %w[promotions google_workspace documentation]
+      end
+
     end
 
   end
