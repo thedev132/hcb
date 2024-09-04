@@ -205,7 +205,7 @@ end
 gem "jbuilder", "~> 2.12"
 
 gem "ledgerjournal"
-gem "doorkeeper", "~> 5.6"
+gem "doorkeeper", "~> 5.7"
 
 gem "chartkick"
 gem "cssbundling-rails", "~> 1.4"
