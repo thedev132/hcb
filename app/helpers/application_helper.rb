@@ -66,7 +66,7 @@ module ApplicationHelper
 
   def blankslate(text, options = {})
     other_options = options.except(:class)
-    content_tag(:p, text, class: "center mt0 mb0 pt4 pb4 slate bold h3 mx-auto rounded border #{options[:class]}", **other_options)
+    content_tag(:p, text, class: "center mt0 mb0 pt4 pb4 slate bold h3 mx-auto rounded-lg border #{options[:class]}", **other_options)
   end
 
   def list_badge_for(count, item, glyph, options = { optional: false, required: false })
