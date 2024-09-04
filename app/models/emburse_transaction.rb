@@ -51,7 +51,7 @@ class EmburseTransaction < ApplicationRecord
   include Receiptable
   include Commentable
 
-  enum :state, %w{pending completed declined}
+  enum :state, { "pending" => 0, "completed" => 1, "declined" => 2 }
 
   acts_as_paranoid
   validates_as_paranoid

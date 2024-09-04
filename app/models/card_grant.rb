@@ -48,7 +48,7 @@ class CardGrant < ApplicationRecord
   has_one :card_grant_setting, through: :event, required: true
   alias_method :setting, :card_grant_setting
 
-  enum :status, [:active, :canceled, :expired], default: :active
+  enum :status, { active: 0, canceled: 1, expired: 2 }, default: :active
 
   before_validation :create_card_grant_setting, on: :create
   before_create :create_user

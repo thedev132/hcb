@@ -62,11 +62,7 @@ class User < ApplicationRecord
     monthly: 2,
   }, prefix: :receipt_report
 
-  enum :access_level, [
-    :user,
-    :admin,
-    :superadmin,
-  ], scopes: false, default: :user
+  enum :access_level, { user: 0, admin: 1, superadmin: 2 }, scopes: false, default: :user
 
   has_many :logins
   has_many :login_codes
