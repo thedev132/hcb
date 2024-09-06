@@ -131,7 +131,11 @@ class DocumentsController < ApplicationController
   end
 
   def set_document
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+
     @document = Document.friendly.find(params[:id] || params[:document_id])
+    @downloads = @document.downloads.page(@page).per(@per)
     @event = @document.event
   end
 
