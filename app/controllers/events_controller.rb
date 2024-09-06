@@ -329,8 +329,7 @@ class EventsController < ApplicationController
     fixed_user_event_params.delete(:hidden)
 
     if fixed_event_params[:plan_type] && fixed_event_params[:plan_type] != @event.plan&.plan_type
-      @event.plan&.mark_inactive! # deactivate old plan
-      @event.create_plan!(plan_type: fixed_event_params[:plan_type]) # start a new plan
+      @event.plan.mark_inactive!(fixed_event_params[:plan_type]) # deactivate old plan and replace it
     end
 
     fixed_event_params.delete(:plan_type)
@@ -886,8 +885,9 @@ class EventsController < ApplicationController
       Document.create(user: current_user, event_id: @event.id, name: file.original_filename, file:)
     end
 
-    @event.plan&.mark_inactive! # deactivate any old plans
-    @event.create_plan!(plan_type: event_params[:plan_type]) # start a new plan
+    if event_params[:plan_type] && event_params[:plan_type] != @event.plan.plan_type
+      @event.plan.mark_inactive!(event_params[:plan_type]) # deactivate old plan and replace it
+    end
 
     if @event.update(event_params.except(:files, :plan_type).merge({ demo_mode: false }))
       flash[:success] = "Organization successfully activated."
