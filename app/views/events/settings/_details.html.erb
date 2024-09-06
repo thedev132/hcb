@@ -118,9 +118,9 @@
         </ul>
       </li>
     </ul>
-    <div class="menu__divider mb1"></div>
     <div data-accordion-target="content">
-      <div class="field">
+      <div class="menu__divider" style="margin:0px"></div>
+      <div class="field mt-2">
         <%= inline_icon "markdown", size: 32, class: "muted right" %>
         <%= form.label :public_message, "Message to show visitors" %>
         <%= form.text_area :public_message, class: "w-100 fit", disabled: !policy(@event).update? %>
