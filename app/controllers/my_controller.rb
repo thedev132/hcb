@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
 class MyController < ApplicationController
-  skip_after_action :verify_authorized, only: [:activities, :cards, :missing_receipts_list, :missing_receipts_icon, :inbox, :reimbursements, :reimbursements_icon, :tasks] # do not force pundit
+  skip_after_action :verify_authorized, only: [:activities, :toggle_admin_activities, :cards, :missing_receipts_list, :missing_receipts_icon, :inbox, :reimbursements, :reimbursements_icon, :tasks] # do not force pundit
 
   def activities
-    if admin_signed_in?
+    if admin_signed_in? && cookies[:admin_activities] == "everyone"
       @activities = PublicActivity::Activity.all.order(created_at: :desc).page(params[:page]).per(25)
     else
       @activities = PublicActivity::Activity.for_user(current_user).order(created_at: :desc).page(params[:page]).per(25)
     end
+  end
+
+  def toggle_admin_activities
+    cookies[:admin_activities] = cookies[:admin_activities] == "everyone" ? "myself" : "everyone"
+    redirect_to my_activities_url
   end
 
   def cards
