@@ -6,7 +6,7 @@ class DonationsController < ApplicationController
   include SetEvent
   include Rails::Pagination
 
-  skip_after_action :verify_authorized, only: [:export, :show, :refund, :qr_code, :finish_donation, :finished]
+  skip_after_action :verify_authorized, only: [:export, :show, :qr_code, :finish_donation, :finished]
   skip_before_action :signed_in_user
   before_action :set_donation, only: [:show]
   before_action :set_event, only: [:start_donation, :make_donation, :qr_code, :export, :export_donors]
@@ -147,6 +147,8 @@ class DonationsController < ApplicationController
   def refund
     @donation = Donation.find(params[:id])
     @hcb_code = @donation.local_hcb_code
+
+    authorize @donation
 
     ::DonationService::Refund.new(donation_id: @donation.id, amount: Monetize.parse(params[:amount]).cents).run
 
