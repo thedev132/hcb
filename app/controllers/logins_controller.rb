@@ -210,7 +210,7 @@ class LoginsController < ApplicationController
     return if @force_use_email && !@login.authenticated_with_email
     return if @login.authenticated_with_sms
 
-    if @login.user&.phone_number_verified || (@login.authenticated_with_email && @login.user&.phone_number_verified)
+    if @login.user&.use_sms_auth || (@login.authenticated_with_email && @login.user&.phone_number_verified)
       @use_sms_auth = true
       @phone_last_four = @login.user.phone_number.last(4)
     end
