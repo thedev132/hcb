@@ -82,7 +82,7 @@
     <% end %>
 
     <div class="info flex gap-2 mt-2" x-cloak x-show="amount >= <%= Invoice::MAX_CARD_AMOUNT / 100.0 %>">
-      Invoices over <%= render_money Invoice::MAX_CARD_AMOUNT %> can only be paid by a bank transfer.
+      Invoices <%= render_money Invoice::MAX_CARD_AMOUNT %> or more can only be paid by a bank transfer.
     </div>
   </div>
 
