@@ -34,7 +34,9 @@ class HcbCode < ApplicationRecord
   monetize :amount_cents
 
   has_many :hcb_code_tags
-  has_many :tags, through: :hcb_code_tags
+  has_many :tags, through: :hcb_code_tags, class_name: "::Tag"
+  has_many :hcb_code_tag_suggestions, class_name: "HcbCode::Tag::Suggestion"
+  has_many :suggested_hcb_code_tag_suggestions, -> { where(aasm_state: "suggested") }, class_name: "HcbCode::Tag::Suggestion", inverse_of: :hcb_code
 
   has_many :suggested_pairings
   has_many :suggested_receipts, source: :receipt, through: :suggested_pairings

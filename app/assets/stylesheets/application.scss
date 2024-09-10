@@ -470,3 +470,11 @@ summary {
       0 2px 4px rgba(0, 0, 0, 0.125);
   }
 }
+
+.suggested_tag {
+  font-style: italic;
+}
+
+.suggested_tag::after {
+  transform: translateY(0px) translateX(-4px);
+}

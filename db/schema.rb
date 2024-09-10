@@ -1060,6 +1060,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_01_193319) do
     t.index ["hcb_code_id"], name: "index_hcb_code_pins_on_hcb_code_id"
   end
 
+  create_table "hcb_code_tag_suggestions", force: :cascade do |t|
+    t.bigint "hcb_code_id", null: false
+    t.bigint "tag_id", null: false
+    t.string "aasm_state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hcb_code_id"], name: "index_hcb_code_tag_suggestions_on_hcb_code_id"
+    t.index ["tag_id"], name: "index_hcb_code_tag_suggestions_on_tag_id"
+  end
+
   create_table "hcb_codes", force: :cascade do |t|
     t.text "hcb_code", null: false
     t.datetime "created_at", null: false
@@ -2267,6 +2277,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_01_193319) do
   add_foreign_key "hcb_code_personal_transactions", "users", column: "reporter_id"
   add_foreign_key "hcb_code_pins", "events"
   add_foreign_key "hcb_code_pins", "hcb_codes"
+  add_foreign_key "hcb_code_tag_suggestions", "hcb_codes"
+  add_foreign_key "hcb_code_tag_suggestions", "tags"
   add_foreign_key "increase_account_numbers", "events"
   add_foreign_key "increase_checks", "events"
   add_foreign_key "increase_checks", "users"

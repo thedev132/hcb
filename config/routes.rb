@@ -421,6 +421,15 @@ Rails.application.routes.draw do
     end
   end
 
+  scope module: "hcb_code" do
+    namespace :tag do
+      resources :suggestions, only: [] do
+        post "accept"
+        post "reject"
+      end
+    end
+  end
+
   resources :canonical_pending_transactions, only: [:show, :edit, :update]
 
   resources :canonical_transactions, only: [:show, :edit] do
