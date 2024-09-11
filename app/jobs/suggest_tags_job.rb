@@ -2,7 +2,7 @@
 
 class SuggestTagsJob < ApplicationJob
   queue_as :low
-  def perform(event_id, hcb_code_id = nil)
+  def perform(event_id:, hcb_code_id: nil)
     if hcb_code_id
       HcbCodeService::Generate::SuggestedTags.new(hcb_code: HcbCode.find(hcb_code_id), event: Event.find(event_id)).run!
     else
