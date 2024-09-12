@@ -204,7 +204,7 @@
     <h2 class="h2 mt0 border-none">
       <%= @sponsor.name %>
       <span class="regular muted"> paid </span>
-      <span class="regular"><%= render_money @hcb_code.amount %></span>
+      <span class="regular"><%= render_money @invoice.amount_paid %></span>
     </h2>
     <section class="card__banner card__darker details-horiz border-top border-bottom">
       <% if @invoice.payment_method_type == 'card' %>
