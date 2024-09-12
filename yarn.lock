@@ -5686,10 +5686,10 @@ reusify@^1.0.4:
   resolved "https://registry.npmjs.org/reusify/-/reusify-1.0.4.tgz"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
 
-rich-textarea@^0.26.2:
-  version "0.26.2"
-  resolved "https://registry.yarnpkg.com/rich-textarea/-/rich-textarea-0.26.2.tgz#6a4a9e19f1c2f5b589c74f6ecf568095cfbc2579"
-  integrity sha512-2rC9LDCV1zbAQ80VVaSXGA5yENmdTYvz7aOllOvizX5DIM0rjP/OCjblHlLMGa302oSjQV2Ml7IqYcvxDJx9yw==
+rich-textarea@^0.26.3:
+  version "0.26.3"
+  resolved "https://registry.yarnpkg.com/rich-textarea/-/rich-textarea-0.26.3.tgz#0a351b80c4e271f999690e953e5720642371acc3"
+  integrity sha512-3IGAzvM9yyIOQR5GmV/zoofKfo2KCMy5yecPDNstxTDTaEAOcKSlgQcUXZBSO5jg9RvHAEgSNxqsJu/7ktCiPw==
 
 run-parallel@^1.1.9:
   version "1.2.0"
