@@ -13,7 +13,7 @@ class AdminMailer < ApplicationMailer
   def cash_withdrawal_notification
     @hcb_code = params[:hcb_code]
 
-    mail subject: "[CASH WITHDRAWN] #{@hcb_code.event.name} / #{@hcb_code.stripe_card.user.name}"
+    mail subject: "[#{ApplicationController.helpers.render_money(@hcb_code.amount)} WITHDRAWN] #{@hcb_code.event.name} / #{@hcb_code.stripe_card.user.name}"
   end
 
   def reminders
