@@ -23,7 +23,7 @@ class Tag < ApplicationRecord
 
   belongs_to :event
   has_many :hcb_code_tags
-  has_many :hcb_code_tag_suggestions, dependent: :destroy
+  has_many :hcb_code_tag_suggestions, dependent: :destroy, class_name: "HcbCode::Tag::Suggestion"
   has_many :hcb_codes, through: :hcb_code_tags
 
   validates :label, presence: true, uniqueness: { scope: :event_id, case_sensitive: false }
