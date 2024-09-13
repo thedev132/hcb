@@ -74,7 +74,7 @@ class Donation < ApplicationRecord
   before_create :create_stripe_payment_intent, unless: -> { recurring? }
   before_create :assign_unique_hash, unless: -> { recurring? }
 
-  after_commit :send_payment_notification_if_needed
+  after_commit :send_donation_notification
 
   validates :name, :email, presence: true, unless: -> { recurring? } # recurring donations have a name/email in their `RecurringDonation` object
   validates_presence_of :amount
@@ -318,7 +318,7 @@ class Donation < ApplicationRecord
     @raw_pending_donation_transactions ||= ::RawPendingDonationTransaction.where(donation_transaction_id: id)
   end
 
-  def send_payment_notification_if_needed
+  def send_donation_notification
     # only runs when status becomes succeeded, should not run on delete.
     return unless status_previously_changed?(to: "succeeded")
 
@@ -326,8 +326,9 @@ class Donation < ApplicationRecord
       DonationMailer.with(donation: self).first_donation_notification.deliver_later
     elsif includes_message?
       DonationMailer.with(donation: self).donation_with_message_notification.deliver_later
+    else
+      DonationMailer.with(donation: self).donation_notification.deliver_later
     end
-
   end
 
   def first_donation?
