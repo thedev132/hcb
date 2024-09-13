@@ -32,7 +32,7 @@
           name: "Time-based one time passwords",
           classes: ["feature-totp"],
           description: "Loving 2FA? Here's an additional authentication factor for you! This feature let's you use Google Authenticator, Authy or a similar app to sign into HCB."
-        } if @user.using_2fa? %>
+        } %>
 
     <%= render partial: "features/preview", locals: {
           id: "receipt-bin",

@@ -352,7 +352,9 @@ class UsersController < ApplicationController
       :seasonal_themes_enabled,
       :payout_method_type,
       :comment_notifications,
-      :charge_notifications
+      :charge_notifications,
+      :use_sms_auth,
+      :use_two_factor_authentication
     ]
 
     if @user.stripe_cardholder

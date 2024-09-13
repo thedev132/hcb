@@ -4,30 +4,31 @@
 #
 # Table name: users
 #
-#  id                       :bigint           not null, primary key
-#  access_level             :integer          default("user"), not null
-#  birthday_ciphertext      :text
-#  charge_notifications     :integer          default("email_and_sms"), not null
-#  comment_notifications    :integer          default("all_threads"), not null
-#  email                    :text
-#  full_name                :string
-#  locked_at                :datetime
-#  payout_method_type       :string
-#  phone_number             :text
-#  phone_number_verified    :boolean          default(FALSE)
-#  preferred_name           :string
-#  pretend_is_not_admin     :boolean          default(FALSE), not null
-#  receipt_report_option    :integer          default("none"), not null
-#  running_balance_enabled  :boolean          default(FALSE), not null
-#  seasonal_themes_enabled  :boolean          default(TRUE), not null
-#  session_duration_seconds :integer          default(2592000), not null
-#  sessions_reported        :boolean          default(FALSE), not null
-#  slug                     :string
-#  use_sms_auth             :boolean          default(FALSE)
-#  created_at               :datetime         not null
-#  updated_at               :datetime         not null
-#  payout_method_id         :bigint
-#  webauthn_id              :string
+#  id                            :bigint           not null, primary key
+#  access_level                  :integer          default("user"), not null
+#  birthday_ciphertext           :text
+#  charge_notifications          :integer          default("email_and_sms"), not null
+#  comment_notifications         :integer          default("all_threads"), not null
+#  email                         :text
+#  full_name                     :string
+#  locked_at                     :datetime
+#  payout_method_type            :string
+#  phone_number                  :text
+#  phone_number_verified         :boolean          default(FALSE)
+#  preferred_name                :string
+#  pretend_is_not_admin          :boolean          default(FALSE), not null
+#  receipt_report_option         :integer          default("none"), not null
+#  running_balance_enabled       :boolean          default(FALSE), not null
+#  seasonal_themes_enabled       :boolean          default(TRUE), not null
+#  session_duration_seconds      :integer          default(2592000), not null
+#  sessions_reported             :boolean          default(FALSE), not null
+#  slug                          :string
+#  use_sms_auth                  :boolean          default(FALSE)
+#  use_two_factor_authentication :boolean          default(FALSE)
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  payout_method_id              :bigint
+#  webauthn_id                   :string
 #
 # Indexes
 #
@@ -326,10 +327,6 @@ class User < ApplicationRecord
 
   def last_login_at
     user_sessions.maximum(:created_at)
-  end
-
-  def using_2fa?
-    Flipper.enabled?(:two_factor_authentication_2024_05_22, self) && phone_number_verified
   end
 
   def email_charge_notifications_enabled?
