@@ -66,3 +66,20 @@
     <%= form.submit "Activate" %>
   </div>
 <% end %>
+
+<h2 class="mb2">
+  Team members & contract signees
+</h2>
+
+<%= turbo_frame_tag "team_position" do %>
+  <table>
+    <thead>
+      <tr>
+      </tr>
+    </thead>
+    <tbody>
+    <%= turbo_frame_tag "team_position" do %>
+      <%= render partial: "organizer_positions/organizer_position_row", collection: @event.organizer_positions, as: :organizer_position %>
+    <% end %>
+  </table>
+<% end %>
