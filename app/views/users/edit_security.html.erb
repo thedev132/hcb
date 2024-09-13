@@ -11,7 +11,7 @@
   <% unless @user.phone_number.blank? %>
     <%= turbo_frame_tag :sms_auth_card do %>
       <legend class="flex flex-row justify-start items-center mt0 pb2">
-        <span class="h2 bold">Login codes</span>
+        <span class="h2 bold">Login preferences</span>
         <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: "bg-muted" %>
       </legend>
       <div class="card border b--info mt0 mb3">
