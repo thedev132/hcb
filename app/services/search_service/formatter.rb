@@ -25,7 +25,7 @@ module SearchService
       end
 
       if item.instance_of?(CanonicalTransaction) && item.transaction_source_type == "RawStripeTransaction"
-        formatted[:user] = item.stripe_cardholder.user.full_name
+        formatted[:user] = item.stripe_cardholder&.user&.full_name
       end
 
       if item.instance_of?(CanonicalTransaction)
