@@ -8,6 +8,8 @@ module Reimbursement
     skip_before_action :signed_in_user, only: [:show, :start, :create, :finished]
     skip_after_action :verify_authorized, only: [:start, :finished]
 
+    invisible_captcha only: [:create], on_spam: :on_spam
+
     # POST /reimbursement_reports
     def create
       @event = Event.find(report_params[:event_id])
@@ -269,6 +271,10 @@ module Reimbursement
       reimbursement_report_params.delete(:maximum_amount) unless current_user.admin? || @event.users.include?(current_user)
       reimbursement_report_params.delete(:maximum_amount) unless @report.draft? || @report.submitted?
       reimbursement_report_params
+    end
+
+    def on_spam
+      raise ActionController::RoutingError.new("Not Found") unless current_user.present?
     end
 
   end
