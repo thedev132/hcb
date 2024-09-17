@@ -59,6 +59,7 @@
                                 min: 1, # Limitations placed by Stripe
                                 max: 999_999.99, # Limitations placed by Stripe
                                 required: true, class: "fit w-100",
+                                "x-init": "amount = $el.value",
                                 "@input": "amount = $event.target.value",
                                 data: { controller: "truncate-decimal", action: "truncate-decimal#truncate" } %>
           <% if @monthly %>
