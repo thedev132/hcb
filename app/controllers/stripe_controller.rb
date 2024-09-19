@@ -301,7 +301,7 @@ class StripeController < ActionController::Base
     design.sync_from_stripe!
 
     if design.event&.stripe_card_logo&.attached? # if the logo is no longer attached it's already been rejected.
-      StripeCardMailer.with(event: design.event, reason: event.data.object["rejection_reasons"]["card_logo"].first).design_rejected.deliver_later
+      StripeCard::PersonalizationDesignMailer.with(event: design.event, reason: event.data.object["rejection_reasons"]["card_logo"].first).design_rejected.deliver_later
       design.event.stripe_card_personalization_designs.update(stale: true)
       design.event.stripe_card_logo.delete
     end
