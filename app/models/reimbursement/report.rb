@@ -190,6 +190,27 @@ module Reimbursement
       nil
     end
 
+    def initiated_transfer_text
+      if payout_holding.payout_transfer.is_a?(IncreaseCheck)
+        return "mailed"
+      end
+
+      return "initiated"
+    end
+
+    def transfer_text
+      case payout_holding.payout_transfer
+      when AchTransfer
+        return "ACH transfer"
+      when PaypalTransfer
+        return "PayPal transfer"
+      when IncreaseCheck
+        return "check"
+      end
+
+      return "transfer"
+    end
+
     def locked?
       !draft?
     end

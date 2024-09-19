@@ -18,7 +18,7 @@
              "reimbursement_approved"  => ["admin", "warning", "approved this report on behalf of the HCB team"],
              "draft"                   => ["docs", "muted", "converted this report to a draft"],
              "draft_created"           => ["plus", "success", "created this draft report"],
-             "reimbursed"              => ["payment-transfer", "purple", "initiated a #{render_money @report.amount_cents} transfer to #{@report.user.name}"],
+             "reimbursed"              => ["payment-transfer", "purple", "#{@report.initiated_transfer_text} a #{render_money @report.amount_cents} #{@report.transfer_text} to #{@report.user.name}"],
              "reversed"                => ["sad", "warning", "cancelled this reimbursement"],
            } %>
         <% state_change = item.changeset["aasm_state"]&.second %>
