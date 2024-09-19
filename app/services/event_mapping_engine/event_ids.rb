@@ -11,5 +11,6 @@ module EventMappingEngine
     PARTNER_128_COLLECTIVE_FUND = 3228 # would have been perfect if it was 128!
     HACK_FOUNDATION_INTEREST = 2740
     REIMBURSEMENT_CLEARING = 4318
+    SVB_SWEEPS = 5832
   end
 end
