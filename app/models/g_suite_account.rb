@@ -37,6 +37,8 @@ class GSuiteAccount < ApplicationRecord
 
   after_update :attempt_notify_user_of_password_change
 
+  self.ignored_columns = ["verified_at", "rejected_at"]
+
   paginates_per 50
 
   belongs_to :g_suite
