@@ -213,6 +213,7 @@ class User < ApplicationRecord
 
   def safe_name
     # stripe requires names to be 24 chars or less, and must include a last name
+    return name unless name.length > 24
     return full_name unless full_name.length > 24
 
     initial_name
