@@ -31,6 +31,8 @@ module Reimbursement
     include AASM
     include HasBookTransfer
 
+    self.ignored_columns = ["increase_checks_id", "ach_transfers_id"]
+
     has_many :expense_payouts, class_name: "Reimbursement::ExpensePayout", foreign_key: "reimbursement_payout_holdings_id", inverse_of: :payout_holding
     belongs_to :report, foreign_key: "reimbursement_reports_id", inverse_of: :payout_holding
     belongs_to :ach_transfer, optional: true, inverse_of: :reimbursement_payout_holding
