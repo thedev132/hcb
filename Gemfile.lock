@@ -171,7 +171,7 @@ GEM
     bootsnap (1.18.4)
       msgpack (~> 1.2)
     brakeman (5.4.1)
-    browser (5.3.1)
+    browser (6.0.0)
     builder (3.3.0)
     bullet (7.2.0)
       activesupport (>= 3.0.0)
@@ -865,7 +865,7 @@ DEPENDENCIES
   blind_index
   bootsnap (>= 1.4.4)
   brakeman
-  browser (~> 5.3)
+  browser (~> 6.0)
   bullet
   business_time
   byebug
