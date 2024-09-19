@@ -52,13 +52,11 @@ class GSuiteAccount < ApplicationRecord
 
   before_destroy :sync_delete_to_gsuite
 
-  scope :under_review, -> { where(rejected_at: nil, accepted_at: nil) }
+  scope :under_review, -> { where(accepted_at: nil) }
 
   def status
-    return "rejected" if rejected_at.present?
     return "suspended" if suspended_at.present?
     return "accepted" if accepted_at.present?
-    return "verified" if verified_at.present?
 
     "pending"
   end
@@ -67,16 +65,8 @@ class GSuiteAccount < ApplicationRecord
     suspended_at.present?
   end
 
-  def rejected?
-    rejected_at.present?
-  end
-
   def under_review?
-    rejected_at.nil? && accepted_at.nil?
-  end
-
-  def verified?
-    verified_at.present?
+    accepted_at.nil?
   end
 
   def username
