@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_19_091316) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_19_095450) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1800,8 +1800,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_19_091316) do
     t.integer "amount_cents", null: false
     t.string "hcb_code"
     t.bigint "reimbursement_reports_id", null: false
-    t.bigint "increase_checks_id"
-    t.bigint "ach_transfers_id"
     t.string "aasm_state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1809,9 +1807,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_19_091316) do
     t.bigint "increase_check_id"
     t.bigint "ach_transfer_id"
     t.index ["ach_transfer_id"], name: "index_reimbursement_payout_holdings_on_ach_transfer_id"
-    t.index ["ach_transfers_id"], name: "index_reimbursement_payout_holdings_on_ach_transfers_id"
     t.index ["increase_check_id"], name: "index_reimbursement_payout_holdings_on_increase_check_id"
-    t.index ["increase_checks_id"], name: "index_reimbursement_payout_holdings_on_increase_checks_id"
     t.index ["paypal_transfer_id"], name: "index_reimbursement_payout_holdings_on_paypal_transfer_id"
     t.index ["reimbursement_reports_id"], name: "index_reimbursement_payout_holdings_on_reimbursement_reports_id"
   end

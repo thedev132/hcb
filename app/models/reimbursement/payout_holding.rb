@@ -11,18 +11,14 @@
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  ach_transfer_id          :bigint
-#  ach_transfers_id         :bigint
 #  increase_check_id        :bigint
-#  increase_checks_id       :bigint
 #  paypal_transfer_id       :bigint
 #  reimbursement_reports_id :bigint           not null
 #
 # Indexes
 #
 #  index_reimbursement_payout_holdings_on_ach_transfer_id           (ach_transfer_id)
-#  index_reimbursement_payout_holdings_on_ach_transfers_id          (ach_transfers_id)
 #  index_reimbursement_payout_holdings_on_increase_check_id         (increase_check_id)
-#  index_reimbursement_payout_holdings_on_increase_checks_id        (increase_checks_id)
 #  index_reimbursement_payout_holdings_on_paypal_transfer_id        (paypal_transfer_id)
 #  index_reimbursement_payout_holdings_on_reimbursement_reports_id  (reimbursement_reports_id)
 #
@@ -30,8 +26,6 @@ module Reimbursement
   class PayoutHolding < ApplicationRecord
     include AASM
     include HasBookTransfer
-
-    self.ignored_columns = ["increase_checks_id", "ach_transfers_id"]
 
     has_many :expense_payouts, class_name: "Reimbursement::ExpensePayout", foreign_key: "reimbursement_payout_holdings_id", inverse_of: :payout_holding
     belongs_to :report, foreign_key: "reimbursement_reports_id", inverse_of: :payout_holding
