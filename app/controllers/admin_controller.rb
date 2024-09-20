@@ -50,67 +50,6 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
-  def partners
-    relation = Partner
-
-    @partners = relation.all
-
-    @count = relation.count
-
-    render layout: "admin"
-  end
-
-  def partner
-    @partner = Partner.find(params.require(:id))
-    render layout: "admin"
-  end
-
-  def partner_edit
-    @partner = Partner.find(params.require(:id))
-    edit_params = params.require(:partner)
-    @partner.update!(edit_params)
-    flash[:success] = "Partner updated"
-    redirect_to partners_admin_index_path
-  end
-
-  def partnered_signup_sign_document
-    # @msw: now that we're removing the partnered signup flow with docusign, this is just hardcoded to redirect to the root path
-    redirect_to root_path
-  end
-
-  def partnered_signups
-    relation = PartneredSignup
-
-    @partnered_signups = relation.not_unsubmitted
-
-    @count = @partnered_signups.count
-
-    render layout: "admin"
-  end
-
-  def partnered_signups_accept
-    flash[:error] = "This shouldn't be ran, contact Sam."
-    redirect_to partnered_signups_admin_index_path
-  end
-
-  def partnered_signups_reject
-    flash[:error] = "This shouldn't be ran, contact Sam."
-    redirect_to partnered_signups_admin_index_path
-  end
-
-  def partner_organizations
-    @page = params[:page] || 1
-    @per = params[:per] || 100
-
-    relation = Event.none
-
-    @count = relation.count
-
-    @partner_organizations = relation.page(@page).per(@per).reorder("created_at desc")
-
-    render layout: "admin"
-  end
-
   def events
     @page = params[:page] || 1
     @per = params[:per] || 100
@@ -679,44 +618,6 @@ class AdminController < ApplicationController
 
   def paypal_transfer_process
     @paypal_transfer = PaypalTransfer.find(params[:id])
-
-    render layout: "admin"
-  end
-
-  def partner_donations
-    @page = params[:page] || 1
-    @per = params[:per] || 20
-    @q = params[:q].present? ? params[:q] : nil
-    @deposited = params[:deposited] == "1" ? true : nil
-    @in_transit = params[:in_transit] == "1" ? true : nil
-    @pending = params[:pending] == "1" ? true : nil
-    @not_unpaid = params[:not_unpaid] == "1" ? true : nil
-
-    @event_id = params[:event_id].present? ? params[:event_id] : nil
-
-    if @event_id
-      @event = Event.find(@event_id)
-      relation = @event.partner_donations.includes(:event)
-    else
-      relation = PartnerDonation.includes(:event)
-    end
-
-    if @q
-      if @q.to_f.nonzero?
-        @q = (@q.to_f * 100).to_i
-        relation = relation.where("payout_amount_cents = ? or payout_amount_cents = ?", @q, -@q)
-      else
-        relation = relation.search_name(@q)
-      end
-    end
-
-    relation = relation.deposited if @deposited
-    relation = relation.in_transit if @in_transit
-    relation = relation.pending if @pending
-    relation = relation.not_unpaid if @not_unpaid
-
-    @count = relation.count
-    @partner_donations = relation.page(@page).per(@per).order("created_at desc")
 
     render layout: "admin"
   end
