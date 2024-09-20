@@ -191,7 +191,7 @@ module Reimbursement
     end
 
     def initiated_transfer_text
-      if payout_holding.payout_transfer.is_a?(IncreaseCheck)
+      if payout_holding&.payout_transfer.is_a?(IncreaseCheck)
         return "mailed"
       end
 
@@ -199,7 +199,7 @@ module Reimbursement
     end
 
     def transfer_text
-      case payout_holding.payout_transfer
+      case payout_holding&.payout_transfer
       when AchTransfer
         return "ACH transfer"
       when PaypalTransfer
