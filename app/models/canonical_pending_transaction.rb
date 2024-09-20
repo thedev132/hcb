@@ -26,7 +26,6 @@
 #  raw_pending_outgoing_ach_transaction_id          :bigint
 #  raw_pending_outgoing_check_transaction_id        :bigint
 #  raw_pending_outgoing_disbursement_transaction_id :bigint
-#  raw_pending_partner_donation_transaction_id      :bigint
 #  raw_pending_stripe_transaction_id                :bigint
 #  reimbursement_expense_payout_id                  :bigint
 #  reimbursement_payout_holding_id                  :bigint
@@ -44,7 +43,6 @@
 #  index_canonical_pending_txs_on_raw_pending_invoice_tx_id         (raw_pending_invoice_transaction_id)
 #  index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id    (raw_pending_outgoing_ach_transaction_id)
 #  index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id  (raw_pending_outgoing_check_transaction_id)
-#  index_canonical_pending_txs_on_raw_pending_partner_dntn_tx_id    (raw_pending_partner_donation_transaction_id)
 #  index_canonical_pending_txs_on_raw_pending_stripe_tx_id          (raw_pending_stripe_transaction_id)
 #  index_canonical_pending_txs_on_reimbursement_expense_payout_id   (reimbursement_expense_payout_id)
 #  index_canonical_pending_txs_on_reimbursement_payout_holding_id   (reimbursement_payout_holding_id)
@@ -61,8 +59,6 @@ class CanonicalPendingTransaction < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_memo, against: [:memo, :custom_memo, :hcb_code], using: { tsearch: { any_word: true, prefix: true, dictionary: "english" } }, ranked_by: "canonical_pending_transactions.date"
   pg_search_scope :pg_text_search, lambda { |query, options_hash| { query: }.merge(options_hash) }
-
-  self.ignored_columns = ["raw_pending_partner_donation_transaction_id"]
 
   belongs_to :raw_pending_stripe_transaction, optional: true
   belongs_to :raw_pending_outgoing_check_transaction, optional: true

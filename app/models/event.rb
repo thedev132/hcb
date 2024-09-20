@@ -53,19 +53,15 @@
 #  club_airtable_id                             :text
 #  emburse_department_id                        :string
 #  increase_account_id                          :string           not null
-#  partner_id                                   :bigint
 #  point_of_contact_id                          :bigint
 #
 # Indexes
 #
 #  index_events_on_club_airtable_id                        (club_airtable_id) UNIQUE
-#  index_events_on_partner_id                              (partner_id)
-#  index_events_on_partner_id_and_organization_identifier  (partner_id,organization_identifier) UNIQUE
 #  index_events_on_point_of_contact_id                     (point_of_contact_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (partner_id => partners.id)
 #  fk_rails_...  (point_of_contact_id => users.id)
 #
 class Event < ApplicationRecord
@@ -86,7 +82,7 @@ class Event < ApplicationRecord
   acts_as_paranoid
   validates_as_paranoid
 
-  self.ignored_columns = ["partner_id", "owner_address", "owner_birthdate", "owner_email", "owner_name", "owner_phone"]
+  self.ignored_columns = ["owner_address", "owner_birthdate", "owner_email", "owner_name", "owner_phone"]
 
   validates_email_format_of :donation_reply_to_email, allow_nil: true, allow_blank: true
   validates :donation_thank_you_message, length: { maximum: 500 }
@@ -223,8 +219,6 @@ class Event < ApplicationRecord
     state :rejected # Rejected from fiscal sponsorship
 
     # DEPRECATED
-    state :awaiting_connect # Initial state of partner events. Waiting for user to fill out HCB Connect form
-    state :pending # Awaiting HCB approval (after filling out HCB Connect form)
     state :unapproved # Old spend only events. Deprecated, should not be granted to any new events
 
     event :mark_pending do
@@ -758,7 +752,7 @@ class Event < ApplicationRecord
   private
 
   def point_of_contact_is_admin
-    return unless point_of_contact # for remote partner created events
+    return unless point_of_contact
     return if point_of_contact&.admin_override_pretend?
 
     errors.add(:point_of_contact, "must be an admin")
