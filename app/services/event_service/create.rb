@@ -54,7 +54,6 @@ module EventService
         can_front_balance: @can_front_balance,
         expected_budget: 100.0,
         point_of_contact_id: @point_of_contact_id,
-        partner:,
         organization_identifier:,
         demo_mode: @demo_mode,
         plan: Event::Plan.new(plan_type: @plan_type)
@@ -63,10 +62,6 @@ module EventService
 
     def point_of_contact
       @point_of_contact ||= ::User.find(@point_of_contact_id)
-    end
-
-    def partner
-      @partner ||= ::Partner.find_by(slug: "bank")
     end
 
     def organization_identifier
