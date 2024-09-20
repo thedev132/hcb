@@ -91,10 +91,6 @@ partner_donation_nightly_job:
   cron: "0 */6 * * *" # run 4 times a day
   class: "PartnerDonationJob::Nightly"
 
-partnered_signup_nightly_job:
-  cron: "0 * * * *" # run every hour
-  class: "PartneredSignupJob::Nightly"
-
 receipt_report_weekly_job:
   cron: "0 0 * * MON" # run first day of each week
   class: "ReceiptReportJob::Weekly"

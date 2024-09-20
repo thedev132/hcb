@@ -30,9 +30,6 @@ class PartneredSignupsController < ApplicationController
     @partnered_signup.mark_submitted! unless @partnered_signup.submitted?
 
     redirect_to @partnered_signup.redirect_url, allow_other_host: true
-
-    # Send webhook to let Partner know that the Connect from has been submitted
-    ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
   rescue => e
     notify_airbrake(e)
     render :edit, status: :unprocessable_entity
