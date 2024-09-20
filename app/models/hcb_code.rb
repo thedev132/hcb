@@ -99,7 +99,6 @@ class HcbCode < ApplicationRecord
     return :unknown if unknown?
     return :invoice if invoice?
     return :donation if donation?
-    return :partner_donation if partner_donation?
     return :ach if ach_transfer?
     return :check if check? || increase_check?
     return :disbursement if disbursement?
@@ -177,7 +176,6 @@ class HcbCode < ApplicationRecord
         ids.concat([
           invoice.try(:event).try(:id),
           donation.try(:event).try(:id),
-          partner_donation.try(:event).try(:id),
           ach_transfer.try(:event).try(:id),
           check.try(:event).try(:id),
           increase_check.try(:event).try(:id),
@@ -196,7 +194,7 @@ class HcbCode < ApplicationRecord
 
   def pretty_title(show_event_name: true, show_amount: false, event_name: event.name, amount_cents: self.amount_cents)
     event_preposition = [:unknown, :invoice, :ach, :check, :card_charge, :bank_fee].include?(type || :unknown) ? "in" : "to"
-    amount_preposition = [:transaction, :donation, :partner_donation, :disbursement, :card_charge, :bank_fee].include?(type || :unknown) ? "of" : "for"
+    amount_preposition = [:transaction, :donation, :disbursement, :card_charge, :bank_fee].include?(type || :unknown) ? "of" : "for"
 
     amount_preposition = "refunded" if stripe_refund?
 
@@ -279,10 +277,6 @@ class HcbCode < ApplicationRecord
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE
   end
 
-  def partner_donation?
-    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE
-  end
-
   def ach_transfer?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::ACH_TRANSFER_CODE
   end
@@ -325,10 +319,6 @@ class HcbCode < ApplicationRecord
 
   def donation
     @donation ||= Donation.find_by(id: hcb_i2) if donation?
-  end
-
-  def partner_donation
-    @partner_donation ||= PartnerDonation.find_by(id: hcb_i2) if partner_donation?
   end
 
   def ach_transfer

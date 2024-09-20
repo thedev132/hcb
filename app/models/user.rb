@@ -110,7 +110,6 @@ class User < ApplicationRecord
 
   has_one_attached :profile_picture
 
-  has_one :partner, inverse_of: :representative
   has_one :unverified_totp, -> { where(aasm_state: :unverified) }, class_name: "User::Totp", inverse_of: :user
   has_one :totp, -> { where(aasm_state: :verified) }, class_name: "User::Totp", inverse_of: :user
 

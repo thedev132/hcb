@@ -113,8 +113,6 @@ class Event < ApplicationRecord
   scope :omitted, -> { where(omit_stats: true) }
   scope :not_omitted, -> { where(omit_stats: false) }
   scope :hidden, -> { where("hidden_at is not null") }
-  scope :not_partner, -> { where(partner_id: 1) }
-  scope :partner, -> { where.not(partner_id: 1) }
   scope :hidden, -> { where.not(hidden_at: nil) }
   scope :not_hidden, -> { where(hidden_at: nil) }
   scope :funded, -> {
@@ -319,10 +317,6 @@ class Event < ApplicationRecord
   has_many :pinned_hcb_codes, -> { includes(hcb_code: [:canonical_transactions, :canonical_pending_transactions]) }, class_name: "HcbCode::Pin"
 
   has_many :check_deposits
-
-  belongs_to :partner, optional: true
-  has_one :partnered_signup, required: false
-  has_many :partner_donations
 
   has_many :subledgers
 
