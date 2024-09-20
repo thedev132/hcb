@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_19_095450) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_19_235035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -961,11 +961,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_19_095450) do
   create_table "g_suite_accounts", force: :cascade do |t|
     t.text "address"
     t.datetime "accepted_at", precision: nil
-    t.datetime "rejected_at", precision: nil
     t.bigint "g_suite_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.datetime "verified_at", precision: nil
     t.bigint "creator_id"
     t.text "backup_email"
     t.string "first_name"

@@ -11,9 +11,7 @@
 #  first_name                  :string
 #  initial_password_ciphertext :text
 #  last_name                   :string
-#  rejected_at                 :datetime
 #  suspended_at                :datetime
-#  verified_at                 :datetime
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
 #  creator_id                  :bigint
@@ -36,8 +34,6 @@ class GSuiteAccount < ApplicationRecord
   include Rejectable
 
   after_update :attempt_notify_user_of_password_change
-
-  self.ignored_columns = ["verified_at", "rejected_at"]
 
   paginates_per 50
 
