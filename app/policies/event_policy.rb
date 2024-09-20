@@ -128,10 +128,6 @@ class EventPolicy < ApplicationPolicy
     ((is_public || user?) && record.approved? && record.plan.donations_enabled?) || admin?
   end
 
-  def partner_donation_overview?
-    is_public || admin_or_user?
-  end
-
   def remove_header_image?
     admin_or_manager?
   end

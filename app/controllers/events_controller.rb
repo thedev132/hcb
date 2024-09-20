@@ -650,23 +650,6 @@ class EventsController < ApplicationController
 
   end
 
-  def partner_donation_overview
-    authorize @event
-
-    relation = @event.partner_donations.not_unpaid
-
-    @stats = {
-      deposited: relation.deposited.sum(:payout_amount_cents),
-      in_transit: relation.in_transit.sum(:payout_amount_cents),
-    }
-
-    relation = relation.pending if params[:filter] == "pending"
-    relation = relation.in_transit if params[:filter] == "in_transit"
-    relation = relation.deposited if params[:filter] == "deposited"
-
-    @partner_donations = relation.order(created_at: :desc)
-  end
-
   def transfers
     authorize @event
 
