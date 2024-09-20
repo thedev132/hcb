@@ -15,22 +15,10 @@ class DocsController < ActionController::Base
 
   swagger_root do
     key :openapi, "3.0.0"
-    info do
-      key :version, "2.0.0"
-      key :title, "bank-api"
-      key :description, "🏛 Process payments on HCB via an API"
-    end
-
-    security do
-      key :ApiKeyAuth, []
-    end
   end
 
   SWAGGERED_CLASSES = [
     ApplicationDocumentation,
-    V2PartneredSignupsDocumentation,
-    V2DonationsDocumentation,
-    V2OrganizationsDocumentation,
     self
   ].freeze
 

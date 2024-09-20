@@ -24,8 +24,6 @@ Rails.application.routes.draw do
 
   # API documentation
   scope "docs/api" do
-    get "v2", to: "docs#v2"
-    get "v2/swagger", to: "docs#swagger"
 
     get "v3", to: "docs#v3"
     get "v3/*path", to: "docs#v3"
