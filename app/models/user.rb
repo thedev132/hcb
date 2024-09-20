@@ -67,7 +67,6 @@ class User < ApplicationRecord
 
   has_many :logins
   has_many :login_codes
-  has_many :login_tokens
   has_many :user_sessions, dependent: :destroy
   has_many :organizer_position_invites, dependent: :destroy
   has_many :organizer_positions
