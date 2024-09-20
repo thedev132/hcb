@@ -33,9 +33,6 @@ module PendingEventMappingEngine
       map_canonical_pending_bank_fee!
       settle_canonical_pending_bank_fee_hcb_code!
 
-      map_canonical_pending_partner_donation!
-      settle_canonical_pending_partner_donation_hcb_code!
-
       map_canonical_pending_outgoing_disbursement!
       settle_canonical_pending_outgoing_disbursement_hcb_code!
       decline_canonical_pending_outgoing_disbursement!
@@ -153,10 +150,6 @@ module PendingEventMappingEngine
       # ::PendingEventMappingEngine::Decline::Donation.new.run
     end
 
-    def map_canonical_pending_partner_donation!
-      ::PendingEventMappingEngine::Map::PartnerDonation.new.run
-    end
-
     def map_canonical_pending_invoice!
       ::PendingEventMappingEngine::Map::Invoice.new.run
     end
@@ -179,10 +172,6 @@ module PendingEventMappingEngine
 
     def settle_canonical_pending_bank_fee_hcb_code!
       ::PendingEventMappingEngine::Settle::BankFeeHcbCode.new.run
-    end
-
-    def settle_canonical_pending_partner_donation_hcb_code!
-      ::PendingEventMappingEngine::Settle::PartnerDonationHcbCode.new.run
     end
 
     def settle_canonical_pending_ach_payment!
