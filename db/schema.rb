@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_20_164946) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_20_170139) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1289,24 +1289,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_164946) do
     t.index ["user_id"], name: "index_login_codes_on_user_id"
   end
 
-  create_table "login_tokens", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.text "token", null: false
-    t.datetime "expiration_at", precision: nil, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "ip"
-    t.string "aasm_state"
-    t.bigint "user_session_id"
-    t.bigint "partner_id"
-    t.decimal "latitude"
-    t.decimal "longitude"
-    t.index ["partner_id"], name: "index_login_tokens_on_partner_id"
-    t.index ["token"], name: "index_login_tokens_on_token", unique: true
-    t.index ["user_id"], name: "index_login_tokens_on_user_id"
-    t.index ["user_session_id"], name: "index_login_tokens_on_user_session_id"
-  end
-
   create_table "logins", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "user_session_id"
@@ -1452,67 +1434,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_164946) do
     t.index ["twilio_message_id"], name: "index_outgoing_twilio_messages_on_twilio_message_id"
   end
 
-  create_table "partner_donations", force: :cascade do |t|
-    t.bigint "event_id", null: false
-    t.string "hcb_code"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "aasm_state"
-    t.integer "payout_amount_cents"
-    t.string "stripe_charge_id"
-    t.datetime "stripe_charge_created_at", precision: nil
-    t.index ["event_id"], name: "index_partner_donations_on_event_id"
-  end
-
-  create_table "partnered_signups", force: :cascade do |t|
-    t.string "owner_phone"
-    t.string "owner_email"
-    t.string "owner_name"
-    t.string "owner_address"
-    t.string "redirect_url", null: false
-    t.date "owner_birthdate"
-    t.integer "country"
-    t.string "organization_name", null: false
-    t.datetime "accepted_at", precision: nil
-    t.datetime "rejected_at", precision: nil
-    t.bigint "user_id"
-    t.bigint "event_id"
-    t.bigint "partner_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "submitted_at", precision: nil
-    t.string "owner_address_line1"
-    t.string "owner_address_line2"
-    t.string "owner_address_city"
-    t.string "owner_address_state"
-    t.text "owner_address_postal_code"
-    t.integer "owner_address_country"
-    t.string "aasm_state"
-    t.datetime "applicant_signed_at", precision: nil
-    t.datetime "completed_at", precision: nil
-    t.boolean "legal_acknowledgement"
-    t.index ["event_id"], name: "index_partnered_signups_on_event_id"
-    t.index ["partner_id"], name: "index_partnered_signups_on_partner_id"
-    t.index ["user_id"], name: "index_partnered_signups_on_user_id"
-  end
-
-  create_table "partners", force: :cascade do |t|
-    t.string "slug", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "external", default: true, null: false
-    t.text "name"
-    t.text "logo"
-    t.string "public_stripe_api_key"
-    t.text "stripe_api_key_ciphertext"
-    t.string "webhook_url"
-    t.bigint "representative_id"
-    t.text "api_key_ciphertext"
-    t.string "api_key_bidx"
-    t.index ["api_key_bidx"], name: "index_partners_on_api_key_bidx", unique: true
-    t.index ["representative_id"], name: "index_partners_on_representative_id"
-  end
-
   create_table "payment_recipients", force: :cascade do |t|
     t.bigint "event_id", null: false
     t.string "name"
@@ -1653,15 +1574,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_164946) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["disbursement_id"], name: "index_rpodts_on_disbursement_id"
-  end
-
-  create_table "raw_pending_partner_donation_transactions", force: :cascade do |t|
-    t.text "partner_donation_transaction_id"
-    t.integer "amount_cents"
-    t.date "date_posted"
-    t.string "state"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "raw_pending_stripe_transactions", force: :cascade do |t|
@@ -2279,8 +2191,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_164946) do
   add_foreign_key "invoices", "users", column: "voided_by_id"
   add_foreign_key "lob_addresses", "events"
   add_foreign_key "login_codes", "users"
-  add_foreign_key "login_tokens", "user_sessions"
-  add_foreign_key "login_tokens", "users"
   add_foreign_key "mailbox_addresses", "users"
   add_foreign_key "organizer_position_deletion_requests", "organizer_positions"
   add_foreign_key "organizer_position_deletion_requests", "users", column: "closed_by_id"
@@ -2294,11 +2204,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_164946) do
   add_foreign_key "organizer_position_spending_controls", "organizer_positions"
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
-  add_foreign_key "partner_donations", "events"
-  add_foreign_key "partnered_signups", "events"
-  add_foreign_key "partnered_signups", "partners"
-  add_foreign_key "partnered_signups", "users"
-  add_foreign_key "partners", "users", column: "representative_id"
   add_foreign_key "payment_recipients", "events"
   add_foreign_key "paypal_transfers", "events"
   add_foreign_key "paypal_transfers", "users"
