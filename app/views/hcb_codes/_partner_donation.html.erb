@@ -62,10 +62,6 @@
       <% end %>
     </section>
     <section class="pt2 pb2 details">
-      <% admin_tool do %>
-        <strong>Partner</strong>
-        <%= @partner_donation.partner.name || @partner_donation.partner.slug.capitalize %>
-      <% end %>
       <% if @partner_donation.paid? %>
         <p>
           <strong>Amount</strong>

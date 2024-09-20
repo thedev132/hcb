@@ -10,16 +10,7 @@ module ApiService
       end
 
       def run
-        # Validate that the Partner has permission to create a login URL for
-        # this user and organization
-        unless organization.partner == @partner && user.events.include?(organization)
-          raise ActiveRecord::RecordNotFound
-        end
-
-        ::UserService::GenerateToken.new(
-          partner_id: @partner.id,
-          user_id: user.id
-        ).run
+        Airbrake.notify("ApiService::V2::GenerateLoginToken")
       end
 
       private

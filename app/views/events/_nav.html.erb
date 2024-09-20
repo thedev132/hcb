@@ -36,8 +36,7 @@
       <hr>
     <% end %>
     <%= dock_item "Donations",
-      @event&.partner&.external? ? event_partner_donation_overview_path(event_id: @event.slug) :
-        event_donation_overview_path(event_id: @event.slug),
+      event_donation_overview_path(event_id: @event.slug),
       tooltip: "Receive donations online",
       icon: "support",
       data: { tour_step: "donations" },

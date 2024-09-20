@@ -53,11 +53,7 @@ module PartneredSignupService
         "Postal Code": partnered_signup.owner_address_postal_code,
         "Address Country": partnered_signup.owner_address_country,
         "Submitted At": partnered_signup.submitted_at,
-        "Partnered Signup ID": partnered_signup.id,
-
-        # Partner
-        "Partner": partnered_signup.partner.name,
-        "Partner ID": partnered_signup.partner.id,
+        "Partnered Signup ID": partnered_signup.id
       }
 
       data.to_json

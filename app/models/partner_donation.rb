@@ -101,7 +101,7 @@ class PartnerDonation < ApplicationRecord
   end
 
   def partner
-    Partner.find(event.partner_id)
+    nil
   end
 
   def state

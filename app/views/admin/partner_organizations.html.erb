@@ -27,7 +27,7 @@
                  <%= "admin-bg-orange" if event.rejected? && !event.omit_stats? %>
                  <%= "admin-bg-orange" if event.omit_stats? %>">
         <td><%= event.id %></td>
-        <td><%= event.partner.slug %></td>
+        <td><%= "deprecated" %></td>
         <td><%= event.organization_identifier %></td>
         <td><%= event.created_at.strftime("%Y-%m-%d") %></td>
         <td>

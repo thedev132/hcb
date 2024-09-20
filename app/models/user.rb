@@ -236,14 +236,6 @@ class User < ApplicationRecord
     Phonelib.parse(self.phone_number).national
   end
 
-  def representative?
-    self.partner.present?
-  end
-
-  def represented_partner
-    self.partner
-  end
-
   def admin_dropdown_description
     "#{name} (#{email})"
   end

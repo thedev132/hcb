@@ -89,69 +89,20 @@ class AdminController < ApplicationController
   end
 
   def partnered_signups_accept
-    @partnered_signup = PartneredSignup.find(params[:id])
-    @partner = @partnered_signup.partner
-
-    authorize @partnered_signup
-
-    PartneredSignup.transaction do
-      # Create an event
-      @organization = Event.create!(
-        partner: @partner,
-        name: @partnered_signup.organization_name,
-        organization_identifier: SecureRandom.hex(30) + @partnered_signup.organization_name,
-      )
-
-      # Invite users to event
-      ::EventService::PartnerInviteUser.new(
-        partner: @partner,
-        event: @organization,
-        user_email: @partnered_signup.owner_email
-      ).run
-
-      # Record the org & user in the signup
-      @partnered_signup.update(
-        event: @organization,
-        user: User.find_by(email: @partnered_signup.owner_email),
-      )
-
-      # Mark the signup as completed
-      # TODO: remove bypass for unapproved (unsigned contracts by admin)
-      @partnered_signup.mark_accepted! if @partnered_signup.applicant_signed?
-      @partnered_signup.mark_completed!
-
-      ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
-      flash[:success] = "Partner signup accepted"
-      redirect_to partnered_signups_admin_index_path and return
-    end
-  rescue => e
-    notify_airbrake(e)
-
-    # Something went wrong
-    flash[:error] = "Something went wrong. #{e}"
+    flash[:error] = "This shouldn't be ran, contact Sam."
     redirect_to partnered_signups_admin_index_path
   end
 
   def partnered_signups_reject
-    @partnered_signup = PartneredSignup.find(params[:id])
-    @partner = @partnered_signup.partner
-    @partnered_signup.rejected_at = Time.now
-    authorize @partnered_signup
-
-    if @partnered_signup.save
-      ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
-      flash[:success] = "Partner signup rejected"
-      redirect_to partnered_signups_admin_index_path
-    else
-      render :edit, status: :unprocessable_entity
-    end
+    flash[:error] = "This shouldn't be ran, contact Sam."
+    redirect_to partnered_signups_admin_index_path
   end
 
   def partner_organizations
     @page = params[:page] || 1
     @per = params[:per] || 100
 
-    relation = Event.partner
+    relation = Event.none
 
     @count = relation.count
 

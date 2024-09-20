@@ -51,33 +51,6 @@ class Partner < ApplicationRecord
     self.api_key ||= new_api_key
   end
 
-  def add_user_to_partnered_event!(user_email:, event:)
-    # @msw: I take full responsibility the aweful way this is being implemented.
-    # To my future self, or other devs: this should be moved to a service, and
-    # be given proper validations.
-
-    user = User.find_by(email: user_email)
-    unless user
-      User.create!(email: user_email)
-    end
-
-    position_exists = event.users.include?(user)
-    invite_exists = event.organizer_position_invites.where(email: user_email).any?
-
-    unless position_exists || invite_exists
-      partnered_email = "hcb+#{event.partner.slug}@hackclub.com"
-      invite_sender = User.find_by(email: partnered_email)
-      invite_sender ||= User.create!(email: partnered_email)
-      OrganizerPositionInviteService::Create.new(
-        event:,
-        sender: invite_sender,
-        user_email:,
-      ).run!
-    end
-
-    self
-  end
-
   def regenerate_api_key!
     self.api_key = new_api_key
     self.save!
