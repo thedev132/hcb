@@ -86,7 +86,7 @@ class Event < ApplicationRecord
   acts_as_paranoid
   validates_as_paranoid
 
-  self.ignored_columns = ["partner_id"]
+  self.ignored_columns = ["partner_id", "owner_address", "owner_birthdate", "owner_email", "owner_name", "owner_phone"]
 
   validates_email_format_of :donation_reply_to_email, allow_nil: true, allow_blank: true
   validates :donation_thank_you_message, length: { maximum: 500 }
