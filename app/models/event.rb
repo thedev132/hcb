@@ -161,7 +161,7 @@ class Event < ApplicationRecord
     ActiveRecord::Base.connection.execute(query)
   end
 
-  scope :pending_fees_v2, -> do
+  scope :_fees_v2, -> do
     where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", MIN_WAITING_TIME_BETWEEN_FEES.ago, self.event_ids_with_pending_fees.to_a.map { |a| a["event_id"] })
   end
 
@@ -213,6 +213,7 @@ class Event < ApplicationRecord
 
     # DEPRECATED
     state :unapproved # Old spend only events. Deprecated, should not be granted to any new events
+    state :pending
 
     event :mark_pending do
       transitions from: [:awaiting_connect, :approved], to: :pending
