@@ -87,10 +87,6 @@ fee_engine_hourly_job:
   cron: "0 */1 * * *" # run every 1 hours
   class: "FeeEngineJob::Hourly"
 
-partner_donation_nightly_job:
-  cron: "0 */6 * * *" # run 4 times a day
-  class: "PartnerDonationJob::Nightly"
-
 receipt_report_weekly_job:
   cron: "0 0 * * MON" # run first day of each week
   class: "ReceiptReportJob::Weekly"
