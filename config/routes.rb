@@ -251,9 +251,6 @@ Rails.application.routes.draw do
       get "invoice_process", to: "admin#invoice_process"
       post "invoice_mark_paid", to: "admin#invoice_mark_paid"
       get "grant_process", to: "admin#grant_process"
-
-      post "partnered_signups_accept", to: "admin#partnered_signups_accept"
-      post "partnered_signups_reject", to: "admin#partnered_signups_reject"
     end
   end
 
@@ -513,29 +510,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :partner_donations, only: [:show] do
-    collection do
-      get "export"
-    end
-  end
-
   use_doorkeeper scope: "api/v4/oauth" do
     skip_controllers :authorized_applications
   end
 
   namespace :api do
-    get "v2/login", to: "v2#login"
-
-    post "v2/donations/new", to: "v2#donations_new"
-
-    get "v2/organizations", to: "v2#organizations"
-    get "v2/organization/:public_id", to: "v2#organization", as: :v2_organization
-    post "v2/organization/:public_id/generate_login_url", to: "v2#generate_login_url", as: :v2_generate_login_url
-
-    post "v2/partnered_signups/new", to: "v2#partnered_signups_new"
-    get "v2/partnered_signups", to: "v2#partnered_signups"
-    get "v2/partnered_signup/:public_id", to: "v2#partnered_signup", as: :v2_partnered_signup
-
     namespace :v4 do
       defaults format: :json do
         resource :user do
@@ -583,9 +562,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  get "partnered_signups/:public_id", to: "partnered_signups#edit", as: :edit_partnered_signups
-  patch "partnered_signups/:public_id", to: "partnered_signups#update", as: :update_partnered_signups
 
   post "api/v1/users/find", to: "api#user_find"
   post "api/v1/events/create_demo", to: "api#create_demo_event"
