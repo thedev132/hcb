@@ -9,10 +9,6 @@ FactoryBot.define do
       t.plan.update(plan_type: Event::Plan::FeeWaived)
     end
 
-    trait :partnered do
-      association :partner
-    end
-
     trait :demo_mode do
       demo_mode { true }
     end
