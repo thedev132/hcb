@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_20_163606) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_20_164946) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -856,11 +856,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_163606) do
     t.string "aasm_state"
     t.string "organization_identifier", null: false
     t.string "redirect_url"
-    t.string "owner_name"
-    t.string "owner_email"
-    t.string "owner_phone"
-    t.string "owner_address"
-    t.date "owner_birthdate"
     t.string "webhook_url"
     t.integer "country"
     t.boolean "holiday_features", default: true, null: false

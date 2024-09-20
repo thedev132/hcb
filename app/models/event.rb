@@ -30,11 +30,6 @@
 #  name                                         :text
 #  omit_stats                                   :boolean          default(FALSE)
 #  organization_identifier                      :string           not null
-#  owner_address                                :string
-#  owner_birthdate                              :date
-#  owner_email                                  :string
-#  owner_name                                   :string
-#  owner_phone                                  :string
 #  pending_transaction_engine_at                :datetime         default(Sat, 13 Feb 2021 22:49:40.000000000 UTC +00:00)
 #  postal_code                                  :string
 #  public_message                               :text
