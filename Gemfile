@@ -226,3 +226,5 @@ gem "ruby-limiter"
 gem "ahoy_email", "~> 2.3"
 
 gem "email_reply_parser"
+
+gem "eu_central_bank"

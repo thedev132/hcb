@@ -14,6 +14,9 @@
   <% elsif tx.local_hcb_code.paypal_transfer? %>
     <% label = "Paypal transfer" %>
     <% icon = inline_icon "paypal" %>
+  <% elsif tx.local_hcb_code.wire? %>
+    <% label = "Wire" %>
+    <% icon = inline_icon "bolt" %>
   <% elsif tx.local_hcb_code.check_deposit? %>
     <% label = "Check deposit" %>
     <% icon = inline_icon "cheque" %>

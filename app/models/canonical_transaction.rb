@@ -310,6 +310,10 @@ class CanonicalTransaction < ApplicationRecord
     return linked_object if linked_object.is_a?(PaypalTransfer)
   end
 
+  def wire
+    return linked_object if linked_object.is_a?(Wire)
+  end
+
   def check_deposit
     return linked_object if linked_object.is_a?(CheckDeposit)
 

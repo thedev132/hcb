@@ -94,6 +94,10 @@
               <span class="tooltipped tooltipped--e inline-block" aria-label="PayPal Transfer">
                 <%= inline_icon "paypal" %>
               </span>
+            <% elsif d.is_a?(Wire) %>
+              <span class="tooltipped tooltipped--e inline-block" aria-label="Wire">
+                <%= inline_icon "bolt" %>
+              </span>
             <% else %>
               <span class="tooltipped tooltipped--e inline-block" aria-label="HCB transfer">
                 <%= inline_icon "door-leave" %>

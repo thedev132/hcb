@@ -68,6 +68,11 @@
   <%= render "paypal_transfer" %>
 <% end %>
 
+<%# wire %>
+<% if @hcb_code.wire? && @hcb_code.wire.present? %>
+  <%= render "wire" %>
+<% end %>
+
 <%# unknown (most likely a direct to bank account transaction) %>
 <% if @hcb_code.unknown? || @hcb_code.outgoing_fee_reimbursement? %>
   <%= render partial: "hcb_codes/unknown", locals: {} %>

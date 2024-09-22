@@ -276,6 +276,8 @@ class Event < ApplicationRecord
 
   has_many :paypal_transfers
 
+  has_many :wires
+
   has_many :sponsors
   has_many :invoices, through: :sponsors
   has_many :payouts, through: :invoices

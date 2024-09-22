@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_20_170139) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_22_202224) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -378,6 +378,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_170139) do
     t.bigint "reimbursement_expense_payout_id"
     t.bigint "paypal_transfer_id"
     t.bigint "reimbursement_payout_holding_id"
+    t.bigint "wire_id"
     t.index ["ach_payment_id"], name: "index_canonical_pending_transactions_on_ach_payment_id"
     t.index ["check_deposit_id"], name: "index_canonical_pending_transactions_on_check_deposit_id"
     t.index ["grant_id"], name: "index_canonical_pending_transactions_on_grant_id"
@@ -394,6 +395,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_170139) do
     t.index ["raw_pending_stripe_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_stripe_tx_id"
     t.index ["reimbursement_expense_payout_id"], name: "index_canonical_pending_txs_on_reimbursement_expense_payout_id"
     t.index ["reimbursement_payout_holding_id"], name: "index_canonical_pending_txs_on_reimbursement_payout_holding_id"
+    t.index ["wire_id"], name: "index_canonical_pending_transactions_on_wire_id"
     t.check_constraint "fronted IS NOT NULL", name: "canonical_pending_transactions_fronted_null"
   end
 
@@ -2103,6 +2105,29 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_170139) do
     t.index ["user_id"], name: "index_webauthn_credentials_on_user_id"
   end
 
+  create_table "wires", force: :cascade do |t|
+    t.string "memo", null: false
+    t.string "payment_for", null: false
+    t.integer "amount_cents", null: false
+    t.string "recipient_name", null: false
+    t.string "recipient_email", null: false
+    t.string "account_number_ciphertext", null: false
+    t.string "account_number_bidx", null: false
+    t.string "bic_code_ciphertext", null: false
+    t.string "bic_code_bidx", null: false
+    t.string "aasm_state", null: false
+    t.datetime "approved_at"
+    t.bigint "event_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "currency", default: "USD", null: false
+    t.integer "recipient_country"
+    t.jsonb "recipient_information"
+    t.index ["event_id"], name: "index_wires_on_event_id"
+    t.index ["user_id"], name: "index_wires_on_user_id"
+  end
+
   add_foreign_key "ach_payments", "stripe_ach_payment_sources"
   add_foreign_key "ach_transfers", "events"
   add_foreign_key "ach_transfers", "users", column: "creator_id"
@@ -2239,4 +2264,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_170139) do
   add_foreign_key "user_sessions", "users"
   add_foreign_key "user_sessions", "users", column: "impersonated_by_id"
   add_foreign_key "webauthn_credentials", "users"
+  add_foreign_key "wires", "events"
+  add_foreign_key "wires", "users"
 end

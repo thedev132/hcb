@@ -622,6 +622,32 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def wires
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    @wires = Wire.all
+
+    @wires = @wires.search_recipient(@q) if @q
+
+    @wires.where(event_id: @event_id) if @event_id
+
+    @wires = @wires.page(@page).per(@per).order(
+      Arel.sql("aasm_state = 'pending' DESC"),
+      "created_at desc"
+    )
+
+    render layout: "admin"
+  end
+
+  def wire_process
+    @wire = Wire.find(params[:id])
+
+    render layout: "admin"
+  end
+
   def donations
     @page = params[:page] || 1
     @per = params[:per] || 20
@@ -970,6 +996,31 @@ class AdminController < ApplicationController
       canonical_transaction.update!(hcb_code: paypal_transfer.hcb_code, transaction_source_type: "PaypalTransfer", transaction_source_id: paypal_transfer.id)
 
       paypal_transfer.mark_deposited!
+
+      redirect_to transaction_admin_path(canonical_transaction)
+    end
+  rescue => e
+    redirect_to transaction_admin_path(params[:id]), flash: { error: e.message }
+  end
+
+  def set_wire
+    ActiveRecord::Base.transaction do
+      wire = Wire.find(params[:wire_id])
+
+      canonical_transaction = CanonicalTransactionService::SetEvent.new(
+        canonical_transaction_id: params[:id],
+        event_id: wire.event.id,
+        user: current_user
+      ).run
+
+      CanonicalPendingTransactionService::Settle.new(
+        canonical_transaction:,
+        canonical_pending_transaction: wire.canonical_pending_transaction
+      ).run!
+
+      canonical_transaction.update!(hcb_code: wire.hcb_code, transaction_source_type: "Wire", transaction_source_id: wire.id)
+
+      wire.mark_deposited!
 
       redirect_to transaction_admin_path(canonical_transaction)
     end

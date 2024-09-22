@@ -106,6 +106,7 @@ class HcbCode < ApplicationRecord
     return :bank_fee if bank_fee?
     return :reimbursement_expense_payout if reimbursement_expense_payout?
     return :paypal_transfer if paypal_transfer?
+    return :wire if wire?
 
     nil
   end
@@ -285,6 +286,10 @@ class HcbCode < ApplicationRecord
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::PAYPAL_TRANSFER_CODE
   end
 
+  def wire?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::WIRE_CODE
+  end
+
   def check?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::CHECK_CODE
   end
@@ -327,6 +332,10 @@ class HcbCode < ApplicationRecord
 
   def paypal_transfer
     @paypal_transfer ||= PaypalTransfer.find_by(id: hcb_i2) if paypal_transfer?
+  end
+
+  def wire
+    @wire ||= Wire.find_by(id: hcb_i2) if wire?
   end
 
   def check
@@ -440,6 +449,7 @@ class HcbCode < ApplicationRecord
   # The `:receipt_required` scope determines the type of
   # transaction based on its HCB Code, for reference:
   # HCB-300: ACH Transfers (receipts required starting from Feb. 2024)
+  # HCB-310: Wires
   # HCB-350: PayPal Transfers
   # HCB-400 & HCB-402: Checks & Increase Checks (receipts required starting from Feb. 2024)
   # HCB-600: Stripe card charges (always required)
@@ -453,6 +463,7 @@ class HcbCode < ApplicationRecord
               OR (hcb_codes.hcb_code LIKE 'HCB-400%' AND hcb_codes.created_at >= '2024-02-01' AND canonical_pending_declined_mappings.id IS NULL)
               OR (hcb_codes.hcb_code LIKE 'HCB-402%' AND hcb_codes.created_at >= '2024-02-01' AND canonical_pending_declined_mappings.id IS NULL)
               OR (hcb_codes.hcb_code LIKE 'HCB-350%' AND canonical_pending_declined_mappings.id IS NULL)
+              OR (hcb_codes.hcb_code LIKE 'HCB-310%' AND canonical_pending_declined_mappings.id IS NULL)
               ")
   }
 
@@ -461,7 +472,7 @@ class HcbCode < ApplicationRecord
 
     (type == :card_charge) ||
       # starting from Feb. 2024, receipts have been required for ACHs & checks
-      ([:ach, :check, :paypal_transfer].include?(type) && created_at > Time.utc(2024, 2, 1))
+      ([:ach, :check, :paypal_transfer, :wire].include?(type) && created_at > Time.utc(2024, 2, 1))
   end
 
   def receipt_optional?
