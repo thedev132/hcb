@@ -552,6 +552,8 @@ Rails.application.routes.draw do
 
           resources :disbursements, path: "transfers", only: [:create]
 
+          resources :donations, path: "donations", only: [:create]
+
           member do
             get "transactions"
           end
@@ -565,6 +567,8 @@ Rails.application.routes.draw do
             get "ephemeral_keys"
           end
         end
+
+        get "stripe_terminal_connection_token", to: "stripe_terminal#connection_token"
 
         match "*path" => "application#not_found", via: [:get, :post]
       end

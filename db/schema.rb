@@ -690,8 +690,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_22_202224) do
     t.inet "ip_address"
     t.datetime "in_transit_at"
     t.boolean "anonymous", default: false, null: false
-    t.boolean "tax_deductible", default: true, null: false
     t.boolean "fee_covered", default: false, null: false
+    t.boolean "tax_deductible", default: true, null: false
+    t.boolean "in_person", default: false
+    t.bigint "collected_by_id"
     t.index ["event_id"], name: "index_donations_on_event_id"
     t.index ["fee_reimbursement_id"], name: "index_donations_on_fee_reimbursement_id"
     t.index ["payout_id"], name: "index_donations_on_payout_id"

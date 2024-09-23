@@ -248,6 +248,9 @@
             <% if d.recurring? %>
               <div class="line-height-0 ml1 tooltipped tooltipped--n" aria-label="Monthly donor"><%= inline_icon "support-recurring", size: 24, class: "muted" %></div>
             <% end %>
+            <% if d.in_person? %>
+              <div class="line-height-0 ml1 tooltipped tooltipped--n" aria-label="In-person donor"><%= inline_icon "card", size: 24, class: "muted" %></div>
+            <% end %>
             <% if d.anonymous? %>
               <div class="line-height-0 ml1 tooltipped tooltipped--n" aria-label="Anonymous donor"><%= inline_icon "private-fill", size: 24, class: "muted" %></div>
             <% end %>

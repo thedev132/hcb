@@ -211,11 +211,15 @@ class StripeController < ActionController::Base
     return unless event.data.object.metadata[:donation].present?
 
     # get donation to process
-    donation = Donation.find_by_stripe_payment_intent_id(event.data.object.id)
+    donation = event.data.object.metadata[:donation_id].present? ? Donation.find_by_public_id(event.data.object.metadata[:donation_id]) : Donation.find_by_stripe_payment_intent_id(event.data.object.id)
+
+    unless donation.stripe_payment_intent_id.present?
+      donation.update(stripe_payment_intent_id: event.data.object.id)
+    end
 
     pi = StripeService::PaymentIntent.retrieve(
       id: donation.stripe_payment_intent_id,
-      expand: ["charges.data.balance_transaction", "latest_charge.balance_transaction"]
+      expand: ["charges.data.balance_transaction", "latest_charge.balance_transaction", "latest_charge.payment_method_details"]
     )
     donation.set_fields_from_stripe_payment_intent(pi)
     donation.save!

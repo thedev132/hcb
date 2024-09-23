@@ -12,6 +12,7 @@
 #  email                                :text
 #  fee_covered                          :boolean          default(FALSE), not null
 #  hcb_code                             :text
+#  in_person                            :boolean          default(FALSE)
 #  in_transit_at                        :datetime
 #  ip_address                           :inet
 #  message                              :text
@@ -28,6 +29,7 @@
 #  user_agent                           :text
 #  created_at                           :datetime         not null
 #  updated_at                           :datetime         not null
+#  collected_by_id                      :bigint
 #  event_id                             :bigint
 #  fee_reimbursement_id                 :bigint
 #  payout_creation_queued_job_id        :string
@@ -44,7 +46,6 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (event_id => events.id)
 #  fk_rails_...  (fee_reimbursement_id => fee_reimbursements.id)
 #  fk_rails_...  (payout_id => donation_payouts.id)
 #
@@ -70,13 +71,14 @@ class Donation < ApplicationRecord
   belongs_to :fee_reimbursement, optional: true
   belongs_to :payout, class_name: "DonationPayout", optional: true
   belongs_to :recurring_donation, optional: true
+  belongs_to :collected_by, class_name: "User", optional: true
 
-  before_create :create_stripe_payment_intent, unless: -> { recurring? }
+  before_create :create_stripe_payment_intent, unless: -> { recurring? || in_person? }
   before_create :assign_unique_hash, unless: -> { recurring? }
 
   after_commit :send_donation_notification
 
-  validates :name, :email, presence: true, unless: -> { recurring? } # recurring donations have a name/email in their `RecurringDonation` object
+  validates :name, :email, presence: true, unless: -> { recurring? || in_person? } # recurring donations have a name/email in their `RecurringDonation` object
   validates_presence_of :amount
   validates :amount, numericality: { greater_than_or_equal_to: 100, less_than_or_equal_to: 999_999_99 }
 
@@ -133,6 +135,10 @@ class Donation < ApplicationRecord
       self.payout_creation_balance_available_at = funds_available_at
     end
 
+    if in_person? && name.blank?
+      self.name = payment_intent.latest_charge.payment_method_details.card_present&.cardholder_name
+    end
+
     mark_in_transit if may_mark_in_transit? && status == "succeeded" # hacky
   end
 
@@ -183,6 +189,8 @@ class Donation < ApplicationRecord
   end
 
   def send_receipt!
+    return unless email.present?
+
     DonationMailer.with(donation: self).donor_receipt.deliver_later
   end
 
@@ -206,39 +214,39 @@ class Donation < ApplicationRecord
   end
 
   def payment_method_card_brand
-    payment_method&.dig(:card, :brand)
+    payment_method&.dig(:card, :brand) || payment_method&.dig(:card_present, :brand)
   end
 
   def payment_method_card_last4
-    payment_method&.dig(:card, :last4)
+    payment_method&.dig(:card, :last4) || payment_method&.dig(:card_present, :last4)
   end
 
   def payment_method_card_funding
-    payment_method&.dig(:card, :funding)
+    payment_method&.dig(:card, :funding) || payment_method&.dig(:card_present, :funding)
   end
 
   def payment_method_card_exp_month
-    payment_method&.dig(:card, :exp_month)
+    payment_method&.dig(:card, :exp_month) || payment_method&.dig(:card_present, :exp_month)
   end
 
   def payment_method_card_exp_year
-    payment_method&.dig(:card, :exp_year)
+    payment_method&.dig(:card, :exp_year) || payment_method&.dig(:card_present, :exp_year)
   end
 
   def payment_method_card_country
-    payment_method&.dig(:card, :country)
+    payment_method&.dig(:card, :country) || payment_method&.dig(:card_present, :country)
   end
 
   def payment_method_card_checks_address_line1_check
-    payment_method&.dig(:card, :checks, :address_line1_check)
+    payment_method&.dig(:card, :checks, :address_line1_check) || payment_method&.dig(:card_present, :checks, :address_line1_check)
   end
 
   def payment_method_card_checks_address_postal_code_check
-    payment_method&.dig(:card, :checks, :address_postal_code_check)
+    payment_method&.dig(:card, :checks, :address_postal_code_check) || payment_method&.dig(:card_present, :checks, :address_postal_code_check)
   end
 
   def payment_method_card_checks_cvc_check
-    payment_method&.dig(:card, :checks, :cvc_check)
+    payment_method&.dig(:card, :checks, :cvc_check) || payment_method&.dig(:card_present, :checks, :cvc_check)
   end
 
   def stripe_obj
