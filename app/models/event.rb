@@ -161,7 +161,7 @@ class Event < ApplicationRecord
     ActiveRecord::Base.connection.execute(query)
   end
 
-  scope :_fees_v2, -> do
+  scope :pending_fees_v2, -> do
     where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", MIN_WAITING_TIME_BETWEEN_FEES.ago, self.event_ids_with_pending_fees.to_a.map { |a| a["event_id"] })
   end
 
