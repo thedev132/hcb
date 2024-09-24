@@ -51,13 +51,22 @@ class Wire < ApplicationRecord
 
   has_one :canonical_pending_transaction
 
-  monetize :amount_cents, as: "amount"
+  monetize :amount_cents, as: "amount", with_model_currency: :currency
 
   include PublicActivity::Model
   tracked owner: proc{ |controller, record| controller&.current_user }, event_id: proc { |controller, record| record.event.id }, only: [:create]
 
+  def estimated_fee_cents_usd
+    20_00
+  end
+
   after_create do
-    create_canonical_pending_transaction!(event:, amount_cents: -usd_amount_cents, memo: "OUTGOING WIRE", date: created_at)
+    create_canonical_pending_transaction!(
+      event:,
+      amount_cents: -1 * (usd_amount_cents + estimated_fee_cents_usd),
+      memo: "OUTGOING WIRE",
+      date: created_at
+    )
   end
 
   aasm timestamps: true, whiny_persistence: true do
@@ -90,8 +99,8 @@ class Wire < ApplicationRecord
   validates_presence_of :memo, :payment_for, :recipient_name, :recipient_email
 
   validate on: :create do
-    if usd_amount_cents > event.balance_available_v2_cents
-      errors.add(:base, "You don't have enough money to send this transfer! Your balance is #{(event.balance_available_v2_cents / 100).to_money.format}. At current exchange rates, this transfer would cost #{(usd_amount_cents / 100).to_money.format} (USD).")
+    if (usd_amount_cents + estimated_fee_cents_usd) > event.balance_available_v2_cents
+      errors.add(:base, "You don't have enough money to send this transfer! Your balance is #{(event.balance_available_v2_cents / 100).to_money.format}. At current exchange rates, this transfer would cost #{((usd_amount_cents + estimated_fee_cents_usd) / 100).to_money.format} (USD, including fees).")
     end
   end
 
