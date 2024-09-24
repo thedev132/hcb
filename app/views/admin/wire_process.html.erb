@@ -57,10 +57,12 @@
       <td><%= render_money(@wire.event.balance_available_v2_cents + @wire.canonical_pending_transaction.amount_cents) %></td>
     </tr>
     <% @wire.recipient_information.keys.each do |key| %>
-      <tr>
-        <td><%= key.humanize %></td>
-        <td><%= @wire.recipient_information[key] %></td>
-      </tr>
+      <% if @wire.recipient_information[key].presence != nil %>
+        <tr>
+          <td><%= key.humanize %></td>
+          <td><%= @wire.recipient_information[key] %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

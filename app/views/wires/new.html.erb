@@ -16,7 +16,9 @@
     <span class="font-bold">Each wire transfer incurs a $20 flat fee</span>, this will be added on to the amount entered below and is passed on from our partner bank. Additionally, <span class="font-bold">currency exchange rates may fluctuate</span> between a wire being requested and a wire being sent.
 <% end %>
 
-<%= form_with(model: [@event, @wire], local: true) do |form| %>
+<%= form_with(model: [@event, @wire], local: true, html: {
+                "x-data": "{ country: null }"
+              }) do |form| %>
 
   <%= form_errors(@wire, "wire", "We couldn't send this") %>
 
@@ -40,7 +42,7 @@
 
   <div class="field">
     <%= form.label :recipient_country, "Which country will this wire be sent to?" %>
-    <%= form.collection_select :recipient_country, Event.countries_for_select, :first, :last, { include_blank: "Select a country" } %>
+    <%= form.collection_select :recipient_country, Event.countries_for_select, :first, :last, { include_blank: "Select a country" }, { "@change": "country = $event.target.value" } %>
   </div>
 
   <div class="field">
@@ -90,13 +92,29 @@
     <% end %>
   </div>
 
-  <% Wire.information_required_for(nil).each do |field| %>
-    <div class="field">
-      <%= form.label field[:key], field[:label], class: "mb1" %>
-      <%= form.send(field[:type], field[:key]) %>
-      <div class="muted mt1">
-        <%= field[:description] %>
+  <div x-show="country == null">
+    <% Wire.information_required_for(nil).each do |field| %>
+      <div class="field">
+        <%= form.label field[:key], field[:label], class: "mb1" %>
+        <%= form.send(field[:type], field[:key]) %>
+        <div class="muted mt1">
+          <%= field[:description] %>
+        </div>
       </div>
+    <% end %>
+  </div>
+
+  <% Event.countries_for_select.each do |country| %>
+    <div x-show="country == '<%= country[0] %>'">
+      <% Wire.information_required_for(country[0]).each do |field| %>
+        <div class="field">
+          <%= form.label field[:key], field[:label], class: "mb1" %>
+          <%= form.send(field[:type], field[:key]) %>
+          <div class="muted mt1">
+            <%= field[:description] %>
+          </div>
+        </div>
+      <% end %>
     </div>
   <% end %>
 

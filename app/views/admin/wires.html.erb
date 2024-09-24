@@ -32,7 +32,7 @@
         <td><%= wire.created_at.strftime("%Y-%m-%d") %></td>
         <td><%= wire.event.name %></td>
         <td><%= wire.recipient_name %></td>
-        <td><%= render_money(wire.amount) %></td>
+        <td><%= Money.from_cents(wire.amount_cents, wire.currency).format %></td>
         <td><%= wire.aasm.human_state %></td>
         <td>
           <%= link_to "View", hcb_code_path(wire.hcb_code) %>

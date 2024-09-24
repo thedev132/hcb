@@ -142,14 +142,24 @@ class Wire < ApplicationRecord
 
   def self.information_required_for(country) # country can be null, in which case, only the general fields will be returned.
     fields = []
-    fields << { type: :text_area, key: "instructions", label: "Country-specific instructions", description: "Use this space to include specific details required to send to this country." }
+    case country
+    when "IN"
+      fields << { type: :text_field, key: "ifsc_code", label: "IFSC code", description: "An Indian Financial System Code is the 11 digit character that you can usually see on an Indian bank’s cheque leaves." }
+    when "MX"
+      fields << { type: :text_field, key: "clabe_code", label: "CLABE code", description: "18-digit standard for bank account numbers in Mexico." }
+    when "CA"
+      # TBC, waiting for Mel atm!
+      fields << { type: :text_area, key: "instructions", label: "Country-specific instructions", description: "Use this space to include specific details required to send to this country." }
+    else
+      fields << { type: :text_area, key: "instructions", label: "Country-specific instructions", description: "Use this space to include specific details required to send to this country." }
+    end
     return fields
   end
 
   def self.recipient_information_accessors
     fields = []
     Event.countries_for_select.each do |country|
-      fields += self.information_required_for(country)
+      fields += self.information_required_for(country[0])
     end
     fields.collect{ |field| field[:key] }.uniq
   end
