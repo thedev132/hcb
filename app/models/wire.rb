@@ -56,14 +56,12 @@ class Wire < ApplicationRecord
   include PublicActivity::Model
   tracked owner: proc{ |controller, record| controller&.current_user }, event_id: proc { |controller, record| record.event.id }, only: [:create]
 
-  def estimated_fee_cents_usd
-    20_00
-  end
+  ESTIMATED_FEE_CENTS_USD = 25_00
 
   after_create do
     create_canonical_pending_transaction!(
       event:,
-      amount_cents: -1 * (usd_amount_cents + estimated_fee_cents_usd),
+      amount_cents: -1 * (usd_amount_cents + ESTIMATED_FEE_CENTS_USD),
       memo: "OUTGOING WIRE",
       date: created_at
     )
