@@ -56,12 +56,12 @@
 
       <p>
         <strong>Amount (USD)</strong>
-        <%= render_money @hcb_code.amount_cents.abs - @hcb_code.wire.estimated_fee_cents_usd %>
+        <%= render_money @hcb_code.amount_cents.abs - Wire::ESTIMATED_FEE_CENTS_USD %>
       </p>
 
       <p>
         <strong>Wire fee</strong>
-        <%= Money.from_cents(@hcb_code.wire.estimated_fee_cents_usd).format %>
+        <%= Money.from_cents(Wire::ESTIMATED_FEE_CENTS_USD).format %>
       </p>
 
       <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: @event || @hcb_code.event %>
