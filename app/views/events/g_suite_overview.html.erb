@@ -243,6 +243,9 @@
                   Please check above to see which records may be missing or incorrectly entered. <br>Click "Retry Verification" below once you've confirmed all DNS records are entered correctly.
                 <% end %>
               <% end %>
+              <% if @g_suite.configuring? || @g_suite.verification_error? %>
+                <%= link_to @g_suite.verification_error? ? "Retry Verification" : "Verify", event_g_suite_verify_path(event_id: @event.id), method: :put, class: "btn" %>
+              <% end %>
               <% if @g_suite.verifying? %>
                 <span class="h4 ml0 pending badge">Verifying…</span>
               <% end %>
