@@ -13,6 +13,10 @@ class CheckDepositPolicy < ApplicationPolicy
     admin_or_manager?
   end
 
+  def toggle_fronted?
+    admin?
+  end
+
   private
 
   def admin?

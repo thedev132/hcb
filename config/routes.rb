@@ -684,7 +684,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :check_deposits, only: [:index, :create], path: "check-deposits"
+    resources :check_deposits, only: [:index, :create], path: "check-deposits" do
+      member do
+        post "toggle_fronted"
+      end
+    end
 
     resources :card_grants, only: [:new, :create], path: "card-grants" do
       member do
