@@ -86,6 +86,7 @@ class EventsController < ApplicationController
     @end_date = params[:end].presence
     @minimum_amount = params[:minimum_amount].presence ? Money.from_amount(params[:minimum_amount].to_f) : nil
     @maximum_amount = params[:maximum_amount].presence ? Money.from_amount(params[:maximum_amount].to_f) : nil
+    @missing_receipts = params[:missing_receipts].present?
 
     @organizers = @event.organizer_positions.includes(:user).order(created_at: :desc)
     @pending_transactions = _show_pending_transactions
@@ -102,7 +103,8 @@ class EventsController < ApplicationController
       maximum_amount: @maximum_amount,
       user: @user,
       start_date: @start_date,
-      end_date: @end_date
+      end_date: @end_date,
+      missing_receipts: @missing_receipts
     ).run
 
     if (@minimum_amount || @maximum_amount) && !organizer_signed_in?
@@ -1025,7 +1027,8 @@ class EventsController < ApplicationController
       maximum_amount: @maximum_amount,
       user: @user,
       start_date: @start_date,
-      end_date: @end_date
+      end_date: @end_date,
+      missing_receipts: @missing_receipts
     ).run
     PendingTransactionEngine::PendingTransaction::AssociationPreloader.new(pending_transactions:, event: @event).run!
     pending_transactions
