@@ -87,6 +87,14 @@ class Wire < ApplicationRecord
 
     event :mark_deposited do
       transitions from: :approved, to: :deposited
+      after do
+        DisbursementService::Create.new(
+          source_event_id: event_id,
+          destination_event_id: EventMappingEngine::EventIds::HACK_CLUB_BANK,
+          name: "Fee for international wire (#{id})",
+          amount: Wire::ESTIMATED_FEE_CENTS_USD / 100
+        ).run
+      end
     end
   end
 
