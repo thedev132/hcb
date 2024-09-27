@@ -61,7 +61,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def card_overview?
-    ((is_public || user?) && record.approved? && record.plan.cards_enabled?) || admin?
+    (is_public || admin_or_user?) && record.approved? && record.plan.cards_enabled?
   end
 
   def new_stripe_card?
@@ -105,7 +105,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def transfers?
-    ((is_public || user?) && record.plan.transfers_enabled?) || admin?
+    (is_public || admin_or_user?) && record.plan.transfers_enabled?
   end
 
   def promotions?
@@ -117,7 +117,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def reimbursements?
-    (user? && record.plan.reimbursements_enabled?) || admin?
+    admin_or_user? && record.plan.reimbursements_enabled?
   end
 
   def expensify?
@@ -125,7 +125,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def donation_overview?
-    ((is_public || user?) && record.approved? && record.plan.donations_enabled?) || admin?
+    (is_public || admin_or_user?) && record.approved? && record.plan.donations_enabled?
   end
 
   def remove_header_image?
@@ -149,7 +149,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def account_number?
-    (manager? && record.plan.account_number_enabled?) || admin?
+    admin_or_manager? && record.plan.account_number_enabled?
   end
 
   def toggle_event_tag?
