@@ -220,9 +220,12 @@ class InvoicesController < ApplicationController
 
     authorize @invoice
 
-    ::InvoiceService::Refund.new(invoice_id: @invoice.id, amount: Monetize.parse(params[:amount]).cents).run
-
-    redirect_to hcb_code_path(@hcb_code.hashid), flash: { success: "The refund process has been queued for this invoice." }
+    if invoice.canonical_transactions.any?
+      ::InvoiceService::Refund.new(invoice_id: @invoice.id, amount: Monetize.parse(params[:amount]).cents).run
+      redirect_to hcb_code_path(@hcb_code.hashid), flash: { success: "The refund process has been queued for this invoice." }
+    else
+      redirect_to hcb_code_path(@hcb_code.hashid), flash: { error: "This invoice hasn't settled, only settled invoices can be refunded." }
+    end
   end
 
   private
