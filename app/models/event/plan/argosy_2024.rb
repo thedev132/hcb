@@ -27,7 +27,7 @@ class Event
       end
 
       def features
-        super - %w[promotions google_workspace documentation]
+        super - %w[promotions google_workspace]
       end
 
     end
