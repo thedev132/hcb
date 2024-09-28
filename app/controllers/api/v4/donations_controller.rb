@@ -11,6 +11,8 @@ module Api
                                    event_id: @event.id,
                                    collected_by_id: current_user.id,
                                    in_person: true,
+                                   name: params[:name] || nil,
+                                   email: params[:email] || nil
                                  })
 
         authorize @donation
