@@ -191,6 +191,12 @@ class Wire < ApplicationRecord
     end
   end
 
+  validate do
+    if recipient_country == "US"
+      errors.add(:recipient_country, "International wires can not be sent to US bank accounts, please send an ACH transfer instead.")
+    end
+  end
+
   aasm timestamps: true, whiny_persistence: true do
     state :pending, initial: true
     state :approved
