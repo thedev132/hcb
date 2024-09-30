@@ -112,6 +112,9 @@
           <%= form.send(field[:type], field[:key]) %>
           <div class="muted mt1">
             <%= field[:description] %>
+            <% if field[:refer_to] %>
+              <%= link_to "Refer to this document", field[:refer_to], target: "_blank" %>
+            <% end %>
           </div>
         </div>
       <% end %>
