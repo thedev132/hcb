@@ -67,6 +67,130 @@ class Wire < ApplicationRecord
     )
   end
 
+  IBAN_FORMATS = {
+    "AD": /AD\d{2}\d{4}\d{4}[\dA-Za-z]{12}/,
+    "AE": /AE\d{2}\d{3}\d{16}/,
+    "AL": /AL\d{2}\d{8}[\dA-Za-z]{16}/,
+    "AT": /AT\d{2}\d{5}\d{11}/,
+    "AZ": /AZ\d{2}[A-Z]{4}[\dA-Za-z]{20}/,
+    "BA": /BA\d{2}\d{3}\d{3}\d{8}\d{2}/,
+    "BE": /BE\d{2}\d{3}\d{7}\d{2}/,
+    "BG": /BG\d{2}[A-Z]{4}\d{4}\d{2}[\dA-Za-z]{8}/,
+    "BH": /BH\d{2}[A-Z]{4}[\dA-Za-z]{14}/,
+    "BY": /BY\d{2}[\dA-Za-z]{4}\d{4}[\dA-Za-z]{16}/,
+    "CH": /CH\d{2}\d{5}[\dA-Za-z]{12}/,
+    "CY": /CY\d{2}\d{3}\d{5}[\dA-Za-z]{16}/,
+    "CZ": /CZ\d{2}\d{4}\d{6}\d{10}/,
+    "DE": /DE\d{2}\d{8}\d{10}/,
+    "DK": /DK\d{2}\d{4}\d{9}\d/,
+    "EE": /EE\d{2}\d{2}\d{2}\d{11}\d/,
+    "EG": /EG\d{2}\d{4}\d{4}\d{17}/,
+    "ES": /ES\d{2}\d{4}\d{4}\d\d\d{10}/,
+    "FI": /FI\d{2}\d{3}\d{11}/,
+    "FO": /FO\d{2}\d{4}\d{9}\d/,
+    "FR": /FR\d{2}\d{5}\d{5}[\dA-Za-z]{11}\d{2}/,
+    "GB": /GB\d{2}[A-Z]{4}\d{6}\d{8}/,
+    "GE": /GE\d{2}[A-Z]{2}\d{16}/,
+    "GI": /GI\d{2}[A-Z]{4}[\dA-Za-z]{15}/,
+    "GL": /GL\d{2}\d{4}\d{9}\d/,
+    "GR": /GR\d{2}\d{3}\d{4}[\dA-Za-z]{16}/,
+    "GT": /GT\d{2}[\dA-Za-z]{4}[\dA-Za-z]{20}/,
+    "HR": /HR\d{2}\d{7}\d{10}/,
+    "HU": /HU\d{2}\d{3}\d{4}\d\d{15}\d/,
+    "IE": /IE\d{2}[A-Z]{4}\d{6}\d{8}/,
+    "IQ": /IQ\d{2}[A-Z]{4}\d{3}\d{12}/,
+    "IS": /IS\d{2}\d{4}\d{2}\d{6}\d{10}/,
+    "IT": /IT\d{2}[A-Z]\d{5}\d{5}[\dA-Za-z]{12}/,
+    "JM": /^\d{14}/,
+    "JO": /JO\d{2}[A-Z]{4}\d{4}[\dA-Za-z]{18}/,
+    "KW": /KW\d{2}[A-Z]{4}[\dA-Za-z]{22}/,
+    "KZ": /KZ\d{2}\d{3}[\dA-Za-z]{13}/,
+    "LB": /LB\d{2}\d{4}[\dA-Za-z]{20}/,
+    "LI": /LI\d{2}\d{5}[\dA-Za-z]{12}/,
+    "LT": /LT\d{2}\d{5}\d{11}/,
+    "LU": /LU\d{2}\d{3}[\dA-Za-z]{13}/,
+    "LV": /LV\d{2}[A-Z]{4}[\dA-Za-z]{13}/,
+    "MC": /MC\d{2}\d{5}\d{5}[\dA-Za-z]{11}\d{2}/,
+    "MD": /MD\d{2}[\dA-Za-z]{2}[\dA-Za-z]{18}/,
+    "MT": /MT\d{2}[A-Z]{4}\d{5}[\dA-Za-z]{18}/,
+    "MX": /^\d{18}/,
+    "MZ": /MZ59\d{21}/,
+    "NL": /NL\d{2}[A-Z]{4}\d{10}/,
+    "NO": /NO\d{2}\d{4}\d{6}\d/,
+    "PK": /PK\d{2}[A-Z]{4}[\dA-Za-z]{16}/,
+    "PL": /PL\d{2}\d{8}\d{16}/,
+    "PS": /PS\d{2}[A-Z]{4}[\dA-Za-z]{21}/,
+    "PT": /PT\d{2}\d{4}\d{4}\d{11}\d{2}/,
+    "QA": /QA\d{2}[A-Z]{4}[\dA-Za-z]{21}/,
+    "RO": /RO\d{2}[A-Z]{4}[\dA-Za-z]{16}/,
+    "RS": /RS\d{2}\d{3}\d{13}\d{2}/,
+    "SA": /SA\d{2}\d{2}[\dA-Za-z]{18}/,
+    "SD": /SD\d{2}\d{2}\d{12}/,
+    "SE": /SE\d{2}\d{3}\d{16}\d/,
+    "SI": /SI\d{2}\d{5}\d{8}\d{2}/,
+    "SK": /SK\d{2}\d{4}\d{6}\d{10}/,
+    "SM": /SM\d{2}[A-Z]\d{5}\d{5}[\dA-Za-z]{12}/,
+    "TL": /TL\d{2}\d{3}\d{14}\d{2}/,
+    "TR": /TR\d{2}\d{5}\d[\dA-Za-z]{16}/,
+    "UA": /UA\d{2}\d{6}[\dA-Za-z]{19}/,
+    "VA": /VA\d{2}\d{3}\d{15}/,
+    "AO": /AO[\dA-Za-z]{2}\d{21}/,
+    "AR": /\d{22}/,
+    "BF": /BF[\dA-Za-z]{8}\d{14}/,
+    "BI": /BI\d{2}\d{5}\d{5}\d{11}\d{2}/,
+    "BJ": /BJ[\dA-Za-z]{8}\d{14}$/,
+    "BR": /BR\d{2}\d{8}\d{5}\d{10}[A-Z][\dA-Za-z]/,
+    "CF": /\d{23}/,
+    "CG": /\d{23}/,
+    "CI": /CI[\dA-Za-z]{8}\d{14}/,
+    "CM": /(CM\d{2})?\d{23}/,
+    "CR": /CR\d{2}0\d{3}\d{14}/,
+    "DJ": /DJ\d{2}\d{5}\d{5}\d{11}\d{2}/,
+    "DO": /DO\d{2}[A-Z]{4}\d{20}/,
+    "DZ": /DZ[\dA-Za-z]{20}/,
+    "GA": /\d{23}/,
+    "GN": /[\dA-Za-z]{18}/,
+    "GQ": /\d{23}/,
+    "GW": /GW[\dA-Za-z]{8}\d{14}/,
+    "IL": /IL\d{2}\d{3}\d{3}\d{13}/,
+    "KG": /^\d{16}/,
+    "LC": /LC\d{2}[A-Z]{4}[\dA-Za-z]{24}/,
+    "LY": /LY\d{2}\d{3}\d{3}\d{15}/,
+    "MA": /^\d{24}/,
+    "ME": /ME\d{2}\d{3}\d{13}\d{2}/,
+    "MG": /MG46\d{23}/,
+    "ML": /ML[\dA-Za-z]{8}\d{14}/,
+    "MK": /MK\d{2}\d{3}[\dA-Za-z]{10}\d{2}/,
+    "MR": /MR\d{2}\d{5}\d{5}\d{11}\d{2}/,
+    "MU": /MU\d{2}[A-Z]{4}\d{2}\d{2}\d{12}\d{3}[A-Z]{3}/,
+    "NA": /\d{8,13}/,
+    "NE": /NE[\dA-Za-z]{8}\d{14}$/,
+    "NG": /^\d{10}/,
+    "PF": /FR\d{2}\d{5}\d{5}[\dA-Za-z]{11}\d{2}/,
+    "RU": /RU\d{2}\d{9}\d{5}[\dA-Za-z]{15}/,
+    "SC": /SC\d{2}[A-Z]{4}\d{2}\d{2}\d{16}[A-Z]{3}/,
+    "SN": /SN[\dA-Za-z]{8}\d{14}$/,
+    "ST": /ST\d{2}\d{8}\d{11}\d{2}/,
+    "SV": /SV\d{2}[A-Z]{4}\d{20}/,
+    "TD": /\d{23}/,
+    "TG": /TG[\dA-Za-z]{8}\d{14}$/,
+    "TN": /TN\d{2}\d{2}\d{3}\d{13}\d{2}/,
+    "VG": /VG\d{2}[A-Z]{4}\d{16}/,
+    "XK": /XK\d{2}\d{4}\d{10}\d{2}/
+  }.freeze
+
+  validate do
+    if IBAN_FORMATS[recipient_country.to_sym] && !account_number.match(IBAN_FORMATS[recipient_country.to_sym])
+      errors.add(:account_number, "does not meet the required format for this country")
+    end
+  end
+
+  validate do
+    unless bic_code.match /[A-Z]{4}([A-Z]{2})[A-Z0-9]{2}([A-Z0-9]{3})?$/ # https://www.johndcook.com/blog/2024/01/29/swift/
+      errors.add(:bic_code, "is not a valid SWIFT / BIC code")
+    end
+  end
+
   aasm timestamps: true, whiny_persistence: true do
     state :pending, initial: true
     state :approved
@@ -105,8 +229,8 @@ class Wire < ApplicationRecord
   validates_presence_of :memo, :payment_for, :recipient_name, :recipient_email
 
   validate on: :create do
-    if (usd_amount_cents + estimated_fee_cents_usd) > event.balance_available_v2_cents
-      errors.add(:base, "You don't have enough money to send this transfer! Your balance is #{(event.balance_available_v2_cents / 100).to_money.format}. At current exchange rates, this transfer would cost #{((usd_amount_cents + estimated_fee_cents_usd) / 100).to_money.format} (USD, including fees).")
+    if (usd_amount_cents + Wire::ESTIMATED_FEE_CENTS_USD) > event.balance_available_v2_cents
+      errors.add(:base, "You don't have enough money to send this transfer! Your balance is #{(event.balance_available_v2_cents / 100).to_money.format}. At current exchange rates, this transfer would cost #{((usd_amount_cents + Wire::ESTIMATED_FEE_CENTS_USD) / 100).to_money.format} (USD, including fees).")
     end
   end
 
@@ -260,7 +384,6 @@ class Wire < ApplicationRecord
     when "MM"
       fields << { type: :text_area, key: "purpose_code", label: "Purpose code", description: "A 4-digit ITRS code" }
     when "MX"
-      fields << { type: :text_field, key: "clabe_code", label: "CLABE code", description: "18-digit standard for bank account numbers in Mexico" }
       fields << { type: :text_field, key: "local_bank_code", label: "Local bank code", description: "Nostro Account Number" }
     when "MZ"
       fields << { type: :text_field, key: "legal_id", label: "Legal ID of receiving entity", description: "9-digit NUIT: Taxpayer Single ID Number" }
@@ -288,8 +411,6 @@ class Wire < ApplicationRecord
       fields << { type: :text_field, key: "local_bank_code", label: "Local bank code", description: "6-digit branch code" }
     when "ZA"
       fields << { type: :text_area, key: "remittance_info", label: "Remittance information", description: "For Tax payments, include unique 19 character Payment Reference Number(PRN) (e.g., /PRN/xxxxxxxxxxxxxxxxxxx)" }
-    else
-      fields << { type: :text_area, key: "instructions", label: "Country-specific instructions", description: "Use this space to include specific details required to send to this country." }
     end
     return fields
   end
