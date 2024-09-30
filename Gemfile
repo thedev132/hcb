@@ -35,7 +35,7 @@ gem "faraday" # web requests
 gem "increase", "~> 0.3.3"
 gem "stripe", "11.7.0"
 gem "plaid", "~> 29.0"
-gem "yellow_pages", github: "hackclub/yellow_pages", ref: "61ee764"
+gem "yellow_pages", github: "hackclub/yellow_pages", ref: "eab7f30"
 
 gem "aws-sdk-s3", require: false
 
