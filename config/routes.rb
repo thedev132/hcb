@@ -528,6 +528,7 @@ Rails.application.routes.draw do
         resource :user do
           resources :events, path: "organizations", only: [:index]
           resources :stripe_cards, path: "cards", only: [:index]
+          resources :card_grants, only: [:index]
           resources :invitations, only: [:index, :show] do
             member do
               post "accept"
@@ -541,6 +542,7 @@ Rails.application.routes.draw do
 
         resources :events, path: "organizations", only: [:show] do
           resources :stripe_cards, path: "cards", only: [:index]
+          resources :card_grants, only: [:index, :create]
           resources :transactions, only: [:show, :update] do
             resources :receipts, only: [:create, :index]
             resources :comments, only: [:index]
@@ -567,6 +569,8 @@ Rails.application.routes.draw do
             get "ephemeral_keys"
           end
         end
+
+        resources :card_grants, only: [:show]
 
         get "stripe_terminal_connection_token", to: "stripe_terminal#connection_token"
 

@@ -39,6 +39,9 @@
 class CardGrant < ApplicationRecord
   include Hashid::Rails
 
+  include PublicIdentifiable
+  set_public_id_prefix :cdg
+
   belongs_to :event
   belongs_to :subledger, optional: true
   belongs_to :stripe_card, optional: true
