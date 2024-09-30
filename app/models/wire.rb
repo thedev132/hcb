@@ -410,7 +410,7 @@ class Wire < ApplicationRecord
     when "ZM"
       fields << { type: :text_field, key: "local_bank_code", label: "Local bank code", description: "6-digit branch code" }
     when "ZA"
-      fields << { type: :text_area, key: "remittance_info", label: "Remittance information", description: "For Tax payments, include unique 19 character Payment Reference Number(PRN) (e.g., /PRN/xxxxxxxxxxxxxxxxxxx)" }
+      fields << { type: :text_area, key: "remittance_info", label: "Remittance information", description: "For tax payments, include unique 19 character Payment Reference Number(PRN) (e.g., /PRN/xxxxxxxxxxxxxxxxxxx)" }
     end
     return fields
   end
