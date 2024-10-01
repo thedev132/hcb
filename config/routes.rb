@@ -7,11 +7,13 @@ require "admin_constraint"
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  mount Audits1984::Engine => "/console", constraints: AdminConstraint.new
-  mount Sidekiq::Web => "/sidekiq", :constraints => AdminConstraint.new
-  mount Flipper::UI.app(Flipper), at: "flipper", as: "flipper", constraints: AdminConstraint.new
-  mount Blazer::Engine, at: "blazer", constraints: AdminConstraint.new
-  get "/sidekiq", to: "users#auth" # fallback if adminconstraint fails, meaning user is not signed in
+  constraints AdminConstraint do
+    mount Audits1984::Engine => "/console"
+    mount Sidekiq::Web => "/sidekiq"
+    mount Flipper::UI.app(Flipper), at: "flipper", as: "flipper"
+    mount Blazer::Engine, at: "blazer"
+  end
+  get "/sidekiq", to: redirect("users/auth") # fallback if adminconstraint fails, meaning user is not signed in
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
@@ -718,7 +720,6 @@ Rails.application.routes.draw do
     end
 
     resources :payment_recipients, only: [:destroy]
-
 
     member do
       post "test_ach_payment"
