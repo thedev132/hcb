@@ -8,6 +8,11 @@
 #  aasm_state                :string           not null
 #  account_number_bidx       :string           not null
 #  account_number_ciphertext :string           not null
+#  address_city              :string
+#  address_line1             :string
+#  address_line2             :string
+#  address_postal_code       :string
+#  address_state             :string
 #  amount_cents              :integer          not null
 #  approved_at               :datetime
 #  bic_code_bidx             :string           not null
@@ -15,7 +20,9 @@
 #  currency                  :string           default("USD"), not null
 #  memo                      :string           not null
 #  payment_for               :string           not null
+#  recipient_country         :integer
 #  recipient_email           :string           not null
+#  recipient_information     :jsonb
 #  recipient_name            :string           not null
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null

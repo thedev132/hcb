@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_22_234449) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_01_195606) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -2126,6 +2126,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_22_234449) do
     t.string "currency", default: "USD", null: false
     t.integer "recipient_country"
     t.jsonb "recipient_information"
+    t.string "address_city"
+    t.string "address_line1"
+    t.string "address_line2"
+    t.string "address_state"
+    t.string "address_postal_code"
     t.index ["event_id"], name: "index_wires_on_event_id"
     t.index ["user_id"], name: "index_wires_on_user_id"
   end

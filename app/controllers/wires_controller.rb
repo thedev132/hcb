@@ -64,6 +64,11 @@ class WiresController < ApplicationController
        :bic_code,
        :recipient_country,
        :currency,
+       :address_line1,
+       :address_line2,
+       :address_city,
+       :address_postal_code,
+       :address_state,
        { file: [] }] + Wire.recipient_information_accessors
     )
   end
