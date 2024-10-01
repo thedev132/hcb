@@ -60,7 +60,7 @@
     <% else %>
       <%= "as a contract signee" if organizer_position_invite.signee? && organizer_position_invite.event.organizer_positions.where(is_signee: nil).none? %>
     <% end %>
-    by <%= organizer_position_invite.sender.full_name %>
+    by <%= organizer_position_invite.sender.name %>
   </div>
 
 </div>
