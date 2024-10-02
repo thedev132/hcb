@@ -192,6 +192,20 @@ class Wire < ApplicationRecord
     end
   end
 
+  POSTAL_CODE_FORMATS = {
+    "US": /^\d{5}(?:-\d{4})?$/,
+    "CN": /^\d{6}$/,
+    "JP": /^\d{3}-\d{4}$/,
+    "FR": /^\d{5}$/,
+    "DE": /^\d{5}$/
+  }.freeze
+
+  validate do
+    if POSTAL_CODE_FORMATS[recipient_country.to_sym] && !address_postal_code.match(POSTAL_CODE_FORMATS[recipient_country.to_sym])
+      errors.add(:address_postal_code, "does not meet the required format for this country")
+    end
+  end
+
   validate do
     unless bic_code.match /[A-Z]{4}([A-Z]{2})[A-Z0-9]{2}([A-Z0-9]{3})?$/ # https://www.johndcook.com/blog/2024/01/29/swift/
       errors.add(:bic_code, "is not a valid SWIFT / BIC code")
