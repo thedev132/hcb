@@ -243,7 +243,8 @@ class Wire < ApplicationRecord
           source_event_id: event_id,
           destination_event_id: EventMappingEngine::EventIds::HACK_CLUB_BANK,
           name: "Fee for international wire (#{id})",
-          amount: Wire::ESTIMATED_FEE_CENTS_USD / 100
+          amount: Wire::ESTIMATED_FEE_CENTS_USD / 100,
+          requested_by_id: User.find_by!(email: "hcb@hackclub.com").id
         ).run
       end
     end
