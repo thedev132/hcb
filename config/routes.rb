@@ -341,6 +341,7 @@ Rails.application.routes.draw do
       post "freeze"
       post "defrost"
       post "cancel"
+      post "enable_cash_withdrawal"
       get "ephemeral_keys"
     end
   end

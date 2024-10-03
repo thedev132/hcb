@@ -147,6 +147,19 @@ class StripeCardsController < ApplicationController
     redirect_to stripe_card_url(card)
   end
 
+  def enable_cash_withdrawal
+    card = StripeCard.find(params[:id])
+    authorize card
+    card.toggle!(:cash_withdrawal_enabled)
+    if card.cash_withdrawal_enabled?
+      confetti!(emojis: %w[💵 💴 💶 💷])
+      flash[:success] = "You've enabled cash withdrawals for this card."
+    else
+      flash[:success] = "You've disabled cash withdrawals for this card."
+    end
+    redirect_to stripe_card_url(card)
+  end
+
   def ephemeral_keys
     card = StripeCard.find(params[:id])
 
