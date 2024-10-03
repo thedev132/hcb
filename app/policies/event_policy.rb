@@ -48,6 +48,20 @@ class EventPolicy < ApplicationPolicy
     admin_or_manager?
   end
 
+  alias remove_header_image? update?
+
+  alias remove_background_image? update?
+
+  alias remove_logo? update?
+
+  alias enable_feature? update?
+
+  alias disable_feature? update?
+
+  def validate_slug?
+    admin_or_user?
+  end
+
   def destroy?
     user&.admin? && record.demo_mode?
   end
@@ -128,26 +142,6 @@ class EventPolicy < ApplicationPolicy
     (is_public || admin_or_user?) && record.approved? && record.plan.donations_enabled?
   end
 
-  def remove_header_image?
-    admin_or_manager?
-  end
-
-  def remove_background_image?
-    admin_or_manager?
-  end
-
-  def remove_logo?
-    admin_or_manager?
-  end
-
-  def enable_feature?
-    admin_or_manager?
-  end
-
-  def disable_feature?
-    admin_or_manager?
-  end
-
   def account_number?
     admin_or_manager? && record.plan.account_number_enabled?
   end
@@ -162,10 +156,6 @@ class EventPolicy < ApplicationPolicy
 
   def audit_log?
     user.admin?
-  end
-
-  def validate_slug?
-    admin_or_user?
   end
 
   def termination?
