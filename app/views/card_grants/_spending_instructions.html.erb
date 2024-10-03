@@ -40,13 +40,13 @@
           <strong>Billing address</strong>
           <%= render_address stripe_card.cardholder %>
         </p>
-        <% if card_grant.allowed_merchants %>
+        <% if card_grant.allowed_merchants.any? %>
           <p>
             <strong>Allowed merchants</strong>
               <span class="font-mono h5"><%= card_grant.allowed_merchant_names.join(", ") %></span>
           </p>
         <% end %>
-        <% if card_grant.allowed_categories %>
+        <% if card_grant.allowed_categories.any? %>
           <p>
             <strong>Allowed categories</strong>
             <span class="font-mono h5"><%= card_grant.allowed_category_names.join(", ") %></span>
