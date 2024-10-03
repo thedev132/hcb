@@ -173,8 +173,16 @@ class CardGrant < ApplicationRecord
     (merchant_lock + (setting&.merchant_lock || [])).uniq
   end
 
+  def allowed_merchant_names
+    allowed_merchants.map { |merchant_id| YellowPages::Merchant.lookup(network_id: merchant_id).name || "Unnamed Merchant (#{merchant_id})" }.uniq
+  end
+
   def allowed_categories
     (category_lock + (setting&.category_lock || [])).uniq
+  end
+
+  def allowed_category_names
+    allowed_categories.map(&:humanize)
   end
 
   def expires_after
