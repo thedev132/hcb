@@ -22,7 +22,7 @@ class CardGrantPolicy < ApplicationPolicy
   end
 
   def cancel?
-    admin_or_user
+    admin_or_user || record.user == user
   end
 
   def topup?
