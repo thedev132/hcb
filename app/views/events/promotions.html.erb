@@ -36,7 +36,7 @@
       </h3>
       <%= link_to "Join",
         @perks_available ? "https://hackclub.com/bin/" : root_path,
-        class: "btn bg-success mr1 #{'disabled' unless @perks_available} tooltipped tooltipped--w",
+        class: "btn mr1 #{'disabled' unless @perks_available} tooltipped tooltipped--w",
         target: :_blank %>
     </div>
     <p>
@@ -55,7 +55,7 @@
       </h3>
       <%= link_to "Jump Onboard",
         @perks_available ? "https://hackclub.com/onboard/" : root_path,
-        class: "btn bg-success mr1 #{'disabled' unless @perks_available} tooltipped tooltipped--w",
+        class: "btn mr1 #{'disabled' unless @perks_available} tooltipped tooltipped--w",
         target: :_blank %>
     </div>
     <p>
@@ -72,7 +72,7 @@
     <%= image_tag "1password.svg", width: 210, class: "p2" %>
     <%= link_to "Temporarily closed",
       @perks_available ? fillout_form("1EVMTc9d1Zus", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Your Name" => current_user.name, "Email" => current_user.email }, prefix: "prefill_") : root_path,
-      class: "btn bg-success mr1 disabled",
+      class: "btn mr1 disabled",
       target: :_blank %>
   </div>
 
@@ -186,12 +186,12 @@
     <h3 class="h1 p2 my0 color-black">Domains</h3>
       <% if !@event.g_suites.none? || !@perks_available %>
         <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="You do not have access to this perk.">
-          <span class="btn bg-success disabled">Apply</span>
+          <span class="btn disabled">Apply</span>
         </div>
       <% else %>
         <%= link_to "Apply",
           @perks_available ? fillout_form("pUUaNHEiT1us", { "hcbprojname" => @event.name, "hcburl" => event_url(@event), "name" => current_user.name, "email" => current_user.email }) : root_path,
-          class: "btn bg-success mr1 #{"disabled" unless @perks_available}",
+          class: "btn mr1 #{"disabled" unless @perks_available}",
           target: :_blank %>
       <% end %>
   </div>
@@ -215,7 +215,7 @@
     <%= link_to image_tag("stickerninja.png", width: 120), "https://stickerninja.com/", target: :_blank %>
       <% if !@perks_available %>
         <div class="actions tooltipped tooltipped--w inline-block mt0" aria-label="You are not eligible to access this perk.">
-          <span class="btn bg-success disabled">Ineligible</span>
+          <span class="btn disabled">Ineligible</span>
         </div>
       <% else %>
         <div class="actions inline-block mt0 items-center">
@@ -244,7 +244,7 @@
       </span>
     <%= link_to "Request",
       @perks_available ? fillout_form("umhwJ5s1fNus", { "Recipient Name" => current_user.name, "Login Email" => current_user.email, "Organization" => @event.name }, prefix: "prefill_") : root_path,
-      class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
+      class: "btn mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
   </div>
 
@@ -266,7 +266,7 @@
     <h3 class="h1 white p2 my0">Sendy</h3>
     <%= link_to "Temporarily closed",
       @perks_available ? fillout_form("4cJ69MSzKhus", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Your name" => current_user.name, "Login email" => current_user.email, "Domain URL" => @event.g_suites.first&.domain }, prefix: "prefill_") : root_path,
-      class: "btn bg-success mr1 disabled",
+      class: "btn mr1 disabled",
       target: :_blank %>
   </div>
 
@@ -282,7 +282,7 @@
       <h3 class="h1 p2 my0 color-black">Wallets</h3>
       <%= link_to @wallets_available ? "Request" : "Expired",
                   @perks_available && @wallets_available ? "https://hack.af/hcb-wallets?prefill_Organization%20Name=#{@event.name}&prefill_Recipient%20Name=#{current_user.name}&prefill_Login%20Email=#{current_user.email}" : root_path,
-                  class: "btn bg-success mr1 #{'disabled' unless @perks_available && @wallets_available}",
+                  class: "btn mr1 #{'disabled' unless @perks_available && @wallets_available}",
                   target: :_blank, disabled: !(@perks_available && @wallets_available) %>
     </div>
 
@@ -299,7 +299,7 @@
       <%= image_tag "stickermule.svg", width: 240 %>
       <%= link_to "Expired",
                   @perks_available ? "https://hack.af/stickermule?prefill_Event%20Name=#{@event.name}&prefill_First%20Name=#{current_user.first_name}&prefill_Email=#{current_user.email}" : root_path,
-                  class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
+                  class: "btn mr1 #{'disabled' unless @perks_available}",
                   target: :_blank,
                   disabled: true %>
     </div>
@@ -366,7 +366,7 @@
       <%= image_tag "github.png", width: 170 %>
       <%= link_to "Expired",
         @perks_available ? "https://hack.af/grant?prefill_Event%20Name=#{@event.name}" : root_path,
-        class: "btn bg-accent mr1 #{'disabled' unless @perks_available}",
+        class: "btn mr1 #{'disabled' unless @perks_available}",
         disabled: true %>
     </div>
 
@@ -401,7 +401,7 @@
       class="card__banner card__banner--top flex justify-between items-center"
       style="background-color: #0d101e; border: 1px solid #0068ad;">
       <%= image_tag "replit.png", width: 170 %>
-      <%= link_to "Expired", "#", class: "btn bg-success mr1 disabled" %>
+      <%= link_to "Expired", "#", class: "btn mr1 disabled" %>
     </div>
 
     <p class="mb0">
