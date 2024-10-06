@@ -190,14 +190,18 @@
                     <span><%= @hcb_code.stripe_merchant["city"].humanize %></span>
                   </p>
                 <% end %>
-                <p>
-                  <strong>Zip</strong>
-                  <span><%= @hcb_code.stripe_merchant["postal_code"] or "Unknown" %></span>
-                </p>
-                <p>
-                  <strong>State</strong>
-                  <span><%= @hcb_code.stripe_merchant["state"]&.upcase or "Unknown" %></span>
-                </p>
+                <% if @hcb_code.stripe_merchant["postal_code"] %>
+                  <p>
+                    <strong>Zip</strong>
+                    <span><%= @hcb_code.stripe_merchant["postal_code"] %></span>
+                  </p>
+                <% end %>
+                <% if @hcb_code.stripe_merchant["state"] %>
+                  <p>
+                    <strong>State</strong>
+                    <span><%= @hcb_code.stripe_merchant["state"]&.upcase %></span>
+                  </p>
+                <% end %>
                 <p>
                   <strong>Country</strong>
                   <span><%= country_to_emoji @hcb_code.stripe_merchant["country"] %></span>
