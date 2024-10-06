@@ -114,53 +114,43 @@ class EventsController < ApplicationController
     @type_filters = {
       "ach_transfer"           => {
         "settled" => ->(t) { t.local_hcb_code.ach_transfer? },
-        "pending" => ->(t) { t.raw_pending_outgoing_ach_transaction_id },
-        "icon"    => "plus-fill"
+        "pending" => ->(t) { t.raw_pending_outgoing_ach_transaction_id }
       },
       "mailed_check"           => {
         "settled" => ->(t) { t.local_hcb_code.check? || t.local_hcb_code.increase_check? },
-        "pending" => ->(t) { t.raw_pending_outgoing_check_transaction_id || t.increase_check_id },
-        "icon"    => "payment-transfer"
+        "pending" => ->(t) { t.raw_pending_outgoing_check_transaction_id || t.increase_check_id }
       },
       "account_transfer"       => {
         "settled" => ->(t) { t.local_hcb_code.disbursement? },
-        "pending" => ->(t) { t.local_hcb_code.disbursement? },
-        "icon"    => "door-enter"
+        "pending" => ->(t) { t.local_hcb_code.disbursement? }
       },
       "card_charge"            => {
         "settled" => ->(t) { t.raw_stripe_transaction },
-        "pending" => ->(t) { t.raw_pending_stripe_transaction_id },
-        "icon"    => "card"
+        "pending" => ->(t) { t.raw_pending_stripe_transaction_id }
       },
       "check_deposit"          => {
         "settled" => ->(t) { t.local_hcb_code.check_deposit? },
-        "pending" => ->(t) { t.check_deposit_id },
-        "icon"    => "payment-docs"
+        "pending" => ->(t) { t.check_deposit_id }
       },
       "donation"               => {
         "settled" => ->(t) { t.local_hcb_code.donation? },
-        "pending" => ->(t) { t.raw_pending_donation_transaction_id },
-        "icon"    => "support"
+        "pending" => ->(t) { t.raw_pending_donation_transaction_id }
       },
       "invoice"                => {
         "settled" => ->(t) { t.local_hcb_code.invoice? },
-        "pending" => ->(t) { t.raw_pending_invoice_transaction_id },
-        "icon"    => "briefcase"
+        "pending" => ->(t) { t.raw_pending_invoice_transaction_id }
       },
       "refund"                 => {
         "settled" => ->(t) { t.local_hcb_code.stripe_refund? },
-        "pending" => ->(t) { false },
-        "icon"    => "view-reload"
+        "pending" => ->(t) { false }
       },
       "fiscal_sponsorship_fee" => {
         "settled" => ->(t) { t.local_hcb_code.fee_revenue? || t.fee_payment? },
-        "pending" => ->(t) { t.raw_pending_bank_fee_transaction_id },
-        "icon"    => "minus-fill"
+        "pending" => ->(t) { t.raw_pending_bank_fee_transaction_id }
       },
       "reimbursement"          => {
         "settled" => ->(t) { t.local_hcb_code.reimbursement_expense_payout? },
-        "pending" => ->(t) { false },
-        "icon"    => "minus-fill"
+        "pending" => ->(t) { false }
       }
     }
 
