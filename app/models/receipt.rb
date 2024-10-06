@@ -39,6 +39,8 @@ class Receipt < ApplicationRecord
   blind_index :textual_content
   has_encrypted :extracted_card_last4
 
+  include StripeAuthorizationsHelper
+
   include PublicIdentifiable
   set_public_id_prefix :rct
 
@@ -156,6 +158,14 @@ class Receipt < ApplicationRecord
   def extracted_incorrect_amount_cents?
     if receiptable.respond_to?(:amount_cents) && extracted_total_amount_cents
       return extracted_total_amount_cents.abs != receiptable.amount_cents.abs
+    end
+
+    false
+  end
+
+  def extracted_incorrect_merchant?
+    if receiptable.try(:stripe_merchant) && extracted_merchant_name
+      return WhiteSimilarity.similarity(humanized_merchant_name(receiptable.stripe_merchant), extracted_merchant_name) < 0.5
     end
 
     false
