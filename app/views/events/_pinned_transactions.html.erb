@@ -18,8 +18,15 @@
           </button>
         <% end if organizer_signed_in? %>
 
-        <p class="block font-bold m0">
+        <p class="block font-bold m0 flex items-center g2">
           <%= format_date pin.hcb_code.date %>
+          <% if pin.hcb_code.canonical_transactions.none? %>
+            <% if pin.hcb_code.pt&.declined? %>
+              <%= badge_for "Declined", class: "bg-error m0 mr1" %>
+            <% else %>
+              <%= badge_for "Pending", class: "bg-transparent border border-dashed border-muted m0 mr1" %>
+            <% end %>
+          <% end %>
         </p>
         <p class="pinned__transaction__text pinned__transaction__text--memo mt1 mb1 line-height-3 h3">
           <%= pin.hcb_code.memo %>
