@@ -563,4 +563,11 @@ class HcbCode < ApplicationRecord
     nil
   end
 
+  def fallback_avatar_tooltip
+    return donation.name if donation? && !donation.anonymous?
+    return invoice.sponsor.name if invoice?
+
+    nil
+  end
+
 end

@@ -105,7 +105,7 @@
   <% if local_assigns[:show_author_column] %>
     <% author = pt.local_hcb_code.author %>
     <td>
-      <div class="flex items-center justify-center <%= "tooltipped tooltipped--w" if author&.name %>" aria-label="<%= author&.name %>">
+      <div class="flex items-center justify-center <%= "tooltipped tooltipped--w" if author&.name || pt.local_hcb_code.fallback_avatar_tooltip %>" aria-label="<%= author&.name || pt.local_hcb_code.fallback_avatar_tooltip %>">
         <% if author.present? %>
           <%= avatar_for author, 24, { class: "align-middle author" } %>
         <% elsif pt.local_hcb_code.fallback_avatar %>
