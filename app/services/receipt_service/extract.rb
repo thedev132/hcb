@@ -51,7 +51,7 @@ module ReceiptService
                                },
                                {
                                  role: "user",
-                                 content: @textual_content.truncate(80_000)
+                                 content: @textual_content.truncate(80_000, omission: "...#{@textual_content.last(40_000)}")
                                }
                              ]
                            })
