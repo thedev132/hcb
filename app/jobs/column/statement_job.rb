@@ -14,7 +14,7 @@ module Column
 
       template = [
         # Must be wrapped in lambdas
-        [:date_posted, ->(t) { t["effective_at"] }],
+        [:date_posted, ->(t) { t["effective_at_utc"] }],
         [:description, ->(t) {
                          transaction_id = t["transaction_id"]
                          if transaction_id.start_with? "acht" # TODO: use `transaction_type` instead
