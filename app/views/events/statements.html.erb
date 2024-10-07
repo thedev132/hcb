@@ -19,12 +19,20 @@
   <%= blankslate "No financial statements yet" %>
 <% else %>
   <div class="grid">
-    <% months.each do |day| %>
-      <%= link_to transactions_exports_path(event: @event, start_date: day, format: :pdf), target: "_blank", class: "card card--hover flex items-center" do %>
-          <span style="flex-grow: 1">
-            <%= day.strftime("%B %Y") %>
-          </span>
-          <%= inline_icon "download", size: 24, class: "ml1", 'aria-label': "Download" %>
+    <% months.group_by { |month| month.year }.each do |_, months| %>
+      <div style="grid-column: 1 / span 3">
+        <h3 class="mb0 <%= "mt1" if @end_date.year == months.first.year %>" id="<%= months.first.strftime("%Y") %>">
+          Statements from <%= months.first.strftime("%Y") %>
+        </h3>
+        <hr class="mb1 mt1">
+      </div>
+      <% months.each do |day| %>
+        <%= link_to transactions_exports_path(event: @event, start_date: day, format: :pdf), target: "_blank", class: "card card--hover flex items-center" do %>
+            <span style="flex-grow: 1">
+              <%= day.strftime("%B %Y") %>
+            </span>
+            <%= inline_icon "download", size: 24, class: "ml1", 'aria-label': "Download" %>
+        <% end %>
       <% end %>
     <% end %>
   </div>
