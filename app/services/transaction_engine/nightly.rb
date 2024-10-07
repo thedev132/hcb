@@ -16,7 +16,10 @@ module TransactionEngine
       safely { import_raw_stripe_transactions! }
       safely { import_raw_csv_transactions! }
       safely { import_raw_increase_transactions! }
-      safely { import_raw_column_transactions! }
+      # disabled by @sampoder
+      # transitioning from EST to UTC for reporting
+      # will manually import all transactions
+      # safely { import_raw_column_transactions! }
 
       # (2) Hash transactions
       safely { hash_raw_plaid_transactions! }
