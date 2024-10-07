@@ -180,7 +180,9 @@
               </tr>
             </thead>
             <tbody data-behavior="transactions">
-              <%= render "pending_fee_transaction" if @event.fronted_fee_balance_v2_cents > 0 %>
+              <% unless @tag || @user || (@type && @type != "fiscal_sponsorship_fee") || @start_date || @end_date || @missing_receipts || @event.fronted_fee_balance_v2_cents <= 0 %>
+                <%= render "pending_fee_transaction" %>
+              <% end %>
 
               <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", collection: @pending_transactions, as: :pt, locals: { event: @event, show_amount: true, selectable: Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0, show_author_column: true } %>
 
