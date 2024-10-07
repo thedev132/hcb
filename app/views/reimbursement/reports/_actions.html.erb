@@ -186,7 +186,7 @@
             <% end %>
             <% unless ::Shared::AmpleBalance.ample_balance?(report.amount_to_reimburse_cents, report.event) %>
               <% button_hint = capture do %>
-                <span class="bold warning">⚠️ Warning</span>: this organization does not have the balance to fulfil this report, it likely shouldn't be approved.
+                <span class="bold warning">⚠️ Warning</span>: this organization does not have the balance to fulfil this report.
               <% end %>
             <% end %>
           <% end %>
