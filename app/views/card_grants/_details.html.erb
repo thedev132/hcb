@@ -66,7 +66,7 @@
 
     <p>
       <strong>Allowed categories</strong>
-      <% if (allowed_categories = card_grant.allowed_categories.join(" ").presence) %>
+      <% if (allowed_categories = card_grant.allowed_category_names.join(", ").presence) %>
         <span class="font-mono h5"><%= allowed_categories %></span>
       <% else %>
         <span>All categories allowed</span>

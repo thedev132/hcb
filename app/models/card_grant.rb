@@ -182,7 +182,7 @@ class CardGrant < ApplicationRecord
   end
 
   def allowed_category_names
-    allowed_categories.map(&:humanize)
+    allowed_categories.map { |category| YellowPages::Category.lookup(key: category).name || "#{category}*" }.uniq
   end
 
   def expires_after

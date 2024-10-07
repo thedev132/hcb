@@ -170,7 +170,7 @@
                 <p>
                   <strong>Category</strong>
                   <span>
-                    <%= @hcb_code.stripe_merchant["category"].humanize.capitalize %>
+                    <%= humanized_category @hcb_code.stripe_merchant %>
                   </span>
                 </p>
                 <p>
@@ -295,7 +295,7 @@
           </p>
           <p>
             <strong>Category</strong>
-            <%= @hcb_code.stripe_merchant["category"]&.humanize %>
+            <%= humanized_category @hcb_code.stripe_merchant %> (<%= @hcb_code.stripe_merchant["category"] %>)
           </p>
         <% end %>
       <% end %>
@@ -322,7 +322,7 @@
         <p>
           <strong>Category</strong>
           <span>
-            <%= @hcb_code.stripe_merchant["category"].humanize.capitalize %>
+            <%= humanized_category @hcb_code.stripe_merchant %>
           </span>
         </p>
         <p>
