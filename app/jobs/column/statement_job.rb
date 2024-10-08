@@ -54,6 +54,8 @@ module Column
 
       transactions_by_report.each_value do |transactions|
         transactions.reverse.each_with_index do |transaction, transaction_index|
+          next if transaction["effective_at"] == transaction["effective_at_utc"] && transaction["effective_at_utc"] < "2024-10-07T04:00:00Z" # see TransactionEngine::Nightly#import_raw_column_transactions! for a description of this logic
+
           rows << serializer.call(transaction).values
         end
       end
