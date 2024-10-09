@@ -7,7 +7,7 @@ class LoginsController < ApplicationController
   before_action :set_user, except: [:new, :create]
   before_action :set_webauthn_available, except: [:new, :create]
   before_action :set_totp_available, except: [:new, :create]
-  before_action :set_return_to, except: [:new]
+  before_action :set_return_to
   before_action :set_force_use_email
 
   # view to log in
@@ -25,9 +25,9 @@ class LoginsController < ApplicationController
     login_preference = session[:login_preference]
 
     if login_preference == "totp"
-      redirect_to totp_login_path(login), status: :temporary_redirect
+      redirect_to totp_login_path(login, return_to: params[:return_to]), status: :temporary_redirect
     elsif !has_webauthn_enabled || login_preference == "email"
-      redirect_to login_code_login_path(login), status: :temporary_redirect
+      redirect_to login_code_login_path(login, return_to: params[:return_to]), status: :temporary_redirect
     else
       session[:auth_email] = login.user.email
       redirect_to choose_login_preference_login_path(login, return_to: params[:return_to])
