@@ -494,7 +494,7 @@ class EventsController < ApplicationController
 
     @results = GSuiteService::Verify.new(g_suite_id: @g_suite.id).results(skip_g_verify: true) if @g_suite.present?
 
-    unless @g_suite.verification_error?
+    unless @g_suite&.verification_error?
       # If we're not in an error state, then we don't want to show the
       # "checklist-style" with the strike-through. Setting the results to false
       # will not strike-through the rows.
