@@ -498,7 +498,7 @@ class EventsController < ApplicationController
       # If we're not in an error state, then we don't want to show the
       # "checklist-style" with the strike-through. Setting the results to false
       # will not strike-through the rows.
-      @results = @results.transform_values { false }
+      @results = @results&.transform_values { false }
     end
   end
 
