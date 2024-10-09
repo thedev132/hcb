@@ -71,7 +71,7 @@
   </table>
   <%= paginate @positions %>
   <% else %>
-    <%= blankslate "No #{params[:filter] == "all" ? "others" : params[:filter] || "others"} on your team yet" %>
+    <%= blankslate @event.organizer_positions.none? ? "No team members" : "No team members found" %>
   <% end %>
 <% else %>
 
@@ -83,7 +83,7 @@
       <%= paginate @positions %>
     <% end %>
   <% else %>
-    <%= blankslate "No others on your team yet" %>
+    <%= blankslate @event.organizer_positions.none? ? "No team members" : "No team members found" %>
   <% end %>
 <% end %>
 
