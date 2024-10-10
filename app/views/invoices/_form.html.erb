@@ -1,6 +1,6 @@
-<%= form_with(model: invoice, url: :event_invoices, local: true, html: { "x-data" => "{ amount: null }" }) do |form| %>
+<%= form_with(model: invoice, url: event_invoices_path(@event), local: true, html: { "x-data" => "{ amount: null }" }) do |form| %>
   <%= form_errors invoice %>
-  <%= form_errors @sponsor %>
+  <%= form_errors sponsor %>
 
   <% if @event.sponsors.count > 0 %>
     <div class="field">

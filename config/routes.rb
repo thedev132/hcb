@@ -635,8 +635,16 @@ Rails.application.routes.draw do
   get "/events" => "events#index"
   get "/event_by_airtable_id/:airtable_id" => "events#by_airtable_id"
   resources :events, except: [:new, :create, :edit], concerns: :commentable, path: "/" do
+
+    # Loaded as Turbo frames on the home page
+    get :top_merchants
+    get :top_categories
+    get :tags_users
+    get :transaction_heatmap
+
     get "edit", to: redirect("/%{event_id}/settings")
     get "breakdown"
+    get "transactions"
     put "toggle_hidden"
     post "claim_point_of_contact"
 

@@ -5,6 +5,19 @@ class EventPolicy < ApplicationPolicy
     user.present?
   end
 
+  # Event homepage
+  def show?
+    is_public || admin_or_user?
+  end
+
+  # Turbo frames for the event homepage (show)
+  alias_method :top_merchants?, :show?
+  alias_method :top_categories?, :show?
+  alias_method :tags_users?, :show?
+  alias_method :transaction_heatmap?, :show?
+
+  alias_method :transactions?, :show?
+
   def toggle_hidden?
     user&.admin?
   end
@@ -15,10 +28,6 @@ class EventPolicy < ApplicationPolicy
 
   def create?
     user&.admin?
-  end
-
-  def show?
-    is_public || admin_or_user?
   end
 
   def breakdown?

@@ -111,6 +111,7 @@ html[data-dark='true'] {
   .card,
   .menu__content,
   .modal {
+    --card-bg: #252429;
     background-color: $darkless;
   }
   .modal--scroll.bg-snow {
@@ -304,6 +305,10 @@ html[data-dark='true'] {
   }
   .list-badge {
     background-color: rgba(0, 0, 0, 0.125);
+  }
+
+  .list-badge.quick-action {
+    border: 1px solid darken(map-get($palette, muted), 20%);
   }
 
   .filterbar__item:active,

@@ -12,16 +12,18 @@
     <% end %>
   </div>
   <nav class="dock dock--desktop mt2 font-medium">
+    <% if Flipper.enabled?(:event_home_page_redesign_2024_09_21, @event) %>
+      <%= dock_item "Home",
+                    event_path(id: @event.slug),
+                    tooltip: "See everything at-a-glance",
+                    icon: "home",
+                    selected: local_assigns[:selected] == :home %>
+    <% end %>
     <%= dock_item "Transactions",
-      event_path(id: @event.slug),
+      event_transactions_path(event_id: @event.slug),
       tooltip: "View your transactions",
       icon: "transactions",
       selected: local_assigns[:selected] == :transactions %>
-    <%= dock_item "Breakdown",
-      event_breakdown_path(event_id: @event.slug),
-      tooltip: "Breakdown",
-      icon: "grid",
-      selected: local_assigns[:selected] == :breakdown if policy(@event).breakdown? %>
     <% if policy(@event).activation_flow? %>
       <% admin_tool("m0 p0 overflow-visible w-fit") do %>
         <%= dock_item "Activate",

@@ -30,12 +30,11 @@
   max-width: 100%;
 }
 
-.grid-container--preview {
-  grid-template-columns: repeat(5, 1fr) repeat(15, 1fr) repeat(5, 1fr) repeat(
-      28,
-      1fr
-    );
-  grid-template-rows: repeat(1, 1fr);
+@media only screen and (max-width: 600px) {
+  .grid-container {
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(53, 1fr);
+  }
 }
 
 .grid-item {

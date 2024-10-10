@@ -3,6 +3,7 @@ import { Tooltip, Cell, PieChart, Legend, Pie } from 'recharts'
 import Intl from 'intl'
 import 'intl/locale-data/jsonp/en-US'
 import PropTypes from 'prop-types'
+import { colors, shuffle } from './utils'
 
 export const USDollar = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -15,49 +16,6 @@ export const USDollarNoCents = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 })
-
-const colors = [
-  '#ec3750', // red
-  '#ff8c37', // orange
-  '#f1c40f', // yellow
-  '#33d6a6', // green
-  '#5bc0de', // cyan
-  '#338eda', // blue
-  '#a633d6', // purple
-  '#f27b8d',
-  '#ee5068',
-  '#ca2f46',
-  '#f29f73',
-  '#ee834b',
-  '#d66b32',
-  '#8fc32d',
-  '#80ae29',
-  '#6d9523',
-  '#3fb72b',
-  '#379d25',
-  '#30cc66',
-  '#2bb75b',
-  '#259d4e',
-  '#2fc8b1',
-  '#2ab39e',
-  '#249988',
-  '#5ebdf0',
-  '#36a9e7',
-  '#2e91c6',
-  '#24739d',
-  '#15435c',
-  '#8a9af4',
-  '#6c80f1',
-  '#435ced',
-]
-
-const shuffle = array => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[array[i], array[j]] = [array[j], array[i]]
-  }
-  return array
-}
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {

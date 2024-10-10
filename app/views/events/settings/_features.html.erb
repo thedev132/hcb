@@ -1,4 +1,13 @@
 <%= render partial: "features/preview", locals: {
+      id: "home-page-redesign",
+      classes: ["feature-home-page-redesign"],
+      feature_flag: :event_home_page_redesign_2024_09_21,
+      name: "Home Page Redesign",
+      description: "A fresh new look for your event's home page!",
+      event: @event
+    } %>
+
+<%= render partial: "features/preview", locals: {
       id: "transaction-tags",
       classes: ["feature-transaction-tags"],
       feature_flag: :transaction_tags_2022_07_29,

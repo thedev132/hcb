@@ -56,6 +56,67 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
+    authorize @event
+
+    if !Flipper.enabled?(:event_home_page_redesign_2024_09_21, @event)
+      redirect_to event_transactions_path(@event.slug)
+      return
+    end
+
+    pending_transactions = _show_pending_transactions
+    canonical_transactions = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).run
+    all_transactions = [*pending_transactions, *canonical_transactions]
+
+    @recent_transactions = all_transactions.first(5)
+    @money_in = all_transactions.reject { |t| t.amount_cents <= 0 }.first(3)
+    @money_out = all_transactions.reject { |t| t.amount_cents >= 0 }.first(3)
+
+    @activities = PublicActivity::Activity.for_event(@event).order(created_at: :desc).first(5)
+    @organizers = @event.organizer_positions.includes(:user).order(created_at: :desc)
+    @cards = all_stripe_cards = @event.stripe_cards.order(created_at: :desc).where(stripe_cardholder: current_user&.stripe_cardholder).first(10)
+  end
+
+  def transaction_heatmap
+    authorize @event
+    heatmap_engine_response = BreakdownEngine::Heatmap.new(@event).run
+
+    @heatmap = heatmap_engine_response[:heatmap]
+    @maximum_positive_change = heatmap_engine_response[:maximum_positive_change]
+    @maximum_negative_change = heatmap_engine_response[:maximum_negative_change]
+    @past_year_transactions_count = heatmap_engine_response[:transactions_count]
+
+    respond_to do |format|
+      format.html { render partial: "events/home/heatmap", locals: { heatmap: @heatmap, event: @event } }
+    end
+  end
+
+  def top_merchants
+    authorize @event
+    @merchants = BreakdownEngine::Merchants.new(@event).run
+    respond_to do |format|
+      format.html { render partial: "events/home/top_merchants", locals: { merchants: @merchants, event: @event } }
+    end
+  end
+
+  def top_categories
+    authorize @event
+    @categories = BreakdownEngine::Categories.new(@event).run
+    respond_to do |format|
+      format.html { render partial: "events/home/top_categories", locals: { categories: @categories, event: @event } }
+    end
+  end
+
+  def tags_users
+    authorize @event
+    @users = BreakdownEngine::Users.new(@event).run
+    @tags = BreakdownEngine::Tags.new(@event).run
+    @empty_tags = @users.empty? || !Flipper.enabled?(:transaction_tags_2022_07_29, @event)
+    @empty_users = @users.empty?
+
+    render partial: "events/home/tags_users", locals: { users: @users, tags: @tags, event: @event }
+  end
+
+  def transactions
     render_tour @organizer_position, :welcome
 
     maybe_pending_invite = OrganizerPositionInvite.pending.find_by(user: current_user, event: @event)
@@ -201,24 +262,6 @@ class EventsController < ApplicationController
       @popover = flash[:popover]
       flash.delete(:popover)
     end
-  end
-
-  def breakdown
-    authorize @event
-
-    heatmap_engine_response = BreakdownEngine::Heatmap.new(@event).run
-    @heatmap = heatmap_engine_response[:heatmap]
-    @maximum_positive_change = heatmap_engine_response[:maximum_positive_change]
-    @maximum_negative_change = heatmap_engine_response[:maximum_negative_change]
-    @past_year_transactions_count = heatmap_engine_response[:transactions_count]
-
-    @merchants = BreakdownEngine::Merchants.new(@event).run
-
-    @categories = BreakdownEngine::Categories.new(@event).run
-
-    @users = BreakdownEngine::Users.new(@event).run
-
-    @tags = BreakdownEngine::Tags.new(@event).run
   end
 
   def balance_by_date
