@@ -15,7 +15,7 @@ class FeaturesController < ApplicationController
     ai_memos_2024_06_20: %w[✨ 🔮 🪄],
     two_factor_authentication_2024_05_22: %w[🔒],
     totp_2024_06_13: %w[🔒 ⏰],
-    event_home_page_redesign_2024_09_21: %[🏠 📊 📉 💸]
+    event_home_page_redesign_2024_09_21: %w[🏠 📊 📉 💸]
   }.freeze
 
   def enable_feature

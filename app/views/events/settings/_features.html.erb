@@ -5,7 +5,7 @@
       name: "Home Page Redesign",
       description: "A fresh new look for your event's home page!",
       event: @event
-    } %>
+    } if Flipper.enabled?(:event_home_page_redesign_2024_09_21, @event) %>
 
 <%= render partial: "features/preview", locals: {
       id: "transaction-tags",
