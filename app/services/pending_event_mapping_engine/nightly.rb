@@ -41,8 +41,6 @@ module PendingEventMappingEngine
       settle_canonical_pending_incoming_disbursement_hcb_code!
       decline_canonical_pending_incoming_disbursement!
 
-      settle_canonical_pending_ach_payment!
-
       settle_canonical_pending_expense_payout!
 
       true
@@ -172,10 +170,6 @@ module PendingEventMappingEngine
 
     def settle_canonical_pending_bank_fee_hcb_code!
       ::PendingEventMappingEngine::Settle::BankFeeHcbCode.new.run
-    end
-
-    def settle_canonical_pending_ach_payment!
-      ::PendingEventMappingEngine::Settle::AchPayment.new.run
     end
 
     def settle_canonical_pending_expense_payout!
