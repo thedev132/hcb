@@ -535,13 +535,15 @@ class EventsController < ApplicationController
     @g_suite = @event.g_suites.first
     @waitlist_form_submitted = GWaitlistTable.all(filter: "{OrgID} = '#{@event.id}'").any? unless Flipper.enabled?(:google_workspace, @event)
 
-    @results = GSuiteService::Verify.new(g_suite_id: @g_suite.id).results(skip_g_verify: true) if @g_suite.present?
+    if @g_suite.present?
+      @results = GSuiteService::Verify.new(g_suite_id: @g_suite.id).results(skip_g_verify: true)
 
-    unless @g_suite&.verification_error?
-      # If we're not in an error state, then we don't want to show the
-      # "checklist-style" with the strike-through. Setting the results to false
-      # will not strike-through the rows.
-      @results = @results&.transform_values { false }
+      unless @g_suite.verification_error?
+        # If we're not in an error state, then we don't want to show the
+        # "checklist-style" with the strike-through. Setting the results to false
+        # will not strike-through the rows.
+        @results = @results.transform_values { false }
+      end
     end
   end
 
