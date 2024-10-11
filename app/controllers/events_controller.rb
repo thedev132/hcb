@@ -58,7 +58,7 @@ class EventsController < ApplicationController
   def show
     authorize @event
 
-    if !Flipper.enabled?(:event_home_page_redesign_2024_09_21, @event)
+    if !Flipper.enabled?(:event_home_page_redesign_2024_09_21, @event) && !(params[:event_home_page_redesign_2024_09_21] && admin_signed_in?)
       redirect_to event_transactions_path(@event.slug)
       return
     end
