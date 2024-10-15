@@ -745,6 +745,14 @@ class Event < ApplicationRecord
     self[:short_name] || name[0...length]
   end
 
+  monetize :minimumn_wire_amount_cents
+
+  def minimumn_wire_amount_cents
+    return 100 if canonical_transactions.where("amount_cents > 0").where("date >= ?", 1.year.ago).sum(:amount_cents) > 50_000_00
+
+    return 500_00
+  end
+
   private
 
   def point_of_contact_is_admin

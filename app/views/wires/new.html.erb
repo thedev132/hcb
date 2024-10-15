@@ -10,10 +10,16 @@
 
 <h1>Send a wire</h1>
 
+<% callout_footer = "This requirement is waived for organizations that have raised over $50,000 in the past year" %>
+<% callout_footer += " including #{@event.name}!" unless @event.minimumn_wire_amount_cents > 1 %>
+<% callout_footer += " (admins can bypass this)" if current_user.admin? %>
+
 <%= render "callout",
     type: "info",
-    title: "Important information about wire transfers" do %>
-    <span class="font-bold">Each wire transfer incurs a <%= render_money Wire::ESTIMATED_FEE_CENTS_USD %> flat fee</span>, this will be added on to the amount entered below and is passed on from our partner bank. Additionally, <span class="font-bold">currency exchange rates may fluctuate</span> between a wire being requested and a wire being sent.
+    title: "Important information about wire transfers",
+    footer: callout_footer do %>
+    Unfortunately, wires are expensive to send. Our partner bank charges us $25 per wire; therefore, to keep HCB sustainable without passing this fee onto you,
+    <span class="font-bold">each wire sent must be at least $500</span> (after conversion to USD). Consider a <%= link_to "PayPal transfer", new_event_paypal_transfer_path(@event) %> for smaller amounts or reach out to <%= mail_to "hcb@hackclub.com" %>.
 <% end %>
 
 <%= form_with(model: [@event, @wire], local: true, html: {
@@ -86,7 +92,6 @@
           placeholder: "500.00",
           disabled: disabled || @event.balance <= 0,
           step: 0.01,
-          min: 1,
           required: true,
           data: { controller: "truncate-decimal", action: "truncate-decimal#truncate" } %>
       </div>

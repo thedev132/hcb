@@ -63,12 +63,10 @@ class Wire < ApplicationRecord
   include PublicActivity::Model
   tracked owner: proc{ |controller, record| controller&.current_user }, event_id: proc { |controller, record| record.event.id }, only: [:create]
 
-  ESTIMATED_FEE_CENTS_USD = 25_00
-
   after_create do
     create_canonical_pending_transaction!(
       event:,
-      amount_cents: -1 * (usd_amount_cents + ESTIMATED_FEE_CENTS_USD),
+      amount_cents: -1 * usd_amount_cents,
       memo: "OUTGOING WIRE",
       date: created_at
     )
@@ -218,6 +216,12 @@ class Wire < ApplicationRecord
     end
   end
 
+  validate on: :create do
+    if !user.admin? && usd_amount_cents < (Event.find(event.id).minimumn_wire_amount_cents)
+      errors.add(:amount, " must be more than or equal to #{ApplicationController.helpers.render_money event.minimumn_wire_amount_cents} (USD).")
+    end
+  end
+
   aasm timestamps: true, whiny_persistence: true do
     state :pending, initial: true
     state :approved
@@ -238,15 +242,6 @@ class Wire < ApplicationRecord
 
     event :mark_deposited do
       transitions from: :approved, to: :deposited
-      after do
-        DisbursementService::Create.new(
-          source_event_id: event_id,
-          destination_event_id: EventMappingEngine::EventIds::HACK_CLUB_BANK,
-          name: "Fee for international wire (#{id})",
-          amount: Wire::ESTIMATED_FEE_CENTS_USD / 100,
-          requested_by_id: User.find_by!(email: "bank@hackclub.com").id
-        ).run
-      end
     end
   end
 
@@ -257,8 +252,8 @@ class Wire < ApplicationRecord
   validates_presence_of :memo, :payment_for, :recipient_name, :recipient_email
 
   validate on: :create do
-    if (usd_amount_cents + Wire::ESTIMATED_FEE_CENTS_USD) > event.balance_available_v2_cents
-      errors.add(:base, "You don't have enough money to send this transfer! Your balance is #{(event.balance_available_v2_cents / 100).to_money.format}. At current exchange rates, this transfer would cost #{((usd_amount_cents + Wire::ESTIMATED_FEE_CENTS_USD) / 100).to_money.format} (USD, including fees).")
+    if usd_amount_cents > event.balance_available_v2_cents
+      errors.add(:base, "You don't have enough money to send this transfer! Your balance is #{(event.balance_available_v2_cents / 100).to_money.format}. At current exchange rates, this transfer would cost #{(usd_amount_cents / 100).to_money.format} (USD).")
     end
   end
 
