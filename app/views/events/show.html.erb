@@ -101,7 +101,7 @@
   </div>
 </div>
 
-<div class="breakdown-row mt-4">
+<div class="homepage-row mt-4">
   <%= turbo_frame_tag "top_merchants", class: "flex-1", src: event_top_merchants_path(@event), loading: "lazy" do %>
     <div class="card card--breakdown shadow-none p-0 min-h-96 text-center flex-1 flex flex-col items-center justify-center" style="flex: 1">
       Loading top merchants...
@@ -115,7 +115,7 @@
 </div>
 
 <%= turbo_frame_tag "tags_users", src: event_tags_users_path(@event), loading: "lazy" do %>
-  <div class="breakdown-row mt-4">
+  <div class="homepage-row mt-4">
     <div class="card card--breakdown shadow-none p-0 min-h-96 text-center flex-1 flex flex-col items-center justify-center" style="flex: 1">
         Loading...
     </div>
@@ -126,7 +126,7 @@
 <% end %>
 
 <%= turbo_frame_tag "transaction_heatmap", src: event_transaction_heatmap_path(@event), loading: "lazy" do %>
-  <div class="breakdown-row mt-4">
+  <div class="homepage-row mt-4">
     <div class="card card--breakdown shadow-none p-0 text-center flex-1 flex flex-col items-center justify-center" style="flex: 1;height:223px">
         Hang tight - this could take a while if you have a lot of transactions.
     </div>

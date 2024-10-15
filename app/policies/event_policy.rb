@@ -30,10 +30,6 @@ class EventPolicy < ApplicationPolicy
     user&.admin?
   end
 
-  def breakdown?
-    (admin_or_user? && Flipper.enabled?(:breakdown_2024_06_18, record)) || user&.admin?
-  end
-
   def balance_by_date?
     is_public || admin_or_user?
   end
