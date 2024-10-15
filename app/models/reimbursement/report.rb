@@ -252,6 +252,7 @@ module Reimbursement
       users += self.comments.map(&:user)
       users += self.comments.flat_map(&:mentioned_users)
       users << self.user
+      users += User.where(id: self.versions.pluck(:whodunnit))
 
       if comment.admin_only?
         users << self.event.point_of_contact if self.event
