@@ -14,7 +14,7 @@
       <%= form.label :report_name, "Report name", class: "bold" %>
       <%= form.text_field :report_name, placeholder: "Chicago Trip Expenses", required: true %>
     </div>
-    <% if defined? @event %>
+    <% if @event %>
       <fieldset data-behavior="reimbursement_report_create_form_type_selection" class="field">
         <legend class="bold">Who is this reimbursement for?</legend>
         <div class="field field--options <%= "trio" if @event.users.excluding(current_user).any? %> pt1 mb0">
