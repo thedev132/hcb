@@ -31,7 +31,7 @@
     "autoprefixer": "^10.4.20",
     "babel-loader": "^9.2.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "chart.js": "^4.4.4",
+    "chart.js": "^4.4.5",
     "chartkick": "^5.0.1",
     "clsx": "^2.1.1",
     "cssnano": "^7.0.6",
