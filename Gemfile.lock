@@ -160,11 +160,11 @@ GEM
     bigdecimal (3.1.8)
     bindata (2.5.0)
     bindex (0.8.1)
-    blazer (3.0.3)
+    blazer (3.1.0)
       activerecord (>= 6.1)
       chartkick (>= 5)
       csv
-      railties (>= 6.1)
+      railties (>= 7)
       safely_block (>= 0.4)
     blind_index (2.5.0)
       activesupport (>= 6.1)
@@ -847,7 +847,7 @@ GEM
     wkhtmltopdf-binary (0.12.6.8)
     xxhash (0.5.0)
     yard (0.9.36)
-    zeitwerk (2.6.18)
+    zeitwerk (2.7.0)
 
 PLATFORMS
   ruby
