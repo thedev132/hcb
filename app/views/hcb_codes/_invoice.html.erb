@@ -164,7 +164,7 @@
         <td class="right-align pr1"><strong>Total</strong></td>
         <td class="w-64">
           <strong><%= render_money @invoice.item_amount %></strong>
-          <small class="muted ml1">(<%= render_money @invoice.deposited? ? Money.from_cents(@invoice.item_amount - @invoice.canonical_transactions.sum { |ct| ct.fee.amount_cents_as_decimal }) : (@invoice.item_amount * (1 - @invoice.event.sponsorship_fee)) %> after fees)</small>
+          <small class="muted ml1">(<%= render_money @invoice.deposited? ? Money.from_cents(@invoice.item_amount - @invoice.canonical_transactions.sum { |ct| ct.fee.amount_cents_as_decimal }) : (@invoice.item_amount * (1 - @invoice.event.revenue_fee)) %> after fees)</small>
         </td>
       </tr>
     </tbody>
