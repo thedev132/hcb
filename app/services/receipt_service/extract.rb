@@ -14,7 +14,7 @@ module ReceiptService
       return if @receipt.user.receipts.where(created_at: 1.hour.ago, data_extracted: true).count > 50 ||
                 (@receipt.receiptable.present? && @receipt.receiptable.receipts.where(data_extracted: true).count > 5)
 
-      @textual_content = @receipt.textual_content || @receipt.extract_textual_content!
+      @textual_content = @receipt.textual_content || @receipt.extract_textual_content![:text]
       if @textual_content.nil?
         @receipt.update(data_extracted: true)
         return
