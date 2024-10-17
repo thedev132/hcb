@@ -12,7 +12,6 @@ class FeaturesController < ApplicationController
     user_permissions_2024_03_09: %w[📛 🧑‍💼 🪪 🎉],
     recently_on_hcb_2024_05_23: %w[👀 🤑 🙈],
     spending_controls_2024_06_03: %w[✅ ❌ 💷],
-    ai_memos_2024_06_20: %w[✨ 🔮 🪄],
     two_factor_authentication_2024_05_22: %w[🔒],
     totp_2024_06_13: %w[🔒 ⏰],
     event_home_page_redesign_2024_09_21: %w[🏠 📊 📉 💸]

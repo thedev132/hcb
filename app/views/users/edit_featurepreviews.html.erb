@@ -9,15 +9,6 @@
   <section>
 
     <%= render partial: "features/preview", locals: {
-          id: "ai_memos",
-          classes: ["feature-ai-memos"],
-          feature_flag: :ai_memos_2024_06_20,
-          name: "AI Receipt Analysis",
-          description: "HCB can now analyze uploaded receipts to provide glancable details and transaction memo suggestions using OpenAI. After opting-in, you'll be able to see information such as the amount, date, and merchant in the receipt details pane, and HCB will suggest memos for transactions with receipts.",
-          footer: "When paired with <a href='#receipt-bin'>Receipt Bin</a>, HCB can also suggest which transaction a receipt belongs to."
-        } %>
-
-    <%= render partial: "features/preview", locals: {
           id: "two-factor-authentication",
           feature_flag: :two_factor_authentication_2024_05_22,
           name: "Two factor authentication",
