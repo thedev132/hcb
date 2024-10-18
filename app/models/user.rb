@@ -61,7 +61,7 @@ class User < ApplicationRecord
     none: 0,
     weekly: 1,
     monthly: 2,
-  }, prefix: :receipt_report
+  }, prefix: :receipt_report, default: :weekly
 
   enum :access_level, { user: 0, admin: 1, superadmin: 2 }, scopes: false, default: :user
 
