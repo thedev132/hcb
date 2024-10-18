@@ -2,7 +2,14 @@
 
 class TransactionReportMailer < ApplicationMailer
   def tell_zach
-    target_users = User.where email: ["thomas@hackclub.com", "deet@hackclub.com", "amanda@hackclub.com", "dev@hackclub.com"]
+    target_users = User.where email: %w[
+      dev@hackclub.com
+      alexren@hackclub.com
+      melanie@hackclub.com
+      malted@hackclub.com
+      jared@hackclub.com
+      graham@hackclub.com
+    ]
 
     @target_users = target_users.map do |user|
 
@@ -17,7 +24,7 @@ class TransactionReportMailer < ApplicationMailer
       { user:, txs:, total: }
     end.compact
 
-    @total = @target_users.map{ |x| x[:txs].sum(&:amount_cents) }.sum.abs
+    @total = @target_users.map { |x| x[:txs].sum(&:amount_cents) }.sum.abs
 
     mail to: "zach@hackclub.com", subject: "Your weekly transaction report"
   end
