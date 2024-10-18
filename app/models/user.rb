@@ -36,6 +36,8 @@
 #  index_users_on_slug   (slug) UNIQUE
 #
 class User < ApplicationRecord
+  has_paper_trail skip: [:birthday] # ciphertext columns will still be tracked
+
   include PublicIdentifiable
   set_public_id_prefix :usr
 
