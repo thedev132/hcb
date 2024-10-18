@@ -111,7 +111,6 @@ gem "namae" # multi-cultural human name parser
 gem "premailer-rails" # css to inline styles for emails
 gem "safely_block"
 gem "strong_migrations" # protects against risky migrations
-gem "swagger-blocks"
 gem "xxhash" # fast hashing
 
 gem "diffy" # rendering diffs (comments)

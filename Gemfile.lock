@@ -789,7 +789,6 @@ GEM
     stripe (11.7.0)
     strong_migrations (1.8.0)
       activerecord (>= 5.2)
-    swagger-blocks (3.0.0)
     table_print (1.5.7)
     terser (1.2.3)
       execjs (>= 0.3.0, < 3)
@@ -970,7 +969,6 @@ DEPENDENCIES
   statsd-instrument (~> 3.8)
   stripe (= 11.7.0)
   strong_migrations
-  swagger-blocks
   table_print
   terser (~> 1.2)
   turbo-rails (~> 2.0.10)
