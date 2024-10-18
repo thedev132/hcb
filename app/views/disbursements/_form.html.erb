@@ -62,6 +62,29 @@
     <span class="muted">This is to help HCB keep record of our transactions. It will be used as the memo on your transaction list.</span>
   </div>
 
+  <%= form.label :file, "Attach a receipt / invoice (optional)", class: "mt2" %>
+  <div class="field field--fileupload mb1 mt1" data-controller="file-drop form" data-file-drop-title-value="Drop to add a receipt.">
+    <%= form.label :file, "Choose file", class: "field--fileupload__label", data: {
+          action: "
+        dragover@window->file-drop#dragover
+        drop@window->file-drop#drop
+        dragenter@window->file-drop#dragenter
+        dragleave@window->file-drop#dragleave
+      "
+        } %>
+    <%= form.file_field :file,
+        multiple: true,
+        include_hidden: false,
+        required: false,
+        accept: "image/*,image/heic,.pdf",
+        style: "margin: 8px 0px",
+        class: "field--fileupload__field",
+        data: {
+          "file-drop-target" => "fileInput"
+        },
+        disabled: %>
+  </div>
+
   <% admin_tool do %>
     <div class="field">
       <%= form.label :scheduled_on, "Schedule for" %>
