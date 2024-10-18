@@ -280,7 +280,7 @@ class Wire < ApplicationRecord
   end
 
   def admin_dropdown_description
-    "#{ApplicationController.helpers.render_money(amount_cents)} to #{recipient_email} from #{event.name}"
+    "#{Money.from_cents(amount_cents, currency).format} to #{recipient_email} from #{event.name}"
   end
 
   def local_hcb_code
