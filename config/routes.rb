@@ -26,8 +26,13 @@ Rails.application.routes.draw do
 
   # API documentation
   namespace :docs do
-    get "api/v3(/*path)", to: "api#v3"
-    get "api", to: redirect("/docs/api/v3")
+    resources :api, only: [] do
+      collection do
+        # This crazy nesting is to get Rails to generate meaningful route helpers
+        get "v3(/*path)", to: "api#v3"
+        get "/", to: redirect("/docs/api/v3")
+      end
+    end
   end
 
   # V3 API
