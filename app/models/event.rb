@@ -35,13 +35,11 @@
 #  public_message                               :text
 #  public_reimbursement_page_enabled            :boolean          default(FALSE), not null
 #  public_reimbursement_page_message            :text
-#  redirect_url                                 :string
 #  reimbursements_require_organizer_peer_review :boolean          default(FALSE), not null
+#  short_name                                   :string
 #  slug                                         :text
-#  sponsorship_fee                              :decimal(, )
 #  stripe_card_shipping_type                    :integer          default("standard"), not null
 #  transaction_engine_v2_at                     :datetime
-#  webhook_url                                  :string
 #  website                                      :string
 #  created_at                                   :datetime         not null
 #  updated_at                                   :datetime         not null
@@ -52,8 +50,8 @@
 #
 # Indexes
 #
-#  index_events_on_club_airtable_id                        (club_airtable_id) UNIQUE
-#  index_events_on_point_of_contact_id                     (point_of_contact_id)
+#  index_events_on_club_airtable_id     (club_airtable_id) UNIQUE
+#  index_events_on_point_of_contact_id  (point_of_contact_id)
 #
 # Foreign Keys
 #
