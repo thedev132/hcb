@@ -11,8 +11,6 @@ module TransactionEngine
     def run
       # (1) Import transactions
       safely { import_raw_plaid_transactions! }
-      safely { import_other_raw_plaid_transactions! }
-      # import_raw_emburse_transactions! TODO: remove completely
       safely { import_raw_stripe_transactions! }
       safely { import_raw_csv_transactions! }
       safely { import_raw_increase_transactions! }
@@ -20,7 +18,6 @@ module TransactionEngine
 
       # (2) Hash transactions
       safely { hash_raw_plaid_transactions! }
-      # hash_raw_emburse_transactions! TODO: remove completely
       safely { hash_raw_stripe_transactions! }
       safely { hash_raw_csv_transactions! }
       safely { hash_raw_increase_transactions! }
@@ -45,31 +42,6 @@ module TransactionEngine
           ::TransactionEngine::RawPlaidTransactionService::Plaid::Import.new(bank_account_id:, start_date: @start_date).run
         rescue => e
           Airbrake.notify(e)
-        end
-      end
-    end
-
-    def import_other_raw_plaid_transactions!
-      ::TransactionEngine::RawPlaidTransactionService::BankAccount1::Import.new(start_date: @start_date).run
-      ::TransactionEngine::RawPlaidTransactionService::BankAccount9::Import.new(start_date: @start_date).run
-    end
-
-    def calculate_n_times
-      (((Time.now.utc - @start_date) / 1.day).ceil / 15.0).ceil + 1 # number of 15 days periods plus add an additional day
-    end
-
-    def import_raw_emburse_transactions!
-      # Check for TXs in 1 month blocks over the past n periods at increments of 15 days
-      calculate_n_times.times do |n|
-        from = Date.today - (n * 15).days
-        to = from + 15.days
-
-        puts "raw_emburse_transactions: #{from} - #{to}"
-
-        begin
-          ::TransactionEngine::RawEmburseTransactionService::Emburse::Import.new(start_date: from, end_date: to).run
-        rescue => e
-          puts e
         end
       end
     end
@@ -124,10 +96,6 @@ module TransactionEngine
 
     def hash_raw_plaid_transactions!
       ::TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import.new(start_date: @start_date).run
-    end
-
-    def hash_raw_emburse_transactions!
-      ::TransactionEngine::HashedTransactionService::RawEmburseTransaction::Import.new(start_date: @start_date).run
     end
 
     def hash_raw_stripe_transactions!

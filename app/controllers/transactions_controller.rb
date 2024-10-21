@@ -26,7 +26,7 @@ class TransactionsController < ApplicationController
 
       render :show_deprecated
     rescue ActiveRecord::RecordNotFound => e
-      @transaction = TransactionEngine::Transaction::Show.new(canonical_transaction_id: params[:id]).run
+      @transaction = CanonicalTransaction.find(params[:id])
 
       authorize @transaction
 
