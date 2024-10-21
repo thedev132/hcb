@@ -482,12 +482,6 @@ Rails.application.routes.draw do
   get "roles", to: "static_pages#roles"
   get "audit", to: "admin#audit"
 
-  resources :central, only: [:index] do
-    collection do
-      get "ledger"
-    end
-  end
-
   resources :emburse_card_requests, path: "emburse_card_requests", except: [:new, :create] do
     collection do
       get "export"
