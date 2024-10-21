@@ -20,7 +20,7 @@
 
       <% if Flipper.enabled?(:international_wires_2024_09_22, @event) %>
         <%= link_to new_event_wire_path(@event), class: "text-decoration-none btn--form-option", data: { turbo_frame: "_top" } do %>
-          <%= inline_icon "bolt", size: 28 %>
+          <%= inline_icon "globe", size: 28 %>
           <strong>International Wire</strong>
         <% end %>
       <% end %>
