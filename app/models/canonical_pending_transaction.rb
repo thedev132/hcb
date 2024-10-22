@@ -58,6 +58,8 @@
 class CanonicalPendingTransaction < ApplicationRecord
   has_paper_trail
 
+  self.ignored_columns = %w[ach_payment_id]
+
   include PgSearch::Model
   pg_search_scope :search_memo, against: [:memo, :custom_memo, :hcb_code], using: { tsearch: { any_word: true, prefix: true, dictionary: "english" } }, ranked_by: "canonical_pending_transactions.date"
   pg_search_scope :pg_text_search, lambda { |query, options_hash| { query: }.merge(options_hash) }
@@ -70,7 +72,6 @@ class CanonicalPendingTransaction < ApplicationRecord
   belongs_to :raw_pending_bank_fee_transaction, optional: true
   belongs_to :raw_pending_incoming_disbursement_transaction, optional: true
   belongs_to :raw_pending_outgoing_disbursement_transaction, optional: true
-  belongs_to :ach_payment, optional: true
   belongs_to :increase_check, optional: true
   belongs_to :paypal_transfer, optional: true
   belongs_to :wire, optional: true
