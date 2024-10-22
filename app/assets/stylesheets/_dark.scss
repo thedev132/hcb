@@ -5,10 +5,11 @@ $darker: #121217;
 $darkless: #252429;
 
 html[data-dark='true'] {
+  color-scheme: dark;
+
   body {
     background-color: $dark;
     color: map-get($palette, smoke);
-    color-scheme: dark;
   }
 
   input[type='date'],
