@@ -247,31 +247,6 @@ class StripeController < ActionController::Base
     donation.save!
   end
 
-  def handle_source_transaction_created(event)
-    stripe_source_transaction = event.data.object
-    source = StripeAchPaymentSource.find_by(stripe_source_id: stripe_source_transaction.source)
-
-    return unless source
-
-    charge = source.charge!(stripe_source_transaction.amount)
-
-    ach_payment = source.ach_payments.create(
-      stripe_source_transaction_id: stripe_source_transaction.id,
-      stripe_charge_id: charge.id,
-    )
-
-    ach_payment.create_stripe_payout!
-    ach_payment.create_fee_reimbursement!
-
-    CanonicalPendingTransaction.create(
-      date: Time.at(stripe_source_transaction.created).to_date,
-      event: source.event,
-      amount_cents: stripe_source_transaction.amount,
-      memo: "Bank transfer",
-      ach_payment:
-    )
-  end
-
   def handle_payout_updated(event)
     payout = DonationPayout.find_by(stripe_payout_id: event.data.object.id) || InvoicePayout.find_by(stripe_payout_id: event.data.object.id)
     return unless payout

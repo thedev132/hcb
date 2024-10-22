@@ -35,10 +35,6 @@ class AchPayment < ApplicationRecord
     stripe_charge.balance_transaction.net
   end
 
-  def hcb_code
-    "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::ACH_PAYMENT_CODE}-#{id}"
-  end
-
   def local_hcb_code
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code:)
   end

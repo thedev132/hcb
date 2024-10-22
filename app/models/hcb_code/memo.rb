@@ -23,7 +23,6 @@ class HcbCode
         return increase_check_memo if increase_check?
         return check_deposit_memo if check_deposit?
         return fee_revenue_memo if fee_revenue?
-        return ach_payment_memo if ach_payment?
         return grant_memo if grant?
         return outgoing_fee_reimbursement_memo if outgoing_fee_reimbursement?
         return yellowpages_memo if stripe_card? && yellowpages_memo
@@ -88,10 +87,6 @@ class HcbCode
 
       def fee_revenue_memo
         "Fee revenue from #{fee_revenue.start.strftime("%b %e")} to #{fee_revenue.end.strftime("%b %e")}"
-      end
-
-      def ach_payment_memo
-        "Bank transfer"
       end
 
       def grant_memo
