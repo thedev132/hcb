@@ -164,7 +164,7 @@ class Event < ApplicationRecord
     where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", MIN_WAITING_TIME_BETWEEN_FEES.ago, self.event_ids_with_pending_fees.to_a.map { |a| a["event_id"] })
   end
 
-  self.ignored_columns = %w[start end sponsorship_fee redirect_url webhook_url]
+  self.ignored_columns = %w[sponsorship_fee redirect_url webhook_url]
 
   scope :demo_mode, -> { where(demo_mode: true) }
   scope :not_demo_mode, -> { where(demo_mode: false) }
