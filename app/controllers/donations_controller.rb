@@ -51,6 +51,7 @@ class DonationsController < ApplicationController
       email: params[:email],
       amount: params[:amount],
       message: params[:message],
+      fee_covered: params[:fee_covered],
       event: @event,
       ip_address: request.ip,
       user_agent: request.user_agent,
@@ -67,6 +68,7 @@ class DonationsController < ApplicationController
         email: params[:email],
         amount: params[:amount],
         message: params[:message],
+        fee_covered: params[:fee_covered],
         tax_deductible:
       )
     end
