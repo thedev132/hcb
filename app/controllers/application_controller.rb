@@ -55,8 +55,12 @@ class ApplicationController < ActionController::Base
   # Fallback for bad redirects that do not have allow_other_host set to true
   # https://blog.saeloun.com/2022/02/08/rails-7-raise-unsafe-redirect-error.html#after
   rescue_from ActionController::Redirecting::UnsafeRedirectError do |exception|
-    notify_airbrake(exception)
-    redirect_to root_url
+    if Rails.env.development?
+      raise
+    else
+      notify_airbrake(exception)
+      redirect_to root_url
+    end
   end
 
   def find_current_auditor

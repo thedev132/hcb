@@ -87,7 +87,7 @@
       <%= card_to "Ledger audits", admin_ledger_audits_path, { badge: Admin::LedgerAudit.pending.count } %>
       <%= render partial: "static_pages/card", locals: { task_path: balances_admin_index_path, human_name: "Organization Balances" } %>
       <%= render partial: "static_pages/card", locals: { task_path: blazer_path, human_name: "BI tool" } %>
-      <%= card_to "Column Statements", column_statements_admin_index_path %>
+      <%= card_to "Column Statements", admin_column_statements_path %>
     </ul>
     <h2>Other</h2>
     <ul class="grid left-align w-100 mt0" id="other-grid">

@@ -1156,14 +1156,6 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
-  def column_statements
-    @page = params[:page] || 1
-    @per = params[:per] || 20
-    @statements = Column::Statement.page(@page).per(@per).order(created_at: :desc)
-
-    render layout: "admin"
-  end
-
   def hq_receipts
     @page = params[:page] || 1
     @per = params[:per] || 20

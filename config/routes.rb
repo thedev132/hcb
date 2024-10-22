@@ -217,7 +217,6 @@ Rails.application.routes.draw do
       post "google_workspaces_verify_all", to: "admin#google_workspaces_verify_all"
       get "balances", to: "admin#balances"
       get "grants", to: "admin#grants"
-      get "column_statements", to: "admin#column_statements"
       get "hq_receipts", to: "admin#hq_receipts"
       get "account_numbers", to: "admin#account_numbers"
       get "emails", to: "admin#emails"
@@ -269,6 +268,9 @@ Rails.application.routes.draw do
     resources :check_deposits, only: [:index, :show] do
       post "submit", on: :member
       post "reject", on: :member
+    end
+    resources :column_statements, only: :index do
+      get "bank_account_summary_report"
     end
   end
 
