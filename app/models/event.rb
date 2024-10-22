@@ -314,7 +314,6 @@ class Event < ApplicationRecord
   has_one :card_grant_setting
   accepts_nested_attributes_for :card_grant_setting, update_only: true
 
-  has_one :stripe_ach_payment_source
   has_one :increase_account_number
 
   has_one :column_account_number, class_name: "Column::AccountNumber"
