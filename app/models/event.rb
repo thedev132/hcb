@@ -58,7 +58,7 @@
 #  fk_rails_...  (point_of_contact_id => users.id)
 #
 class Event < ApplicationRecord
-  self.ignored_columns = ["custom_css_url"]
+  self.ignored_columns = %w[sponsorship_fee redirect_url webhook_url custom_css_url]
   MIN_WAITING_TIME_BETWEEN_FEES = 5.days
 
   include Hashid::Rails
@@ -163,8 +163,6 @@ class Event < ApplicationRecord
   scope :pending_fees_v2, -> do
     where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", MIN_WAITING_TIME_BETWEEN_FEES.ago, self.event_ids_with_pending_fees.to_a.map { |a| a["event_id"] })
   end
-
-  self.ignored_columns = %w[sponsorship_fee redirect_url webhook_url]
 
   scope :demo_mode, -> { where(demo_mode: true) }
   scope :not_demo_mode, -> { where(demo_mode: false) }
