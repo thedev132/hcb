@@ -66,9 +66,9 @@ class GSuite < ApplicationRecord
     event :mark_verification_error do
       after do
         if aasm.from_state == :verified
-          GSuiteMailer.with(recipient: self.created_by, g_suite_id: self.id).notify_of_error_after_verified.deliver_later
+          GSuiteMailer.with(g_suite_id: self.id).notify_of_error_after_verified.deliver_later
         else
-          GSuiteMailer.with(recipient: self.created_by, g_suite_id: self.id).notify_of_verification_error.deliver_later
+          GSuiteMailer.with(g_suite_id: self.id).notify_of_verification_error.deliver_later
         end
       end
       transitions from: [:verifying, :verified], to: :verification_error
