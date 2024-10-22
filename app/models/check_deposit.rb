@@ -148,9 +148,15 @@ class CheckDeposit < ApplicationRecord
   end
 
   def estimated_arrival_date
+    # [@garyhtou] As of 2024-10-22, it takes a median of 7.07 days for a check
+    # to deposit from the time it's submitted to Column to when the canonical
+    # transaction is created.
+    # Average 6.8 days. Min 4.5 days. Max 10.4 days.
+
     estimated = submitted_to_column_at&.+(1.week)&.to_date
     return nil if estimated.nil?
-    return nil if Date.today >= estimated
+    # Continue to show the estimate up until we're 2 days past due
+    return nil if estimated.before?(2.days.ago)
 
     estimated
   end
