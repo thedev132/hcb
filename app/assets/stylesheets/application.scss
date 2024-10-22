@@ -474,6 +474,14 @@ summary {
   font-style: italic;
 }
 
+.suggested_tag > a {
+  overflow: hidden;
+  max-width: 125px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
 .suggested_tag::after {
   transform: translateY(0px) translateX(-4px);
 }
