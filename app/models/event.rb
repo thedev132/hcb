@@ -731,6 +731,7 @@ class Event < ApplicationRecord
   private
 
   def point_of_contact_is_admin
+    return unless point_of_contact_changed?
     return unless point_of_contact
     return if point_of_contact&.admin_override_pretend?
 
