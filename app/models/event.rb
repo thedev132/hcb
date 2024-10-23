@@ -665,11 +665,6 @@ class Event < ApplicationRecord
     !engaged?
   end
 
-  def sponsorship_fee
-    Airbrake.notify("Deprecated Event#sponsorship_fee used.")
-    revenue_fee
-  end
-
   def plan
     super&.becomes(super.plan_type&.constantize)
   end

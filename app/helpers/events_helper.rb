@@ -54,9 +54,6 @@ module EventsHelper
   end
 
   def humanize_audit_log_value(field, value)
-    if field == "sponsorship_fee"
-      return number_to_percentage(value.to_f * 100, significant: true, strip_insignificant_zeros: true)
-    end
 
     if field == "point_of_contact_id"
       return User.find(value).email

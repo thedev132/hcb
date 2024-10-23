@@ -902,7 +902,6 @@ class EventsController < ApplicationController
       :start,
       :end,
       :address,
-      :sponsorship_fee,
       :expected_budget,
       :omit_stats,
       :demo_mode,
