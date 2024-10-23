@@ -11,7 +11,6 @@
 #  can_front_balance                            :boolean          default(TRUE), not null
 #  category                                     :integer
 #  country                                      :integer
-#  custom_css_url                               :string
 #  deleted_at                                   :datetime
 #  demo_mode                                    :boolean          default(FALSE), not null
 #  demo_mode_request_meeting_at                 :datetime

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_03_075430) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_23_030322) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -863,7 +863,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_03_075430) do
     t.string "webhook_url"
     t.integer "country"
     t.boolean "holiday_features", default: true, null: false
-    t.string "custom_css_url"
     t.integer "category"
     t.boolean "can_front_balance", default: true, null: false
     t.boolean "demo_mode", default: false, null: false
