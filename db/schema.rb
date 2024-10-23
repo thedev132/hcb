@@ -859,8 +859,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_030322) do
     t.datetime "pending_transaction_engine_at", precision: nil, default: "2021-02-13 22:49:40"
     t.string "aasm_state"
     t.string "organization_identifier", null: false
-    t.string "redirect_url"
-    t.string "webhook_url"
     t.integer "country"
     t.boolean "holiday_features", default: true, null: false
     t.integer "category"
