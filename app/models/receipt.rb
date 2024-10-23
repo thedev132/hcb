@@ -77,7 +77,7 @@ class Receipt < ApplicationRecord
   end
   validate :has_owner
 
-  enum upload_method: {
+  enum :upload_method, {
     transaction_page: 0,
     transaction_page_drag_and_drop: 1,
     receipts_page: 2,
@@ -100,7 +100,7 @@ class Receipt < ApplicationRecord
     sms_reimbursement: 19
   }
 
-  enum textual_content_source: {
+  enum :textual_content_source, {
     pdf_text: 0,
     tesseract_ocr_text: 1
   }

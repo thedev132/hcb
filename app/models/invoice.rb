@@ -170,7 +170,7 @@ class Invoice < ApplicationRecord
     end
   end
 
-  enum status: {
+  enum :status, {
     draft: "draft", # only 3 invoices [203, 204, 128] leftover from when drafts existed
     open: "open",
     paid: "paid",

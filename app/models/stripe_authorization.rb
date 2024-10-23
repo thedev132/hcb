@@ -56,8 +56,8 @@ class StripeAuthorization < ApplicationRecord
   has_one :user, through: :stripe_cardholder
   has_one :event, through: :stripe_card
 
-  enum stripe_status: { pending: 0, closed: 1, reversed: 2 }
-  enum authorization_method: { keyed_in: 0, swipe: 1, chip: 2, contactless: 3, online: 4 }
+  enum :stripe_status, { pending: 0, closed: 1, reversed: 2 }
+  enum :authorization_method, { keyed_in: 0, swipe: 1, chip: 2, contactless: 3, online: 4 }
 
   validates_uniqueness_of :stripe_id
 

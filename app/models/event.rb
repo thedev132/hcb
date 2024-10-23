@@ -381,7 +381,7 @@ class Event < ApplicationRecord
     "ELSE 'z' || name END ASC   "
   )
 
-  enum category: {
+  enum :category, {
     hackathon: 0,
     'hack club': 1,
     nonprofit: 2,
@@ -397,7 +397,7 @@ class Event < ApplicationRecord
     'hcb internals': 12 # eg. https://hcb.hackclub.com/clearing
   }
 
-  enum stripe_card_shipping_type: {
+  enum :stripe_card_shipping_type, {
     standard: 0,
     express: 1,
     priority: 2,

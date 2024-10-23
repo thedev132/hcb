@@ -33,7 +33,7 @@ class StripeCardholder < ApplicationRecord
   include HasStripeDashboardUrl
   has_stripe_dashboard_url "issuing/cardholders", :stripe_id
 
-  enum cardholder_type: { individual: 0, company: 1 }
+  enum :cardholder_type, { individual: 0, company: 1 }
 
   belongs_to :user
   has_many :stripe_cards

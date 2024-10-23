@@ -89,8 +89,8 @@ class StripeCard < ApplicationRecord
 
   alias_attribute :last_four, :last4
 
-  enum card_type: { virtual: 0, physical: 1 }
-  enum spending_limit_interval: { daily: 0, weekly: 1, monthly: 2, yearly: 3, per_authorization: 4, all_time: 5 }
+  enum :card_type, { virtual: 0, physical: 1 }
+  enum :spending_limit_interval, { daily: 0, weekly: 1, monthly: 2, yearly: 3, per_authorization: 4, all_time: 5 }
 
   delegate :stripe_name, to: :stripe_cardholder
 

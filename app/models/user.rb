@@ -151,9 +151,9 @@ class User < ApplicationRecord
 
   validate :profile_picture_format
 
-  enum comment_notifications: { all_threads: 0, my_threads: 1, no_threads: 2 }
+  enum :comment_notifications, { all_threads: 0, my_threads: 1, no_threads: 2 }
 
-  enum charge_notifications: { email_and_sms: 0, email: 1, sms: 2, nothing: 3 }, _prefix: :charge_notifications
+  enum :charge_notifications, { email_and_sms: 0, email: 1, sms: 2, nothing: 3 }, prefix: :charge_notifications
 
   comma do
     id
