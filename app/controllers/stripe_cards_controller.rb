@@ -104,8 +104,7 @@ class StripeCardsController < ApplicationController
     end
 
     return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Birthday is required" } if current_user.birthday.nil?
-    return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Organization is in Playground Mode" } if event.demo_mode?
-    return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Invalid country" } unless %w(US CA).include? sc[:stripe_shipping_address_country]
+    return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Invalid country" } unless sc[:stripe_shipping_address_country] == "US"
 
     new_card = ::StripeCardService::Create.new(
       current_user:,
