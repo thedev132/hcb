@@ -17,8 +17,6 @@ class HeadwayJob < ApplicationJob
       req.body = JSON.generate({ account: "7z8ovy" })
     end
 
-    was_new_post = false
-
     response.body["data"]["changelogs"]["collection"].each do |post|
       categories = post["categories"].map { |x| x["name"] }
       next unless categories.include?("New")
@@ -51,12 +49,9 @@ class HeadwayJob < ApplicationJob
             markdown:,
             published_at: post["date"].to_datetime
           )
-          was_new_post = true
         end
       end
     end
-
-    Flipper.disable(:native_changelog_2024_07_03) if was_new_post
   end
 
 end
