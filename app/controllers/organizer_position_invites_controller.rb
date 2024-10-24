@@ -3,7 +3,7 @@
 class OrganizerPositionInvitesController < ApplicationController
   include SetEvent
 
-  before_action :set_opi, only: [:show, :accept, :reject, :cancel, :toggle_signee_status]
+  before_action :set_opi, only: [:show, :accept, :reject, :cancel, :toggle_signee_status, :resend]
   before_action :set_event, only: [:new, :create]
   before_action :hide_footer, only: :show
 
@@ -90,6 +90,15 @@ class OrganizerPositionInvitesController < ApplicationController
       flash[:error] = "Failed to cancel the invitation."
       redirect_to @invite.event
     end
+  end
+
+  def resend
+    authorize @invite
+
+    @invite.deliver
+
+    flash[:success] = "Invite successfully resent to #{@invite.user.email}"
+    redirect_to event_team_path @invite.event
   end
 
   def toggle_signee_status

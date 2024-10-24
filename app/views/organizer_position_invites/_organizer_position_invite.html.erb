@@ -20,6 +20,13 @@
       <% end %>
 
       <% if organizer_signed_in? %>
+        <%= pop_icon_to "email",
+                        organizer_position_invite_resend_path(organizer_position_invite.id),
+                        size: 24,
+                        method: :post,
+                        class: "tooltipped tooltipped--w",
+                        'aria-label': "Resend this invitation",
+                        disabled: !policy(organizer_position_invite).resend? %>
         <%= pop_icon_to "view-close",
                         organizer_position_invite_cancel_path(organizer_position_invite.id),
                         size: 24,

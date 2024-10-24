@@ -283,6 +283,7 @@ Rails.application.routes.draw do
     post "accept"
     post "reject"
     post "cancel"
+    post "resend"
     member do
       post "toggle_signee_status"
       post "change_position_role"
