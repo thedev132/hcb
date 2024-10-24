@@ -102,27 +102,6 @@ $(document).on('change', '[name="invoice[sponsor]"]', function (e) {
   )
 })
 
-$(document).on('change', '[name="check[lob_address]"]', function (e) {
-  let lob_address = $(e.target).children('option:selected').data('json')
-  if (!lob_address) {
-    lob_address = {}
-  }
-
-  if (lob_address.id) {
-    $('[data-behavior~=lob_address_update_warning]').slideDown('fast')
-  } else {
-    $('[data-behavior~=lob_address_update_warning]').slideUp('fast')
-  }
-
-  const fields = ['name', 'address1', 'address2', 'city', 'state', 'zip', 'id']
-
-  return fields.forEach(field =>
-    $(`input#check_lob_address_attributes_${field}`)
-      .val(lob_address[field])
-      .change()
-  )
-})
-
 const updateAmountPreview = function () {
   const amount = $('[name="invoice[item_amount]"]').val().replace(/,/g, '')
   const previousAmount = BK.s('amount-preview').data('amount') || 0
