@@ -43,8 +43,6 @@ gem "airrecord", "~> 1.0" # Airtable API for internal operations
 
 gem "twilio-ruby" # SMS notifications
 
-gem "lob"
-
 gem "google-apis-admin_directory_v1", "~> 0.58.0" # GSuite
 
 gem "pg_search" # full-text search
