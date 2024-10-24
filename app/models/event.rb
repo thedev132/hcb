@@ -57,7 +57,7 @@
 #  fk_rails_...  (point_of_contact_id => users.id)
 #
 class Event < ApplicationRecord
-  self.ignored_columns = %w[sponsorship_fee redirect_url webhook_url custom_css_url has_fiscal_sponsorship_document]
+  self.ignored_columns = %w[sponsorship_fee redirect_url webhook_url has_fiscal_sponsorship_document]
   MIN_WAITING_TIME_BETWEEN_FEES = 5.days
 
   include Hashid::Rails
