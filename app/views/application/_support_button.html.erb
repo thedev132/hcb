@@ -7,7 +7,11 @@
       <%= inline_icon "email", size: 24 %> Contact us
     </a>
     <% if current_user&.events&.not_demo_mode&.any? %>
-      <% routing = Rails.application.routes.recognize_path(request.original_fullpath, method: request.env["REQUEST_METHOD"]) %>
+      <% routing = begin
+           Rails.application.routes.recognize_path(request.original_fullpath, method: request.env["REQUEST_METHOD"])
+         rescue
+           {}
+         end %>
 
       <% url_params = {
            name: current_user&.name,
