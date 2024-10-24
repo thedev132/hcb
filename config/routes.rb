@@ -336,7 +336,7 @@ Rails.application.routes.draw do
     resources :personalization_designs, only: [:show] do
       member do
         post "make_common"
-        post "make_private"
+        post "make_unlisted"
       end
     end
   end
