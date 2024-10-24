@@ -86,11 +86,6 @@ gem "flipper" # feature flags
 gem "flipper-active_record"
 gem "flipper-ui"
 
-gem "scientist" # helps refactor code for critical paths with confidence
-# gem "lab_tech" # collects data from scientist experiments
-gem "table_print" # pretty prints tables in console (used with lab_tech)
-
-
 gem "pundit" # implements authorization policies
 
 # API V3
