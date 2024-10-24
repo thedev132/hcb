@@ -251,6 +251,10 @@ module ApplicationHelper
     content_for(:container_class) { "container--xl" }
   end
 
+  def page_full
+    content_for(:container_class) { "container--full" }
+  end
+
   def page_md
     content_for(:container_class) { "container--md" }
   end

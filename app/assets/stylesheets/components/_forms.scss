@@ -294,6 +294,13 @@ select {
 select[name$='i)]'] {
   width: 4.5rem;
   display: inline-block;
+  .onboarding & {
+    flex: 1;
+    width: auto;
+    &:first-child {
+      flex: 2;
+    }
+  }
 }
 
 // rails month inputs should be wider
