@@ -149,11 +149,6 @@ Rails.application.routes.draw do
     end
   end
   scope module: :users do
-    resources "wrapped", only: :index do
-      collection do
-        get "data"
-      end
-    end
     resources :email_updates, only: [] do
       collection do
         get "verify"
