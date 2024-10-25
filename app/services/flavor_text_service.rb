@@ -508,6 +508,7 @@ class FlavorTextService
       "original recipe!",
       "now sugar-free!",
       "low-sodium edition",
+      'we put the ":3" in "501(c)3"!',
     ]
   end
 
