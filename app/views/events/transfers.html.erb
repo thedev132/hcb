@@ -71,8 +71,8 @@
         <% if (Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) || !organizer_signed_in?) && !d.is_a?(CardGrant) %>
           <section class="modal modal--scroll modal--popover bg-snow" data-behavior="modal" role="dialog" id="transfer_modal_<%= d.hcb_code %>">
             <%= modal_header("Transfer of #{render_money(d.amount)}", external_link: hcb_code_url(d.hcb_code)) %>
-            <%= async_frame_to hcb_code_url(d.hcb_code, params: { frame: true }), lazy: true, as: :div do %>
-              <strong>Loading...</strong>
+            <%= async_frame_to hcb_code_url(d.hcb_code, params: { frame: true }), lazy: true do %>
+              <%= render partial: "application/loading_container" %>
             <% end %>
           </section>
         <% end %>
