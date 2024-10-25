@@ -50,7 +50,7 @@ class StripeAuthorization < ApplicationRecord
   has_paper_trail
 
   belongs_to :stripe_card, class_name: "StripeCard"
-  alias_attribute :card, :stripe_card
+  alias_method :card, :stripe_card
   has_one :stripe_cardholder, through: :stripe_card, as: :cardholder
   alias_attribute :cardholder, :stripe_cardholder
   has_one :user, through: :stripe_cardholder
