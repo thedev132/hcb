@@ -193,10 +193,6 @@ class Transaction < ApplicationRecord
     self.display_name ||= self.name
   end
 
-  def notify_user_invoice
-    MoneyReceivedMailer.with(transaction: self).money_received.deliver_later
-  end
-
   # Utility method for getting the fee on the transaction if there is one. Used
   # in CSV export.
   def fee

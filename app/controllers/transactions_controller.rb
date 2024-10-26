@@ -87,11 +87,6 @@ class TransactionsController < ApplicationController
         # key that'll be erased on the @transaction.save
         fee_relationship.destroy! if should_delete_fee_relationship
 
-        # if we just categorized the transaction & it's an invoice payout, send email to organizers
-        if (currently_categorized != @transaction.categorized?) && @transaction.invoice_payout
-          @transaction.notify_user_invoice
-        end
-
         redirect_to @transaction
       else
         render :edit, status: :unprocessable_entity
