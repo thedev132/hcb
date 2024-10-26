@@ -63,8 +63,8 @@
               <%= form.label :birthday %>
               <div class="flex gap-2 onboarding">
                 <%= form.date_select :birthday,
-                                     start_year: Date.today.year - 100,
-                                     end_year: Date.today.year,
+                                     start_year: Date.today.year,
+                                     end_year: Date.today.year - 100,
                                      order: [:month, :day, :year],
                                      prompt: @user.birthday.nil? %>
               </div>
@@ -171,8 +171,8 @@
             Used for card issuing.
           </p>
           <%= form.date_select :birthday,
-                               start_year: Date.today.year - 100,
-                               end_year: Date.today.year,
+                               start_year: Date.today.year,
+                               end_year: Date.today.year - 100,
                                order: [:month, :day, :year],
                                prompt: @user.birthday.nil? %>
         </div>
