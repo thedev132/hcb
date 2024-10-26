@@ -9,7 +9,7 @@ g_suite_verify_all_job:
 g_suite_scan_verified_dns_job:
   cron: "0 12 * * *" # run every 1 day
   class: "GSuiteJob::ScanVerifiedDns"
-  
+
 pending_transaction_engine_nightly_job:
   cron: "0 */3 * * *" # run every 3 hour
   class: "PendingTransactionEngineJob::Nightly"
@@ -17,7 +17,7 @@ pending_transaction_engine_nightly_job:
 pending_event_mapping_engine_nightly_job:
   cron: "10,40 * * * *" # run every 30 minutes, but after pending_transaction_engine_nightly_job
   class: "PendingEventMappingEngineJob::Nightly"
- 
+
 transaction_engine_nightly_job:
   cron: "0 6 * * *" # run at 6am UTC each morning
   class: "TransactionEngineJob::Nightly"
@@ -123,7 +123,7 @@ refresh_hcb_acronym_expansions_job:
 calculate_app_wide_metrics:
   cron: "0 */12 * * *" # run twice a day
   class: "MetricJobs::CalculateAppWide"
-  
+
 calculate_subjects_metrics:
   cron: "0 */12 * * *" # run twice a day
   class: "MetricJobs::CalculateSubjects"
