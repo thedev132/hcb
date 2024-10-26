@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module UserJob
-  class SyncToLoops < ApplicationJob
+class User
+  class SyncToLoopsJob < ApplicationJob
     queue_as :low
 
     def perform
@@ -11,4 +11,5 @@ module UserJob
     end
 
   end
+
 end
