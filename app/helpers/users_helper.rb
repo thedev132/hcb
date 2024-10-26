@@ -137,6 +137,53 @@ module UsersHelper
     user&.birthday?
   end
 
+  def onboarding_gallery
+    [
+      {
+        image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/0image.png",
+        url: "https://hcb.hackclub.com/zephyr",
+        overlay_color: "#802434",
+      },
+      {
+        image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/1image.png",
+        url: "https://hcb.hackclub.com/the-charlotte-bridge",
+        overlay_color: "#805b24",
+      },
+      {
+        image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/2image.png",
+        url: "https://hcb.hackclub.com/windyhacks",
+        overlay_color: "#807f0a",
+      },
+      {
+        image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/3image.png",
+        url: "https://hcb.hackclub.com/the-innovation-circuit",
+        overlay_color: "#22806c",
+        object_position: "center"
+      },
+      {
+        image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/4image.png",
+        url: "https://hcb.hackclub.com/zephyr",
+        overlay_color: "#3c7d80",
+        object_position: "center"
+      },
+      {
+        image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/5image.png",
+        url: "https://hcb.hackclub.com/hackpenn",
+        overlay_color: "#225c80",
+      },
+      {
+        image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/6image.png",
+        url: "https://hcb.hackclub.com/wild-wild-west",
+        overlay_color: "#6c2280",
+      },
+      {
+        image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/7image.png",
+        url: "https://hcb.hackclub.com/hq",
+        overlay_color: "#802434",
+      }
+    ]
+  end
+
   private
 
   def get_user_color(id)

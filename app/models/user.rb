@@ -264,7 +264,8 @@ class User < ApplicationRecord
   end
 
   def onboarding?
-    full_name.blank?
+    # in_database to prevent a blank name update attempt from triggering onboarding.
+    full_name_in_database.blank?
   end
 
   def active_mailbox_address

@@ -104,59 +104,11 @@ class UsersController < ApplicationController
 
   def edit
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
-    @onboarding = @user.onboarding?
+    set_onboarding
     @mailbox_address = @user.active_mailbox_address
     show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
     @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
     authorize @user
-
-    if @onboarding
-      @onboarding_gallery = [
-        # TODO: Use #cdn links instead
-        {
-          image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/0image.png",
-          url: "https://hcb.hackclub.com/zephyr",
-          overlay_color: "#802434",
-        },
-        {
-          image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/1image.png",
-          url: "https://hcb.hackclub.com/the-charlotte-bridge",
-          overlay_color: "#805b24",
-        },
-        {
-          image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/2image.png",
-          url: "https://hcb.hackclub.com/windyhacks",
-          overlay_color: "#807f0a",
-        },
-        {
-          image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/3image.png",
-          url: "https://hcb.hackclub.com/the-innovation-circuit",
-          overlay_color: "#22806c",
-          object_position: "center"
-        },
-        {
-          image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/4image.png",
-          url: "https://hcb.hackclub.com/zephyr",
-          overlay_color: "#3c7d80",
-          object_position: "center"
-        },
-        {
-          image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/5image.png",
-          url: "https://hcb.hackclub.com/hackpenn",
-          overlay_color: "#225c80",
-        },
-        {
-          image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/6image.png",
-          url: "https://hcb.hackclub.com/wild-wild-west",
-          overlay_color: "#6c2280",
-        },
-        {
-          image: "https://cloud-e3evhlxgo-hack-club-bot.vercel.app/7image.png",
-          url: "https://hcb.hackclub.com/hq",
-          overlay_color: "#802434",
-        }
-      ]
-    end
   end
 
   def edit_address
@@ -176,7 +128,7 @@ class UsersController < ApplicationController
 
   def edit_featurepreviews
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
-    @onboarding = @user.full_name.blank?
+    set_onboarding
     show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
     @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
     authorize @user
@@ -184,7 +136,7 @@ class UsersController < ApplicationController
 
   def edit_security
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
-    @onboarding = @user.full_name.blank?
+    set_onboarding
     show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
     @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
     @oauth_authorizations = @user.api_tokens
@@ -241,7 +193,7 @@ class UsersController < ApplicationController
 
   def edit_admin
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
-    @onboarding = @user.full_name.blank?
+    set_onboarding
     show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
     @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
 
@@ -320,7 +272,7 @@ class UsersController < ApplicationController
         redirect_back_or_to edit_user_path(@user)
       end
     else
-      @onboarding = User.friendly.find(params[:id]).full_name.blank?
+      set_onboarding
       show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
       @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
       if @user.stripe_cardholder&.errors&.any?
@@ -384,6 +336,11 @@ class UsersController < ApplicationController
 
   def set_shown_private_feature_previews
     @shown_private_feature_previews = params[:classified_top_secret]&.split(",") || []
+  end
+
+  def set_onboarding
+    @onboarding = @user.onboarding?
+    @hide_seasonal_decorations = true if @onboarding
   end
 
   def user_params
