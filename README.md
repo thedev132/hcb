@@ -13,7 +13,7 @@ Welcome to the [HCB](https://hackclub.com/fiscal-sponsorship/) codebase. We are 
 
 HCB is a powerful, safe, and easy-to-use fiscal sponsorship platform for hackathons, Hack Clubs, robotic teams and more. We use it to run our [fiscal sponsorship program](https://hackclub.com/fiscal-sponsorship/), we provide high schoolers with a 501(c)(3) status-backed restricted fund for their organization. Behind the scenes, HCB is a Ruby on Rails application (learn more on the [wiki](https://github.com/hackclub/hcb/wiki)).
 
-<img width="1377" alt="Screenshot 2024-06-03 at 1 34 42 PM" src="https://github.com/hackclub/hcb/assets/39828164/b19a83b2-ba81-46b0-9f6f-2772f4249071">
+<img width="1377" alt="Screenshot of HQ's finances on HCB" src="https://github.com/hackclub/hcb/assets/39828164/b19a83b2-ba81-46b0-9f6f-2772f4249071">
 
 ## Table of Contents
 
