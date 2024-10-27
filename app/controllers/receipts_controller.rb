@@ -296,7 +296,6 @@ class ReceiptsController < ApplicationController
     end
 
     if @frame
-      streams.append(turbo_stream.load_new_async_frames)
       streams.append(turbo_stream.close_modal)
     end
 
