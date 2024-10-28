@@ -561,24 +561,6 @@ class Event < ApplicationRecord
 
   alias fee_balance fee_balance_v2_cents
 
-  def plan_name
-    if demo_mode?
-      "playground mode"
-    elsif plan.present?
-      plan.label
-    elsif unapproved?
-      "pending approval"
-    elsif hack_club_hq?
-      "Hack Club affiliated project"
-    elsif salary?
-      "salary account"
-    elsif revenue_fee == 0
-      "full fiscal sponsorship (fee waived)"
-    else
-      "full fiscal sponsorship"
-    end
-  end
-
   def used_emburse?
     emburse_cards.any?
   end
