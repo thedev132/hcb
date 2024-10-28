@@ -9,7 +9,6 @@ class StripeCardsController < ApplicationController
     authorize @cards
   end
 
-  # async frame for shipment tracking
   def shipping
     # Only show shipping for phyiscal cards if the eta is in the future (or 1 week after)
     @stripe_cards = current_user.stripe_cards.physical_shipping.reject do |sc|

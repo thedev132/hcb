@@ -25,7 +25,6 @@ class MyController < ApplicationController
     @tasks = current_user.tasks
   end
 
-  # async frame
   def missing_receipts_list
     @missing = current_user.transactions_missing_receipt
 
@@ -36,7 +35,6 @@ class MyController < ApplicationController
     end
   end
 
-  # async frame
   def missing_receipts_icon
     count = current_user.transactions_missing_receipt.count
 
