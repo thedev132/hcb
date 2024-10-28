@@ -167,8 +167,6 @@ $(document).on('turbo:load', function () {
 
   BK.s('autohide').hide()
 
-  loadAsyncFrames()
-
   if (BK.thereIs('login')) {
     let email
     const val = $('input[name=email]').val()
