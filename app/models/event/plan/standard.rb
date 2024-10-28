@@ -38,6 +38,10 @@ class Event
         Event::Plan.available_features
       end
 
+      def exempt_from_wire_minimum?
+        false
+      end
+
     end
 
   end

@@ -30,6 +30,10 @@ class Event
         "Has access to all standard features with no fees."
       end
 
+      def exempt_from_wire_minimum?
+        true
+      end
+
     end
 
   end
