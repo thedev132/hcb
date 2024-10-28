@@ -448,4 +448,42 @@ class Wire < ApplicationRecord
 
   store :recipient_information, accessors: self.recipient_information_accessors
 
+  def send_wire!
+    return unless may_mark_approved?
+
+    account_number_id = event.column_account_number&.column_id ||
+                        Rails.application.credentials.dig(:column, ColumnService::ENVIRONMENT, :default_account_number)
+
+    column_wire_transfer = ColumnService.post("/transfers/international-wire", {
+      idempotency_key: self.id.to_s,
+      amount:,
+      currency_code: currency,
+      counterparty: {
+        routing_number_type: "BIC",
+        routing_number: bic_code,
+        wire: {
+          beneficiary_name: recipient_name,
+          beneficiary_email: recipient_email,
+          beneficiary_address: {
+            line_1: address_line1,
+            line_2: address_line2,
+            city: address_city,
+            state: address_state,
+            postal_code: address_postal_code,
+            country_code: recipient_country
+          }
+        }.merge(recipient_information.compact_blank)
+      },
+      description: payment_for,
+      account_number_id:,
+      message_to_beneficiary_bank: "please contact with the beneficiary",
+      remittance_info: {
+        general_info: recipient_information[:remittance_info]
+      }
+    }.compact_blank)
+
+    mark_approved
+    save!
+  end
+
 end
