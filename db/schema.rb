@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_24_035317) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_28_201843) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -2138,6 +2138,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_24_035317) do
     t.string "address_line2"
     t.string "address_state"
     t.string "address_postal_code"
+    t.text "column_id"
+    t.index ["column_id"], name: "index_wires_on_column_id", unique: true
     t.index ["event_id"], name: "index_wires_on_event_id"
     t.index ["user_id"], name: "index_wires_on_user_id"
   end

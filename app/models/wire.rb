@@ -26,13 +26,15 @@
 #  recipient_name            :string           not null
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
+#  column_id                 :text
 #  event_id                  :bigint           not null
 #  user_id                   :bigint           not null
 #
 # Indexes
 #
-#  index_wires_on_event_id  (event_id)
-#  index_wires_on_user_id   (user_id)
+#  index_wires_on_column_id  (column_id) UNIQUE
+#  index_wires_on_event_id   (event_id)
+#  index_wires_on_user_id    (user_id)
 #
 # Foreign Keys
 #
