@@ -454,26 +454,30 @@ class Wire < ApplicationRecord
     account_number_id = event.column_account_number&.column_id ||
                         Rails.application.credentials.dig(:column, ColumnService::ENVIRONMENT, :default_account_number)
 
+    column_counterparty = ColumnService.post("/counterparties", {
+      idempotency_key: self.id.to_s,
+      routing_number_type: "bic",
+      routing_number: bic_code,
+      account_number:,
+      wire: {
+        beneficiary_name: recipient_name,
+        beneficiary_email: recipient_email,
+        beneficiary_address: {
+          line_1: address_line1,
+          line_2: address_line2,
+          city: address_city,
+          state: address_state,
+          postal_code: address_postal_code,
+          country_code: recipient_country
+        }
+      }.merge(recipient_information.compact_blank)
+    }.compact_blank)
+
     column_wire_transfer = ColumnService.post("/transfers/international-wire", {
       idempotency_key: self.id.to_s,
-      amount:,
+      amount: amount_cents,
       currency_code: currency,
-      counterparty: {
-        routing_number_type: "BIC",
-        routing_number: bic_code,
-        wire: {
-          beneficiary_name: recipient_name,
-          beneficiary_email: recipient_email,
-          beneficiary_address: {
-            line_1: address_line1,
-            line_2: address_line2,
-            city: address_city,
-            state: address_state,
-            postal_code: address_postal_code,
-            country_code: recipient_country
-          }
-        }.merge(recipient_information.compact_blank)
-      },
+      counterparty_id: column_counterparty["id"],
       description: payment_for,
       account_number_id:,
       message_to_beneficiary_bank: "please contact with the beneficiary",
