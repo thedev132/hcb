@@ -488,6 +488,7 @@ class Wire < ApplicationRecord
       }
     }.compact_blank)
 
+    self.column_id = column_wire_transfer["id"]
     mark_approved
     save!
   end
