@@ -57,7 +57,7 @@
 #  fk_rails_...  (point_of_contact_id => users.id)
 #
 class Event < ApplicationRecord
-  self.ignored_columns = %w[sponsorship_fee has_fiscal_sponsorship_document organization_identifier]
+  self.ignored_columns = %w[sponsorship_fee has_fiscal_sponsorship_document organization_identifier transaction_engine_v2_at pending_transaction_engine_at]
   MIN_WAITING_TIME_BETWEEN_FEES = 5.days
 
   include Hashid::Rails
@@ -135,7 +135,6 @@ class Event < ApplicationRecord
           from canonical_event_mappings cem
           inner join fees f on cem.id = f.canonical_event_mapping_id
           inner join events e on e.id = cem.event_id
-          where e.transaction_engine_v2_at is not null
           group by cem.event_id
       ) as q1 left outer join (
           select
@@ -145,7 +144,6 @@ class Event < ApplicationRecord
           inner join fees f on cem.id = f.canonical_event_mapping_id
           inner join canonical_transactions ct on cem.canonical_transaction_id = ct.id
           inner join events e on e.id = cem.event_id
-          where e.transaction_engine_v2_at is not null
           and f.reason = 'HACK CLUB FEE'
           group by cem.event_id
       ) q2

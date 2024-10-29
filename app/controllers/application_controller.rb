@@ -89,16 +89,6 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError.new("Not Found")
   end
 
-  def using_transaction_engine_v2?
-    @event.try(:transaction_engine_v2_at)
-  end
-  helper_method :using_transaction_engine_v2?
-
-  def using_pending_transaction_engine?
-    params[:pendingV2] || @event.try(:pending_transaction_engine_at)
-  end
-  helper_method :using_pending_transaction_engine?
-
   def set_streaming_headers
     headers["X-Accel-Buffering"] = "no"
     headers["Cache-Control"] ||= "no-cache"
