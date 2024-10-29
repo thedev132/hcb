@@ -867,7 +867,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_28_201843) do
     t.datetime "last_fee_processed_at", precision: nil
     t.datetime "pending_transaction_engine_at", precision: nil, default: "2021-02-13 22:49:40"
     t.string "aasm_state"
-    t.string "organization_identifier", null: false
+    t.string "organization_identifier"
     t.integer "country"
     t.boolean "holiday_features", default: true, null: false
     t.integer "category"

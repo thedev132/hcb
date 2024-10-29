@@ -14,7 +14,6 @@ module EventService
         postal_code:,
         point_of_contact_id: @point_of_contact.id,
         is_public:,
-        organization_identifier:,
         omit_stats: false,
         can_front_balance: true,
         demo_mode: true
@@ -31,12 +30,6 @@ module EventService
 
         @event
       end
-    end
-
-    private
-
-    def organization_identifier
-      @organization_identifier ||= "bank_#{SecureRandom.hex}"
     end
 
   end

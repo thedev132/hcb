@@ -3,7 +3,6 @@
 FactoryBot.define do
   factory :event do
     name { Faker::Name.unique.name }
-    organization_identifier { SecureRandom.hex(30) }
 
     after(:create) do |e|
       e.plan.update(plan_type: Event::Plan::FeeWaived)

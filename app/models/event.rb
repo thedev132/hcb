@@ -28,7 +28,7 @@
 #  last_fee_processed_at                        :datetime
 #  name                                         :text
 #  omit_stats                                   :boolean          default(FALSE)
-#  organization_identifier                      :string           not null
+#  organization_identifier                      :string
 #  pending_transaction_engine_at                :datetime         default(Sat, 13 Feb 2021 22:49:40.000000000 UTC +00:00)
 #  postal_code                                  :string
 #  public_message                               :text
@@ -57,7 +57,7 @@
 #  fk_rails_...  (point_of_contact_id => users.id)
 #
 class Event < ApplicationRecord
-  self.ignored_columns = %w[sponsorship_fee has_fiscal_sponsorship_document]
+  self.ignored_columns = %w[sponsorship_fee has_fiscal_sponsorship_document organization_identifier]
   MIN_WAITING_TIME_BETWEEN_FEES = 5.days
 
   include Hashid::Rails
@@ -335,7 +335,7 @@ class Event < ApplicationRecord
 
   validate :demo_mode_limit, if: proc{ |e| e.demo_mode_limit_email }
 
-  validates :name, :organization_identifier, presence: true
+  validates :name, presence: true
   validates :slug, presence: true, format: { without: /\s/ }
   validates :slug, format: { without: /\A\d+\z/ }
   validates_uniqueness_of_without_deleted :slug
