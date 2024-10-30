@@ -25,7 +25,7 @@
 <% end %>
 
 <div class="hcb_code mt2">
-  <div class="hcb_code_wrapper <%= event.hack_club_hq? ? "hack_club_hq" : "" %>" style="margin-top: -16px;">
+  <div class="hcb_code_wrapper <%= event.plan.is_a?(Event::Plan::HackClubAffiliate) ? "hack_club_hq" : "" %>" style="margin-top: -16px;">
     <%= render partial: "hcb_codes/rich_metadata" %>
   </div>
   <div class="receipts_wrapper_mobile">
