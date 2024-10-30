@@ -243,6 +243,7 @@ module CountryEnumable
         TK: 225,
         TL: 223,
         TM: 230,
+        TN: 228,
         TO: 226,
         TR: 229,
         TT: 227,
