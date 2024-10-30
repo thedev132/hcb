@@ -6,7 +6,7 @@ class CheckDepositPolicy < ApplicationPolicy
   end
 
   def create?
-    admin_or_user? && !record.event.demo_mode? && !record.event.outernet_guild?
+    admin_or_user? && !record.event.demo_mode?
   end
 
   def view_image?
