@@ -286,7 +286,7 @@ class StripeController < ActionController::Base
     dispute = event.data.object
     transaction = Stripe::Issuing::Transaction.retrieve(dispute["transaction"])
     hcb_code = RawPendingStripeTransaction.find_by!(stripe_transaction_id: transaction["authorization"]).canonical_pending_transaction.local_hcb_code
-    if dispute["status"] == "won" && dispute["currency"] == "USD"
+    if dispute["status"] == "won" && dispute["currency"] == "usd"
       StripeService::Payout.create(
         amount: dispute["amount"],
         currency: dispute["currency"],
@@ -300,7 +300,7 @@ class StripeController < ActionController::Base
       )
     elsif dispute["status"] != "won"
       Airbrake.notify("Dispute with funds reinstated but without a win: #{dispute["id"]}")
-    elsif dispute["status"] != "USD"
+    elsif dispute["currency"] != "usd"
       Airbrake.notify("Dispute with funds reinstated but non-USD currency. Must be manually handled.")
     end
   end
