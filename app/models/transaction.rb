@@ -72,7 +72,6 @@
 #
 class Transaction < ApplicationRecord
   include Receiptable
-  include Commentable
   extend FriendlyId
 
   paginates_per 250
