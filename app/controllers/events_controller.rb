@@ -253,11 +253,6 @@ class EventsController < ApplicationController
       @mock_total = @transactions.sum(&:amount_cents)
     end
 
-    if current_user && !Flipper.enabled?(:the_bin_popup_2024_05_17, current_user) && @event.robotics_team? && !@first_time
-      Flipper.enable_actor(:the_bin_popup_2024_05_17, current_user)
-      @the_bin = true
-    end
-
     if flash[:popover]
       @popover = flash[:popover]
       flash.delete(:popover)
