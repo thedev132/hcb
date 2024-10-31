@@ -3,7 +3,8 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      - mai
+      - gh-readonly-queue/main/**
 jobs:
   rubocop:
     name: Rubocop
