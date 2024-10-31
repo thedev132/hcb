@@ -1,10 +1,10 @@
 name: CI
 on:
   pull_request:
+  merge_group:
   push:
     branches:
       - main
-      - gh-readonly-queue/main/**
 jobs:
   rubocop:
     name: Rubocop
