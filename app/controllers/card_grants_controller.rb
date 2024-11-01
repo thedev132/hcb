@@ -7,6 +7,7 @@ class CardGrantsController < ApplicationController
   skip_after_action :verify_authorized, only: [:show, :spending]
 
   before_action :set_event, only: %i[new create]
+  before_action :set_card_grant, except: %i[new create]
 
   def new
     @card_grant = @event.card_grants.build
@@ -44,8 +45,6 @@ class CardGrantsController < ApplicationController
   end
 
   def show
-    @card_grant = CardGrant.find_by_hashid!(params[:id])
-
     if !signed_in?
       url_queries = { return_to: card_grant_path(@card_grant) }
       url_queries[:email] = params[:email] if params[:email]
@@ -68,8 +67,6 @@ class CardGrantsController < ApplicationController
   end
 
   def spending
-    @card_grant = CardGrant.find_by_hashid!(params[:id])
-
     authorize @card_grant
 
     @event = @card_grant.event
@@ -88,7 +85,6 @@ class CardGrantsController < ApplicationController
   end
 
   def activate
-    @card_grant = CardGrant.find_by_hashid(params[:id])
     authorize @card_grant
 
     @card_grant.create_stripe_card(current_session)
@@ -97,7 +93,6 @@ class CardGrantsController < ApplicationController
   end
 
   def cancel
-    @card_grant = CardGrant.find_by_hashid(params[:id])
     authorize @card_grant
 
     disbursement = @card_grant.cancel!(current_user)
@@ -106,12 +101,17 @@ class CardGrantsController < ApplicationController
   end
 
   def topup
-    @card_grant = CardGrant.find_by_hashid(params[:id])
     authorize @card_grant
 
     @card_grant.topup!(amount_cents: Monetize.parse(params[:amount]).cents, topped_up_by: current_user)
 
     redirect_to @card_grant, flash: { success: "Successfully topped up grant." }
+  end
+
+  private
+
+  def set_card_grant
+    @card_grant = CardGrant.find_by_hashid(params.require(:id))
   end
 
 end
