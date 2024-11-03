@@ -47,8 +47,8 @@ class DonationsController < ApplicationController
     tax_deductible = params[:goods].nil? ? true : params[:goods] == "0"
 
     @donation = Donation.new(
-      name: params[:name],
-      email: params[:email],
+      name: params[:name] || (organizer_signed_in? ? nil : current_user&.name),
+      email: params[:email] || (organizer_signed_in? ? nil : current_user&.email),
       amount: params[:amount],
       message: params[:message],
       fee_covered: params[:fee_covered],
