@@ -13,8 +13,8 @@ module CountryEnumable
   end
 
   class_methods do
-    def has_country_enum
-      enum :country, self.country_enum_list, prefix: :country
+    def has_country_enum(field: :country)
+      enum field, self.country_enum_list, prefix: field
     end
 
     private

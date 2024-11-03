@@ -53,7 +53,7 @@ class Wire < ApplicationRecord
   include AASM
 
   include CountryEnumable
-  enum :recipient_country, self.country_enum_list, prefix: :recipient_country
+  has_country_enum(field: :recipient_country)
 
   belongs_to :event
   belongs_to :user
