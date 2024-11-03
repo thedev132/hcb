@@ -207,7 +207,7 @@ class HcbCode < ApplicationRecord
   end
 
   def raw_stripe_transaction
-    ct&.raw_stripe_transaction
+    canonical_transactions.find_by(transaction_source_type: "RawStripeTransaction")&.raw_stripe_transaction
   end
 
   def stripe_card
@@ -219,11 +219,11 @@ class HcbCode < ApplicationRecord
   end
 
   def stripe_merchant
-    pt&.raw_pending_stripe_transaction&.stripe_transaction&.dig("merchant_data") || ct.raw_stripe_transaction.stripe_transaction["merchant_data"]
+    pt&.raw_pending_stripe_transaction&.stripe_transaction&.dig("merchant_data") || raw_stripe_transaction.stripe_transaction["merchant_data"]
   end
 
   def stripe_merchant_currency
-    pt&.raw_pending_stripe_transaction&.stripe_transaction&.dig("merchant_currency") || ct.raw_stripe_transaction.stripe_transaction["merchant_currency"]
+    pt&.raw_pending_stripe_transaction&.stripe_transaction&.dig("merchant_currency") || raw_stripe_transaction.stripe_transaction["merchant_currency"]
   end
 
   def stripe_refund?
@@ -235,7 +235,7 @@ class HcbCode < ApplicationRecord
   end
 
   def stripe_atm_fee
-    pt&.raw_pending_stripe_transaction&.stripe_transaction&.dig("amount_details")&.dig("atm_fee") || ct&.raw_stripe_transaction&.stripe_transaction&.dig("amount_details")&.dig("atm_fee")
+    pt&.raw_pending_stripe_transaction&.stripe_transaction&.dig("amount_details")&.dig("atm_fee") || raw_stripe_transaction&.stripe_transaction&.dig("amount_details")&.dig("atm_fee")
   end
 
   def stripe_reversed_by_merchant?
