@@ -139,7 +139,17 @@
   <% unless @donation.deposited? %>
     <section class="card__banner card__darker secondary border-top">
       <p class="my0 italic">
+        <% if @hcb_code.fee_waived? %>
+          Fees were waived on this transaction — enjoy!
+        <% end %>
         Incoming donations are immediately reflected in your account balance.
+      </p>
+    </section>
+  <% end %>
+  <% if @donation.deposited? && @hcb_code.fee_waived? %>
+    <section class="card__banner card__darker secondary border-top">
+      <p class="my0 italic">
+        Fees were waived on this transaction — enjoy!
       </p>
     </section>
   <% end %>

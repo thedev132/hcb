@@ -296,11 +296,22 @@
       <% if @invoice.event.can_front_balance? %>
         <section class="card__banner card__darker secondary border-top">
           <p class="my0 italic">
+            <% if @hcb_code.fee_waived? %>
+              Fees were waived on this transaction — enjoy!
+            <% end %>
             The funds from this invoice payment are immediately reflected in your account balance.
             (<a href="https://changelog.hcb.hackclub.com/instant-deposits-238700">learn more</a>)
           </p>
         </section>
       <% end %>
+    <% end %>
+
+    <% if (@invoice.deposited? || !@invoice.event.can_front_balance?) && @hcb_code.fee_waived? %>
+      <section class="card__banner card__darker secondary border-top">
+        <p class="my0 italic">
+          Fees were waived on this transaction — enjoy!
+        </p>
+      </section>
     <% end %>
 
   </article>
