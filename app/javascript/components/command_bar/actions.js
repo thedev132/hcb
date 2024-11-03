@@ -245,7 +245,7 @@ export const adminActions = adminUrls => [
     section: 'Admin Tools',
     priority: Priority.HIGH,
     name: 'Wires',
-    icon: <Icon glyph="bolt" size={16} />,
+    icon: <Icon glyph="web" size={16} />,
     perform: () => (window.location.href = '/admin/wires'),
   },
   {
