@@ -529,6 +529,10 @@ class HcbCode < ApplicationRecord
     !no_transactions? && event
   end
 
+  def fee_waived?
+    pt&.fee_waived? || false
+  end
+
   def accepts_receipts?
     !reimbursement_expense_payout?
   end
