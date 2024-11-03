@@ -102,12 +102,12 @@
       <% end %>
       <p>
         <strong><%= @hcb_code.stripe_refund? ? "Refunded" : "Spent" %></strong>
-        <%= local_time_ago @hcb_code.pt&.raw_pending_stripe_transaction&.created_at || Time.at(@hcb_code.ct.raw_stripe_transaction.stripe_transaction["created"]) %>
+        <%= local_time_ago @hcb_code.pt&.raw_pending_stripe_transaction&.created_at || Time.at(@hcb_code.raw_stripe_transaction.stripe_transaction["created"]) %>
       </p>
       <% unless @hcb_code.ct.nil? || @hcb_code.pt.nil? %>
         <p>
           <strong>Settled after</strong>
-          <span title="<%= Time.at(@hcb_code.ct.raw_stripe_transaction.stripe_transaction["created"]).strftime("%B %e, %Y %l:%M%P") %>">
+          <span title="<%= Time.at(@hcb_code.raw_stripe_transaction.stripe_transaction["created"]).strftime("%B %e, %Y %l:%M%P") %>">
           <%= distance_of_time_in_words @hcb_code.pt.raw_pending_stripe_transaction.created_at, @hcb_code.ct.created_at %>
           </span>
         </p>
