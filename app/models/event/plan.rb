@@ -4,12 +4,13 @@
 #
 # Table name: event_plans
 #
-#  id         :bigint           not null, primary key
-#  aasm_state :string
-#  plan_type  :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  event_id   :bigint           not null
+#  id          :bigint           not null, primary key
+#  aasm_state  :string
+#  inactive_at :datetime
+#  plan_type   :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  event_id    :bigint           not null
 #
 # Indexes
 #
@@ -21,11 +22,12 @@
 #
 class Event
   class Plan < ApplicationRecord
+    has_paper_trail
+
     belongs_to :event
 
     include AASM
-
-    aasm do
+    aasm timestamps: true do
       state :active, initial: true
       state :inactive
 

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_28_201843) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_30_053217) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -827,6 +827,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_28_201843) do
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "inactive_at"
     t.index ["event_id"], name: "index_event_plans_on_event_id"
   end
 
