@@ -330,6 +330,8 @@ class Donation < ApplicationRecord
   def send_donation_notification
     # only runs when status becomes succeeded, should not run on delete.
     return unless status_previously_changed?(to: "succeeded")
+    # don't send for repeated recurring donations
+    return if recurring? && !initial_recurring_donation?
 
     if first_donation?
       DonationMailer.with(donation: self).first_donation_notification.deliver_later
