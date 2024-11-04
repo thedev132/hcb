@@ -13,7 +13,7 @@ class WirePolicy < ApplicationPolicy
     user&.admin?
   end
 
-  def send?
+  def send_wire?
     user&.admin?
   end
 
