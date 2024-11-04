@@ -23,6 +23,8 @@ module TransactionEngine
           return likely_increase_ach if increase_ach?
           return likely_column_ach if column_ach?
 
+          return likely_column_wire if column_wire?
+
           return likely_invoice if incoming_invoice?
 
           return likely_invoice_or_donation_for_fee_refund if fee_refund?
@@ -116,6 +118,11 @@ module TransactionEngine
       def likely_column_ach
         column_ach_transfer_id = @canonical_transaction.raw_column_transaction&.column_transaction&.dig("transaction_id")
         return AchTransfer.find_by(column_id: column_ach_transfer_id)
+      end
+
+      def likely_column_wire
+        column_wire_id = @canonical_transaction.raw_column_transaction&.column_transaction&.dig("transaction_id")
+        return Wire.find_by(column_id: column_ach_transfer_id)
       end
 
       def likely_invoice
