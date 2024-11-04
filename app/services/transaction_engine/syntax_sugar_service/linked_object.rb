@@ -122,7 +122,7 @@ module TransactionEngine
 
       def likely_column_wire
         column_wire_id = @canonical_transaction.raw_column_transaction&.column_transaction&.dig("transaction_id")
-        return Wire.find_by(column_id: column_ach_transfer_id)
+        return Wire.find_by(column_id: column_wire_id)
       end
 
       def likely_invoice
