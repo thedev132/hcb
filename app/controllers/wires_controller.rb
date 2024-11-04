@@ -43,6 +43,17 @@ class WiresController < ApplicationController
     redirect_to wire_process_admin_path(@wire), flash: { error: e.message }
   end
 
+  def send
+    authorize @wire
+
+    @wire.send_wire!
+
+    redirect_to wire_process_admin_path(@wire), flash: { success: "Thanks for approving that wire." }
+
+  rescue => e
+    redirect_to wire_process_admin_path(@wire), flash: { error: e.message }
+  end
+
   def reject
     authorize @wire
 
