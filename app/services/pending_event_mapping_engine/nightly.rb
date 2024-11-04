@@ -98,6 +98,7 @@ module PendingEventMappingEngine
       CanonicalPendingTransaction.unsettled.wire.find_each(batch_size: 100) do |cpt|
         if cpt.local_hcb_code.ct
           CanonicalPendingSettledMapping.create!(canonical_pending_transaction: cpt, canonical_transaction: cpt.local_hcb_code.ct)
+          cpt.wire.mark_deposited!
         end
       end
     end
