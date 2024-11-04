@@ -98,6 +98,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :outgoing_ach, -> { where("raw_pending_outgoing_ach_transaction_id is not null") }
   scope :outgoing_check, -> { where("raw_pending_outgoing_check_transaction_id is not null") }
   scope :increase_check, -> { where.not(increase_check_id: nil) }
+  scope :wire, -> { where.not(wire: nil) }
   scope :check_deposit, -> { where.not(check_deposit_id: nil) }
   scope :donation, -> { where("raw_pending_donation_transaction_id is not null") }
   scope :invoice, -> { where("raw_pending_invoice_transaction_id is not null") }
