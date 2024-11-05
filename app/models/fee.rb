@@ -53,4 +53,8 @@ class Fee < ApplicationRecord
     amount_cents_as_decimal > 0 && canonical_transaction.likely_waveable_for_fee?
   end
 
+  def waived?
+    reason != :revenue
+  end
+
 end
