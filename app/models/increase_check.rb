@@ -121,6 +121,12 @@ class IncreaseCheck < ApplicationRecord
     end
   end
 
+  validate do
+    if (address_line1.length + address_line2.length) > 50
+      errors.add(:base, "Address line one and line two's combined length can not exceed 50 characters.")
+    end
+  end
+
   scope :in_transit, -> { where(increase_status: [:pending_submission, :submitting, :submitted, :pending_mailing, :mailed]) }
   scope :canceled, -> { where(increase_status: [:rejected, :canceled, :stopped, :returned, :rejected]).or(where(aasm_state: :rejected)) }
 

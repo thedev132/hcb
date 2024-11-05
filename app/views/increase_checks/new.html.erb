@@ -38,6 +38,8 @@
   <div class="container--xs">
     <h1 class="mt0">Send a check</h1>
     <%= form_with(model: [@event, @check], local: true) do |form| %>
+      <%= form_errors(@check, "check", "We couldn't send this") %>
+
       <div class="field">
         <%= form.label :memo %>
         <%= form.text_field :memo,
