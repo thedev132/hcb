@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_30_053217) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_05_040152) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -864,9 +864,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_30_053217) do
     t.boolean "is_public", default: true
     t.text "public_message"
     t.boolean "omit_stats", default: false
-    t.datetime "transaction_engine_v2_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at", precision: nil
-    t.datetime "pending_transaction_engine_at", precision: nil, default: "2021-02-13 22:49:40"
     t.string "aasm_state"
     t.string "organization_identifier"
     t.integer "country"

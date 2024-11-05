@@ -29,7 +29,6 @@
 #  name                                         :text
 #  omit_stats                                   :boolean          default(FALSE)
 #  organization_identifier                      :string
-#  pending_transaction_engine_at                :datetime         default(Sat, 13 Feb 2021 22:49:40.000000000 UTC +00:00)
 #  postal_code                                  :string
 #  public_message                               :text
 #  public_reimbursement_page_enabled            :boolean          default(FALSE), not null
@@ -38,7 +37,6 @@
 #  short_name                                   :string
 #  slug                                         :text
 #  stripe_card_shipping_type                    :integer          default("standard"), not null
-#  transaction_engine_v2_at                     :datetime
 #  website                                      :string
 #  created_at                                   :datetime         not null
 #  updated_at                                   :datetime         not null
