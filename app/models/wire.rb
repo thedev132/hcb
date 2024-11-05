@@ -193,11 +193,11 @@ class Wire < ApplicationRecord
   end
 
   POSTAL_CODE_FORMATS = {
-    "US": /^\d{5}(?:-\d{4})?$/,
-    "CN": /^\d{6}$/,
-    "JP": /^\d{3}-\d{4}$/,
-    "FR": /^\d{5}$/,
-    "DE": /^\d{5}$/
+    "US": /\A\d{5}(?:-\d{4})?\z/,
+    "CN": /\A\d{6}\z/,
+    "JP": /\A\d{3}-\d{4}\z/,
+    "FR": /\A\d{5}\z/,
+    "DE": /\A\d{5}\z/
   }.freeze
 
   validate do
