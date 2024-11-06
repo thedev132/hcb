@@ -74,6 +74,8 @@ class Wire < ApplicationRecord
     )
   end
 
+  # IBAN & postal code formats sourced from https://column.com/docs/international-wires/country-specific-details
+
   IBAN_FORMATS = {
     "AD": /AD\d{2}\d{4}\d{4}[\dA-Za-z]{12}/,
     "AE": /AE\d{2}\d{3}\d{16}/,
