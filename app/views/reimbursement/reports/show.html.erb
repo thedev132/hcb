@@ -23,27 +23,27 @@
       <span class="mr1 badge bg-muted">Review requested from <%= @report.reviewer.initial_name %></span>
     <% end %>
     <span class="ml0 badge bg-<%= @report.status_color %>"><%= @report.status_text %></span>
-    <% admin_tool "w-fit p0", style: "border-radius: 999px; height: 28px; width: 28px;" do %>
+    <% admin_tool "w-fit p0", style: "border-radius: 999px; height: 32px; width: 32px;" do %>
       <%= link_to reimbursements_admin_index_path, class: "flex items-center justify-center", style: "transform: translateY(1px);" do %>
-        <%= inline_icon "list", size: 24, color: "#ff8c37" %>
+        <%= inline_icon "list", size: 28, color: "#ff8c37" %>
       <% end %>
     <% end %>
     <% if @report.initial_draft? %>
       <%= pop_icon_to "delete",
                       reimbursement_report_path(@report),
                       method: :delete,
-                      icon_size: 22,
+                      icon_size: 26,
                       class: "tooltipped tooltipped--w",
-                      style: "height: 28px; width: 28px; background: #ec375020; color: #ec3750",
+                      style: "height: 32px; width: 32px; background: #ec375020; color: #ec3750",
                       'aria-label': "Delete this report." %>
     <% end %>
     <% unless @report.closed? %>
       <%= pop_icon_to "settings",
                       "#",
                       data: { behavior: "modal_trigger", modal: "edit" },
-                      icon_size: 24,
+                      icon_size: 28,
                       class: "tooltipped tooltipped--w",
-                      style: "height: 28px; width: 28px;",
+                      style: "height: 32px; width: 32px;",
                       'aria-label': "Edit this report's properties." %>
     <% end %>
   </h3>
