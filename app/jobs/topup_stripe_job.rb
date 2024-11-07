@@ -68,7 +68,10 @@ class TopupStripeJob < ApplicationJob
                                           auth[:transactions].empty?
     end
 
-    topup_amount = buffer - pending - available + expected_tx_sum - enroute_sum
+    topup_amount = buffer - pending - available - enroute_sum + expected_tx_sum
+    # 200k - (current + pending + en route balance) + (expected_tx_sum)
+
+    StatsD.gauge("stripe_issuing_expected_tx_sum", expected_tx_sum, sample_rate: 1.0)
 
     puts "topup amount == #{topup_amount}"
     return unless topup_amount > 0
