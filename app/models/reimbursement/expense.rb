@@ -54,15 +54,11 @@ module Reimbursement
     validates :expense_number, uniqueness: { scope: :reimbursement_report_id }
     validate :valid_expense_type
 
-    # I'm overriding broadcasts_refreshes_to here so that it uses "after_save" + "after_destroy"
-    # and not "after_commit". That's because "after_commit" is called on a touch, "after_save" isn't.
+    # I'm not using broadcasts_refreshes_to here. That's because "after_commit" is called on a touch, "after_save" isn't.
     # View https://github.com/hackclub/hcb/issues/8389 for more context - @sampoder
-    def broadcasts_refreshes_to(stream)
-      after_save -> { broadcast_refresh_later_to(stream.try(:call, self) || send(stream)) }
-      after_destroy -> { broadcast_refresh_later_to(stream.try(:call, self) || send(stream)) }
-    end
 
-    broadcasts_refreshes_to ->(expense) { expense.report }
+    after_save -> { broadcast_refresh_later_to(self.report) }
+    after_destroy -> { broadcast_refresh_later_to(self.report) }
 
     before_validation do
       unless self.expense_number
