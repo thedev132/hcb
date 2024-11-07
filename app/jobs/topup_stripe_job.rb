@@ -3,6 +3,11 @@
 class TopupStripeJob < ApplicationJob
   queue_as :default
 
+  # Don't retry jobs w/ balance anomalies, reattempt at next run
+  discard_on(Errors::StripeIssuingBalanceAnomaly) do |job, error|
+    Airbrake.notify(error)
+  end
+
   def perform
     # Stripe requires us to keep a certain amount of money in our Stripe Issuing
     # Balance in order to approve card authorizations. The "buffer" is the
@@ -32,7 +37,7 @@ class TopupStripeJob < ApplicationJob
       #
       # NOTE: It is possible to have an issuing balance higher than the buffer
       # due to `expected_tx_sum`. However, it should only be a marginal amount.
-      raise <<~MSG.squish
+      raise Errors::StripeIssuingBalanceAnomaly, <<~MSG.squish
         Stripe Issuing balance anomaly: We're trying to top-up, but found the
         balance is already unexpectedly high.
         Available: #{available},
