@@ -50,6 +50,8 @@ module StripeAuthorizationService
           end
         end
       end
+
+      TopupStripeJob.perform_later
     end
 
   end

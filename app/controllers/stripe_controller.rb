@@ -68,8 +68,6 @@ class StripeController < ActionController::Base
     amount = tx[:amount]
     return unless amount < 0
 
-    TopupStripeJob.perform_later
-
     head :ok
   end
 
