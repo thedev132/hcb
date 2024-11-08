@@ -417,6 +417,8 @@ class EventsController < ApplicationController
     @user_id = params[:user].presence
     @user = User.find(params[:user]) if params[:user]
 
+    @has_filter = @status.present? || @user_id.present?
+
     all_stripe_cards = @event.stripe_cards.where.missing(:card_grant).joins(:stripe_cardholder, :user)
                              .order("stripe_status asc, created_at desc")
 

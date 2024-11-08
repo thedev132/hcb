@@ -6,6 +6,7 @@
   background-color: map-get($palette, primary);
   color: $white;
   border-radius: 9999px;
+  gap: 0.25rem;
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -65,8 +66,9 @@
     color: $white;
   }
 
-  svg:last-child {
-    margin-left: 0.25rem;
+  &.badge-large {
+    padding: 0.3rem 1rem;
+    gap: 0.5rem;
   }
 
   &.tx-tag {

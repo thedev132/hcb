@@ -3,6 +3,11 @@
 module ApplicationHelper
   include ActionView::Helpers
 
+  def upsert_query_params(**new_params)
+    params = request.query_parameters || {}
+    params.merge(new_params)
+  end
+
   def render_money(amount, opts = {})
     amount = amount.cents if amount.is_a?(Money)
 
