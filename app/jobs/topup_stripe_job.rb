@@ -59,7 +59,7 @@ class TopupStripeJob < ApplicationJob
     topups = Stripe::Topup.list(status: :pending).auto_paging_each.filter do |t|
       t.destination_balance == "issuing"
     end
-    enroute_sum = topups[:data].sum(&:amount)
+    enroute_sum = topups.sum(&:amount)
 
     # stripe TXs can get created 1 to 30 days after approval, so let's grab any
     # authorization that's pending
