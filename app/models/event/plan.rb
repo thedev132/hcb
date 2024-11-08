@@ -72,6 +72,12 @@ class Event
       end
     end
 
+    validate do
+      unless plan_type.in?(Event::Plan.descendants.map(&:name))
+        errors.add(:plan_type, "is invalid")
+      end
+    end
+
   end
 
 end
