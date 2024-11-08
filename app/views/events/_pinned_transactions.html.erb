@@ -6,7 +6,7 @@
         <section class="modal modal--scroll modal--popover bg-snow" data-behavior="modal" role="dialog" id="transaction_details_<%= pin.__id__ %>">
           <%= modal_header(pin.hcb_code.local_hcb_code.pretty_title(show_amount: true, show_event_name: false, amount_cents: pin.hcb_code.amount), external_link: pin.hcb_code.local_hcb_code.url) %>
           <%= turbo_frame_tag pin.hcb_code.local_hcb_code.public_id, src: pin.hcb_code.local_hcb_code.popover_url, loading: :lazy do %>
-            <strong>Loading...</strong>
+            <%= render partial: "application/loading_container" %>
           <% end %>
         </section>
       <% end %>

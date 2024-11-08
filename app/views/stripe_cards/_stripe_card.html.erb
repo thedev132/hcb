@@ -52,7 +52,7 @@
   <section class="modal modal--scroll modal--popover modal--popover--sm bg-snow" data-behavior="modal" role="dialog" id="card_popover_<%= stripe_card.id %>">
     <%= modal_header(stripe_card.initially_activated ? "Card #{stripe_card.last_four}" : "Inactive card", external_link: stripe_card.url) %>
     <%= turbo_frame_tag "stripe_card_#{stripe_card.public_id}", src: stripe_card.popover_url, loading: :lazy do %>
-      Loading...
+      <%= render partial: "application/loading_container" %>
     <% end %>
   </section>
 <% end %>
