@@ -19,15 +19,7 @@
       <%= badge_for @event.stripe_cards.count, class: "bg-muted" %>
     </span>
 
-    <%= render "filter_cards", headless: true do %>
-      <button
-        type="button"
-        class="pop my-2 cursor-pointer tooltipped tooltipped--s"
-        aria-label="Add filters..."
-        data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">
-        <%= inline_icon "filter", size: 28 %>
-      </button>
-    <% end unless @has_filter %>
+    <%= render "filter_cards_menu" unless @has_filter %>
     <%= pop_icon_to @view == "list" ? "grid" : "list",
                     "?view=#{@view == 'list' ? 'grid' : 'list'}#{"&q=#{@q}" if @q}#{"&status=#{@status}" if @status}" %>
     <% if organizer_signed_in? %>
@@ -38,15 +30,7 @@
     <% end %>
   </h1>
 
-  <%= render "filter_cards" do %>
-    <button
-      type="button"
-      class="pop my-2 cursor-pointer tooltipped tooltipped--s"
-      aria-label="Add filters..."
-      data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">
-      <%= inline_icon "filter", size: 28 %>
-    </button>
-  <% end if @has_filter %>
+  <%= render "filter_cards" if @has_filter %>
 
   <% if control = @organizer_position&.active_spending_control %>
     <% title = control.balance_cents.zero? ? "You are not authorized to spend any money at the moment." : "You currently have a spending limit of #{render_money control.balance_cents}" %>
