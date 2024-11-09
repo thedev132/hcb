@@ -53,7 +53,7 @@
           <div class="tag__preview tag-<%= @tag.color || "muted" %>"></div>
           <%= @tag.label %>
 
-          <%= link_to upsert_query_params("tag" => nil) do %>
+          <%= link_to upsert_query_params("tag" => nil), class: "flex items-center" do %>
             <%= inline_icon "view-close", size: 20 %>
           <% end %>
         </div>
@@ -63,7 +63,7 @@
           <%= avatar_for @user, 18 %>
           <%= @user.name %>
 
-          <%= link_to upsert_query_params("user" => nil) do %>
+          <%= link_to upsert_query_params("user" => nil), class: "flex items-center" do %>
             <%= inline_icon "view-close", size: 20 %>
           <% end %>
         </div>
@@ -71,7 +71,7 @@
       <% if @type %>
         <div class="badge badge-large bg-muted">
           <%= @type.humanize.gsub("Ach", "ACH") %>
-          <%= link_to upsert_query_params("type" => nil) do %>
+          <%= link_to upsert_query_params("type" => nil), class: "flex items-center" do %>
             <%= inline_icon "view-close", size: 20 %>
           <% end %>
         </div>
@@ -83,7 +83,7 @@
           <%= @end_date && @start_date ? " and " : "" %>
           <%= @end_date&.to_datetime&.strftime("%m/%d/%Y") || "" %>
 
-          <%= link_to upsert_query_params("start" => nil, "end" => nil, "commit" => nil) do %>
+          <%= link_to upsert_query_params("start" => nil, "end" => nil, "commit" => nil), class: "flex items-center" do %>
             <%= inline_icon "view-close", size: 20 %>
           <% end %>
         </div>
@@ -91,7 +91,7 @@
       <% if @missing_receipts %>
         <div class="badge badge-large bg-muted">
           Missing Receipts
-          <%= link_to upsert_query_params("missing_receipts" => nil) do %>
+          <%= link_to upsert_query_params("missing_receipts" => nil), class: "flex items-center" do %>
             <%= inline_icon "view-close", size: 20 %>
           <% end %>
         </div>
