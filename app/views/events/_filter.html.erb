@@ -88,6 +88,18 @@
           <% end %>
         </div>
       <% end %>
+      <% if @minimum_amount || @maximum_amount %>
+        <div class="badge badge-large bg-muted">
+          <%= @minimum_amount && @maximum_amount ? "Between" : @maximum_amount ? "Less than" : "More than" %>
+          <%= render_money @minimum_amount if @minimum_amount %>
+          <%= @minimum_amount && @maximum_amount ? " and " : "" %>
+          <%= render_money @maximum_amount if @maximum_amount %>
+
+          <%= link_to upsert_query_params("minimum_amount" => nil, "maximum_amount" => nil), class: "flex items-center" do %>
+            <%= inline_icon "view-close", size: 20 %>
+          <% end %>
+        </div>
+      <% end %>
       <% if @missing_receipts %>
         <div class="badge badge-large bg-muted">
           Missing Receipts
