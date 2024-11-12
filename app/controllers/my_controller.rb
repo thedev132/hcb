@@ -17,7 +17,10 @@ class MyController < ApplicationController
   end
 
   def cards
-    @stripe_cards = current_user.stripe_cards.includes(:event)
+    @stripe_cards = current_user.stripe_cards.includes(:event).order(
+      Arel.sql("stripe_status = 'active' DESC"),
+      Arel.sql("stripe_status = 'inactive' DESC")
+    )
     @emburse_cards = current_user.emburse_cards.includes(:event)
   end
 
