@@ -300,6 +300,10 @@ module Reimbursement
       maximum_amount_cents && amount_cents > maximum_amount_cents
     end
 
+    def from_public_reimbursement_form?
+      invited_by_id.nil?
+    end
+
     private
 
     def last_user_change_to(...)
