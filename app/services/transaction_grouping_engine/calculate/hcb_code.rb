@@ -25,6 +25,7 @@ module TransactionGroupingEngine
       DISBURSEMENT_CODE = "500"
       STRIPE_CARD_CODE = "600"
       STRIPE_FORCE_CAPTURE_CODE = "601"
+      STRIPE_SERVICE_FEE_CODE = "610"
       BANK_FEE_CODE = "700"
       INCOMING_BANK_FEE_CODE = "701" # short-lived and deprecated
       FEE_REVENUE_CODE = "702"

@@ -186,7 +186,7 @@ class HcbCode < ApplicationRecord
         ].compact.uniq)
 
         ids << EventMappingEngine::EventIds::INCOMING_FEES if incoming_bank_fee?
-        ids << EventMappingEngine::EventIds::HACK_CLUB_BANK if fee_revenue?
+        ids << EventMappingEngine::EventIds::HACK_CLUB_BANK if fee_revenue? || stripe_service_fee?
         ids << EventMappingEngine::EventIds::REIMBURSEMENT_CLEARING if reimbursement_payout_holding?
 
         Event.where(id: ids)
@@ -318,6 +318,10 @@ class HcbCode < ApplicationRecord
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_FORCE_CAPTURE_CODE
   end
 
+  def stripe_service_fee?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_SERVICE_FEE_CODE
+  end
+
   def invoice
     @invoice ||= Invoice.find_by(id: hcb_i2) if invoice?
   end
@@ -356,6 +360,10 @@ class HcbCode < ApplicationRecord
 
   def fee_revenue
     @fee_revenue ||= FeeRevenue.find_by(id: hcb_i2) if fee_revenue?
+  end
+
+  def stripe_service_fee
+    @stripe_service_fee ||= StripeServiceFee.find_by(id: hcb_i2) if stripe_service_fee?
   end
 
   def check_deposit?

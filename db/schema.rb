@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_05_040152) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_07_033327) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1859,6 +1859,17 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_05_040152) do
     t.index ["stripe_cardholder_id"], name: "index_stripe_cards_on_stripe_cardholder_id"
     t.index ["stripe_id"], name: "index_stripe_cards_on_stripe_id", unique: true
     t.index ["subledger_id"], name: "index_stripe_cards_on_subledger_id"
+  end
+
+  create_table "stripe_service_fees", force: :cascade do |t|
+    t.string "stripe_balance_transaction_id", null: false
+    t.string "stripe_topup_id"
+    t.integer "amount_cents", null: false
+    t.string "stripe_description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stripe_balance_transaction_id"], name: "index_stripe_service_fees_on_stripe_balance_transaction_id", unique: true
+    t.index ["stripe_topup_id"], name: "index_stripe_service_fees_on_stripe_topup_id", unique: true
   end
 
   create_table "subledgers", force: :cascade do |t|

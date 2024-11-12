@@ -59,9 +59,8 @@ class StripeCard < ApplicationRecord
   has_paper_trail
 
   after_create_commit :notify_user, unless: :skip_notify_user
-  after_create_commit :pay_for_issuing, unless: :skip_pay_for_issuing
 
-  attr_accessor :skip_pay_for_issuing, :skip_notify_user
+  attr_accessor :skip_notify_user
 
   scope :deactivated, -> { where.not(stripe_status: "active") }
   scope :canceled, -> { where(stripe_status: "canceled") }
@@ -314,37 +313,6 @@ class StripeCard < ApplicationRecord
     self
   end
 
-  def issuing_cost
-    # (@msw) Stripe's API doesn't provide issuing + shipping costs, so this
-    # method computes the cost of issuing a card based on Stripe's
-    # docs:
-    # https://stripe.com/docs/issuing/cards/physical#costs
-    # https://stripe.com/docs/issuing/cards/virtual#costs
-
-    # *all amounts in cents*
-
-    return 10 if virtual?
-
-    cost = 300
-    cost_type = [stripe_obj["shipping"]["type"], stripe_obj["shipping"]["service"]]
-    case cost_type
-    when ["individual", "standard"]
-      cost += 50
-    when ["individual", "express"]
-      cost += 1600
-    when ["individual", "priority"]
-      cost += 2200
-    when ["bulk", "standard"]
-      cost += 2500
-    when ["bulk", "express"]
-      cost += 3000
-    when ["bulk", "priority"]
-      cost += 4800
-    end
-
-    cost
-  end
-
   def canonical_transactions
     @canonical_transactions ||= CanonicalTransaction.stripe_transaction.where("raw_stripe_transactions.stripe_transaction->>'card' = ?", stripe_id)
   end
@@ -402,10 +370,6 @@ class StripeCard < ApplicationRecord
 
   def issued?
     stripe_id.present?
-  end
-
-  def pay_for_issuing
-    PayForIssuedCardJob.perform_later(self)
   end
 
   def notify_user
