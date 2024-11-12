@@ -33,6 +33,10 @@
       <script async src="https://cdn.headwayapp.co/widget.js"></script>
     <% end %>
 
+    <% unless Rails.env.production? %>
+      <meta name="turbo-prefetch" content="false">
+    <% end %>
+
     <% if Rails.env.production? %>
       <script>
         console.log(`%c                -*%@@%*-
