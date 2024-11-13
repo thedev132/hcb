@@ -35,6 +35,7 @@ class Event
       event :mark_inactive do
         transitions from: :active, to: :inactive
         after do |new_type|
+          event.reload
           event.create_plan!(type: new_type)
         end
       end
