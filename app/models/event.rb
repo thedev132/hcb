@@ -19,7 +19,6 @@
 #  donation_page_message                        :text
 #  donation_reply_to_email                      :text
 #  donation_thank_you_message                   :text
-#  expected_budget                              :integer
 #  has_fiscal_sponsorship_document              :boolean
 #  hidden_at                                    :datetime
 #  holiday_features                             :boolean          default(TRUE), not null
