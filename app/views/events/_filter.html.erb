@@ -16,6 +16,8 @@
     <% end %>
   <% end %>
 
+  <%= render partial: "filter_menu" unless filter_applied %>
+
   <% if @event.canonical_transactions.any? %>
     <div data-controller="menu" data-menu-placement-value="bottom-end">
       <button
@@ -60,8 +62,6 @@
       </div>
     </div>
   <% end %>
-
-  <%= render partial: "filter_menu" unless filter_applied %>
 
   <% admin_tool(@show_running_balance ? "" : "display-none") do %>
     <div data-controller="menu" data-menu-append-to-value="turbo-frame#ledger" data-menu-placement-value="bottom-end">
