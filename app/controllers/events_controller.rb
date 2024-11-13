@@ -409,7 +409,8 @@ class EventsController < ApplicationController
   end
 
   def card_overview
-    @status = %w[virtual physical active inactive].include?(params[:status]) ? params[:status] : nil
+    @status = %w[active inactive].include?(params[:status]) ? params[:status] : nil
+    @type = %w[virtual physical].include?(params[:type]) ? params[:type] : nil
 
     cookies[:card_overview_view] = params[:view] if params[:view]
     @view = cookies[:card_overview_view] || "grid"
@@ -417,7 +418,7 @@ class EventsController < ApplicationController
     @user_id = params[:user].presence
     @user = User.find(params[:user]) if params[:user]
 
-    @has_filter = @status.present? || @user_id.present?
+    @has_filter = @status.present? || @type.present? || @user_id.present?
 
     all_stripe_cards = @event.stripe_cards.where.missing(:card_grant).joins(:stripe_cardholder, :user)
                              .order("stripe_status asc, created_at desc")
@@ -429,6 +430,11 @@ class EventsController < ApplicationController
                          all_stripe_cards.active
                        when "inactive"
                          all_stripe_cards.deactivated
+                       else
+                         all_stripe_cards
+                       end
+
+    all_stripe_cards = case @type
                        when "virtual"
                          all_stripe_cards.virtual
                        when "physical"
