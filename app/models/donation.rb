@@ -76,7 +76,7 @@ class Donation < ApplicationRecord
   before_create :create_stripe_payment_intent, unless: -> { recurring? || in_person? }
   before_create :assign_unique_hash, unless: -> { recurring? }
 
-  after_commit :send_donation_notification
+  after_commit :send_notification
 
   validates :name, :email, presence: true, unless: -> { recurring? || in_person? } # recurring donations have a name/email in their `RecurringDonation` object
   validates :email, on: :create, format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }, unless: -> { recurring? || in_person? } # recurring donations have an email in their `RecurringDonation` object
@@ -327,7 +327,7 @@ class Donation < ApplicationRecord
     @raw_pending_donation_transactions ||= ::RawPendingDonationTransaction.where(donation_transaction_id: id)
   end
 
-  def send_donation_notification
+  def send_notification
     # only runs when status becomes succeeded, should not run on delete.
     return unless status_previously_changed?(to: "succeeded")
     # don't send for repeated recurring donations
@@ -335,10 +335,8 @@ class Donation < ApplicationRecord
 
     if first_donation?
       DonationMailer.with(donation: self).first_donation_notification.deliver_later
-    elsif includes_message?
-      DonationMailer.with(donation: self).donation_with_message_notification.deliver_later
     else
-      DonationMailer.with(donation: self).donation_notification.deliver_later
+      DonationMailer.with(donation: self).notification.deliver_later
     end
   end
 
