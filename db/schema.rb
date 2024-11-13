@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_07_033327) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_13_054212) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1230,44 +1230,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_07_033327) do
     t.index ["status"], name: "index_invoices_on_status"
     t.index ["stripe_invoice_id"], name: "index_invoices_on_stripe_invoice_id", unique: true
     t.index ["voided_by_id"], name: "index_invoices_on_voided_by_id"
-  end
-
-  create_table "lab_tech_experiments", force: :cascade do |t|
-    t.string "name"
-    t.integer "percent_enabled", default: 0, null: false
-    t.integer "equivalent_count", default: 0, null: false
-    t.integer "timed_out_count", default: 0, null: false
-    t.integer "other_error_count", default: 0, null: false
-    t.index ["name"], name: "index_lab_tech_experiments_by_name", unique: true
-  end
-
-  create_table "lab_tech_observations", force: :cascade do |t|
-    t.integer "result_id", null: false
-    t.string "name", limit: 100
-    t.float "duration"
-    t.text "value"
-    t.text "sql"
-    t.string "exception_class"
-    t.text "exception_message"
-    t.text "exception_backtrace"
-    t.datetime "created_at", precision: nil
-    t.text "diff"
-    t.index ["result_id"], name: "index_lab_tech_observations_by_result_id"
-  end
-
-  create_table "lab_tech_results", force: :cascade do |t|
-    t.integer "experiment_id", null: false
-    t.text "context"
-    t.boolean "equivalent", default: false, null: false
-    t.boolean "raised_error", default: false, null: false
-    t.float "time_delta"
-    t.float "speedup_factor"
-    t.datetime "created_at", precision: nil
-    t.boolean "timed_out", default: false, null: false
-    t.float "control_duration"
-    t.float "candidate_duration"
-    t.index ["experiment_id", "equivalent"], name: "index_lab_tech_results_by_exp_id_and_equivalent"
-    t.index ["experiment_id", "raised_error"], name: "index_lab_tech_results_by_exp_id_and_raised"
   end
 
   create_table "lob_addresses", force: :cascade do |t|
