@@ -2,7 +2,7 @@
   <%= form.label :report_name, "Report name" %>
   <%= form.text_field :report_name, placeholder: "Chicago Trip Expenses", required: true %>
   <% if organizer_signed_in? && (@report.submitted? || @report.draft?) %>
-    <%= form.label :maximum_amount, "Maximum Reimbursable Value (Optional)", class: "mt2 bold" %>
+    <%= form.label :maximum_amount, "Maximum reimbursable value (optional)", class: "mt2 bold" %>
     <div class="field">
       <div class="flex items-center">
         <span class="bold muted" style="width: 1rem;">$</span>
@@ -25,7 +25,7 @@
   <% end %>
   <% if organizer_signed_in? && (@report.submitted? || @report.draft?) && @report.event %>
    <div class="field">
-      <%= form.label :reviewer_id, "Assigned Reviewer", class: "mt2 bold" %>
+      <%= form.label :reviewer_id, "Assigned reviewer", class: "mt2 bold" %>
       <%= form.collection_select :reviewer_id, @report.event.users, :id, :name, include_blank: "Anyone" %>
     </div>
   <% end %>
