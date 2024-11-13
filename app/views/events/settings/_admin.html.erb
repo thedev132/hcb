@@ -40,7 +40,7 @@
       </div>
 
       <div class="field">
-        <%= form.label :plan_type, capture { %>
+        <%= form.label :plan, capture { %>
           <% if @event.plan.present? %>
             Current plan
             <% if !@event.plan.was_backfilled? %>
@@ -52,7 +52,7 @@
             Assign a plan
           <% end %>
         <% } %>
-        <%= form.select :plan_type, Event::Plan.available_plans.map { |p| [p.new.label, p.name] }, selected: @event.plan&.plan_type %>
+        <%= form.select :plan, Event::Plan.available_plans.map { |p| [p.new.label, p.name] }, selected: @event.plan&.type %>
       </div>
 
       <div class="field">

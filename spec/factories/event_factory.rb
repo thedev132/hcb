@@ -5,7 +5,7 @@ FactoryBot.define do
     name { Faker::Name.unique.name }
 
     after(:create) do |e|
-      e.plan.update(plan_type: Event::Plan::FeeWaived)
+      e.plan.update(type: Event::Plan::FeeWaived)
       e.reload
     end
 

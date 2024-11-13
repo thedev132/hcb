@@ -55,9 +55,9 @@
     <%= form.date_field :activity_since, value: @activity_since_date %>
   <% end %>
 
-  <%= form.label :plan_type do %>
+  <%= form.label :plan do %>
     Current Plan
-    <%= form.select :plan_type, Event::Plan.available_plans.map { |p| [p.new.label, p.name] }, { include_blank: "all", selected: @plan_type } %>
+    <%= form.select :plan, Event::Plan.available_plans.map { |p| [p.new.label, p.name] }, { include_blank: "all", selected: @plan } %>
   <% end %>
 
   <%= form.label :sort_by do %>

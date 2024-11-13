@@ -89,7 +89,7 @@ class AdminController < ApplicationController
       point_of_contact_id: params[:point_of_contact_id],
       approved: params[:approved].to_i == 1,
       is_public: params[:is_public].to_i == 1,
-      plan_type: params[:plan_type],
+      plan: params[:plan],
       organized_by_hack_clubbers: params[:organized_by_hack_clubbers].to_i == 1,
       organized_by_teenagers: params[:organized_by_teenagers].to_i == 1,
       omit_stats: params[:omit_stats].to_i == 1,
@@ -1263,7 +1263,7 @@ class AdminController < ApplicationController
       @category = params[:category].present? ? params[:category] : "all"
     end
     @point_of_contact_id = params[:point_of_contact_id].present? ? params[:point_of_contact_id] : "all"
-    @plan = params[:plan_type].present? ? params[:plan_type] : "all"
+    @plan = params[:plan].present? ? params[:plan] : "all"
     if params[:country] == 9999.to_s
       @country = 9999
     else
@@ -1298,7 +1298,7 @@ class AdminController < ApplicationController
     relation = relation.where(id: events.joins(:canonical_transactions).where("canonical_transactions.date >= ?", @activity_since_date)) if @activity_since_date.present?
     if @plan != "all"
       relation = relation.where(id: events.joins("LEFT JOIN event_plans on event_plans.event_id = events.id")
-                         .where("event_plans.aasm_state = 'active' AND event_plans.plan_type = ?", @plan))
+                         .where("event_plans.aasm_state = 'active' AND event_plans.type = ?", @plan))
     end
     if @category == "none"
       relation = relation.where(category: nil)

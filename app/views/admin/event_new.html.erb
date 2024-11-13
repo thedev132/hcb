@@ -35,9 +35,9 @@
     </p>
 
     <div class="field mb2">
-      <%= form.label :plan_type, "Assign a plan" %>
+      <%= form.label :plan, "Assign a plan" %>
       <br>
-      <%= form.select(:plan_type, Event::Plan.available_plans.map { |p| [p.new.label, p.name] }, selected: params[:plan_type]) %>
+      <%= form.select(:plan, Event::Plan.available_plans.map { |p| [p.new.label, p.name] }, selected: params[:plan]) %>
     </div>
 
     <div class="field">

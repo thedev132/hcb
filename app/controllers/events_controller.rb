@@ -361,11 +361,11 @@ class EventsController < ApplicationController
     end
     fixed_user_event_params.delete(:hidden)
 
-    if fixed_event_params[:plan_type] && fixed_event_params[:plan_type] != @event.plan&.plan_type
-      @event.plan.mark_inactive!(fixed_event_params[:plan_type]) # deactivate old plan and replace it
+    if fixed_event_params[:plan] && fixed_event_params[:plan] != @event.plan&.type
+      @event.plan.mark_inactive!(fixed_event_params[:plan]) # deactivate old plan and replace it
     end
 
-    fixed_event_params.delete(:plan_type)
+    fixed_event_params.delete(:plan)
     begin
       if @event.update(current_user.admin? ? fixed_event_params : fixed_user_event_params)
         flash[:success] = "Organization successfully updated."
@@ -870,11 +870,11 @@ class EventsController < ApplicationController
       Document.create(user: current_user, event_id: @event.id, name: file.original_filename, file:)
     end
 
-    if event_params[:plan_type] && event_params[:plan_type] != @event.plan.plan_type
-      @event.plan.mark_inactive!(event_params[:plan_type]) # deactivate old plan and replace it
+    if event_params[:plan] && event_params[:plan] != @event.plan.type
+      @event.plan.mark_inactive!(event_params[:plan]) # deactivate old plan and replace it
     end
 
-    if @event.update(event_params.except(:files, :plan_type).merge({ demo_mode: false }))
+    if @event.update(event_params.except(:files, :plan).merge({ demo_mode: false }))
       flash[:success] = "Organization successfully activated."
       redirect_to event_path(@event)
     else
@@ -934,7 +934,7 @@ class EventsController < ApplicationController
       :background_image,
       :stripe_card_logo,
       :stripe_card_shipping_type,
-      :plan_type,
+      :plan,
       card_grant_setting_attributes: [
         :merchant_lock,
         :category_lock,

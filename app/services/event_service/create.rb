@@ -2,7 +2,7 @@
 
 module EventService
   class Create
-    def initialize(name:, point_of_contact_id:, emails: [], is_signee: true, country: [], category: [], is_public: true, is_indexable: true, approved: false, plan_type: Event::Plan::Standard, organized_by_hack_clubbers: false, organized_by_teenagers: false, omit_stats: false, can_front_balance: true, demo_mode: false)
+    def initialize(name:, point_of_contact_id:, emails: [], is_signee: true, country: [], category: [], is_public: true, is_indexable: true, approved: false, plan: Event::Plan::Standard, organized_by_hack_clubbers: false, organized_by_teenagers: false, omit_stats: false, can_front_balance: true, demo_mode: false)
       @name = name
       @emails = emails
       @is_signee = is_signee
@@ -12,7 +12,7 @@ module EventService
       @is_public = is_public
       @is_indexable = is_indexable
       @approved = approved || false
-      @plan_type = plan_type
+      @plan = plan
       @organized_by_hack_clubbers = organized_by_hack_clubbers
       @organized_by_teenagers = organized_by_teenagers
       @omit_stats = omit_stats
@@ -55,7 +55,7 @@ module EventService
         expected_budget: 100.0,
         point_of_contact_id: @point_of_contact_id,
         demo_mode: @demo_mode,
-        plan: Event::Plan.new(plan_type: @plan_type)
+        plan: Event::Plan.new(type: @plan)
       }
     end
 

@@ -34,8 +34,8 @@
     </div>
 
     <div class="field pr2">
-      <%= form.label :plan_type, "Assign a plan" %>
-      <%= form.select :plan_type, Event::Plan.available_plans.map { |p| [p.new.label, p.name] }, selected: @event.plan&.plan_type, include_blank: "Select a plan..." %>
+      <%= form.label :plan, "Assign a plan" %>
+      <%= form.select :plan, Event::Plan.available_plans.map { |p| [p.new.label, p.name] }, selected: @event.plan&.type, include_blank: "Select a plan..." %>
     </div>
   </div>
 
