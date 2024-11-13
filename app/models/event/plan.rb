@@ -25,6 +25,8 @@ class Event
   class Plan < ApplicationRecord
     has_paper_trail
 
+    self.ignored_columns += ["plan_type"]
+
     belongs_to :event
 
     include AASM
