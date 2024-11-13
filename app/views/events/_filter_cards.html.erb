@@ -2,7 +2,7 @@
   <%= render partial: "filter_cards_menu" %>
 
   <% if @status || @user_id %>
-    <%= link_to nil, class: "-ml-2 pop muted tooltipped tooltipped--s", aria: { label: "Clear filters" } do %>
+    <%= link_to nil, class: "-ml-2 pop muted tooltipped tooltipped--s", aria: { label: "Clear filters" }, data: { turbo_prefetch: "false" } do %>
       <%= inline_icon "view-close", size: 28 %>
     <% end %>
   <% end %>
@@ -12,7 +12,7 @@
     <% if @type %>
       <div class="badge badge-large bg-muted">
         <%= @type.humanize %>
-        <%= link_to upsert_query_params("type" => nil) do %>
+        <%= link_to upsert_query_params("type" => nil), data: { turbo_prefetch: "false" } do %>
           <%= inline_icon "view-close", size: 20 %>
         <% end %>
       </div>
@@ -21,7 +21,7 @@
     <% if @status %>
       <div class="badge badge-large bg-muted">
         <%= @status.humanize %>
-        <%= link_to upsert_query_params("status" => nil), class: "flex items-center" do %>
+        <%= link_to upsert_query_params("status" => nil), class: "flex items-center", data: { turbo_prefetch: "false" } do %>
           <%= inline_icon "view-close", size: 20 %>
         <% end %>
       </div>
@@ -30,7 +30,7 @@
     <% if @user_id %>
       <div class="badge badge-large bg-muted">
         User: <%= User.find(@user_id).name %>
-        <%= link_to upsert_query_params("user" => nil), class: "flex items-center" do %>
+        <%= link_to upsert_query_params("user" => nil), class: "flex items-center", data: { turbo_prefetch: "false" } do %>
           <%= inline_icon "view-close", size: 20 %>
         <% end %>
       </div>
