@@ -74,6 +74,8 @@ class DonationsController < ApplicationController
     end
 
     @placeholder_amount = "%.2f" % (DonationService::SuggestedAmount.new(@event, monthly: @monthly).run / 100.0)
+
+    @hide_flash = true
   end
 
   def make_donation

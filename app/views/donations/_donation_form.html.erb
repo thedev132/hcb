@@ -1,5 +1,5 @@
 <%= turbo_frame_tag :donation do %>
-  <ul class="tab-container max-width-1 mx-auto bg-transparent <%= "mt7" if @event.donation_header_image.attached? && !@event.donation_page_message.present? %>">
+  <ul class="tab-container max-width-1 mx-auto bg-transparent">
       <li class="<%= "active" unless @monthly %>">
           <%= link_to "One-time", start_donation_donations_path(@event), data: { turbo: true } %>
       </li>
