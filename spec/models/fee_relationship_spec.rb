@@ -19,7 +19,7 @@ RSpec.describe FeeRelationship, type: :model do
       let(:event) do
         event = create(:event)
         event.plan.update(plan_type: Event::Plan::FivePercent)
-        event
+        event.reload
       end
       let(:fee_relationship) { create(:fee_relationship, fee_applies:, t_transaction: transaction, event:) }
 

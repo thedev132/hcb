@@ -24,6 +24,8 @@ class Event
   class Plan < ApplicationRecord
     has_paper_trail
 
+    self.inheritance_column = "plan_type"
+
     belongs_to :event
 
     include AASM

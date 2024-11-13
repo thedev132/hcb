@@ -637,10 +637,6 @@ class Event < ApplicationRecord
     !engaged?
   end
 
-  def plan
-    super&.becomes(super.plan_type&.constantize)
-  end
-
   def revenue_fee
     plan&.revenue_fee || (Airbrake.notify("#{id} is missing a plan!") && 0.07)
   end

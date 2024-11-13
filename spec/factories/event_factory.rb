@@ -6,6 +6,7 @@ FactoryBot.define do
 
     after(:create) do |e|
       e.plan.update(plan_type: Event::Plan::FeeWaived)
+      e.reload
     end
 
     factory :event_with_organizer_positions do
