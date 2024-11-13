@@ -5,13 +5,11 @@ module Admin
     class TasksController < AdminController
       def index
         @tasks = Admin::LedgerAudit::Task.flagged
-        render layout: "admin"
       end
 
       def show
         @task = Admin::LedgerAudit::Task.find(params[:id])
         @ledger_audit = @task.admin_ledger_audit
-        render layout: "admin"
       end
 
       def reviewed

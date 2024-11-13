@@ -6,8 +6,6 @@ module Admin
       @page = params[:page] || 1
       @per = params[:per] || 20
       @statements = Column::Statement.includes(:file_attachment).page(@page).per(@per).order(created_at: :desc)
-
-      render layout: "admin"
     end
 
     def bank_account_summary_report
