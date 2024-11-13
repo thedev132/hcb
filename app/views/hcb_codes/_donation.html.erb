@@ -26,7 +26,7 @@
                               max: @donation.amount.to_f / 100,
                               step: 0.01,
                               autofocus: true,
-                              data: { controller: "truncate-decimal", action: "truncate-decimal#truncate" } %>
+                              data: { controller: "truncate-decimal", action: "truncate-decimal#truncate blur->truncate-decimal#pad" } %>
       </div>
       <%= form.submit "Refund donation", class: "bg-error" %>
     <% end %>

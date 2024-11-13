@@ -94,7 +94,7 @@
           disabled: disabled || @event.balance <= 0,
           step: 0.01,
           required: true,
-          data: { controller: "truncate-decimal", action: "truncate-decimal#truncate" } %>
+          data: { controller: "truncate-decimal", action: "truncate-decimal#truncate blur->truncate-decimal#pad" } %>
       </div>
     </div>
     <% @wire.errors.messages_for(:amount).each do |message| %>
