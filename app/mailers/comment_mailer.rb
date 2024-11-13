@@ -26,6 +26,10 @@ class CommentMailer < ApplicationMailer
     mail(mail_settings)
   end
 
+  def bounce_missing_comment
+    mail subject: @inbound_mail&.mail&.subject || "Unknown comment"
+  end
+
   private
 
   def headers
