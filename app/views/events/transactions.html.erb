@@ -135,49 +135,6 @@
 <main data-controller="transactions">
   <h2 class="heading pb-0 border-b-0">
     <span style="flex-grow: 1">Transactions</span>
-    <% if organizer_signed_in? && Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0 %>
-      <div
-        data-controller="menu"
-        data-menu-append-to-value="turbo-frame#ledger"
-        data-menu-placement-value="bottom-end"
-        data-transactions-target="tagger"
-        class="display-none">
-        <button
-          type="button"
-          class="btn btn-small bg-info menu__toggle menu__toggle--arrowless overflow-visible z1"
-          data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">
-          <%= inline_icon "sticker", size: 16 %>
-          <span class="nowrap">Toggle Tags</span>
-        </button>
-        <div class="menu__content menu__content--2 menu__content--compact menu__content--left h6" data-menu-target="content">
-          <% @event.tags.each do |tag| %>
-            <div class="flex items-center" data-tag="<%= tag.id %>">
-              <button class="menu__action" title="Apply this tag" data-action="click->transactions#addTag menu#close" data-tag-id="<%= tag.id %>">
-                <%= tag.label %>
-              </button>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-    <% if @event.canonical_transactions.any? %>
-      <div data-controller="menu" data-menu-placement-value="bottom-end">
-        <button
-          type="button"
-          class="btn bg-info menu__toggle menu__toggle--arrowless overflow-visible z1"
-          data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown"
-          data-menu-target="toggle">
-          <%= inline_icon "download", size: 16 %>
-          Export
-        </button>
-        <div class="menu__content menu__content--2 h5" data-menu-target="content">
-          <%= link_to "All transactions (CSV)", transactions_exports_path(event: @event, format: :csv), target: :_blank %>
-          <%= link_to "All transactions (JSON)", transactions_exports_path(event: @event, format: :json), target: :_blank %>
-          <%= link_to "All transactions (Ledger)", transactions_exports_path(event: @event, format: :ledger), target: :_blank %>
-          <%= link_to "Monthly statements", event_statements_path(@event) %>
-        </div>
-      </div>
-    <% end %>
   </h2>
 
   <%= render "pinned_transactions" %>
