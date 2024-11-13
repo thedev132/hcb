@@ -29,6 +29,14 @@
             <% icon, color, message = changes[state_change] %>
           <% end %>
           <% whodunnit = User.find_by(id: item.whodunnit) %>
+
+          <%# view https://github.com/hackclub/hcb/issues/8365 - @sampoder %>
+          <% if state_change == "draft" && item.changeset["aasm_state"]&.first.nil? && @report.from_public_reimbursement_form? %>
+            <% whodunnit = nil %>
+          <% elsif state_change == "draft" && item.changeset["aasm_state"]&.first.nil? && @report.user != whodunnit %>
+            <% message = "invited #{@report.user.initial_name} to this draft report" %>
+          <% end %>
+
           <%# if "whodunnit" is the report's creator, team review was not required for this report. %>
           <%# if a team re-enables team reviews, we'll show each report as approved by it's creator.  %>
           <% unless state_change == "reimbursement_requested" && whodunnit == @report.user && !@report.team_review_required? %>
