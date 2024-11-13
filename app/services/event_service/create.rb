@@ -52,7 +52,6 @@ module EventService
         is_public: @is_public,
         is_indexable: @is_indexable,
         can_front_balance: @can_front_balance,
-        expected_budget: 100.0,
         point_of_contact_id: @point_of_contact_id,
         demo_mode: @demo_mode,
         plan: Event::Plan.new(type: @plan)

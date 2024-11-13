@@ -905,7 +905,6 @@ class EventsController < ApplicationController
       :start,
       :end,
       :address,
-      :expected_budget,
       :omit_stats,
       :demo_mode,
       :can_front_balance,
@@ -948,8 +947,6 @@ class EventsController < ApplicationController
       ]
     )
 
-    # Expected budget is in cents on the backend, but dollars on the frontend
-    result_params[:expected_budget] = result_params[:expected_budget].to_f * 100 if result_params[:expected_budget]
     # convert whatever the user inputted into something that is a legal slug
     result_params[:slug] = ActiveSupport::Inflector.parameterize(user_event_params[:slug]) if result_params[:slug]
 
