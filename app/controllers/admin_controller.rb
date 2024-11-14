@@ -1098,7 +1098,7 @@ class AdminController < ApplicationController
   def hq_receipts
     @page = params[:page] || 1
     @per = params[:per] || 20
-    @users = User.where(id: Event.hack_club_hq.or(Event.omitted).includes(:users).flat_map(&:users).map(&:id)).page(@page).per(@per).order(created_at: :desc)
+    @users = User.where(id: Event.omitted.includes(:users).flat_map(&:users).map(&:id)).page(@page).per(@per).order(created_at: :desc)
 
   end
 
