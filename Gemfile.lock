@@ -479,9 +479,6 @@ GEM
       net-imap
       net-pop
       net-smtp
-    maildown (3.3.1)
-      actionmailer (>= 4.0.0)
-      kramdown-parser-gfm
     marcel (1.0.4)
     matrix (0.4.2)
     method_source (1.1.0)
@@ -903,7 +900,6 @@ DEPENDENCIES
   lockbox
   lograge
   loofah
-  maildown
   mini_magick
   monetize
   money-rails

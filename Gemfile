@@ -96,7 +96,6 @@ gem "grape-route-helpers"
 gem "grape-swagger"
 gem "grape-swagger-entity", "~> 0.5"
 
-gem "maildown" # markdown for views
 gem "redcarpet" # markdown parsing
 gem "loofah" # html email parsing
 
