@@ -375,9 +375,9 @@ class AdminController < ApplicationController
     if @event_id
       @event = Event.find(@event_id)
 
-      relation = @event.reimbursement_reports.includes(:event)
+      relation = @event.reimbursement_reports.includes(:event).visible
     else
-      relation = Reimbursement::Report.includes(:event)
+      relation = Reimbursement::Report.includes(:event).visible
     end
 
     relation = relation.search(@q) if @q

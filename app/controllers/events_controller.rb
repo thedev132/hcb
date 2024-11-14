@@ -742,7 +742,7 @@ class EventsController < ApplicationController
 
   def reimbursements
     authorize @event
-    @reports = @event.reimbursement_reports
+    @reports = @event.reimbursement_reports.visible
     @reports = @reports.pending if params[:filter] == "pending"
     @reports = @reports.where(aasm_state: ["reimbursement_approved", "reimbursed"]) if params[:filter] == "reimbursed"
     @reports = @reports.rejected if params[:filter] == "rejected"
