@@ -14,7 +14,6 @@ module Admin
           .joins("LEFT JOIN canonical_pending_event_mappings ON canonical_pending_event_mappings.canonical_pending_transaction_id = canonical_pending_transactions.id")
           .joins("LEFT JOIN events ON events.id = canonical_pending_event_mappings.event_id")
           .where("canonical_pending_transactions.amount_cents < ?", 0)
-          .where.not(events: { category: 10 })
           .includes(:canonical_pending_declined_mapping)
           .where(canonical_pending_declined_mapping: { canonical_pending_transaction_id: nil })
           .where.not(hcb_codes: { hcb_code: nil })

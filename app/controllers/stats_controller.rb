@@ -153,7 +153,7 @@ class StatsController < ApplicationController
             INNER JOIN canonical_pending_event_mappings cpem ON cpem.canonical_pending_transaction_id = cpt.id
             INNER JOIN events ON events.id = cpem.event_id
             WHERE sc.user_id = users.id
-            AND   receipts.id IS NULL AND cpdm.id IS NULL AND hcb_codes.marked_no_or_lost_receipt_at IS NULL AND events.category != 10
+            AND   receipts.id IS NULL AND cpdm.id IS NULL AND hcb_codes.marked_no_or_lost_receipt_at IS NULL
         )
       FROM users
       WHERE id IN (?)

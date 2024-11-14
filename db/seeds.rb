@@ -23,7 +23,6 @@ demo_event = Event.create_with(
   slug: "devhacks",
   can_front_balance: true,
   point_of_contact: user,
-  category: 4,
   demo_mode: true,
   created_at: 7.days.ago
 ).find_or_create_by!(slug: "devhacks")
@@ -39,7 +38,6 @@ non_transparent_event = Event.create_with(
   slug: "expensicon23",
   can_front_balance: true,
   point_of_contact: user,
-  category: 2,
   created_at: 10.days.ago
 ).find_or_create_by!(slug: "expensicon23")
 
@@ -54,7 +52,6 @@ transparent_event = Event.create_with(
   slug: "hack_the_seas",
   can_front_balance: true,
   point_of_contact: user,
-  category: 7,
   created_at: 14.days.ago
 ).find_or_create_by!(slug: "hack_the_seas")
 

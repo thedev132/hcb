@@ -59,10 +59,6 @@ module EventsHelper
       return User.find(value).email
     end
 
-    if field == "category" && value.is_a?(Integer) || value.try(:match?, /\A\d+\z/)
-      return Event.categories.key(value.to_i)
-    end
-
     if field == "maximum_amount_cents"
       return render_money(value.to_s)
     end

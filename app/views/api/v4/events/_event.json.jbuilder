@@ -10,7 +10,6 @@ json.playground_mode event.demo_mode?
 json.playground_mode_meeting_requested event.demo_mode_request_meeting_at.present?
 json.transparent event.is_public?
 json.fee_percentage event.revenue_fee.to_f
-json.category event.category&.parameterize(separator: "_")
 
 if local_assigns[:expand]&.include?(:balance_cents)
   json.balance_cents event.balance_available

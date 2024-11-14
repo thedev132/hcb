@@ -109,7 +109,6 @@ class GrantsController < ApplicationController
           name: @grant.recipient_organization,
           point_of_contact_id: @grant.event.point_of_contact_id,
           emails: [@grant.recipient.email],
-          category: "grant recipient",
           is_public: false,
           is_indexable: false,
           approved: true

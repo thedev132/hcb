@@ -75,7 +75,6 @@
           <p>
             <strong>Category</strong>
             <span>
-              <%= @event.category %>
               <% Event::BADGES.each do |_key, badge| %>
                 <% if event.send(badge[:qualifier]) %>
                   <span title="<%= badge[:emoji] %> <%= badge[:description] %>"><%= badge[:emoji] %></span>
