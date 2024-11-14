@@ -618,9 +618,9 @@ class Event < ApplicationRecord
 
   def service_level
     return 1 if robotics_team?
-    return 1 if hack_club_hq?
     return 1 if organized_by_hack_clubbers?
     return 1 if organized_by_teenagers?
+    return 1 if plan.is_a?(Event::Plan::HackClubAffiliate)
     return 1 if canonical_transactions.revenue.where("date >= ?", 1.year.ago).sum(:amount_cents) >= 50_000_00
     return 1 if balance_available_v2_cents > 50_000_00
 
