@@ -278,7 +278,7 @@ class User < ApplicationRecord
 
   def hcb_code_ids_missing_receipt
     @hcb_code_ids_missing_receipt ||= begin
-      user_cards = stripe_cards.includes(:event).where.not(event: { category: :salary }) + emburse_cards.includes(:emburse_transactions)
+      user_cards = stripe_cards.includes(event: :plan).where.not(plan: { type: Event::Plan::SalaryAccount.name }) + emburse_cards.includes(:emburse_transactions)
       user_cards.flat_map { |card| card.hcb_codes.missing_receipt.receipt_required.pluck(:id) }
     end
   end

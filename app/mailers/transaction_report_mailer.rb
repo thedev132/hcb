@@ -13,7 +13,7 @@ class TransactionReportMailer < ApplicationMailer
 
     @target_users = target_users.map do |user|
 
-      card_ids = user.stripe_cards.filter { |card| card.event.category != "salary" }.pluck(:stripe_id)
+      card_ids = user.stripe_cards.filter { |card| card.event.plan.class != Event::Plan::SalaryAccount }.pluck(:stripe_id)
 
       cpts = CanonicalPendingTransaction.unsettled.joins(:raw_pending_stripe_transaction).where("(stripe_transaction->'card'->>'id' IN (?)) AND (CAST(stripe_transaction->>'created' AS BIGINT) >= ?)", card_ids, 1.week.ago.to_i)
       cts = CanonicalTransaction.stripe_transaction.where("(stripe_transaction->'card'->>'id' IN (?)) AND (CAST(stripe_transaction->>'created' AS BIGINT) >= ?)", card_ids, 1.week.ago.to_i)
