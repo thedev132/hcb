@@ -78,6 +78,12 @@ module Reimbursement
       end
     end
 
+    validate do
+      if Reimbursement::PayoutHolding.where(reimbursement_reports_id:).excluding(self).any?
+        errors.add(:base, "A reimbursement report can only have one payout holding.")
+      end
+    end
+
     def payout_transfer
       ach_transfer || increase_check || paypal_transfer
     end
