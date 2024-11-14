@@ -4,12 +4,6 @@ class AdminMailer < ApplicationMailer
   include Rails.application.routes.url_helpers
   default to: -> { Rails.application.credentials.admin_email[:slack] }
 
-  def opdr_notification
-    @opdr = params[:opdr]
-
-    mail subject: "[OPDR] #{@opdr.event.name} / #{@opdr.organizer_position.user.name}"
-  end
-
   def cash_withdrawal_notification
     @hcb_code = params[:hcb_code]
 
