@@ -110,6 +110,7 @@ class Event < ApplicationRecord
   scope :not_organized_by_hack_clubbers, -> { includes(:event_tags).where.not(event_tags: { name: EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS }).or(includes(:event_tags).where(event_tags: { name: nil })) }
   scope :organized_by_teenagers, -> { includes(:event_tags).where(event_tags: { name: [EventTag::Tags::ORGANIZED_BY_TEENAGERS, EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS] }) }
   scope :not_organized_by_teenagers, -> { includes(:event_tags).where.not(event_tags: { name: [EventTag::Tags::ORGANIZED_BY_TEENAGERS, EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS] }).or(includes(:event_tags).where(event_tags: { name: nil })) }
+  scope :robotics_team, -> { includes(:event_tags).where(event_tags: { name: EventTag::Tags::ROBOTICS_TEAM }) }
   scope :flag_enabled, ->(flag) {
     joins("INNER JOIN flipper_gates ON CONCAT('Event;', events.id) = flipper_gates.value")
       .where("flipper_gates.feature_key = ? AND flipper_gates.key = ?", flag, "actors")
@@ -585,6 +586,10 @@ class Event < ApplicationRecord
 
   def organized_by_teenagers?
     event_tags.where(name: [EventTag::Tags::ORGANIZED_BY_TEENAGERS, EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS]).exists?
+  end
+
+  def robotics_team?
+    event_tags.where(name: EventTag::Tags::ROBOTICS_TEAM).exists?
   end
 
   def reload
