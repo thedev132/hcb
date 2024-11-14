@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_13_075424) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_14_021812) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1815,6 +1815,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_13_075424) do
     t.integer "stripe_card_personalization_design_id"
     t.boolean "initially_activated", default: false, null: false
     t.boolean "cash_withdrawal_enabled", default: false
+    t.datetime "canceled_at"
     t.index ["event_id"], name: "index_stripe_cards_on_event_id"
     t.index ["replacement_for_id"], name: "index_stripe_cards_on_replacement_for_id"
     t.index ["stripe_cardholder_id"], name: "index_stripe_cards_on_stripe_cardholder_id"

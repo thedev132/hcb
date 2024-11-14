@@ -5,6 +5,7 @@
 # Table name: stripe_cards
 #
 #  id                                    :bigint           not null, primary key
+#  canceled_at                           :datetime
 #  card_type                             :integer          default("virtual"), not null
 #  cash_withdrawal_enabled               :boolean          default(FALSE)
 #  initially_activated                   :boolean          default(FALSE), not null
@@ -116,6 +117,10 @@ class StripeCard < ApplicationRecord
   validate :only_physical_cards_can_have_personalization_design
   validate :personalization_design_must_be_of_the_same_event
   validates_length_of :name, maximum: 40
+
+  before_save do
+    self.canceled_at = Time.now if stripe_status_changed?(to: "canceled")
+  end
 
   def full_card_number
     secret_details[:number]
