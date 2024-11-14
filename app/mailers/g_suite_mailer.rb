@@ -21,6 +21,15 @@ class GSuiteMailer < ApplicationMailer
     mail subject: "[Action Required] Your Google Workspace for #{@g_suite.domain} is missing critical DNS records"
   end
 
+  def notify_operations_of_entering_created_state
+    @g_suite = GSuite.find(params[:g_suite_id])
+    attrs = {
+      to: ::ApplicationMailer::OPERATIONS_EMAIL,
+      subject: "[OPS] [ACTION] [Google Workspace] Process #{@g_suite.domain}"
+    }
+    mail attrs
+  end
+
   private
 
   def set_g_suite
