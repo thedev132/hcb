@@ -45,6 +45,7 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
     @user = @card.user
 
     return unless @user.email_charge_notifications_enabled?
+    return if @card.canceled? && @card.canceled_at < 1.month.ago
 
     @merchant = @cpt.raw_pending_stripe_transaction.stripe_transaction["merchant_data"]["name"]
     @reason = @cpt.raw_pending_stripe_transaction.stripe_transaction["request_history"][0]["reason"]
