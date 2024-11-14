@@ -164,7 +164,9 @@ module Reimbursement
       authorize @report
 
       begin
-        @report.mark_reimbursement_approved!
+        @report.with_lock do
+          @report.mark_reimbursement_approved!
+        end
         flash[:success] = "Reimbursement has been approved; the team & report creator will be notified."
       rescue => e
         flash[:error] = e.message
