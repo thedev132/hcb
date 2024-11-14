@@ -372,19 +372,19 @@ class Event < ApplicationRecord
   )
 
   enum :category, {
-    hackathon: 0,
-    'hack club': 1,
-    nonprofit: 2,
-    event: 3,
-    'high school hackathon': 4,
-    'robotics team': 5,
-    'hardware grant': 6, # winter event 2022
-    'hack club hq': 7,
-    'outernet guild': 8, # summer event 2023
-    'grant recipient': 9,
-    salary: 10, # e.g. Sam's Shillings
-    ai: 11,
-    'hcb internals': 12 # eg. https://hcb.hackclub.com/clearing
+    hackathon: 0, # done, converted to EventTag
+    'hack club': 1, # done, converted to EventTag
+    nonprofit: 2, # deprecated
+    event: 3, # deprecated
+    'high school hackathon': 4, # converted to EventTag (Hackathon)
+    'robotics team': 5, # converted to EventTag
+    'hardware grant': 6, # winter event 2022, converted to EventTag
+    'hack club hq': 7, # converted to EventTag
+    'outernet guild': 8, # summer event 2023, converted to EventTag
+    'grant recipient': 9, # converted to EventTag
+    salary: 10, # converted to Event::Plan
+    ai: 11, # converted to EventTag
+    'hcb internals': 12 # eg. https://hcb.hackclub.com/clearing. to be converted to Event::Plan
   }
 
   enum :stripe_card_shipping_type, {
@@ -590,6 +590,10 @@ class Event < ApplicationRecord
 
   def robotics_team?
     event_tags.where(name: EventTag::Tags::ROBOTICS_TEAM).exists?
+  end
+
+  def hackathon?
+    event_tags.where(name: EventTag::Tags::HACKATHON).exists?
   end
 
   def reload
