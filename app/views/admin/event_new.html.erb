@@ -28,12 +28,6 @@
       <%= form.collection_select :country, Event.countries_for_select, :first, :last, selected: params[:country] %>
     </p>
 
-    <p>
-      <%= form.label :category %>
-      <br>
-      <%= form.collection_select :category, Event.categories, :first, :first, { include_blank: "Select a category", selected: params[:category] } %>
-    </p>
-
     <div class="field mb2">
       <%= form.label :plan, "Assign a plan" %>
       <br>

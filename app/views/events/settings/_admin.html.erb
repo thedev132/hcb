@@ -71,11 +71,6 @@
       </div>
 
       <div class="field">
-        <%= form.label :category %>
-        <%= form.collection_select :category, Event.categories, :first, :first, { include_blank: "Select a category" } %>
-      </div>
-
-      <div class="field">
         <%= form.label :point_of_contact_id, capture { %>
           Point of Contact <%= link_to "(Me!)", event_claim_point_of_contact_path(@event), method: :post %>
         <% } %>

@@ -911,7 +911,6 @@ class EventsController < ApplicationController
       :emburse_department_id,
       :country,
       :postal_code,
-      :category,
       :club_airtable_id,
       :point_of_contact_id,
       :slug,
