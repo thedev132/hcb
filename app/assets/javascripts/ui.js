@@ -489,6 +489,11 @@ $(document).on(
   }
 )
 
+$(document).on('click', '[data-behavior~=clear_input]', function (event) {
+    $(event.target).parent().find('input').get(0).value = ""
+  }
+)
+
 $(document).on('focus', '[data-behavior~=select_if_empty]', function (event) {
   if (event.target.value === '0.00') {
     event.target.select()
