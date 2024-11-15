@@ -160,6 +160,20 @@
     </div>
   <% end %>
 
+  <h3 class="mb1" id="cards_heading">Contact information</h3>
+  <div class="card mb3">
+    <div class="field">
+      <%= form.fields_for :config do |config| %>
+        <%= config.label :contact_email, "Your team's contact email" %>
+        <p class="h5 muted mt0 mb1">
+          If you'd prefer for the HCB operations team to reach out to a shared email, configure that here.
+        </p>
+        <%= config.email_field :contact_email, placeholder: "team@lioncityhacks.com", required: true %>
+      <% end %>
+    </div>
+    <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
+  </div>
+
   <h3 class="mb1">Danger zone</h3>
   <div class="card border b--warning mb3"
     data-controller="external-validation"
