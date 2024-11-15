@@ -45,7 +45,6 @@
 #
 # Indexes
 #
-#  index_events_on_club_airtable_id     (club_airtable_id) UNIQUE
 #  index_events_on_point_of_contact_id  (point_of_contact_id)
 #
 # Foreign Keys
@@ -53,7 +52,7 @@
 #  fk_rails_...  (point_of_contact_id => users.id)
 #
 class Event < ApplicationRecord
-  self.ignored_columns = %w[sponsorship_fee expected_budget has_fiscal_sponsorship_document organization_identifier transaction_engine_v2_at pending_transaction_engine_at]
+  self.ignored_columns = %w[sponsorship_fee expected_budget has_fiscal_sponsorship_document club_airtable_id organization_identifier transaction_engine_v2_at pending_transaction_engine_at]
   MIN_WAITING_TIME_BETWEEN_FEES = 5.days
 
   include Hashid::Rails

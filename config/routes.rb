@@ -627,7 +627,6 @@ Rails.application.routes.draw do
   get "/search" => "search#index"
 
   get "/events" => "events#index"
-  get "/event_by_airtable_id/:airtable_id" => "events#by_airtable_id"
   resources :events, except: [:new, :create, :edit], concerns: :commentable, path: "/" do
 
     # Loaded as Turbo frames on the home page

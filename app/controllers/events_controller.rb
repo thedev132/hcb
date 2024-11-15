@@ -6,7 +6,7 @@ class EventsController < ApplicationController
   include SetEvent
 
   include Rails::Pagination
-  before_action :set_event, except: [:index, :new, :create, :by_airtable_id]
+  before_action :set_event, except: [:index, :new, :create]
   before_action except: [:show, :index] do
     render_back_to_tour @organizer_position, :welcome, event_path(@event)
   end
@@ -286,19 +286,6 @@ class EventsController < ApplicationController
     }
   end
 
-  # GET /event_by_airtable_id/recABC
-  def by_airtable_id
-    authorize Event
-    @event = Event.find_by(club_airtable_id: params[:airtable_id])
-
-    if @event.nil?
-      flash[:error] = "We couldn’t find that event!"
-      redirect_to root_path
-    else
-      redirect_to @event
-    end
-  end
-
   def team
     authorize @event
 
@@ -342,8 +329,6 @@ class EventsController < ApplicationController
     # have to use `fixed_event_params` because `event_params` seems to be a constant
     fixed_event_params = event_params
     fixed_user_event_params = user_event_params
-
-    fixed_event_params[:club_airtable_id] = nil if event_params.key?(:club_airtable_id) && event_params[:club_airtable_id].empty?
 
     # processing hidden for admins
     if fixed_event_params[:hidden] == "1" && !@event.hidden_at.present?
@@ -911,7 +896,6 @@ class EventsController < ApplicationController
       :emburse_department_id,
       :country,
       :postal_code,
-      :club_airtable_id,
       :point_of_contact_id,
       :slug,
       :hidden,

@@ -41,10 +41,6 @@ class EventPolicy < ApplicationPolicy
     admin_or_user?
   end
 
-  def by_airtable_id?
-    user&.admin?
-  end
-
   def edit?
     admin_or_user?
   end
