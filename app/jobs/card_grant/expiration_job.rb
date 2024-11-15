@@ -4,9 +4,18 @@ class CardGrant
   class ExpirationJob < ApplicationJob
     queue_as :low
     def perform
-      CardGrant.joins(:card_grant_setting).active.where("card_grants.created_at + (card_grant_settings.expiration_preference * interval '1 day') < NOW()").find_each do |card_grant|
+      CardGrant.active.expires_before(Time.now).find_each do |card_grant|
         card_grant.expire!
       end
+
+      CardGrant.active.expires_on(3.days.from_now).find_each do |card_grant|
+        CardGrantMailer.with(card_grant:, expiry_time: "3 days").card_grant_days_expire_notification.deliver_later
+      end
+
+      CardGrant.active.expires_on(1.month.from_now).find_each do |card_grant|
+        CardGrantMailer.with(card_grant:, expiry_time: "1 month").card_grant_month_expire_notification.deliver_later
+      end
+
     end
 
   end
