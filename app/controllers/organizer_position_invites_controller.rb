@@ -2,6 +2,7 @@
 
 class OrganizerPositionInvitesController < ApplicationController
   include SetEvent
+  include ChangePositionRole
 
   before_action :set_opi, only: [:show, :accept, :reject, :cancel, :toggle_signee_status, :resend]
   before_action :set_event, only: [:new, :create]
@@ -107,26 +108,6 @@ class OrganizerPositionInvitesController < ApplicationController
       flash[:error] = @invite.errors.full_messages.to_sentence.presence || "Failed to toggle signee status."
     end
     redirect_back(fallback_location: event_team_path(@invite.event))
-  end
-
-  def change_position_role
-    organizer_position_invite = OrganizerPositionInvite.find(params[:id])
-    authorize organizer_position_invite
-
-    was = organizer_position_invite.role
-    to = params[:to]
-
-    if was != to
-      organizer_position_invite.update!(role: to)
-
-      flash[:success] = "Changed #{organizer_position_invite.user.name}'s role from #{was} to #{to}."
-    end
-
-  rescue => e
-    Airbrake.notify(e)
-    flash[:error] = organizer_position_invite&.errors&.full_messages&.to_sentence.presence || "Failed to change the role."
-  ensure
-    redirect_back(fallback_location: event_team_path(organizer_position_invite.event))
   end
 
   private
