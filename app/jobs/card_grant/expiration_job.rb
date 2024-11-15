@@ -4,7 +4,7 @@ class CardGrant
   class ExpirationJob < ApplicationJob
     queue_as :low
     def perform
-      CardGrant.active.expires_before(Time.now).find_each do |card_grant|
+      CardGrant.active.expired_before(Time.now).find_each do |card_grant|
         card_grant.expire!
       end
 
