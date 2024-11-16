@@ -69,11 +69,11 @@ module PendingTransactionEngine
             end
 
             if @start_date
-              cpts = cpts.where("canonical_pending_transactions.date >= cast('?' as date)", @start_date)
+              cpts = cpts.where("canonical_pending_transactions.date >= cast(? as date)", @start_date)
             end
 
             if @end_date
-              cpts = cpts.where("canonical_pending_transactions.date <= cast('?' as date)", @end_date)
+              cpts = cpts.where("canonical_pending_transactions.date <= cast(? as date)", @end_date)
             end
 
             if event.can_front_balance?
