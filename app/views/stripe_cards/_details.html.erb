@@ -98,12 +98,12 @@
 
     <div class="fs-mask">
       <strong>Expiration date</strong>
-      <%= render_exp_date stripe_card %>
+      <%= copy_to_clipboard(render_short_exp_date(stripe_card), class: "w-fit", tooltip_direction: "e") { render_exp_date stripe_card } %>
     </div>
 
     <div class="fs-mask">
       <strong>ZIP/Postal code</strong>
-      <%= stripe_card.stripe_cardholder.address_postal_code %>
+      <%= copy_to_clipboard(stripe_card.stripe_cardholder.address_postal_code, class: "w-fit", tooltip_direction: "e") %>
     </div>
 
     <div>

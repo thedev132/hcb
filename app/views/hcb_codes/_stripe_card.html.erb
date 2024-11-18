@@ -291,11 +291,13 @@
         <% if @hcb_code.card.card_grant.present? %>
           <p>
             <strong>Merchant ID</strong>
-            <%= @hcb_code.stripe_merchant["network_id"] %>
+            <%= copy_to_clipboard(@hcb_code.stripe_merchant["network_id"], class: "w-fit", tooltip_direction: "e") %>
           </p>
           <p>
             <strong>Category</strong>
-            <%= humanized_category @hcb_code.stripe_merchant %> (<%= @hcb_code.stripe_merchant["category"] %>)
+            <%= copy_to_clipboard(@hcb_code.stripe_merchant["category"], class: "w-fit", tooltip_direction: "s") do %>
+              <%= humanized_category @hcb_code.stripe_merchant %> (<%= @hcb_code.stripe_merchant["category"] %>)
+            <% end %>
           </p>
         <% end %>
       <% end %>
