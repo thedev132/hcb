@@ -107,7 +107,6 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :outgoing_disbursement, -> { where("raw_pending_outgoing_disbursement_transaction_id is not null") }
   scope :reimbursement_expense_payout, -> { where.not(reimbursement_expense_payout_id: nil) }
   scope :reimbursement_payout_holding, -> { where.not(reimbursement_payout_holding_id: nil) }
-  scope :ach_payment, -> { where.not(ach_payment: nil) }
   scope :unmapped, -> { includes(:canonical_pending_event_mapping).where(canonical_pending_event_mappings: { canonical_pending_transaction_id: nil }) }
   scope :mapped, -> { includes(:canonical_pending_event_mapping).where.not(canonical_pending_event_mappings: { canonical_pending_transaction_id: nil }) }
   scope :unsettled, -> {
