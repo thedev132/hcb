@@ -51,8 +51,6 @@
 #  fk_rails_...  (event_id => events.id)
 #
 class AchTransfer < ApplicationRecord
-  self.ignored_columns += ["routing_number"]
-
   has_paper_trail skip: [:account_number, :routing_index] # ciphertext columns will still be tracked
   has_encrypted :account_number
   blind_index :account_number
