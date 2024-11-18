@@ -221,6 +221,7 @@ class Invoice < ApplicationRecord
     return :success if paid_v2? && event.can_front_balance?
     return :info if paid_v2?
     return :error if void_v2?
+    return :info if refunded_v2?
     return :muted if archived?
     return :error if due_date < Time.current
     return :warning if due_date < 3.days.from_now
@@ -232,6 +233,7 @@ class Invoice < ApplicationRecord
     return "Deposited" if paid_v2? && (event.can_front_balance? || deposited?)
     return "In Transit" if paid_v2?
     return "Voided" if void_v2?
+    return "Refunded" if refunded_v2?
     return "Archived" if archived?
     return "Overdue" if due_date < Time.current
     return "Due soon" if due_date < 3.days.from_now
