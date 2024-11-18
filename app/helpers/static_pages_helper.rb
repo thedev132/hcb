@@ -46,7 +46,7 @@ module StaticPagesHelper
       },
       onboard_id: {
         id: "app4Bs8Tjwvk5qcD4",
-        table: "Verifications",
+        table: "Verifications - Depreciated",
         query: { filterByFormula: "Status='Pending'" },
         destination: "https://airtable.com/app4Bs8Tjwvk5qcD4/tblVZwB8QMUSDAd41/viwJ15CT6VHCZ0UZ4"
       },
