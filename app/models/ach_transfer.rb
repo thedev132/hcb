@@ -6,6 +6,7 @@
 #
 #  id                        :bigint           not null, primary key
 #  aasm_state                :string
+#  account_number_bidx       :string
 #  account_number_ciphertext :text
 #  amount                    :integer
 #  approved_at               :datetime
@@ -19,6 +20,8 @@
 #  recipient_tel             :string
 #  rejected_at               :datetime
 #  routing_number            :string
+#  routing_number_bidx       :string
+#  routing_number_ciphertext :text
 #  same_day                  :boolean          default(FALSE), not null
 #  scheduled_arrival_date    :datetime
 #  scheduled_on              :date
@@ -34,12 +37,14 @@
 #
 # Indexes
 #
+#  index_ach_transfers_on_account_number_bidx   (account_number_bidx)
 #  index_ach_transfers_on_column_id             (column_id) UNIQUE
 #  index_ach_transfers_on_creator_id            (creator_id)
 #  index_ach_transfers_on_event_id              (event_id)
 #  index_ach_transfers_on_increase_id           (increase_id) UNIQUE
 #  index_ach_transfers_on_payment_recipient_id  (payment_recipient_id)
 #  index_ach_transfers_on_processor_id          (processor_id)
+#  index_ach_transfers_on_routing_number_bidx   (routing_number_bidx)
 #
 # Foreign Keys
 #
@@ -47,8 +52,11 @@
 #  fk_rails_...  (event_id => events.id)
 #
 class AchTransfer < ApplicationRecord
-  has_paper_trail skip: [:account_number] # ciphertext columns will still be tracked
+  has_paper_trail skip: [:account_number, :routing_index] # ciphertext columns will still be tracked
   has_encrypted :account_number
+  blind_index :account_number, migrating: true
+  has_encrypted :routing_number, migrating: true
+  blind_index :routing_number, migrating: true
   monetize :amount, as: "amount_money"
 
   include PublicIdentifiable
