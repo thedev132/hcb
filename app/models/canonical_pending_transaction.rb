@@ -14,7 +14,6 @@
 #  memo                                             :text             not null
 #  created_at                                       :datetime         not null
 #  updated_at                                       :datetime         not null
-#  ach_payment_id                                   :bigint
 #  check_deposit_id                                 :bigint
 #  grant_id                                         :bigint
 #  increase_check_id                                :bigint
@@ -33,7 +32,6 @@
 #
 # Indexes
 #
-#  index_canonical_pending_transactions_on_ach_payment_id           (ach_payment_id)
 #  index_canonical_pending_transactions_on_check_deposit_id         (check_deposit_id)
 #  index_canonical_pending_transactions_on_grant_id                 (grant_id)
 #  index_canonical_pending_transactions_on_hcb_code                 (hcb_code)
