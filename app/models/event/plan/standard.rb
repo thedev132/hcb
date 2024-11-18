@@ -43,6 +43,10 @@ class Event
         false
       end
 
+      def requires_reimbursement_expense_categorization?
+        false
+      end
+
     end
 
   end

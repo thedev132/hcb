@@ -27,6 +27,10 @@ class Event
         "HCB internal organization"
       end
 
+      def requires_reimbursement_expense_categorization?
+        true
+      end
+
     end
 
   end
