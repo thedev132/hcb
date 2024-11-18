@@ -19,7 +19,6 @@
 #  recipient_name            :string
 #  recipient_tel             :string
 #  rejected_at               :datetime
-#  routing_number            :string
 #  routing_number_bidx       :string
 #  routing_number_ciphertext :text
 #  same_day                  :boolean          default(FALSE), not null
