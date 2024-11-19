@@ -61,7 +61,6 @@ module.exports = {
         snow: '#f9fafc',
         darkless: '#252429',
         dark: '#17171d',
-        black: '#1f2d3d',
         primary: '#ec3750'
       },
     },
