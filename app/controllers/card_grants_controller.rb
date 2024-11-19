@@ -111,7 +111,7 @@ class CardGrantsController < ApplicationController
   private
 
   def set_card_grant
-    @card_grant = CardGrant.find_by_hashid(params.require(:id))
+    @card_grant = CardGrant.find_by_hashid!(params.require(:id))
   end
 
 end
