@@ -303,6 +303,7 @@ Rails.application.routes.draw do
   resources :g_suite_accounts, only: [:index, :create, :update, :edit, :destroy], path: "g_suite_accounts" do
     put "reset_password"
     put "toggle_suspension"
+    resources :g_suite_aliases, only: [:create, :destroy], shallow: true
   end
 
   resources :g_suites, except: [:new, :create, :edit, :update] do

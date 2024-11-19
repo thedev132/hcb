@@ -300,6 +300,41 @@ $(document).on('turbo:load', function () {
     })
   }
 
+  if (BK.thereIs('accounts_list')) {
+    $('.account-header').on('click', function() {
+      var accountContainer = $(this).closest('.account-container');
+      var aliasesContainer = accountContainer.find('.account-aliases');
+      aliasesContainer.slideToggle();
+      $(this).toggleClass('rotated');
+    });
+    $('.alias-new').on('click', function() {
+      var accountContainer = $(this).closest('.account-container');
+      var newAliasForm = accountContainer.find('.alias-form');
+      var creationAlias = accountContainer.find('.alias-creation');
+      newAliasForm.slideDown();
+      creationAlias.slideUp();
+    });
+    $('.alias-cancel').on('click', function() {
+      var accountContainer = $(this).closest('.account-container');
+      var newAliasForm = accountContainer.find('.alias-form');
+      newAliasForm.slideUp();
+      var creationAlias = accountContainer.find('.alias-creation');
+      creationAlias.slideDown();
+    })
+    $('.alias-save').on('click', function() {
+      var accountContainer = $(this).closest('.account-container');
+      var creationAlias = accountContainer.find('.alias-creation');
+      var newAliasForm = accountContainer.find('.alias-form');
+      creationAlias.slideDown();
+      newAliasForm.slideUp();
+    });
+    $('.alias-delete').on('click', function() {
+      var thisAlias = $(this).closest('.alias-container');
+      thisAlias.toggleClass('error');
+      thisAlias.slideUp();
+    })
+  }
+
   if (BK.s('reimbursement_report_create_form_type_selection').length) {
     const dropdownInput = $('#reimbursement_report_user_email')
     const dropdownInputLabel = $('label[for="reimbursement_report_user_email"]')

@@ -961,6 +961,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_18_052745) do
     t.index ["g_suite_id"], name: "index_g_suite_accounts_on_g_suite_id"
   end
 
+  create_table "g_suite_aliases", force: :cascade do |t|
+    t.text "address"
+    t.bigint "g_suite_account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["g_suite_account_id"], name: "index_g_suite_aliases_on_g_suite_account_id"
+  end
+
   create_table "g_suites", force: :cascade do |t|
     t.citext "domain"
     t.bigint "event_id"
@@ -2157,6 +2165,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_18_052745) do
   add_foreign_key "fees", "canonical_event_mappings"
   add_foreign_key "g_suite_accounts", "g_suites"
   add_foreign_key "g_suite_accounts", "users", column: "creator_id"
+  add_foreign_key "g_suite_aliases", "g_suite_accounts"
   add_foreign_key "g_suites", "events"
   add_foreign_key "g_suites", "users", column: "created_by_id"
   add_foreign_key "grants", "events"

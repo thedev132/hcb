@@ -487,6 +487,10 @@ summary {
   transform: translateY(0px) translateX(-4px);
 }
 
+.rotated {
+  transform: rotate(180deg);
+}
+
 // Phone number input container
 .iti {
   width: 100%;

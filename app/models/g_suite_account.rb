@@ -39,6 +39,7 @@ class GSuiteAccount < ApplicationRecord
 
   belongs_to :g_suite
   has_one :event, through: :g_suite
+  has_many :g_suite_aliases, dependent: :destroy
   belongs_to :creator, class_name: "User"
 
   validates_presence_of :address, :backup_email, :first_name, :last_name
