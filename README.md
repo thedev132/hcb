@@ -74,7 +74,8 @@ Please see this part of the [wiki](https://github.com/hackclub/hcb/wiki/Developm
 
 ## Deployment
 
-All pushes to the `main` branch are automatically deployed by Heroku.
+All pushes to the `main` branch are automatically deployed by Heroku. We also
+have staging deploys per PR/branch using Heroku pipelines.
 
 ---
 
