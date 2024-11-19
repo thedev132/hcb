@@ -6,13 +6,13 @@ module TransactionGroupingEngine
       def initialize(event_id:, search: nil, tag_id: nil, expenses: false, revenue: false, minimum_amount: nil, maximum_amount: nil, start_date: nil, end_date: nil, user: nil, missing_receipts: false)
         @event_id = event_id
         @search = ActiveRecord::Base.connection.quote_string(search || "")
-        @tag_id = tag_id
+        @tag_id = tag_id&.to_i
         @expenses = expenses
         @revenue = revenue
         @minimum_amount = minimum_amount
         @maximum_amount = maximum_amount
-        @start_date = start_date
-        @end_date = end_date
+        @start_date = start_date&.to_datetime
+        @end_date = end_date&.to_datetime
         @user = user
         @missing_receipts = missing_receipts
       end
@@ -94,9 +94,9 @@ module TransactionGroupingEngine
       end
 
       def user_modifier
-        return "" unless @user.present?
+        return "" unless @user&.stripe_cardholder&.stripe_id.present?
 
-        "and raw_stripe_transactions.stripe_transaction->>'cardholder' = '#{@user&.stripe_cardholder&.stripe_id}'"
+        "and raw_stripe_transactions.stripe_transaction->>'cardholder' = '#{@user.stripe_cardholder.stripe_id}'"
       end
 
       def user_joins_for(type)
