@@ -35,14 +35,17 @@ export default class extends Controller {
       })
     }
 
-    this.buttonTarget.addEventListener('click', e => {
-      e.preventDefault()
-      if (this.enabledValue) {
-        this.formTarget.requestSubmit()
-      } else {
-        this.edit(e)
-      }
-    })
+    // we don't render the button if the report is reimbursed
+    if (this.hasButtonTarget) {
+      this.buttonTarget.addEventListener('click', e => {
+        e.preventDefault()
+        if (this.enabledValue) {
+          this.formTarget.requestSubmit()
+        } else {
+          this.edit(e)
+        }
+      })
+    }
 
     this.#buttons()
     this.#label()
@@ -110,6 +113,9 @@ export default class extends Controller {
   }
 
   #buttons() {
+    if (!this.hasButtonTarget) {
+      return
+    }
     if (!this.lockedValue) {
       this.buttonTarget.querySelector('[aria-label=checkmark]').style.display =
         this.enabledValue ? 'block' : 'none'
@@ -129,7 +135,7 @@ export default class extends Controller {
   }
 
   #label() {
-    if (!this.lockedValue) {
+    if (!this.lockedValue && this.hasButtonTarget) {
       this.buttonTarget.ariaLabel =
         this.enabledValue && !this.lockedValue
           ? 'Save edits'
