@@ -455,8 +455,7 @@ class Wire < ApplicationRecord
   def send_wire!
     return unless may_mark_approved?
 
-    account_number_id = event.column_account_number&.column_id ||
-                        Rails.application.credentials.dig(:column, ColumnService::ENVIRONMENT, :default_account_number)
+    account_number_id = (event.column_account_number || event.create_column_account_number)&.column_id
 
     column_counterparty = ColumnService.post("/counterparties", {
       idempotency_key: self.id.to_s,
