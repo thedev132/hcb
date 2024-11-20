@@ -19,9 +19,13 @@ export default class extends Controller {
 
   connect() {
     for (const field of this.fieldTargets) {
-      field.readOnly = !this.enabledValue
-      field.addEventListener('dblclick', () => this.edit())
-      this.#addTooltip(field, 'Double-click to edit...')
+      if (field.nodeName == 'SELECT') {
+        field.disabled = !this.enabledValue
+      } else {
+        field.readOnly = !this.enabledValue
+        field.addEventListener('dblclick', () => this.edit())
+        this.#addTooltip(field, 'Double-click to edit...')
+      }
 
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape' && this.enabledValue) {
@@ -61,8 +65,12 @@ export default class extends Controller {
     this.#lightbox()
 
     for (const field of this.fieldTargets) {
-      field.readOnly = true
-      this.#addTooltip(field, 'Double-click to edit...')
+      if (field.nodeName == 'SELECT') {
+        field.disabled = true
+      } else {
+        field.readOnly = true
+        this.#addTooltip(field, 'Double-click to edit...')
+      }
     }
 
     if (e) {
@@ -82,8 +90,12 @@ export default class extends Controller {
     this.#lightbox()
 
     for (const field of this.fieldTargets) {
-      field.readOnly = false
-      this.#removeTooltip(field)
+      if (field.nodeName == 'SELECT') {
+        field.disabled = false
+      } else {
+        field.readOnly = false
+        this.#removeTooltip(field)
+      }
     }
 
     if (e) {

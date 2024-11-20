@@ -8,6 +8,7 @@
 #  aasm_state              :string
 #  amount_cents            :integer          default(0), not null
 #  approved_at             :datetime
+#  category                :integer
 #  deleted_at              :datetime
 #  description             :text
 #  expense_number          :integer          not null
