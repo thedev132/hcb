@@ -130,7 +130,18 @@ class Receipt < ApplicationRecord
       )
     end
   rescue
-    nil
+    # Occasionally ImageMagick has issues that cause images to not be converted.
+    # In these cases, we can't guarantee that the browser can render these image types.
+    # But we can try? Because otherwise we render nothing.
+    # View https://github.com/hackclub/hcb/issues/8551 for more context.
+    # - @sampoder
+    if file.content_type.start_with?("image/")
+      begin
+        Rails.application.routes.url_helpers.rails_representation_url(file, only_path:)
+      rescue
+        nil
+      end
+    end
   end
 
   def extract_textual_content
