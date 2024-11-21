@@ -51,7 +51,7 @@
     "react_ujs": "^3.2.1",
     "recharts": "^2.13.3",
     "rich-textarea": "^0.26.3",
-    "tailwindcss": "^3.4.14",
+    "tailwindcss": "^3.4.15",
     "ua-parser-js": "^1.0.39",
     "use-persisted-state": "^0.3.3",
     "webpack": "^5.96.1",
