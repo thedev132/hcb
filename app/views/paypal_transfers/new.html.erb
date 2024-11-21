@@ -13,7 +13,10 @@
 <%= render "callout",
     type: "info",
     title: "Important info about PayPal transfers" do %>
-    Depending on the recipient's location, PayPal may charge a transfer fee that is not covered by HCB. This fee can range from $0 to $5.
+    <p>Domestic PayPal transfers are free to send.</p>
+    <p>For international transfers, PayPal charges a fee of up to $5. This fee is not covered by HCB and will be passed on to the organization.</p>
+    <p>Domestic recipients are charged a <%= link_to "3% merchant fee", "https://www.paypal.com/us/business/paypal-business-fees" %>.</p>
+    <p>International recipients will be charged a ~10% fee after currency conversion and may have to pay an additional withdrawal fee.</p>
 <% end %>
 
 <%= form_with(model: [@event, @paypal_transfer], local: true) do |form| %>
