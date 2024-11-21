@@ -48,8 +48,6 @@ class User < ApplicationRecord
 
   include ApplicationHelper
 
-  has_paper_trail only: [:access_level, :email]
-
   include PublicActivity::Model
   tracked owner: proc{ |controller, record| record }, recipient: proc { |controller, record| record }, only: [:create, :update]
 
