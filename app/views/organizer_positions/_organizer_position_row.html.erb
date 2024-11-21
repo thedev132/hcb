@@ -55,7 +55,7 @@
                         turbo_method: :DELETE,
                         turbo_confirm: "This will revoke their access to this organization. Their cards will be permanently canceled.",
                       } %>
-    <% else %>
+    <% elsif policy(organizer_position.organizer_position_deletion_requests.build).new? %>
       <%= pop_icon_to "member-remove",
                       new_event_organizer_position_remove_path(organizer_position_id: organizer_position.user.slug),
                       class: "error",
