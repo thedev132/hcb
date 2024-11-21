@@ -709,7 +709,7 @@ GEM
     ruby-vips (2.1.4)
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
-    safely_block (0.4.0)
+    safely_block (0.4.1)
     safety_net_attestation (0.4.0)
       jwt (~> 2.0)
     sanitize (6.0.2)
