@@ -1289,10 +1289,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/merge-streams/-/merge-streams-2.3.0.tgz#719df7fb41766bc143369eaa0dd56d8dc87c9958"
   integrity sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==
 
-"@stripe/stripe-js@^4.9.0":
-  version "4.9.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-4.9.0.tgz#95dc000b2f90aeb4db2f2bab82a2fc574f26d1fd"
-  integrity sha512-tMPZQZZXGWyNX7hbgenq+1xEj2oigJ54XddbtSX36VedoKsPBq7dxwRXu4Xd5FdpT3JDyyDtnmvYkaSnH1yHTQ==
+"@stripe/stripe-js@^5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-5.2.0.tgz#2d696ed622def8c4407c658d8294c3e0365b0f1b"
+  integrity sha512-2ZpEaezx3S0QPtnske175NDaLvUvaVKd4ePHpUN0QF/uV4BBBBRUy5BvQONDym+utbbW0QhSJoiRPnp4FS+4Vg==
 
 "@trysound/sax@0.2.0":
   version "0.2.0"
