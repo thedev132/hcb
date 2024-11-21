@@ -127,33 +127,37 @@
         placeholder: "123456789" %>
   </div>
 
-  <div x-show="country == null">
-    <% Wire.information_required_for(nil).each do |field| %>
-      <div class="field">
-        <%= form.label field[:key], field[:label], class: "mb1" %>
-        <%= form.send(field[:type], field[:key]) %>
-        <div class="muted mt1">
-          <%= field[:description] %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-
-  <% Event.countries_for_select.each do |country| %>
-    <div x-show="country == '<%= country[0] %>'">
-      <% Wire.information_required_for(country[0]).each do |field| %>
+  <template x-if="country == null">
+    <div>
+      <% Wire.information_required_for(nil).each do |field| %>
         <div class="field">
           <%= form.label field[:key], field[:label], class: "mb1" %>
-          <%= form.send(field[:type], field[:key]) %>
+          <%= form.send(field[:type], field[:key], required: true) %>
           <div class="muted mt1">
             <%= field[:description] %>
-            <% if field[:refer_to] %>
-              <%= link_to "Refer to this document", field[:refer_to], target: "_blank" %>
-            <% end %>
           </div>
         </div>
       <% end %>
     </div>
+  </template>
+
+  <% Event.countries_for_select.each do |country| %>
+    <template x-if="country == '<%= country[0] %>'">
+      <div>
+        <% Wire.information_required_for(country[0]).each do |field| %>
+          <div class="field">
+            <%= form.label field[:key], field[:label], class: "mb1" %>
+            <%= form.send(field[:type], field[:key], required: true) %>
+            <div class="muted mt1">
+              <%= field[:description] %>
+              <% if field[:refer_to] %>
+                <%= link_to "Refer to this document", field[:refer_to], target: "_blank" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </template>
   <% end %>
 
   <%= form.label :file, "Attach a receipt / invoice", class: "mt2 semibold" %>
