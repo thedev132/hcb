@@ -19,7 +19,8 @@
                                 list: "custom-memos",
                                 placeholder: hcb_code.memo,
                                 autofocus: true,
-                                data: { controller: "input", input_target: "input", action: "focus->input#select blur->form#submit" },
+                                defaultValue: hcb_code.memo,
+                                data: { controller: "input", input_target: "input", action: "focus->input#select blur->form#submit keydown->form#keydown" },
                                 class: "bg-transparent fit",
                                 style: "border: none; outline: none; padding: 0; border-radius: 0; min-height: 0; margin-top: 5px; margin-bottom: 3px; width: 100%" %>
           </div>
