@@ -53,7 +53,17 @@ class Receipt < ApplicationRecord
   has_many :suggested_pairings, dependent: :destroy
   has_many :suggested_transactions, source: :hcb_code, through: :suggested_pairings
 
-  has_one_attached :file
+  # add a size to this array for it to be preprocessed
+  # Receipt#preview first checks to see if a preprocessed
+  # variant exists before generating a new one.
+  # - @sampoder
+  PREPROCESSED_SIZES = ["1024x1024"].freeze
+
+  has_one_attached :file do |attachable|
+    PREPROCESSED_SIZES.each do |resize|
+      attachable.variant(resize.to_sym, resize:, preprocessed: true)
+    end
+  end
 
   validates :file, attached: true
 
@@ -115,7 +125,9 @@ class Receipt < ApplicationRecord
     if file.previewable?
       Rails.application.routes.url_helpers.rails_representation_url(file.preview(resize:).processed, only_path:)
     elsif file.variable?
-      Rails.application.routes.url_helpers.rails_representation_url(file.variant(resize:).processed, only_path:)
+      Rails.application.routes.url_helpers.rails_representation_url(
+        (resize.in?(PREPROCESSED_SIZES) ? file.variant(resize.to_sym) : file.variant(resize:)).processed, only_path:
+      )
     end
   rescue
     nil
