@@ -74,6 +74,8 @@ class Wire < ApplicationRecord
     )
   end
 
+  validates_length_of :remittance_info, maximum: 140
+
   # IBAN & postal code formats sourced from https://column.com/docs/international-wires/country-specific-details
 
   IBAN_FORMATS = {
@@ -429,7 +431,7 @@ class Wire < ApplicationRecord
     when "TW"
       fields << { type: :text_field, key: "phone", label: "Phone number associated with account" }
     when "UA"
-      fields << { type: :text_field, key: "type", label: "Type of entity" }
+      fields << { type: :text_field, key: "legal_type", label: "Type of entity" }
       fields << { type: :text_field, key: "legal_id", label: "Legal ID of receiving entity", description: "10-digit tax ID for individuals, or 8-digit tax ID for corporations/NGO/organizations" }
     when "UG"
       fields << { type: :text_field, key: "legal_id", label: "Legal ID of receiving entity", description: "13-digit PRN tax ID" }
@@ -473,8 +475,13 @@ class Wire < ApplicationRecord
           state: address_state,
           postal_code: address_postal_code,
           country_code: recipient_country
-        }
-      }.merge(recipient_information.compact_blank)
+        },
+        beneficiary_legal_id: recipient_information[:legal_id],
+        beneficiary_type: recipient_information[:legal_type],
+        local_bank_code: recipient_information[:local_bank_code],
+        local_account_number: recipient_information[:local_account_number],
+        beneficiary_account_type: recipient_information[:account_type]
+      }
     }.compact_blank)
 
     column_wire_transfer = ColumnService.post("/transfers/international-wire", {
@@ -487,7 +494,8 @@ class Wire < ApplicationRecord
       message_to_beneficiary_bank: "please contact with the beneficiary",
       remittance_info: {
         general_info: recipient_information[:remittance_info]
-      }
+      },
+      purpose_code: recipient_information[:purpose_code]
     }.compact_blank)
 
     self.column_id = column_wire_transfer["id"]
