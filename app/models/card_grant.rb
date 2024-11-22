@@ -48,6 +48,7 @@ class CardGrant < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :sent_by, class_name: "User"
   belongs_to :disbursement, optional: true
+  has_many :disbursements, ->(record) { where(destination_subledger_id: record.subledger_id) }, through: :event
   has_one :card_grant_setting, through: :event, required: true
   alias_method :setting, :card_grant_setting
 
@@ -115,16 +116,15 @@ class CardGrant < ApplicationRecord
     raise ArgumentError.new("Topups must be positive.") unless amount_cents.positive?
 
     ActiveRecord::Base.transaction do
+      update!(amount_cents: self.amount_cents + amount_cents)
       DisbursementService::Create.new(
         source_event_id: event_id,
         destination_event_id: event_id,
         name: "Topup of funds for grant to #{user.name}",
-        amount: amount_cents / 100,
+        amount: amount_cents / 100.0,
         destination_subledger_id: subledger_id,
         requested_by_id: topped_up_by.id,
       ).run
-
-      update!(amount_cents: self.amount_cents + amount_cents)
     end
   end
 

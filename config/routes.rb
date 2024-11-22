@@ -568,7 +568,11 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :card_grants, only: [:show]
+        resources :card_grants, only: [:show] do
+          member do
+            post "topup"
+          end
+        end
 
         get "stripe_terminal_connection_token", to: "stripe_terminal#connection_token"
 

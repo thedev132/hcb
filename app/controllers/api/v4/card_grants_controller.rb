@@ -21,14 +21,23 @@ module Api
         authorize @card_grant
 
         @card_grant.save!
-
-        render "show"
       end
 
       def show
-        @card_grant = CardGrant.find_by_public_id(params[:id])
+        @card_grant = CardGrant.find_by_public_id!(params[:id])
 
         authorize @card_grant
+      end
+
+      def topup
+        @card_grant = CardGrant.find_by_public_id!(params[:id])
+
+        authorize @card_grant
+        begin
+          @card_grant.topup!(amount_cents: params["amount_cents"], topped_up_by: current_user)
+        rescue ArgumentError => e
+          return render json: { error: "invalid_operation", messages: [e.message] }, status: :bad_request
+        end
       end
 
     end
