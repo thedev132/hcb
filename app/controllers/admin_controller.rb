@@ -1002,7 +1002,7 @@ class AdminController < ApplicationController
     template = [
       ["ID", ->(e) { e.id }],
       [:organization, ->(e) { e.name }],
-      [:current_balance, ->(e) { render_balance.call(e, :settled_balance_cents) }],
+      [:current_balance, ->(e) { render_balance.call(e, :balance_v2_cents) }],
       [:total_expenses, ->(e) { render_balance.call(e, :settled_outgoing_balance_cents) }],
       [:total_income, ->(e) { render_balance.call(e, :settled_incoming_balance_cents) }]
     ]
