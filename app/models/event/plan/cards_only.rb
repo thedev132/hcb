@@ -35,6 +35,10 @@ class Event
         %w[cards]
       end
 
+      def omit_stats
+        true
+      end
+
     end
 
   end
