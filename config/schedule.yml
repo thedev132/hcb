@@ -140,9 +140,9 @@ gauge_online_user_count_job:
   cron: "*/5 * * * *" # Every 5 minutes
   class: "StatsdJob::GaugeOnlineUserCount"
 
-transaction_report_job:
+user_subordinate_summary_job:
   cron: "0 5 * * mon" # 5 AM every Monday
-  class: "TransactionReportJob"
+  class: "User::SubordinateSummaryJob"
 
 headway_job:
   cron: "*/5 * * * *"
