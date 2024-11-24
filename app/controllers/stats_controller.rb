@@ -56,7 +56,7 @@ class StatsController < ApplicationController
                            .not_hidden
                            .not_demo_mode
                            .approved
-                           .where("created_at <= ?", now)
+                           .where("events.created_at <= ?", now)
                            .count,
         last_transaction_date: tx_all.order(:date).last.date.to_time.to_i,
 
