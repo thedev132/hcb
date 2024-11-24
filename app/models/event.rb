@@ -25,8 +25,6 @@
 #  is_public                                    :boolean          default(TRUE)
 #  last_fee_processed_at                        :datetime
 #  name                                         :text
-#  omit_stats                                   :boolean          default(FALSE)
-#  organization_identifier                      :string
 #  postal_code                                  :string
 #  public_message                               :text
 #  public_reimbursement_page_enabled            :boolean          default(FALSE), not null
@@ -38,7 +36,6 @@
 #  website                                      :string
 #  created_at                                   :datetime         not null
 #  updated_at                                   :datetime         not null
-#  club_airtable_id                             :text
 #  emburse_department_id                        :string
 #  increase_account_id                          :string           not null
 #  point_of_contact_id                          :bigint

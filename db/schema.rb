@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_18_055338) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_24_020617) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -852,7 +852,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_18_055338) do
     t.text "donation_page_message"
     t.boolean "is_public", default: true
     t.text "public_message"
-    t.boolean "omit_stats", default: false
     t.datetime "last_fee_processed_at", precision: nil
     t.string "aasm_state"
     t.string "organization_identifier"
