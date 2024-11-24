@@ -4,7 +4,7 @@
   Your direct reports spent <%= render_money(-@subordinate_stats.sum(&:total_cents)) %> in total this week.
 </p>
 
-<img src="https://i.giphy.com/media/czywuTu3BQSQnqa0CV/giphy.gif" width="50%">
+<img src="https://cloud-p0kq3pldx-hack-club-bot.vercel.app/0giphy.gif" width="50%" alt="racoon" title="racoon">
 
 <% @subordinate_stats.reject { |s| s.total_cents.zero? }.each do |subordinate| %>
   <h2><%= subordinate.user.full_name %></h2>
