@@ -49,10 +49,16 @@
 
 <hr>
 
-<% if @paypal_transfer.pending? %>
+<p>This transfer's status is <b><%= @paypal_transfer.aasm.current_state.to_s.humanize(capitalize: false) %></b>.</p>
+
+<% if @paypal_transfer.may_mark_approved? %>
   <%= button_to "💸 Approve and send transfer", approve_paypal_transfer_path(@paypal_transfer), method: :post, data: { confirm: "Have you manually sent this transfer? HCB doesn't programmatically send PayPal transfers." } %>
-  <%= button_to "Reject", reject_paypal_transfer_path(@paypal_transfer) %>
-<% else %>
-  <p>This transfer has been <b><%= @paypal_transfer.aasm.current_state.to_s.humanize(capitalize: false) %></b>.</p>
-  <%= button_to "Reject as failed", reject_paypal_transfer_path(@paypal_transfer) %>
+<% end %>
+
+<% if @paypal_transfer.may_mark_rejected? %>
+  <%= button_to "Reject transfer", reject_paypal_transfer_path(@paypal_transfer) %>
+<% end %>
+
+<% if @paypal_transfer.may_mark_failed? %>
+  <%= button_to "Mark failed", mark_failed_paypal_transfer_path(@paypal_transfer) %>
 <% end %>

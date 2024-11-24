@@ -54,6 +54,7 @@ class PaypalTransfer < ApplicationRecord
     state :pending, initial: true
     state :approved
     state :rejected
+    state :failed
     state :deposited
 
     event :mark_approved do
@@ -61,12 +62,22 @@ class PaypalTransfer < ApplicationRecord
     end
 
     event :mark_rejected do
+      transitions from: :pending, to: :rejected do
+        guard do
+          reimbursement_payout_holding.nil? # these should be marked as failed.
+        end
+      end
       after do
         canonical_pending_transaction.decline!
         create_activity(key: "paypal_transfer.rejected")
       end
-      transitions from: [:pending, :approved], to: :rejected
+    end
+
+    event :mark_failed do
+      transitions from: [:pending, :approved], to: :failed
       after do
+        canonical_pending_transaction.decline!
+        create_activity(key: "paypal_transfer.failed")
         if reimbursement_payout_holding.present?
           ReimbursementMailer.with(reimbursement_payout_holding:).paypal_transfer_failed.deliver_later
           reimbursement_payout_holding.mark_failed!
