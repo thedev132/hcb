@@ -18,6 +18,8 @@ class User
             "fayd",
             "marios",
             "shubham",
+            "cheru",
+            "josias",
             "usr_Jptmoo" # Shubham Patil
           ],
           "melanie": [
