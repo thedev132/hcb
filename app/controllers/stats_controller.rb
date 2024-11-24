@@ -34,7 +34,7 @@ class StatsController < ApplicationController
       week_ago = now - 1.week
 
       events_list = Event.not_omitted
-                         .where("created_at <= ?", now)
+                         .where("events.created_at <= ?", now)
                          .order(created_at: :desc)
                          .limit(10)
                          .pluck(:created_at)
