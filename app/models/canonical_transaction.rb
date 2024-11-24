@@ -76,7 +76,15 @@ class CanonicalTransaction < ApplicationRecord
   scope :to_svb_sweep_account, -> { where(memo: "TF TO ICS SWP") }
   scope :from_svb_sweep_account, -> { where(memo: "TF FRM ICS SWP") }
   scope :mapped_by_human, -> { includes(:canonical_event_mapping).where("canonical_event_mappings.user_id is not null").references(:canonical_event_mapping) }
-  scope :included_in_stats, -> { includes(canonical_event_mapping: :event).where(events: { omit_stats: false }) }
+  scope :included_in_stats, -> {
+    includes(
+      canonical_event_mapping: { event: :plan }
+    ).where.not(
+      event_plans: {
+        type: Event::Plan.that(:omit_stats).collect(&:name)
+      }
+    )
+  }
 
   scope :with_column_transaction_type, ->(type) { column_transaction.where("raw_column_transactions.column_transaction->>'transaction_type' LIKE ?", "#{sanitize_sql_like(type)}%") }
 

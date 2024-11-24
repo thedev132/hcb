@@ -94,8 +94,8 @@ class Event < ApplicationRecord
   scope :transparent, -> { where(is_public: true) }
   scope :not_transparent, -> { where(is_public: false) }
   scope :indexable, -> { where(is_public: true, is_indexable: true, demo_mode: false) }
-  scope :omitted, -> { where(omit_stats: true) }
-  scope :not_omitted, -> { where(omit_stats: false) }
+  scope :omitted, -> { includes(:plan).where(plan: { type: Event::Plan.that(:omit_stats).collect(&:name) }) }
+  scope :not_omitted, -> { includes(:plan).where.not(plan: { type: Event::Plan.that(:omit_stats).collect(&:name) }) }
   scope :hidden, -> { where("hidden_at is not null") }
   scope :hidden, -> { where.not(hidden_at: nil) }
   scope :not_hidden, -> { where(hidden_at: nil) }
@@ -695,6 +695,10 @@ class Event < ApplicationRecord
     return 100 if plan.exempt_from_wire_minimum?
 
     return 500_00
+  end
+
+  def omit_stats?
+    plan.omit_stats
   end
 
   private

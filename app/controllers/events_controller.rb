@@ -890,7 +890,6 @@ class EventsController < ApplicationController
       :start,
       :end,
       :address,
-      :omit_stats,
       :demo_mode,
       :can_front_balance,
       :emburse_department_id,
