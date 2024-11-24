@@ -52,7 +52,7 @@
 #  fk_rails_...  (point_of_contact_id => users.id)
 #
 class Event < ApplicationRecord
-  self.ignored_columns = %w[sponsorship_fee expected_budget has_fiscal_sponsorship_document club_airtable_id organization_identifier transaction_engine_v2_at pending_transaction_engine_at]
+  self.ignored_columns = %w[omit_stats club_airtable_id organization_identifier]
   MIN_WAITING_TIME_BETWEEN_FEES = 5.days
 
   include Hashid::Rails
