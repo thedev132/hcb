@@ -2,7 +2,7 @@
 <% page_md %>
 <%= render "events/nav", selected: :reimbursements %>
 
-<h1 class="heading flex">
+<h1 class="heading flex gap-2 md:text-5xl" style="font-size: 2rem;">
   <span class="flex-grow">Reimbursements</span>
   <%= pop_icon_to "settings",
       edit_event_path(@event, tab: "reimbursements"),
