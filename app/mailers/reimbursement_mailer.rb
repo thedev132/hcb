@@ -25,7 +25,9 @@ class ReimbursementMailer < ApplicationMailer
     if @report.reviewer.present?
       mail to: @report.reviewer.email_address_with_name, subject: "[Reimbursements / #{@report.event.name}] Your Review Was Requested: #{@report.name}"
     else
-      mail to: User.find(@report.event.organizer_positions.manager.pluck(:user_id)).excluding(@report.user).map(&:email_address_with_name), subject: "[Reimbursements / #{@report.event.name}] Review Requested: #{@report.name}"
+      to = User.find(@report.event.organizer_positions.manager.pluck(:user_id)).excluding(@report.user).map(&:email_address_with_name)
+      to << @report.event.config.contact_email if @report.event.config.contact_email.present?
+      mail to:, subject: "[Reimbursements / #{@report.event.name}] Review Requested: #{@report.name}"
     end
   end
 
