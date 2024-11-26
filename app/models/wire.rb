@@ -480,7 +480,7 @@ class Wire < ApplicationRecord
         beneficiary_type: recipient_information[:legal_type],
         local_bank_code: recipient_information[:local_bank_code],
         local_account_number: recipient_information[:local_account_number],
-        beneficiary_account_type: recipient_information[:account_type]
+        account_type: recipient_information[:account_type]
       }.compact_blank
     }.compact_blank)
 
