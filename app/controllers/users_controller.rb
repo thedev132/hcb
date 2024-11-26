@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 
     session[:auth_email] = params[:email]
 
-    return head :not_found if params[:require_webauthn_preference] && session[:login_preference] != "webauthn"
+    return head :not_found if params[:require_webauthn_preference] == "true" && session[:login_preference] != "webauthn"
 
     user = User.find_by(email: params[:email])
 
