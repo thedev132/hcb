@@ -458,6 +458,7 @@ class AdminController < ApplicationController
   def ach_reject
     ach_transfer = AchTransfer.find(params[:id])
     ach_transfer.mark_rejected!(current_user)
+    ach_transfer.local_hcb_code.comments.create(content: params[:comment], user: current_user, action: :rejected_transfer) if params[:comment]
 
     redirect_to ach_start_approval_admin_path(ach_transfer), flash: { success: "Success" }
   rescue => e
@@ -484,6 +485,8 @@ class AdminController < ApplicationController
     disbursement = Disbursement.find(params[:id])
 
     disbursement.mark_rejected!(current_user)
+
+    disbursement.local_hcb_code.comments.create(content: params[:comment], user: current_user, action: :rejected_transfer) if params[:comment]
 
     redirect_to disbursement_process_admin_path(disbursement), flash: { success: "Success" }
   rescue => e

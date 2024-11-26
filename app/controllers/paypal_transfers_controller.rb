@@ -48,6 +48,8 @@ class PaypalTransfersController < ApplicationController
 
     @paypal_transfer.mark_rejected!
 
+    @paypal_transfer.local_hcb_code.comments.create(content: params[:comment], user: current_user, action: :rejected_transfer) if params[:comment]
+
     redirect_back_or_to paypal_transfer_process_admin_path(@paypal_transfer), flash: { success: "PayPal transfer has been canceled." }
   end
 
