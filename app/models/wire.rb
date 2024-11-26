@@ -481,7 +481,7 @@ class Wire < ApplicationRecord
         local_bank_code: recipient_information[:local_bank_code],
         local_account_number: recipient_information[:local_account_number],
         beneficiary_account_type: recipient_information[:account_type]
-      }
+      }.compact_blank
     }.compact_blank)
 
     column_wire_transfer = ColumnService.post("/transfers/international-wire", {
