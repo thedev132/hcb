@@ -24,7 +24,7 @@ const tours = {
     if (!options.demo) {
       steps.push({
         attachTo: isMobile ? 'spend' : 'cards',
-        text: 'Instantly issue a virtual debit card for yourself. Gotta spend that 💸!',
+        text: 'Instantly issue a virtual HCB card for yourself. Gotta spend that 💸!',
         placement: isMobile ? 'top' : 'right',
         strategy: 'fixed',
       })

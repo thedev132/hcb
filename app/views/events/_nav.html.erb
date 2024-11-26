@@ -64,7 +64,7 @@
     <% end %>
     <%= dock_item "Cards",
       event_cards_overview_path(event_id: @event.slug),
-      tooltip: "Manage team debit cards",
+      tooltip: "Manage team HCB cards",
       icon: "card",
       data: { tour_step: "cards" },
       selected: local_assigns[:selected] == :cards if policy(@event).card_overview? %>
