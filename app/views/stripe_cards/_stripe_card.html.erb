@@ -11,7 +11,7 @@
           mt1
     "
     data-behavior="hover_tilt"
-    style="background-image: <%= GeoPattern.generate(stripe_card.id).to_data_uri unless stripe_card.platinum? || stripe_card.personalization_design.present? %>">
+    style="background-image: <%= GeoPattern.generate(stripe_card.public_id).to_data_uri unless stripe_card.platinum? || stripe_card.personalization_design.present? %>">
     <% if stripe_card.platinum? %>
       <span class="bold caps h6 absolute flex items-center" style="opacity: 50%; right: 10px; top: 10px;">
         <%= inline_icon "bank-account" %>
