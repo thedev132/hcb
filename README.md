@@ -44,7 +44,7 @@ Please email [hcb-security@hackclub.com](mailto:hcb-security@hackclub.com) to re
 
 [GitHub Codespaces](https://docs.github.com/en/codespaces) allows you to run a development environment without installing anything on your computer, allows for multiple instances, creates an overall streamlined and reproducible environment, and enables anyone with browser or VS Code access to contribute.
 
-To get started, [whip up a codespace](https://docs.github.com/en/codespaces/getting-started/quickstart) and follow the steps in the [Automated Setup with Docker](#automated-setup-with-docker) section.
+To get started, [whip up a codespace](https://docs.github.com/en/codespaces/getting-started/quickstart) and run `bin/dev`. If you can't open the link that is printed in the terminal, ensure the `3000` port is public under the `PORTS` tab in your terminal.
 
 See the [Codespaces](./Codespaces.md) page for more information on developing in a GitHub Codespaces environment.
 
