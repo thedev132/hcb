@@ -636,7 +636,7 @@ Rails.application.routes.draw do
   resources :events, except: [:new, :create, :edit], concerns: :commentable, path: "/" do
 
     # Loaded as Turbo frames on the home page
-    get :merchants_categories
+    get :top_merchants
     get :top_categories
     get :tags_users
     get :transaction_heatmap

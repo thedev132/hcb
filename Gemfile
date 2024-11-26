@@ -200,6 +200,7 @@ gem "jbuilder", "~> 2.13"
 gem "ledgerjournal"
 gem "doorkeeper", "~> 5.8"
 
+gem "chartkick"
 gem "cssbundling-rails", "~> 1.4"
 
 gem "rtesseract"

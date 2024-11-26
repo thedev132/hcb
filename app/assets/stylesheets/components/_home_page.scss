@@ -1,5 +1,6 @@
 .homepage-transaction {
   display: flex;
+  align-items: center;
   color: inherit !important;
   text-decoration: none;
   padding: 0.35rem 1rem;
@@ -16,10 +17,7 @@
 .homepage-row {
   display: flex;
   gap: 20px;
-
-  &:empty {
-    display: none;
-  }
+  margin-bottom: 20px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -36,20 +34,19 @@
   gap: 2px;
   max-width: 100%;
 }
-@media (max-width: 768px) {
+
+@media only screen and (max-width: 600px) {
   .grid-container {
-    gap: 0px;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(53, 1fr);
   }
 }
 
 .grid-item {
   border: 0.5px solid;
   border-radius: 3px;
-  aspect-ratio: 1 / 1;
-}
-
-@media screen and (max-width: 768px) {
-  .grid-item {
-    border-radius: 1px;
-  }
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-bottom: 0px !important;
+  padding-top: calc(100% - 1px) !important;
 }

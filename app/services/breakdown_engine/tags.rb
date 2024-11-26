@@ -7,42 +7,30 @@ module BreakdownEngine
     end
 
     def run
-      tags = @event.tags.includes(hcb_codes: [:canonical_transactions, :canonical_pending_transactions]).each_with_object([]) do |tag, array|
+      tags = @event.tags.includes(hcb_codes: [:canonical_transactions, :canonical_pending_transactions]).each_with_object({}) do |tag, hash|
         amount_cents_sum = tag.hcb_codes.sum do |hcb_code|
-          hcb_code.amount_cents.abs
+          [hcb_code.amount_cents, 0].min
         end
-        next if amount_cents_sum == 0
-
-        array << {
-          name: tag.label,
-          truncated: tag.label,
-          value: Money.from_cents(amount_cents_sum).to_f
-        }
+        if amount_cents_sum > 0
+          hash[tag.label] = (amount_cents_sum * -1).to_f / 100
+        end
       end
 
-      tags.sort_by! { |tag| tag[:value] }.reverse!
-
-      total_amount = tags.sum { |tag| tag[:value] }
+      total_amount = tags.values.sum
       threshold = total_amount * 0.05
 
       if threshold > 0
-        # Update tags to apply the threshold condition
-        tags = tags.map do |tag|
-          {
-            name: tag[:name],
-            truncated: tag[:truncated],
-            value: (tag[:value] >= threshold ? tag[:value] : 0)
-          }
+        tags = tags.transform_values do |amount|
+          if amount >= threshold
+            amount
+          else
+            0
+          end
         end
 
-        # Calculate "Other" amount
-        other_amount = total_amount - tags.sum { |tag| tag[:value] }
+        other_amount = total_amount - tags.values.sum
         if other_amount > 0
-          tags << {
-            name: "Other",
-            truncated: "Other",
-            value: other_amount
-          }
+          tags["Other"] = other_amount
         end
       end
 
