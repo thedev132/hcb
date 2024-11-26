@@ -18,9 +18,34 @@ module BreakdownEngine
                               })
                        .sum(:amount_cents).to_f / 100 * -1
 
-        if !@show_all && amount > (0)
-          array << { name: position.user.initial_name, value: amount, position: }
+        next unless !@show_all && amount > (0)
+
+        array << { name: position.user.initial_name, truncated: position.user.initial_name, value: amount, position: }
+
+        users.sort_by! { |user| user[:value] }.reverse!
+        total_amount = users.sum { |user| user[:value] }
+        threshold = total_amount * 0.05
+
+        next unless threshold > 0
+
+        # Update tags to apply the threshold condition
+        users = users.map do |tag|
+          {
+            name: user[:name],
+            truncated: user[:truncated],
+            value: (user[:value] >= threshold ? user[:value] : 0)
+          }
         end
+
+        # Calculate "Other" amount
+        other_amount = total_amount - users.sum { |user| user[:value] }
+        next unless other_amount > 0
+
+        users << {
+          name: "Other",
+          truncated: "Other",
+          value: other_amount
+        }
       end
     end
 

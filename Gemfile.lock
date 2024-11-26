@@ -853,7 +853,6 @@ DEPENDENCIES
   bullet
   business_time
   byebug
-  chartkick
   chronic
   comma (~> 4.8)
   console1984

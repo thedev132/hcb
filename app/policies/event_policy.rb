@@ -11,7 +11,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   # Turbo frames for the event homepage (show)
-  alias_method :top_merchants?, :show?
+  alias_method :merchants_categories?, :show?
   alias_method :top_categories?, :show?
   alias_method :tags_users?, :show?
   alias_method :transaction_heatmap?, :show?
