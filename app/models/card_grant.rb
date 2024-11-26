@@ -154,7 +154,7 @@ class CardGrant < ApplicationRecord
     update!(status: :canceled) unless expired
     update!(status: :expired) if expired
 
-    stripe_card&.freeze!
+    stripe_card&.cancel!
   end
 
   def create_stripe_card(session)
