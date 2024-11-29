@@ -242,7 +242,7 @@ class Wire < ApplicationRecord
   # see https://column.com/docs/api/#counterparty/create for valid options, under "legal_type"
 
   validate do
-    if recipient_information[:legal_type] && !LEGAL_TYPE_FIELD[:options].values.include?(recipient_information[:legal_type])
+    if recipient_information[:legal_type].present? && !LEGAL_TYPE_FIELD[:options].values.include?(recipient_information[:legal_type])
       errors.add(:legal_type, "must be #{LEGAL_TYPE_FIELD[:options].keys.map(&:downcase).to_sentence(last_word_connector: ' or ')}.")
     end
   end
