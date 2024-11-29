@@ -234,7 +234,7 @@ class Wire < ApplicationRecord
     errors.add(:address_postal_code, error) if address_postal_code.match(regex)
     errors.add(:address_state, error) if address_state.match(regex)
 
-    Wire.recipient_information_accessors.each do |recipient_information_accessor|
+    Wire.recipient_information_accessors.excluding("legal_type", "email").each do |recipient_information_accessor|
       errors.add(recipient_information_accessor, error) if recipient_information[recipient_information_accessor]&.match(regex)
     end
   end
