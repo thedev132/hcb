@@ -222,6 +222,31 @@ class Wire < ApplicationRecord
     end
   end
 
+  # the SWIFT messaging system supports a very limited set of characters.
+  # https://column.com/docs/international-wires/#valid-characters-permitted
+
+  validate do
+    error = "contains invalid characters; the SWIFT system only supports the English alphabet and numbers."
+    regex = /[^A-Za-z0-9\-?:( ).,'+\/]/
+
+    errors.add(:address_line1, error) if address_line1.match(regex)
+    errors.add(:address_line2, error) if address_line2.present? && address_line2.match(regex)
+    errors.add(:address_postal_code, error) if address_postal_code.match(regex)
+    errors.add(:address_state, error) if address_state.match(regex)
+
+    Wire.recipient_information_accessors.each do |recipient_information_accessor|
+      errors.add(recipient_information_accessor, error) if recipient_information[recipient_information_accessor]&.match(regex)
+    end
+  end
+
+  # see https://column.com/docs/api/#counterparty/create for valid options, under "legal_type"
+
+  validate do
+    if recipient_information[:legal_type] && !LEGAL_TYPE_FIELD[:options].values.include?(recipient_information[:legal_type])
+      errors.add(:legal_type, "must be #{LEGAL_TYPE_FIELD[:options].keys.map(&:downcase).to_sentence(last_word_connector: ' or ')}.")
+    end
+  end
+
   validate on: :create do
     if !user.admin? && usd_amount_cents < (Event.find(event.id).minimumn_wire_amount_cents)
       errors.add(:amount, " must be more than or equal to #{ApplicationController.helpers.render_money event.minimumn_wire_amount_cents} (USD).")
