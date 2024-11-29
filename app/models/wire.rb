@@ -299,13 +299,25 @@ class Wire < ApplicationRecord
     eu_bank.exchange(amount_cents, currency, "USD").cents
   end
 
+  LEGAL_TYPE_FIELD = {
+    type: :select,
+    key: "legal_type",
+    label: "Legal status of receiving entity",
+    options: {
+      "Business": "business",
+      "Nonprofit": "non_profit",
+      "Individual": "individual",
+      "Sole proprietor": "sole_proprietor"
+    }
+  }.freeze
+
   def self.information_required_for(country) # country can be null, in which case, only the general fields will be returned.
     fields = []
     case country
     when "BR"
       fields << { type: :text_field, key: "phone", label: "Phone number associated with account" }
       fields << { type: :text_field, key: "email", label: "Email address associated with account" }
-      fields << { type: :text_field, key: "legal_type", label: "Legal status of receiving entity" }
+      fields << LEGAL_TYPE_FIELD
       fields << { type: :text_field, key: "legal_id", label: "Legal ID of receiving entity", description: "11-digit CPF for individuals, or 14-digit CNPJ for corporations/NGO/organizations" }
       fields << { type: :text_area, key: "remittance_info", label: "Remittance information", description: "Payment purpose must be clearly identified" }
     when "BH"
@@ -316,38 +328,38 @@ class Wire < ApplicationRecord
     when "CO"
       fields << { type: :text_field, key: "phone", label: "Phone number associated with account" }
       fields << { type: :text_field, key: "email", label: "Email address associated with account" }
-      fields << { type: :text_field, key: "legal_type", label: "Legal status of receiving entity" }
+      fields << LEGAL_TYPE_FIELD
       fields << { type: :text_field, key: "legal_id", label: "Legal ID of receiving entity", description: "7-11 digits Cédulas for individuals, or 10-digit NIT for corporations/NGO/organizations" }
       fields << { type: :text_area, key: "purpose_code", label: "Payment purpose", description: "A clearly identifiable purpose of payment (e.g., goods, services, capital, etc.)" }
     when "DO"
       fields << { type: :text_field, key: "account_type", label: "Account type" }
-      fields << { type: :text_field, key: "legal_type", label: "Legal status of receiving entity" }
+      fields << LEGAL_TYPE_FIELD
       fields << { type: :text_field, key: "legal_id", label: "Legal ID of receiving entity", description: "11-digit Cedula or passport number for individuals, or 7+ digits tax ID or 9+ digits Registro Mercantil for corporations/NGO/organizations" }
     when "HN"
       fields << { type: :text_field, key: "account_type", label: "Account type" }
-      fields << { type: :text_field, key: "legal_type", label: "Legal status of receiving entity" }
+      fields << LEGAL_TYPE_FIELD
       fields << { type: :text_field, key: "legal_id", label: "Legal ID of receiving entity", description: "13-digit Tarjeta de Identidad for individuals, or 14-digit Registro Tributario Nacional for corporations/NGO/organizations" }
       fields << { type: :text_area, key: "remittance_info", label: "Remittance information", description: "For payments from corporations/organizations to individuals, include a detailed purpose of payment (especially for salaries)" }
     when "KZ"
-      fields << { type: :text_field, key: "legal_type", label: "Legal status of receiving entity" }
+      fields << LEGAL_TYPE_FIELD
       fields << { type: :text_field, key: "legal_id", label: "Legal ID of receiving entity", description: "12-digit Business Identification Number (BIN) or Individual Identification Number (IIN)" }
       fields << { type: :text_area, key: "remittance_info", label: "Remittance information", description: "Payment purpose must be clearly identified" }
       fields << { type: :text_area, key: "purpose_code", label: "Payment purpose", description: "A 10-character EKNP purpose code" }
     when "MD"
       fields << { type: :text_field, key: "phone", label: "Phone number associated with account" }
     when "MY"
-      fields << { type: :text_field, key: "legal_type", label: "Legal status of receiving entity" }
+      fields << LEGAL_TYPE_FIELD
       fields << { type: :text_area, key: "purpose_code", label: "Purpose code", description: "A 5-digit purpose of payment code.", refer_to: "https://connect-content.us.hsbc.com/hsbc_pcm/onetime/17_july_my_pop_codes.pdf" }
     when "PK"
-      fields << { type: :text_field, key: "legal_type", label: "Legal status of receiving entity" }
+      fields << LEGAL_TYPE_FIELD
       fields << { type: :text_field, key: "legal_id", label: "Legal ID of receiving entity", description: "Should be prepended with CNIC, SNIC, Passport, or NTN depending on the ID type." }
       fields << { type: :text_area, key: "remittance_info", label: "Remittance information", description: "Relationship between remitter and beneficiary must be clearly identified" }
       fields << { type: :text_area, key: "purpose_code", label: "Purpose code", description: "A 4-digit purpose of payment code.", refer_to: "https://www.sbp.org.pk/fe_returns/cod5.pdf" }
     when "PY"
-      fields << { type: :text_field, key: "legal_type", label: "Legal status of receiving entity" }
+      fields << LEGAL_TYPE_FIELD
       fields << { type: :text_field, key: "legal_id", label: "Legal ID of receiving entity", description: "Cedula de Identidad for individuals, or RUC for corporations" }
     when "AM"
-      fields << { type: :text_field, key: "legal_type", label: "Legal status of receiving entity" }
+      fields << LEGAL_TYPE_FIELD
       fields << { type: :text_area, key: "remittance_info", label: "Remittance information", description: "Payment purpose must be clearly identified" }
     when "AR"
       fields << { type: :text_field, key: "email", label: "Email address associated with account" }
@@ -394,7 +406,7 @@ class Wire < ApplicationRecord
     when "ID"
       fields << { type: :text_field, key: "phone", label: "Phone number associated with account" }
     when "IN"
-      fields << { type: :text_field, key: "legal_type", label: "Legal status of receiving entity" }
+      fields << LEGAL_TYPE_FIELD
       fields << { type: :text_field, key: "phone", label: "Phone number associated with account" }
       fields << { type: :text_field, key: "local_bank_code", label: "Local bank code", description: "11-character IFSC codes" }
       fields << { type: :text_area, key: "purpose_code", label: "Purpose code", description: "A 5-character purpose of payment code, beginning with 'P'.", refer_to: "https://rbidocs.rbi.org.in/rdocs/notification/PDFs/ASAP840212FL.pdf" }
@@ -406,7 +418,7 @@ class Wire < ApplicationRecord
       fields << { type: :text_area, key: "purpose_code", label: "Purpose code", description: "A 8-digit purpose of payment code" }
     when "KR"
       fields << { type: :text_field, key: "phone", label: "Phone number associated with account" }
-      fields << { type: :text_field, key: "legal_type", label: "Legal status of receiving entity" }
+      fields << LEGAL_TYPE_FIELD
       fields << { type: :text_field, key: "legal_id", label: "Legal ID of receiving entity", description: "10-digit Business Registration Number (for corporations)" }
       fields << { type: :text_area, key: "purpose_code", label: "Purpose code", description: "A 5-digit purpose of payment code.", refer_to: "https://www.jpmorgan.com/directdoc/list-of-payment-purpose-code-kr.pdf" }
     when "MU"
@@ -424,7 +436,7 @@ class Wire < ApplicationRecord
     when "NZ"
       fields << { type: :text_field, key: "local_bank_code", label: "Local bank code", description: "6-digit NZ Clearing Code" }
     when "PE"
-      fields << { type: :text_field, key: "legal_type", label: "Legal status of receiving entity" }
+      fields << LEGAL_TYPE_FIELD
       fields << { type: :text_field, key: "legal_id", label: "Legal ID of receiving entity", description: "11-digit RUC number for corporations, or 8-digit DNI for individuals" }
     when "TG"
       fields << { type: :text_field, key: "phone", label: "Phone number associated with account" }
