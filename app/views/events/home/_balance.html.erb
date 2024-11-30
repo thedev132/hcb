@@ -4,7 +4,8 @@
   <div
     class="flex flex-grow flex-col"
     style="gap: 8px;position: relative;"
-    data-balance-graph-available-value="<%= @event.balance_available_v2_cents %>">
+    data-balance-graph-available-value="<%= @event.balance_available_v2_cents %>"
+    data-balance-graph-slug-value="<%= @event.slug %>">
     <div class="p-4 pt-2 flex flex-col">
       <div data-balance-graph-target="stat" data-tour-step="balance">
         <% if @event.fee_balance_v2_cents < 0

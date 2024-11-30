@@ -73,7 +73,8 @@
       class="flex"
       style="flex-direction: row; gap: 8px; position: relative;"
       data-controller="balance-graph"
-      data-balance-graph-available-value="<%= @event.balance_available_v2_cents %>">
+      data-balance-graph-available-value="<%= @event.balance_available_v2_cents %>"
+      data-balance-graph-slug-value="<%= @event.slug %>">
       <div class="stat statset__wide" data-tour-step="balance" data-balance-graph-target="stat">
         <span class="stat__label" data-balance-graph-target="label">Account balance</span>
         <% if @event.fee_balance_v2_cents < 0
