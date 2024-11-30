@@ -70,7 +70,7 @@
     <% end %>
   </div>
   <% if organizer_signed_in? %>
-    <div class="organizer-position__contact-block g1 flex muted overflow-auto">
+    <div class="organizer-position__contact-block g1 flex muted">
       <p class="m0">
         <%= copy_to_clipboard(organizer_position.user.email, class: "inline-flex items-center g1 line-height-0", tooltip_direction: "e") do %>
           <%= inline_icon("email", size: 20) %>
