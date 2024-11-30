@@ -28,7 +28,7 @@
 <% active_spending_control_count = @event.organizer_positions.map(&:active_spending_control).compact.count %>
 <%= render partial: "features/preview", locals: {
       id: "spending-controls",
-      classes: ["feature-spending-controls"],
+      classes: ["feature-spending-controls", "feature-generic"],
       feature_flag: :spending_controls_2024_06_03,
       name: "Spending Controls",
       description: content_tag(:span) do
