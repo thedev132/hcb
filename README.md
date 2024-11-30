@@ -72,7 +72,9 @@ If you have more questions about development check out our [wiki](https://github
 
 ### Development Account
 
-Login using the email admin@bank.engineering. Use Doorkeeper (`/doorkeeper`) to access the development email outbox and retrieve the login code.
+Login using the email admin@bank.engineering. Use Letter Opener
+(`/letter_opener`) to access the development email outbox and retrieve the login
+code.
 
 ### Production Access
 
