@@ -75,6 +75,8 @@
       </span>
     </h4>
 
-    <%= render partial: "my/activities" if Flipper.enabled?(:recently_on_hcb_2024_05_23, current_user) && @activities %>
+    <%= error_boundary fallback_text: "No recent activities available." do %>
+      <%= render partial: "my/activities" if Flipper.enabled?(:recently_on_hcb_2024_05_23, current_user) && @activities %>
+    <% end %>
   <% end %>
 <% end %>
