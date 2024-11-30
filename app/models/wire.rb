@@ -319,7 +319,7 @@ class Wire < ApplicationRecord
   end
 
   def usd_amount_cents
-    return local_hcb_code.amount_cents unless local_hcb_code.no_transactions?
+    return -1 * local_hcb_code.amount_cents unless local_hcb_code.no_transactions?
 
     eu_bank = EuCentralBank.new
     eu_bank.update_rates
