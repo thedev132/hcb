@@ -167,8 +167,7 @@ class StripeCard < ApplicationRecord
   end
 
   def status_text
-    return "Inactive" if !initially_activated?
-    return "Frozen" if stripe_status == "inactive"
+    return "Frozen" if stripe_status == "inactive" && initially_activated?
 
     stripe_status.humanize
   end
