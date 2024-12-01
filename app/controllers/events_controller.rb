@@ -72,7 +72,7 @@ class EventsController < ApplicationController
     @money_out = all_transactions.reject { |t| t.amount_cents >= 0 }.first(3)
 
     @activities = PublicActivity::Activity.for_event(@event).order(created_at: :desc).first(5)
-    @organizers = @event.organizer_positions.includes(:user).order(users: { preferred_name: :asc, full_name: :asc })
+    @organizers = @event.organizer_positions.joins(:user).order(Arel.sql("CONCAT(preferred_name, full_name) ASC"))
     @cards = all_stripe_cards = @event.stripe_cards.order(created_at: :desc).where(stripe_cardholder: current_user&.stripe_cardholder).first(10)
   end
 
@@ -149,7 +149,7 @@ class EventsController < ApplicationController
     @maximum_amount = params[:maximum_amount].presence ? Money.from_amount(params[:maximum_amount].to_f) : nil
     @missing_receipts = params[:missing_receipts].present?
 
-    @organizers = @event.organizer_positions.includes(:user).order(users: { preferred_name: :asc, full_name: :asc })
+    @organizers = @event.organizer_positions.joins(:user).order(Arel.sql("CONCAT(preferred_name, full_name) ASC"))
     @pending_transactions = _show_pending_transactions
 
     if !signed_in? && !@event.holiday_features

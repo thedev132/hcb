@@ -20,7 +20,7 @@
 
       <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0 %>
         <div data-tabs-target="tab" id="tags">
-          <% @event.tags.each do |tag| %>
+          <% @event.tags.order(label: :asc).each do |tag| %>
             <div class="flex items-center" data-tag="<%= tag.id %>">
               <%= link_to upsert_query_params(tag: tag.label), class: "flex-auto menu__action", data: { turbo_prefetch: "false" } do %>
 
@@ -50,7 +50,7 @@
         <% end %>
       </div>
       <div data-tabs-target="tab" id="type">
-        <% ["ach_transfer", "mailed_check", "account_transfer", "card_charge", "check_deposit", "donation", "invoice", "refund", "fiscal_sponsorship_fee", "reimbursement"].each do |type| %>
+        <% ["ach_transfer", "account_transfer", "card_charge", "check_deposit", "donation", "fiscal_sponsorship_fee", "invoice", "mailed_check", "reimbursement", "refund"].sort.each do |type| %>
           <div class="flex items-center">
             <%= link_to(upsert_query_params(type:), class: "flex-auto menu__action #{"menu__action--active" if @type == type}", data: { turbo_prefetch: "false" }) do %>
               <%= type.humanize.gsub("Ach", "ACH") %>
