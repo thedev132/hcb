@@ -181,7 +181,7 @@ class EventsController < ApplicationController
         "settled" => ->(t) { t.local_hcb_code.check? || t.local_hcb_code.increase_check? },
         "pending" => ->(t) { t.raw_pending_outgoing_check_transaction_id || t.increase_check_id }
       },
-      "account_transfer"       => {
+      "hcb_transfer"           => {
         "settled" => ->(t) { t.local_hcb_code.disbursement? },
         "pending" => ->(t) { t.local_hcb_code.disbursement? }
       },
