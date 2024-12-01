@@ -50,10 +50,10 @@
         <% end %>
       </div>
       <div data-tabs-target="tab" id="type">
-        <% ["ach_transfer", "account_transfer", "card_charge", "check_deposit", "donation", "fiscal_sponsorship_fee", "invoice", "mailed_check", "reimbursement", "refund"].sort.each do |type| %>
+        <% ["account_transfer", "ach_transfer", "card_charge", "check_deposit", "donation", "fiscal_sponsorship_fee", "invoice", "mailed_check", "paypal_transfer", "refund", "reimbursement", "wire"].each do |type| %>
           <div class="flex items-center">
             <%= link_to(upsert_query_params(type:), class: "flex-auto menu__action #{"menu__action--active" if @type == type}", data: { turbo_prefetch: "false" }) do %>
-              <%= type.humanize.gsub("Ach", "ACH") %>
+              <%= type.humanize.gsub("Ach", "ACH").gsub("Paypal", "PayPal") %>
             <% end %>
           </div>
         <% end %>

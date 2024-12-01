@@ -212,6 +212,14 @@ class EventsController < ApplicationController
       "reimbursement"          => {
         "settled" => ->(t) { t.local_hcb_code.reimbursement_expense_payout? },
         "pending" => ->(t) { false }
+      },
+      "wire"                   => {
+        "settled" => ->(t) { t.local_hcb_code.wire? },
+        "pending" => ->(t) { t.wire_id }
+      },
+      "paypal_transfer"        => {
+        "settled" => ->(t) { t.local_hcb_code.paypal_transfer? },
+        "pending" => ->(t) { t.paypal_transfer_id }
       }
     }
 
