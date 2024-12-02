@@ -1242,7 +1242,7 @@ class AdminController < ApplicationController
     states << "unapproved" if @unapproved
     states << "approved" if @approved
     states << "rejected" if @rejected
-    relation = relation.where("aasm_state in (?)", states)
+    relation = relation.where("events.aasm_state in (?)", states)
 
     # Sorting
     case @sort_by
