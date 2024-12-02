@@ -1017,7 +1017,6 @@ class AdminController < ApplicationController
     if @monthly_breakdown
       template.concat(
         [
-          [:category, ->(e) { e.category }],
           [:tags, ->(e) { e.event_tags.pluck(:name).join(",") }],
           [:joined, ->(e) { (e.activated_at || e.created_at).strftime("%Y-%m-%d") }],
         ]
@@ -1193,11 +1192,6 @@ class AdminController < ApplicationController
     @active = params[:active].present? ? params[:active] : "both" # both by default
     @organized_by = params[:organized_by].presence || "anyone"
     @tagged_with = params[:tagged_with].presence || "anything"
-    if params[:category] == "none"
-      @category = "none"
-    else
-      @category = params[:category].present? ? params[:category] : "all"
-    end
     @point_of_contact_id = params[:point_of_contact_id].present? ? params[:point_of_contact_id] : "all"
     @plan = params[:plan].present? ? params[:plan] : "all"
     if params[:country] == 9999.to_s
@@ -1235,11 +1229,6 @@ class AdminController < ApplicationController
     if @plan != "all"
       relation = relation.where(id: events.joins("LEFT JOIN event_plans on event_plans.event_id = events.id")
                          .where("event_plans.aasm_state = 'active' AND event_plans.type = ?", @plan))
-    end
-    if @category == "none"
-      relation = relation.where(category: nil)
-    elsif @category != "all"
-      relation = relation.where(category: @category)
     end
     relation = relation.where(point_of_contact_id: @point_of_contact_id) if @point_of_contact_id != "all"
     if @country == 9999
