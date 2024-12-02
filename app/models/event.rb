@@ -639,6 +639,11 @@ class Event < ApplicationRecord
     !engaged?
   end
 
+  def category
+    Airbrake.notify("Event#category used.")
+    super
+  end
+
   def revenue_fee
     plan&.revenue_fee || (Airbrake.notify("#{id} is missing a plan!") && 0.07)
   end
