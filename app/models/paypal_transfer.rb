@@ -47,7 +47,7 @@ class PaypalTransfer < ApplicationRecord
   tracked owner: proc{ |controller, record| controller&.current_user }, event_id: proc { |controller, record| record.event.id }, only: [:create]
 
   after_create do
-    create_canonical_pending_transaction!(event:, amount_cents: -amount_cents, memo: "OUTGOING PAYPAL TRANSFER", date: created_at)
+    create_canonical_pending_transaction!(event:, amount_cents: -amount_cents, memo: "PayPal transfer to #{recipient_name}".strip.upcase, date: created_at)
   end
 
   aasm timestamps: true, whiny_persistence: true do

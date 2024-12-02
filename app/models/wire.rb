@@ -69,7 +69,7 @@ class Wire < ApplicationRecord
     create_canonical_pending_transaction!(
       event:,
       amount_cents: -1 * usd_amount_cents,
-      memo: "OUTGOING WIRE",
+      memo: "Wire to #{recipient_name}".strip.upcase,
       date: created_at
     )
   end
