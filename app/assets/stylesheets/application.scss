@@ -495,3 +495,9 @@ summary {
 .iti {
   width: 100%;
 }
+
+@media (max-width: 56em) {
+  .snow_toggle {
+    bottom: 64px !important;
+  }
+}
