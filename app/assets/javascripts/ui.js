@@ -459,6 +459,7 @@ $(document).on('turbo:load', function () {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return disableTilt()
     } else {
+      disableTilt() // disable it, then enable it. 
       return enableTilt()
     }
   }
