@@ -10,13 +10,14 @@ module Api
         expose :category, documentation: {
           values: ["hack_club_hq", "robotics_team", "hackathon", "hack_club", "climate", "nonprofit"]
         } do |organization|
-          return "hack_club_hq" if organization.plan.is_a?(Event::Plan::HackClubAffiliate)
-          return "robotics_team" if organization.robotics_team?
-          return "hackathon" if organization.hackathon?
-          return "hack_club" if organization.event_tags.where(name: EventTag::Tags::HACK_CLUB).exists?
-          return "climate" if organization.event_tags.where(name: EventTag::Tags::CLIMATE).exists?
+          category = "nonprofit"
+          category = "climate" if organization.event_tags.where(name: EventTag::Tags::CLIMATE).exists?
+          category = "hack_club" if organization.event_tags.where(name: EventTag::Tags::HACK_CLUB).exists?
+          category = "hackathon" if organization.hackathon?
+          category = "robotics_team" if organization.robotics_team?
+          category = "hack_club_hq" if organization.plan.is_a?(Event::Plan::HackClubAffiliate)
 
-          "nonprofit"
+          category
         end
         expose :is_public, as: :transparent, documentation: { type: "boolean" }
         expose :demo_mode, documentation: { type: "boolean" }
