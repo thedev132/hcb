@@ -24,7 +24,6 @@ class EventsController < ApplicationController
           {
             name: x.name,
             slug: x.slug,
-            category: x.category,
             logo: x.logo.attached? ? Rails.application.routes.url_helpers.url_for(x.logo) : "none",
             demo_mode: x.demo_mode,
             member: true
@@ -37,7 +36,6 @@ class EventsController < ApplicationController
               {
                 slug: e.slug,
                 name: e.name,
-                category: e.category,
                 logo: e.logo.attached? ? Rails.application.routes.url_helpers.url_for(e.logo) : "none",
                 demo_mode: false,
                 member: false
