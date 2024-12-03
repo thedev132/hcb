@@ -155,3 +155,7 @@ user_sync_to_loops_job:
 card_grant_expiration_job:
   cron: "0 7 * * *" # run every 1 day
   class: "CardGrant::ExpirationJob"
+
+stripe_service_fee_job:
+  cron: "0 0 * * MON" # run first day of each week
+  class: "StripeServiceFeeJob"
