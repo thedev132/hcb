@@ -114,6 +114,7 @@ class HcbCode < ApplicationRecord
   def humanized_type
     return "ACH" if ach_transfer?
     return "Bank Fee" if bank_fee?
+    return "Transfer" if disbursement?
 
     t = type || :transaction
     t = :transaction if unknown?
