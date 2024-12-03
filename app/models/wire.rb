@@ -259,6 +259,7 @@ class Wire < ApplicationRecord
     state :approved
     state :rejected
     state :deposited
+    state :failed
 
     event :mark_approved do
       transitions from: :pending, to: :approved
@@ -274,6 +275,14 @@ class Wire < ApplicationRecord
 
     event :mark_deposited do
       transitions from: :approved, to: :deposited
+    end
+
+    event :mark_failed do
+      transitions from: [:deposited, :approved], to: :failed
+      after do |reason: nil|
+        WireMailer.with(wire: self, reason:).notify_failed.deliver_later
+        create_activity(key: "wire.failed", owner: nil)
+      end
     end
   end
 
@@ -292,7 +301,7 @@ class Wire < ApplicationRecord
   def state
     if pending?
       :muted
-    elsif rejected?
+    elsif rejected? || failed?
       :error
     elsif deposited?
       :success
