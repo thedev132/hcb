@@ -61,7 +61,11 @@
       </p>
 
       <p>
-        <strong>Amount (USD)</strong>
+        <% if @hcb_code.ct.present? %>
+          <strong>Settled amount (USD)</strong>
+        <% else %>
+          <strong>Pending amount (USD)</strong>
+        <% end %>
         <%= render_money @hcb_code.amount_cents.abs %>
       </p>
 
