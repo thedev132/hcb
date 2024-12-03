@@ -76,6 +76,10 @@ Login using the email admin@bank.engineering. Use Letter Opener
 (`/letter_opener`) to access the development email outbox and retrieve the login
 code.
 
+### Staging Access
+
+Login using the email staging@bank.engineering. Visit `#hcb-staging` on the [Hack Club Slack](https://hackclub.com/slack) for the code.
+
 ### Production Access
 
 Please see this part of the [wiki](https://github.com/hackclub/hcb/wiki/Development/#production-access) for more information on Production Access
