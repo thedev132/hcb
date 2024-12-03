@@ -75,6 +75,7 @@ class Wire < ApplicationRecord
   end
 
   validates_length_of :remittance_info, maximum: 140
+  validates_length_of :payment_for, maximum: 140
 
   # IBAN & postal code formats sourced from https://column.com/docs/international-wires/country-specific-details
 
