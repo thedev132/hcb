@@ -48,6 +48,10 @@
   A <%= humanized_money_with_symbol @cpt.amount.abs %> charge to your card ending in <%= @card.last4 %> at '<%= @merchant %>' was declined.
 <% end %>
 
+<p>
+  <%= link_to "Click here to vsiew the declined transaction.", @cpt.local_hcb_code %>
+</p>
+
 <% if Rails.env.development? %>
   <hr>
   <p>Development mode metadata:</p>
