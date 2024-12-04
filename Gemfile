@@ -222,3 +222,5 @@ gem "email_reply_parser"
 gem "eu_central_bank"
 
 gem "whitesimilarity"
+
+gem "rack-timeout", require: "rack/timeout/base"
