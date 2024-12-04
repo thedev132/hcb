@@ -620,3 +620,34 @@ $(document).on('wheel', 'input[type=number]', e => {
   e.preventDefault()
   e.target.blur()
 })
+
+// this allows for popovers to change the URL in the browser when opened.
+// it also handles using the back button, to reopen or close a popover.
+
+$(document).on($.modal.BEFORE_OPEN, function(event, modal) {
+  if(modal?.elm[0]?.dataset?.stateUrl) {
+    if(!document.documentElement.dataset.returnToStateUrl) {
+      document.documentElement.dataset.returnToStateUrl = window.location.href;
+      document.documentElement.dataset.returnToStateTitle = document.title;
+    }
+    document.title = modal.elm[0].dataset.stateTitle;
+    window.history.pushState({ modal: modal.elm[0].id }, '', modal.elm[0].dataset.stateUrl);
+  }
+});
+
+$(document).on($.modal.BEFORE_CLOSE, function(event, modal) {
+  if(document.documentElement.dataset.returnToStateUrl) {
+    window.history.pushState(null, '', document.documentElement.dataset.returnToStateUrl);
+    document.title = document.documentElement.dataset.returnToStateTitle;
+  }
+});
+
+window.addEventListener("popstate", (e) => {
+  console.log(e)
+  if(e.state.modal) {
+    $(`#${e.state.modal}`).modal();
+  } else {
+    $.modal.close();
+  }
+});
+
