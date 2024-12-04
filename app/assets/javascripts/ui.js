@@ -643,8 +643,7 @@ $(document).on($.modal.BEFORE_CLOSE, function(event, modal) {
 });
 
 window.addEventListener("popstate", (e) => {
-  console.log(e)
-  if(e.state.modal) {
+  if(e.state?.modal) {
     $(`#${e.state.modal}`).modal();
   } else {
     $.modal.close();
