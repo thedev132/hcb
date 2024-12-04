@@ -50,8 +50,6 @@
 class Event < ApplicationRecord
   MIN_WAITING_TIME_BETWEEN_FEES = 5.days
 
-  self.ignored_columns = ["category"]
-
   include Hashid::Rails
   extend FriendlyId
 
