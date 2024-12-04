@@ -9,6 +9,7 @@ module Api
       after_action :verify_authorized
 
       before_action :authenticate!
+      before_action :set_expand
 
       rescue_from Pundit::NotAuthorizedError do |e|
         render json: { error: "not_authorized" }, status: :forbidden
@@ -36,6 +37,10 @@ module Api
         end
 
         @current_user = current_token&.user
+      end
+
+      def set_expand
+        @expand = params[:expand].to_s.split(",").map { |e| e.strip.to_sym }
       end
 
       attr_reader :current_token, :current_user
