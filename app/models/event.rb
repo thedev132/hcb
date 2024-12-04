@@ -9,7 +9,6 @@
 #  activated_at                                 :datetime
 #  address                                      :text
 #  can_front_balance                            :boolean          default(TRUE), not null
-#  category                                     :integer
 #  country                                      :integer
 #  deleted_at                                   :datetime
 #  demo_mode                                    :boolean          default(FALSE), not null
