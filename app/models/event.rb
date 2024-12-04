@@ -51,6 +51,8 @@
 class Event < ApplicationRecord
   MIN_WAITING_TIME_BETWEEN_FEES = 5.days
 
+  self.ignored_columns = ["category"]
+
   include Hashid::Rails
   extend FriendlyId
 
@@ -353,7 +355,6 @@ class Event < ApplicationRecord
     slug "url" do |slug| "https://hcb.hackclub.com/#{slug}" end
     country
     is_public "transparent"
-    category
   end
 
   CUSTOM_SORT = Arel.sql(
@@ -365,22 +366,6 @@ class Event < ApplicationRecord
     "WHEN id = 4318 THEN '6'    "\
     "ELSE 'z' || name END ASC   "
   )
-
-  enum :category, {
-    hackathon: 0, # done, converted to EventTag
-    'hack club': 1, # done, converted to EventTag
-    nonprofit: 2, # deprecated
-    event: 3, # deprecated
-    'high school hackathon': 4, # converted to EventTag (Hackathon)
-    'robotics team': 5, # converted to EventTag
-    'hardware grant': 6, # winter event 2022, converted to EventTag
-    'hack club hq': 7, # converted to EventTag
-    'outernet guild': 8, # summer event 2023, converted to EventTag
-    'grant recipient': 9, # converted to EventTag
-    salary: 10, # converted to Event::Plan
-    ai: 11, # converted to EventTag
-    'hcb internals': 12 # eg. https://hcb.hackclub.com/clearing. to be converted to Event::Plan
-  }
 
   enum :stripe_card_shipping_type, {
     standard: 0,
@@ -637,11 +622,6 @@ class Event < ApplicationRecord
 
   def dormant?
     !engaged?
-  end
-
-  def category
-    Airbrake.notify("Event#category used.")
-    super
   end
 
   def revenue_fee

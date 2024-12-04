@@ -310,7 +310,7 @@ class User < ApplicationRecord
   end
 
   def teenager?
-    birthday&.after?(19.years.ago) || events.high_school_hackathon.any? || events.organized_by_teenagers.any?
+    birthday&.after?(19.years.ago) || events.organized_by_teenagers.any?
   end
 
   def last_seen_at
