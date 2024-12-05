@@ -9,3 +9,4 @@ if expand?(:disbursements)
     json.partial! "api/v4/transactions/disbursement", disbursement:
   end
 end
+json.card_id card_grant.stripe_card&.public_id
