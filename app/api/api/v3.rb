@@ -221,8 +221,8 @@ module Api
     end
     get :git do
       {
-        commit_time: ApplicationHelper.commit_time,
-        commit_hash: ApplicationHelper.commit_hash
+        commit_time: ApplicationController.helpers.commit_time,
+        commit_hash: ApplicationController.helpers.commit_hash
       }
     end
 
