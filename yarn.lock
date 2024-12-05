@@ -1654,10 +1654,10 @@ ajv@^8.0.0, ajv@^8.9.0:
     require-from-string "^2.0.2"
     uri-js "^4.4.1"
 
-alpinejs@^3.14.4:
-  version "3.14.4"
-  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.14.4.tgz#d6bba57a581a32a9eb6ba8dd3166370bb155333b"
-  integrity sha512-fRRQaNO/CbY2jmMsu3xV38XmUlltxfoOZug7UwhX6Q6FcjloFcKdjzepeGhH2YC7LDbY6Nk1SMPOmnbZW2rOLA==
+alpinejs@^3.14.6:
+  version "3.14.6"
+  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.14.6.tgz#3eb54aeccfed91a7d91a4eb7fa35f03bedd65743"
+  integrity sha512-8Abdd6u8oVurOChPqWCHS2Lr3C9g4+zb/kL1vNPykK/2dVkb3giTcpQ1wykzzWmX7wbTvWLnHX3I3CPPnnAMCA==
   dependencies:
     "@vue/reactivity" "~3.1.1"
 
