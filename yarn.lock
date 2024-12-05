@@ -4884,10 +4884,10 @@ react-smooth@^4.0.0:
     prop-types "^15.8.1"
     react-transition-group "^4.4.5"
 
-react-snowfall@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/react-snowfall/-/react-snowfall-1.1.1.tgz"
-  integrity sha512-SREER5iikqVY8Fu0BpaYllzGHB1iKZacXY76E/rW1n1zKUH5ClqVWG1UZS+3fR6OTg9GkeGG459juSnARVoNGQ==
+react-snowfall@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-snowfall/-/react-snowfall-1.2.1.tgz#68cab6a1d05aa7c3211bce96a3a97977ca7dc57f"
+  integrity sha512-d2UR3nDq3F0DJGaTfJ0QNbBo76UZHtT9wHFj+ePxAl4FgSxWBhxB/Bjn06f5iDBwhgwiZ7CZmv3lwfNvjo6a+w==
   dependencies:
     react-fast-compare "^3.2.0"
 
