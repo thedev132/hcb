@@ -18,8 +18,6 @@
 class FeeReimbursement < ApplicationRecord
   has_paper_trail
 
-  include Commentable
-
   has_one :invoice, required: false
   has_one :donation, required: false
   has_one :t_transaction, class_name: "Transaction", inverse_of: :fee_reimbursement
