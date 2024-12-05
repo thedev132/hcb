@@ -25,7 +25,6 @@
 class CanonicalTransaction < ApplicationRecord
   has_paper_trail
 
-  include Commentable
   include Receiptable
 
   include PgSearch::Model
