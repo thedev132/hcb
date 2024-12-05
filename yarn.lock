@@ -24,10 +24,10 @@
   resolved "https://registry.yarnpkg.com/@alloc/quick-lru/-/quick-lru-5.2.0.tgz#7bf68b20c0a350f936915fcae06f58e32007ce30"
   integrity sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==
 
-"@alpinejs/persist@^3.14.3":
-  version "3.14.3"
-  resolved "https://registry.yarnpkg.com/@alpinejs/persist/-/persist-3.14.3.tgz#922820d72bc356adecb3bac47a3257bbefd2cd0f"
-  integrity sha512-atWMKAHdDBKxHoiAEVAx9Ft+d1m9BzsepTkPZwrJmLNYPoyXnpUp1NrPLiSLB6FzUFRPoIV0tMF2kgnRwzp+vA==
+"@alpinejs/persist@^3.14.6":
+  version "3.14.6"
+  resolved "https://registry.yarnpkg.com/@alpinejs/persist/-/persist-3.14.6.tgz#3201b2bc6e61d8924d2ff85d845c216ab130ca52"
+  integrity sha512-8zdRclF75iNHAeSuQK2TBlBgFUuFd5pFbUMoN7vUQY1AO4uvQFA+8AOQLv7SP334hcJrFfNBZ/YCY+2lExKa7Q==
 
 "@ampproject/remapping@^2.2.0":
   version "2.3.0"
