@@ -26,7 +26,7 @@ class Metric
                .not_hidden
                .not_demo_mode
                .approved
-               .where("EXTRACT(YEAR FROM created_at) = ?", 2023)
+               .where("EXTRACT(YEAR FROM events.created_at) = ?", 2024)
                .count
       end
 

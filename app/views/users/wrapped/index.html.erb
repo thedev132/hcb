@@ -1,0 +1,4 @@
+<% title("🎁 Wrapped 2024") %>
+<% if Flipper.enabled?(:bank_wrapped, current_user) %>
+    <%= react_component "holiday/Wrapped", { data: @data }, { camelize_props: false } %>
+<% end %>
