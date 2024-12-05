@@ -25,9 +25,19 @@
         <% end %>
         <%= image_tag @event.logo, height: 72, class: "rounded" %>
     </div>
-    <% content_for :favicon do %>
-        <link rel="icon" type="image/png" sizes="32x32" href="<%= Rails.application.routes.url_helpers.rails_representation_url(@event.logo.variant(resize: "32x32")) %>">
-        <link rel="icon" type="image/png" sizes="16x16" href="<%= Rails.application.routes.url_helpers.rails_representation_url(@event.logo.variant(resize: "16x16")) %>">
+    <% if @event.logo.variable? %>
+        <% content_for :favicon do %>
+            <link
+                rel="icon"
+                type="image/png"
+                sizes="32x32"
+                href="<%= Rails.application.routes.url_helpers.rails_representation_url(@event.logo.variant(resize: "32x32")) %>">
+            <link
+                rel="icon"
+                type="image/png"
+                sizes="16x16"
+                href="<%= Rails.application.routes.url_helpers.rails_representation_url(@event.logo.variant(resize: "16x16")) %>">
+        <% end %>
     <% end %>
 <% elsif organizer_signed_in? %>
     <%= form_with model: @event, data: { "controller" => "form" }, class: "embedded-display-none" do |form| %>
