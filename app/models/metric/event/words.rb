@@ -26,7 +26,7 @@ class Metric
         TransactionGroupingEngine::Transaction::AssociationPreloader.new(transactions:, event:).run!
 
         # 1. Filter transactions by year
-        transactions.filter! { |t| t.date&.to_date&.year == 2023 }
+        transactions.filter! { |t| t.date&.to_date&.year == 2024 }
 
         # 2. Get words from transaction memos
         words = transactions.flat_map { |t| t.local_hcb_code.memo(event:).split }

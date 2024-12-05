@@ -34,7 +34,7 @@ class Metric
             LEFT JOIN canonical_event_mappings event_mapping ON ct.id = event_mapping.canonical_transaction_id
             WHERE raw_stripe_transactions.stripe_transaction->>\'cardholder\' IN (
                 SELECT stripe_id FROM "stripe_cardholders" WHERE user_id = users.id
-            ) AND EXTRACT(YEAR FROM raw_stripe_transactions.date_posted) = 2023
+            ) AND EXTRACT(YEAR FROM raw_stripe_transactions.date_posted) = 2024
             AND event_mapping.event_id = %{event}
 
             UNION ALL
@@ -43,7 +43,7 @@ class Metric
             FROM "ach_transfers"
             LEFT JOIN canonical_transactions ct ON ach_transfers.id = ct.transaction_source_id
             LEFT JOIN canonical_event_mappings event_mapping ON ct.id = event_mapping.canonical_transaction_id
-            WHERE EXTRACT(YEAR FROM ach_transfers.created_at) = 2023
+            WHERE EXTRACT(YEAR FROM ach_transfers.created_at) = 2024
             AND creator_id = users.id
             AND event_mapping.event_id = %{event}
 
@@ -53,7 +53,7 @@ class Metric
             FROM "disbursements"
             LEFT JOIN canonical_transactions ct ON disbursements.id = ct.transaction_source_id
             LEFT JOIN canonical_event_mappings event_mapping ON ct.id = event_mapping.canonical_transaction_id
-            WHERE EXTRACT(YEAR FROM disbursements.created_at) = 2023
+            WHERE EXTRACT(YEAR FROM disbursements.created_at) = 2024
             AND requested_by_id = users.id
             AND event_mapping.event_id = %{event}
 
@@ -65,7 +65,7 @@ class Metric
                 FROM "increase_checks"
                 LEFT JOIN canonical_transactions ct ON increase_checks.id = ct.transaction_source_id
                 LEFT JOIN canonical_event_mappings event_mapping ON ct.id = event_mapping.canonical_transaction_id
-                WHERE EXTRACT(YEAR FROM increase_checks.created_at) = 2023
+                WHERE EXTRACT(YEAR FROM increase_checks.created_at) = 2024
                 AND increase_checks.user_id IN (users.id)
                 AND event_mapping.event_id = %{event}
                 UNION ALL
@@ -73,7 +73,7 @@ class Metric
                 FROM "checks"
                 LEFT JOIN canonical_transactions ct ON checks.id = ct.transaction_source_id
                 LEFT JOIN canonical_event_mappings event_mapping ON ct.id = event_mapping.canonical_transaction_id
-                WHERE EXTRACT(YEAR FROM checks.created_at) = 2023
+                WHERE EXTRACT(YEAR FROM checks.created_at) = 2024
                 AND checks.creator_id IN (users.id)
                 AND event_mapping.event_id = %{event}
             ) AS combined_table

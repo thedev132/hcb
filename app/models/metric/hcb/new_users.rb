@@ -24,7 +24,7 @@ class Metric
       def calculate
         ::User.includes(:organizer_positions)
               .where.not(organizer_positions: { id: nil })
-              .where("EXTRACT(YEAR FROM users.created_at) = ?", 2023)
+              .where("EXTRACT(YEAR FROM users.created_at) = ?", 2024)
               .count
       end
 

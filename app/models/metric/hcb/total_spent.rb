@@ -23,7 +23,7 @@ class Metric
 
       def calculate
         CanonicalTransaction.included_in_stats
-                            .where(date: Date.new(2023, 1, 1)..Date.new(2023, 12, 31))
+                            .where(date: Date.new(2024, 1, 1)..Date.new(2024, 12, 31))
                             .expense
                             .sum(:amount_cents)
       end
