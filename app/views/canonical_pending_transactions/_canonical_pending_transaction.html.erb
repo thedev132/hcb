@@ -38,7 +38,11 @@
       <div class="flex-auto">
         <div class="flex items-center justify-start">
           <% if pt.declined? %>
-            <%= badge_for "Declined", class: "bg-error m0 mr1" %>
+            <% if pt.local_hcb_code.stripe_reversed_by_merchant? %>
+              <%= badge_for "Reversed", class: "bg-info m0 mr1" %>
+            <% else %>
+              <%= badge_for "Declined", class: "bg-error m0 mr1" %>
+            <% end %>
           <% else %>
             <%= badge_for "Pending", class: "bg-transparent border border-dashed border-muted m0 mr1" %>
           <% end %>
