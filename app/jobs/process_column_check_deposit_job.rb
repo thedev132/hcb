@@ -40,7 +40,7 @@ class ProcessColumnCheckDepositJob < ApplicationJob
 
     check_deposit
 
-  rescue Faraday::Error => e
+  rescue Faraday::Error, ProcessColumnCheckDepositJob::UnconfidentError => e
     check_deposit.update!(status: :manual_submission_required)
     Airbrake.notify("Check deposit ##{check_deposit.id} needs to be manually submitted to Column.")
     raise ApiError, e.response_body["message"]
