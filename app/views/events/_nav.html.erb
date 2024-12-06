@@ -52,7 +52,7 @@
       account_number_event_path(@event),
       tooltip: "Receive payouts from GoFundMe, Shopify, Venmo, and more",
       icon: "bank-account",
-      selected: local_assigns[:selected] == :account_number if policy(@event).account_number? %>
+      selected: local_assigns[:selected] == :account_number if policy(@event).account_number? && !Flipper.enabled?(:event_home_page_redesign_2024_09_21, @event) %>
     <%= dock_item "Check deposits",
       event_check_deposits_path(@event),
       tooltip: "Deposit checks",
@@ -130,7 +130,7 @@
           <div class="menu__divider"></div>
           <%= link_to "Donations", event_donation_overview_path(@event) if policy(@event).donation_overview? %>
           <%= link_to "Invoices", event_invoices_path(@event) if @event.approved? && @event.plan.invoices_enabled? %>
-          <%= link_to "Account numbers", account_number_event_path(@event) if policy(@event).account_number? %>
+          <%= link_to "Account numbers", account_number_event_path(@event) if policy(@event).account_number? && !Flipper.enabled?(:event_home_page_redesign_2024_09_21, @event) %>
           <%= link_to "Check deposits", event_check_deposits_path(@event) if policy(@event.check_deposits.build).index? %>
         </div>
       </button>

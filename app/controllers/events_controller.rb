@@ -56,7 +56,7 @@ class EventsController < ApplicationController
   def show
     authorize @event
 
-    if !Flipper.enabled?(:event_home_page_redesign_2024_09_21, @event) && !(params[:event_home_page_redesign_2024_09_21] && admin_signed_in?)
+    if !Flipper.enabled?(:event_home_page_redesign_2024_09_21, @event) && !(params[:event_home_page_redesign_2024_09_21] && admin_signed_in?) || @event.demo_mode?
       redirect_to event_transactions_path(@event.slug)
       return
     end
@@ -88,19 +88,13 @@ class EventsController < ApplicationController
     end
   end
 
-  def top_merchants
+  def merchants_categories
     authorize @event
     @merchants = BreakdownEngine::Merchants.new(@event).run
-    respond_to do |format|
-      format.html { render partial: "events/home/top_merchants", locals: { merchants: @merchants, event: @event } }
-    end
-  end
-
-  def top_categories
-    authorize @event
     @categories = BreakdownEngine::Categories.new(@event).run
+
     respond_to do |format|
-      format.html { render partial: "events/home/top_categories", locals: { categories: @categories, event: @event } }
+      format.html { render partial: "events/home/merchants_categories", locals: { merchants: @merchants, categories: @categories, event: @event } }
     end
   end
 

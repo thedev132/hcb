@@ -1,4 +1,3 @@
-import 'intl/locale-data/jsonp/en-US'
 import PropTypes from 'prop-types'
 import React from 'react'
 import {
@@ -12,7 +11,7 @@ import {
 import { CustomTooltip, renderLegend } from './components'
 import { generateColor, useDarkMode } from './utils'
 
-export default function Categories({ data }) {
+export default function Tags({ data }) {
   const isDark = useDarkMode()
 
   return (
@@ -40,7 +39,6 @@ export default function Categories({ data }) {
           {data.map((_, i) => (
             <Cell
               key={`cell-${i}`}
-              style={{ outline: 'none' }}
               fill={generateColor(i, data.length, isDark)}
             />
           ))}
@@ -52,7 +50,7 @@ export default function Categories({ data }) {
   )
 }
 
-Categories.propTypes = {
+Tags.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       truncated: PropTypes.string,

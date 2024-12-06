@@ -16,7 +16,7 @@
             <%= subtitle %>
           </div>
         </div>
-        <span class="badge <%= transaction.amount_cents > 0 ? "success" : "error" %>"><%= render_transaction_amount transaction.amount_cents %></span>
+        <span class="text-xs font-bold p-1 <%= transaction.amount_cents > 0 ? "success" : "error" %>"><%= render_transaction_amount transaction.amount_cents %></span>
       </a>
 
       <% if Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) && (@event || transaction.local_hcb_code.event).present? %>
@@ -29,9 +29,9 @@
       <% end %>
     <% end %>
     <div class="flex items-center px-4 pb-2 mt-auto justify-between">
-      <%= link_to event_transactions_path(event_id: @event.slug), class: "flex items-center" do %>
-        View all transactions
-        <%= inline_icon "enter" %>
+      <%= link_to event_transactions_path(event_id: @event.slug), class: "flex items-center no-underline" do %>
+        See all
+        <%= inline_icon "view-forward" %>
       <% end %>
     </div>
   </div>
@@ -41,7 +41,7 @@
       <h3 class="m-0 p-4 pb-0 mb-2">
         Recent transactions
       </h3>
-      <p class="m-0 mb-0 muted">
+      <p class="m-0 mb-4 muted">
         You haven't made any transactions yet. When you do, they'll show up here.
       </p>
     </div>
