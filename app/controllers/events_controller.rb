@@ -919,6 +919,7 @@ class EventsController < ApplicationController
       card_grant_setting_attributes: [
         :merchant_lock,
         :category_lock,
+        :keyword_lock,
         :invite_message,
         :expiration_preference
       ],
@@ -964,6 +965,7 @@ class EventsController < ApplicationController
       card_grant_setting_attributes: [
         :merchant_lock,
         :category_lock,
+        :keyword_lock,
         :invite_message,
         :expiration_preference
       ],
