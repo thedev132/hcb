@@ -5,6 +5,9 @@ module Api
     class ApplicationController < ActionController::API
       include ActionController::HttpAuthentication::Token::ControllerMethods
       include Pundit::Authorization
+      include PublicActivity::StoreController
+
+      attr_reader :current_user
 
       after_action :verify_authorized
 
@@ -43,7 +46,7 @@ module Api
         @expand = params[:expand].to_s.split(",").map { |e| e.strip.to_sym }
       end
 
-      attr_reader :current_token, :current_user
+      attr_reader :current_token
 
     end
   end
