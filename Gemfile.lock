@@ -717,7 +717,7 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     securerandom (0.4.0)
-    sidekiq (7.3.6)
+    sidekiq (7.3.2)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
       logger
@@ -936,7 +936,7 @@ DEPENDENCIES
   rubocop-rails (~> 2.27)
   ruby-limiter
   safely_block
-  sidekiq (~> 7.3.6)
+  sidekiq (~> 7.3.2)
   sidekiq-cron (~> 1.12)
   simplecov
   solargraph
