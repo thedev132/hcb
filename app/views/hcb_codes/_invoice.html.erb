@@ -31,7 +31,7 @@
   </section>
 <% end %>
 
-<% if @invoice.void_v2? %>
+<% if @invoice.void_v2? && !@invoice.manually_marked_as_paid? %>
   <div class="banner banner--archived mt3">
     <span class="bold block mb1">This invoice was voided by <%= user_mention @invoice.voided_by %> on <%= format_date @invoice.void_v2_at %>.</span>
     <span class="block">It will only display in the Voided tab<span class="xs-hide"> on the Invoices page</span>.</span>
@@ -207,7 +207,9 @@
     <h2 class="h2 mt0 border-none">
       <%= @sponsor.name %>
       <span class="regular muted"> paid </span>
-      <span class="regular"><%= render_money @invoice.amount_paid %></span>
+      <% unless @invoice.manually_marked_as_paid? %>
+        <span class="regular"><%= render_money @invoice.amount_paid %></span>
+      <% end %>
     </h2>
     <section class="card__banner card__darker details-horiz border-top border-bottom">
       <% if @invoice.payment_method_type == 'card' %>

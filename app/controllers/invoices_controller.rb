@@ -228,6 +228,19 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def manually_mark_as_paid
+    @invoice = Invoice.friendly.find(params[:invoice_id])
+    @hcb_code = @invoice.local_hcb_code
+
+    authorize @invoice
+
+    ::InvoiceService::MarkVoid.new(invoice_id: @invoice.id, user: current_user).run
+
+    @invoice.update(manually_marked_as_paid_at: Time.now, manually_marked_as_paid_user: current_user, manually_marked_as_paid_reason: params[:manually_marked_as_paid_reason])
+
+    redirect_to hcb_code_path(@hcb_code.hashid), flash: { success: "Manually marked this invoice as paid." }
+  end
+
   private
 
   def filtered_params
