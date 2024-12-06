@@ -8,6 +8,7 @@
 #  amount_cents    :integer
 #  category_lock   :string
 #  email           :string           not null
+#  keyword_lock    :string
 #  merchant_lock   :string
 #  status          :integer          default("active"), not null
 #  created_at      :datetime         not null
@@ -185,6 +186,10 @@ class CardGrant < ApplicationRecord
 
   def allowed_category_names
     allowed_categories.map { |category| YellowPages::Category.lookup(key: category).name || "#{category}*" }.uniq
+  end
+
+  def keyword_lock
+    super || setting&.keyword_lock
   end
 
   def expires_after

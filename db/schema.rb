@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_04_065414) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_06_041419) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -411,6 +411,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_04_065414) do
     t.string "category_lock"
     t.string "invite_message"
     t.integer "expiration_preference", default: 365, null: false
+    t.string "keyword_lock"
     t.index ["event_id"], name: "index_card_grant_settings_on_event_id"
   end
 
@@ -428,6 +429,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_04_065414) do
     t.string "merchant_lock"
     t.string "category_lock"
     t.integer "status", default: 0, null: false
+    t.string "keyword_lock"
     t.index ["disbursement_id"], name: "index_card_grants_on_disbursement_id"
     t.index ["event_id"], name: "index_card_grants_on_event_id"
     t.index ["sent_by_id"], name: "index_card_grants_on_sent_by_id"
