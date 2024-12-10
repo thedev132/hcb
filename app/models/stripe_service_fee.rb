@@ -18,10 +18,10 @@
 #  index_stripe_service_fees_on_stripe_topup_id                (stripe_topup_id)
 #
 class StripeServiceFee < ApplicationRecord
+  belongs_to :stripe_topup, optional: true
   after_create_commit do
-    topup = StripeService::Topup.create(
-      amount: amount_cents,
-      currency: "usd",
+    topup = StripeTopup.create(
+      amount_cents:,
       statement_descriptor: "HCB-#{local_hcb_code.short_code}",
       description: "Paying for: #{stripe_description}",
       metadata: {
