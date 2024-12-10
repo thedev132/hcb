@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_06_041419) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_10_042304) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1816,6 +1816,17 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_06_041419) do
     t.datetime "updated_at", null: false
     t.index ["stripe_balance_transaction_id"], name: "index_stripe_service_fees_on_stripe_balance_transaction_id", unique: true
     t.index ["stripe_topup_id"], name: "index_stripe_service_fees_on_stripe_topup_id", unique: true
+  end
+
+  create_table "stripe_topups", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "stripe_id"
+    t.string "statement_descriptor", null: false
+    t.jsonb "metadata"
+    t.string "description", null: false
+    t.integer "amount_cents", null: false
+    t.index ["stripe_id"], name: "index_stripe_topups_on_stripe_id", unique: true
   end
 
   create_table "subledgers", force: :cascade do |t|
