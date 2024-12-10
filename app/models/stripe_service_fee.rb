@@ -18,6 +18,7 @@
 #  index_stripe_service_fees_on_stripe_topup_id                (stripe_topup_id) UNIQUE
 #
 class StripeServiceFee < ApplicationRecord
+  self.ignored_columns = ["stripe_topup_id"]
   after_create_commit do
     topup = StripeService::Topup.create(
       amount: amount_cents,
