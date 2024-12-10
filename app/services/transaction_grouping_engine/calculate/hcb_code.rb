@@ -258,7 +258,7 @@ module TransactionGroupingEngine
       end
 
       def outgoing_fee_reimbursement?
-        @ct_or_cp.memo.downcase.include?("stripe fee reimbursement")
+        @ct_or_cp.memo.downcase.include?("stripe fee reimbursement") || @ct_or_cp.memo.downcase.include?("fee reimburse")
       end
 
       def unknown_hcb_code

@@ -21,7 +21,7 @@ module FeeReimbursementService
 
         topup = StripeTopup.create(
           amount_cents:,
-          statement_descriptor: "Stripe fee reimbursement",
+          statement_descriptor: "FEE REIMBURSE",
           description: "Fee reimbursement ##{fee_reimbursement.id}",
           metadata: {
             fee_reimbursement_id: fee_reimbursement.id,
