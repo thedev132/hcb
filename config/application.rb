@@ -71,6 +71,7 @@ module Bank
 
     # console1984 / audits1984
     config.console1984.ask_for_username_if_empty = true
+    config.console1984.incinerate = false
 
     # Custom configuration for application-wide constants
     #
