@@ -325,11 +325,13 @@ class Wire < ApplicationRecord
   end
 
   def local_hcb_code
+    return nil unless persisted? # don't access local_hcb_code before saving.
+
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code:)
   end
 
   def usd_amount_cents
-    return -1 * local_hcb_code.amount_cents unless local_hcb_code.no_transactions?
+    return -1 * local_hcb_code.amount_cents unless local_hcb_code&.no_transactions?
 
     eu_bank = EuCentralBank.new
     eu_bank.update_rates
