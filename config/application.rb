@@ -65,6 +65,7 @@ module Bank
 
     config.action_mailer.deliver_later_queue_name = "critical"
     config.action_mailbox.queues.routing = "default"
+    config.action_mailbox.queues.incineration = "low"
     config.active_storage.queues.analysis = "low"
     config.active_storage.queues.purge = "low"
     config.active_storage.queues.mirror = "low"
