@@ -1,5 +1,7 @@
+<% @is_dark = !!@dark || cookies[:theme] == "dark" || (cookies[:theme] == "system" && cookies[:system_preference] == "dark") %>
+
 <!DOCTYPE html>
-<html lang="en" data-dark="<%= !!@dark %>" <%= "data-ignore-theme" unless @dark.nil? %>>
+<html lang="en" data-dark="<%= @is_dark %>">
   <!-- come hack with us on hcb! <%= Rails.configuration.constants.hack_on_hcb_form_url %> -->
   <head>
     <title>
@@ -8,7 +10,7 @@
     </title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <meta name="theme-color" content="#f9fafc">
+    <meta name="theme-color" content="<%= @is_dark ? "#17171d" : "#f9fafc" %>">
 
     <%= javascript_include_tag "dark", 'data-turbo-track': "reload" %>
     <%= stylesheet_link_tag "application", media: "all", 'data-turbo-track': "reload" %>

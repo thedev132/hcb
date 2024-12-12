@@ -1,5 +1,6 @@
-/* global BK, $, loadTextExpander */
+/* global BK, $ */
 
+// eslint-disable-next-line no-unused-vars
 const whenViewed = (element, callback) =>
   new IntersectionObserver(([entry]) => entry.isIntersecting && callback(), {
     threshold: 1,
@@ -31,36 +32,25 @@ const loadModals = element => {
   )
 }
 
-// restore previous theme setting
-$(document).ready(function () {
-  if (
-    document.querySelector('html').getAttribute('data-ignore-theme') == null &&
-    BK.isDark()
-  ) {
-    BK.s('toggle_theme').find('svg').toggle()
-    return BK.styleDark(true)
-  }
-})
-
 $(document).on('click', '[data-behavior~=flash]', function () {
   $(this).fadeOut('medium')
 })
 
 loadModals(document)
-;(() => {
-  let autoModals = $('[data-modal-auto-open~=true]')
+  ; (() => {
+    let autoModals = $('[data-modal-auto-open~=true]')
 
-  if (autoModals.length < 1) return
+    if (autoModals.length < 1) return
 
-  let element = autoModals.first()
+    let element = autoModals.first()
 
-  BK.s('modal', '#' + $(element).data('modal')).modal({
-    modalClass: $(element).parents('turbo-frame').length
-      ? 'turbo-frame-modal'
-      : undefined,
-    closeExisting: false,
-  })
-})()
+    BK.s('modal', '#' + $(element).data('modal')).modal({
+      modalClass: $(element).parents('turbo-frame').length
+        ? 'turbo-frame-modal'
+        : undefined,
+      closeExisting: false,
+    })
+  })()
 
 $(document).on('keyup', 'action', function (e) {
   if (e.keyCode === 13) {
@@ -155,8 +145,6 @@ $(document).keydown(function (e) {
     return BK.toggleMenu($(BK.openMenuSelector))
   }
 })
-
-$(document).on('click', '[data-behavior~=toggle_theme]', () => BK.toggleDark())
 
 $(document).on('turbo:load', function () {
   if (window.location !== window.parent.location) {
@@ -301,34 +289,34 @@ $(document).on('turbo:load', function () {
   }
 
   if (BK.thereIs('accounts_list')) {
-    $('.account-header').on('click', function() {
+    $('.account-header').on('click', function () {
       var accountContainer = $(this).closest('.account-container');
       var aliasesContainer = accountContainer.find('.account-aliases');
       aliasesContainer.slideToggle();
       $(this).toggleClass('rotated');
     });
-    $('.alias-new').on('click', function() {
+    $('.alias-new').on('click', function () {
       var accountContainer = $(this).closest('.account-container');
       var newAliasForm = accountContainer.find('.alias-form');
       var creationAlias = accountContainer.find('.alias-creation');
       newAliasForm.slideDown();
       creationAlias.slideUp();
     });
-    $('.alias-cancel').on('click', function() {
+    $('.alias-cancel').on('click', function () {
       var accountContainer = $(this).closest('.account-container');
       var newAliasForm = accountContainer.find('.alias-form');
       newAliasForm.slideUp();
       var creationAlias = accountContainer.find('.alias-creation');
       creationAlias.slideDown();
     })
-    $('.alias-save').on('click', function() {
+    $('.alias-save').on('click', function () {
       var accountContainer = $(this).closest('.account-container');
       var creationAlias = accountContainer.find('.alias-creation');
       var newAliasForm = accountContainer.find('.alias-form');
       creationAlias.slideDown();
       newAliasForm.slideUp();
     });
-    $('.alias-delete').on('click', function() {
+    $('.alias-delete').on('click', function () {
       var thisAlias = $(this).closest('.alias-container');
       thisAlias.toggleClass('error');
       thisAlias.slideUp();
@@ -412,8 +400,7 @@ $(document).on('turbo:load', function () {
 
   $('[data-behavior~=mention]').on('click', e => {
     BK.s('comment').val(
-      `${
-        BK.s('comment').val() + (BK.s('comment').val().length > 0 ? ' ' : '')
+      `${BK.s('comment').val() + (BK.s('comment').val().length > 0 ? ' ' : '')
       }${e.target.dataset.mentionValue || e.target.innerText}`
     )
     BK.s('comment')[0].scrollIntoView()
@@ -526,8 +513,8 @@ $(document).on(
 )
 
 $(document).on('click', '[data-behavior~=clear_input]', function (event) {
-    $(event.target).parent().find('input').get(0).value = ""
-  }
+  $(event.target).parent().find('input').get(0).value = ""
+}
 )
 
 $(document).on('focus', '[data-behavior~=select_if_empty]', function (event) {
