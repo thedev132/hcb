@@ -44,6 +44,10 @@ module Users
           spendingByLocation: Metric::User::SpendingByLocation.from(@user).metric, # needs a format change on the React-side, should match spendingByCat format
           spendingByCategory: Metric::User::SpendingByCategory.from(@user).metric,
           spendingByMerchant: Metric::User::SpendingByMerchant.from(@user).metric,
+          cardGrantCount: Metric::User::CardGrantCount.from(@user).metric,
+          cardGrantAmount: Metric::User::CardGrantAmount.from(@user).metric,
+          reimbursementCount: Metric::User::ReimbursementCount.from(@user).metric,
+          reimbursementAmount: Metric::User::ReimbursementAmount.from(@user).metric,
         },
         organizations: @user.events.map do |event|
           [event.name, {
