@@ -349,7 +349,7 @@ class Donation < ApplicationRecord
       amount:,
       currency: "usd",
       statement_descriptor: "HCB",
-      statement_descriptor_suffix: StripeService::StatementDescriptor.format(event.name, as: :suffix),
+      statement_descriptor_suffix: StripeService::StatementDescriptor.format(event.short_name, as: :suffix),
       metadata: { 'donation': true, 'event_id': event.id }
     }
   end
