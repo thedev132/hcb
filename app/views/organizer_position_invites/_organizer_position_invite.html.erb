@@ -1,7 +1,7 @@
 <div class="card pt1 pb1">
   <div class="flex g2 justify-between items-center">
     <p class="h4 m0 overflow-auto" style="<%= "filter: blur(0.15em)" unless organizer_signed_in? %>">
-      <strong><%= organizer_signed_in? ? organizer_position_invite.user.email : Faker::Internet.email %></strong>
+      <strong><%= organizer_signed_in? ? organizer_position_invite.user.email : "user@example.com" %></strong>
     </p>
 
     <div class="flex g1 items-center">
