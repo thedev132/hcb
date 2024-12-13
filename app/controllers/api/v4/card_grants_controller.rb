@@ -40,6 +40,30 @@ module Api
         end
       end
 
+      def update
+        @card_grant = CardGrant.find_by_public_id!(params[:id])
+
+        authorize @card_grant
+
+        @card_grant.update!(params.permit(:merchant_lock, :category_lock, :keyword_lock))
+
+        render :show
+      end
+
+      def cancel
+        @card_grant = CardGrant.find_by_public_id!(params[:id])
+
+        authorize @card_grant
+
+        begin
+          @card_grant.cancel!(current_user)
+        rescue ArgumentError => e
+          return render json: { error: "invalid_operation", messages: [e.message] }, status: :bad_request
+        end
+
+        render :show
+      end
+
     end
   end
 end
