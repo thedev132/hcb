@@ -51,6 +51,8 @@ class HcbCode < ApplicationRecord
 
   delegate :likely_account_verification_related?, :fee_payment?, to: :ct, allow_nil: true
 
+  validates :hcb_code, format: { with: /\AHCB-\d{3}-\S+\z/ }
+
   comma do
     hcb_code "HCB Code"
     created_at "Created at"
