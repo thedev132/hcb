@@ -135,7 +135,7 @@ class CardGrant < ApplicationRecord
   end
 
   def cancel!(canceled_by = User.find_by!(email: "bank@hackclub.com"), expired: false)
-    raise ArgumentError, "Grant is already #{status}" unless status == :active
+    raise ArgumentError, "Grant is already #{status}" unless active?
 
     if balance > 0
       custom_memo = "Return of funds from #{expired ? "expiration" : "cancellation"} of grant to #{user.name}"
