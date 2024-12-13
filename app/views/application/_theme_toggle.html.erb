@@ -2,7 +2,7 @@
   <button
     data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown"
     data-menu-target="toggle"
-    class="muted tooltipped tooltipped--s <%= "bg-transparent border-0 p-0" if defined?(top) %>"
+    class="muted tooltipped tooltipped--<%= local_assigns[:tooltip_location] || "s" %> <%= "bg-transparent border-0 p-0" if defined?(top) %>"
     type="button"
     aria-label="Appearance"
     data-action="class#toggle focus#focus">
