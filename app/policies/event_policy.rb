@@ -88,7 +88,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def documentation?
-    (is_public || admin_or_user?) && record.plan.documentation_enabled?
+    admin_or_user? && record.plan.documentation_enabled?
   end
 
   def statements?
@@ -124,7 +124,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def promotions?
-    (is_public || admin_or_user?) && record.plan.promotions_enabled?
+    admin_or_user? && record.plan.promotions_enabled?
   end
 
   def reimbursements_pending_review_icon?

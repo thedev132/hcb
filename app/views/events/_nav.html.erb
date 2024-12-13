@@ -90,13 +90,15 @@
       tooltip: "Manage your team",
       icon: "leader",
       selected: local_assigns[:selected] == :team %>
-    <%= dock_item "Perks",
-      event_promotions_path(event_id: @event.slug),
-      tooltip: (!policy(@event).promotions? ? "Your organization isn't eligible for promos and discounts." : "Receive promos & discounts"),
-      icon: "shirt",
-      data: { tour_step: "perks" },
-      disabled: !policy(@event).promotions?,
-      selected: local_assigns[:selected] == :promotions if @event.approved? %>
+    <%= if organizer_signed_in? && @event.approved?
+          dock_item "Perks",
+                event_promotions_path(event_id: @event.slug),
+                tooltip: (!policy(@event).promotions? ? "Your organization isn't eligible for promos and discounts." : "Receive promos & discounts"),
+                icon: "shirt",
+                data: { tour_step: "perks" },
+                disabled: !policy(@event).promotions?,
+                selected: local_assigns[:selected] == :promotions
+        end %>
     <%= dock_item "Google #{content_tag(:span, 'Workspace', class: 'sm-hide md-hide')}",
       event_g_suite_overview_path(event_id: @event.slug),
       tooltip: (!policy(@event).g_suite_overview? ? "Your organization isn't eligible for Google Workspace." : @event.g_suites.any? ? "Manage domain Google Workspace" : Flipper.enabled?(:google_workspace, @event) ? "Set up domain Google Workspace" : "Register for Google Workspace Waitlist"),
