@@ -8,7 +8,7 @@ gem "dotenv-rails", groups: [:development, :test]
 
 gem "rails", "~> 7.2"
 
-gem "puma", "~> 6.4" # app server
+gem "puma", "~> 6.5" # app server
 
 gem "pg", ">= 0.18", "< 2.0" # database
 gem "redis", "~> 5.3" # for caching, jobs, etc.
