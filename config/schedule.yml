@@ -152,6 +152,10 @@ user_sync_to_loops_job:
   cron: "0 7 * * *" # run every 1 day
   class: "User::SyncToLoopsJob"
 
+update_teenager_column_job:
+  cron: "0 7 * * *" # run every 1 day
+  class: "User::UpdateTeenagerColumnJob"
+
 card_grant_expiration_job:
   cron: "0 7 * * *" # run every 1 day
   class: "CardGrant::ExpirationJob"
