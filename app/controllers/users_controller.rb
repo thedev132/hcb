@@ -139,6 +139,7 @@ class UsersController < ApplicationController
     set_onboarding
     show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
     @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
+    @sessions = @sessions.where("expiration_at > ?", Time.now.utc)
     @oauth_authorizations = @user.api_tokens
                                  .where.not(application_id: nil)
                                  .select("application_id, MAX(api_tokens.created_at) AS created_at, MIN(api_tokens.created_at) AS first_authorized_at, COUNT(*) AS authorization_count")
