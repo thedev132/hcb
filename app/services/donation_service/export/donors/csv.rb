@@ -6,23 +6,21 @@ module DonationService
   module Export
     module Donors
       class Csv
-        BATCH_SIZE = 1000
-
         def initialize(event_id:)
-          @event_id = event_id
+          @event = Event.find(event_id)
         end
 
         def run
           Enumerator.new do |y|
-            y << header.to_s
+            y << headers.to_csv
 
             donors.each do |donor|
-              y << row(donor).to_s
+              y << row(donor).to_csv
             end
           end
         end
 
-        # private
+        private
 
         def donors
           query = <<-SQL
@@ -31,7 +29,7 @@ module DonationService
                 FROM "donations" d
                 LEFT OUTER JOIN "recurring_donations" rd on d.recurring_donation_id = rd.id
                 WHERE d.aasm_state = 'deposited'
-                AND d.event_id = #{event.id}
+                AND d.event_id = #{@event.id}
             ),
             latest_names AS (
               SELECT distinct on(email) email, LAST_VALUE(name) OVER (PARTITION BY email ORDER BY created_at ASC) as latest_name
@@ -48,27 +46,15 @@ module DonationService
             LEFT OUTER JOIN latest_names l on d.email = l.email
           SQL
 
-          results = ActiveRecord::Base.connection.execute(query)
-        end
-
-        def event
-          @event ||= Event.find(@event_id)
-        end
-
-        def header
-          ::CSV::Row.new(headers, ["name", "email", "total_amount_cents"], true)
-        end
-
-        def row(donor)
-          ::CSV::Row.new(headers, [donor["latest_name"], donor["email"], donor["total_amount_cents"]], true)
+          ActiveRecord::Base.connection.execute(query)
         end
 
         def headers
-          [
-            :name,
-            :email,
-            :total_donated,
-          ]
+          %w[name email total_amount_cents]
+        end
+
+        def row(donor)
+          [donor["latest_name"], donor["email"], donor["total_amount_cents"]]
         end
 
       end
