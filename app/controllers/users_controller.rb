@@ -79,7 +79,7 @@ class UsersController < ApplicationController
   def logout_session
     begin
       session = UserSession.find(params[:id])
-      if session.user.id != current_user.id
+      if (session.user.id != current_user.id) && !admin_signed_in?
         return redirect_back_or_to settings_security_path, flash: { error: "Error deleting the session" }
       end
 
