@@ -32,9 +32,9 @@
       <% end %>
 
       <% if Flipper.enabled?(:card_grants_2023_05_25, @event) %>
-        <%= link_to new_event_card_grant_path(@event), class: "text-decoration-none btn--form-option", style: "border: 1px dashed #ff8c37", data: { turbo: true } do %>
+        <%= link_to new_event_card_grant_path(@event), class: "text-decoration-none btn--form-option", data: { turbo: true } do %>
           <%= inline_icon "card", size: 28 %>
-          <strong>Grant <span class="warning regular">(beta)</span></strong>
+          <strong>Grant</strong>
           <small>A grant sent through an HCB card.</small>
         <% end %>
       <% end %>
