@@ -49,18 +49,22 @@ module Users
           reimbursementCount: Metric::User::ReimbursementCount.from(@user).metric,
           reimbursementAmount: Metric::User::ReimbursementAmount.from(@user).metric,
         },
-        organizations: @user.events.map do |event|
-          [event.name, {
-            spendingByUser: Metric::Event::SpendingByUser.from(event).metric,
-            category: nil,
-            spent: Metric::Event::TotalSpent.from(event).metric,
-            raised: Metric::Event::TotalRaised.from(event).metric,
-            spendingByDate: Metric::Event::SpendingByDate.from(event).metric,
-            spendingByLocation: Metric::Event::SpendingByLocation.from(event).metric,
-            spendingByCategory: Metric::Event::SpendingByCategory.from(event).metric,
-            spendingByMerchant: Metric::Event::SpendingByMerchant.from(event).metric,
-          }]
-        end.to_h,
+        organizations: @user.events.to_h do |event|
+          [
+            event.name,
+            {
+              spendingByUser: Metric::Event::SpendingByUser.from(event).metric,
+              category: nil,
+              spent: Metric::Event::TotalSpent.from(event).metric,
+              raised: Metric::Event::TotalRaised.from(event).metric,
+              spendingByDate: Metric::Event::SpendingByDate.from(event).metric,
+              spendingByLocation: Metric::Event::SpendingByLocation.from(event).metric,
+              spendingByCategory: Metric::Event::SpendingByCategory.from(event).metric,
+              spendingByMerchant: Metric::Event::SpendingByMerchant.from(event).metric,
+              logo_url: event.logo.attached? ? Rails.application.routes.url_helpers.url_for(event.logo) : nil
+            }
+          ]
+        end,
         hcb: {
           raised: Metric::Hcb::TotalRaised.metric,
           spent: Metric::Hcb::TotalSpent.metric,
