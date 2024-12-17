@@ -67,6 +67,7 @@ class Metric < ApplicationRecord
 
     if repopulate
       metric.populate
+      metric.updated_at = Time.now # force touch even if no changes
       unless metric.save
         Airbrake.notify("Failed to save metric #{metric.inspect}")
         metric.reload
