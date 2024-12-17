@@ -674,6 +674,7 @@ Rails.application.routes.draw do
     get "transfers"
     get "statements"
     get "promotions"
+    get "reimbursements"
     get "donations", to: "events#donation_overview", as: :donation_overview
     get "activation_flow", to: "events#activation_flow", as: :activation_flow
     post "activate", to: "events#activate", as: :activate
