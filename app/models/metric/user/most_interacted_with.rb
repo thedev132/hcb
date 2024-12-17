@@ -46,11 +46,21 @@ class Metric
           hash[other_user_id] = (hash[other_user_id] || 0) + item["count"]
         end
 
-        most_interacted_with = stats.max_by{ |k, v| v }
+        most_interacted_with = stats.max_by { |k, v| v }
 
         most_interacted_with_user = ::User.find(most_interacted_with.first)
 
-        return { name: most_interacted_with_user.name, id: most_interacted_with_user.id, comments: most_interacted_with.last }
+        { name: most_interacted_with_user.name, id: most_interacted_with_user.id, comments: most_interacted_with.last }
+      end
+
+      def metric
+        # We're patching in user's profile picture here on demand (instead
+        # storing it) so the link doesn't expire.
+
+        user = ::User.find_by(id: super&.with_indifferent_access&.[](:id))
+        image = ApplicationController.helpers.profile_picture_for(user)
+
+        super&.merge({ "profile_picture" => image })
       end
 
     end
