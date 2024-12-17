@@ -2,6 +2,7 @@
 
 module Users
   class WrappedController < ApplicationController
+    include UsersHelper
     skip_after_action :verify_authorized
     before_action :set_data
 
@@ -34,6 +35,7 @@ module Users
           name: @user.full_name,
           firstName: @user.first_name,
           id: @user.id,
+          profilePicture: profile_picture_for(@user, 256),
           totalMoneySpent: Metric::User::TotalSpent.from(@user).metric,
           spendingByDate: Metric::User::SpendingByDate.from(@user).metric,
           ranking: Metric::Hcb::SpendingByUser.metric.keys.index(@user.id).to_f / Metric::Hcb::SpendingByUser.metric.keys.size, # this still needs to be done, we have spending by user
@@ -48,6 +50,7 @@ module Users
           cardGrantAmount: Metric::User::CardGrantAmount.from(@user).metric,
           reimbursementCount: Metric::User::ReimbursementCount.from(@user).metric,
           reimbursementAmount: Metric::User::ReimbursementAmount.from(@user).metric,
+          bestFriend: Metric::User::MostInteractedWith.from(@user).metric
         },
         organizations: @user.events.to_h do |event|
           [
