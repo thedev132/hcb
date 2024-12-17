@@ -31,10 +31,6 @@ class IncreaseController < ApplicationController
 
   private
 
-  def handle_transaction_created(event)
-    # TODO: handle transaction created
-  end
-
   def handle_check_transfer_updated(event)
     increase_check = Increase::CheckTransfers.retrieve event["associated_object_id"]
     IncreaseCheck.find_by(increase_id: increase_check["id"])&.update!(
