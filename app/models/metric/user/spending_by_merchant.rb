@@ -45,7 +45,8 @@ class Metric
                             .order(Arel.sql("SUM(raw_stripe_transactions.amount_cents) * -1 DESC"))
                             .each_with_object({}) do |item, hash|
                               name = YellowPages::Merchant.lookup(network_id: item.merchant_network_id).name
-                              hash[name || item.merchant_name] = item[:amount_spent]
+                              hash[name || item.merchant_name] ||= 0
+                              hash[name || item.merchant_name] += item[:amount_spent]
                             end
       end
 

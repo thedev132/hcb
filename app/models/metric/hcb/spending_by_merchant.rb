@@ -23,6 +23,7 @@ class Metric
 
       def calculate
         RawStripeTransaction.select(
+          "raw_stripe_transactions.stripe_transaction->'merchant_data'->>'network_id' AS merchant_network_id",
           "CASE
              WHEN raw_stripe_transactions.stripe_transaction->'merchant_data'->>'name' SIMILAR TO '(SQ|GOOGLE|TST|RAZ|INF|PayUp|IN|INT|\\*)%'
                THEN TRIM(UPPER(raw_stripe_transactions.stripe_transaction->'merchant_data'->>'name'))
@@ -33,6 +34,7 @@ class Metric
                             .joins("LEFT JOIN canonical_transactions ct ON raw_stripe_transactions.id = ct.transaction_source_id")
                             .where("EXTRACT(YEAR FROM date_posted) = ?", 2024)
                             .group(
+                              "raw_stripe_transactions.stripe_transaction->'merchant_data'->>'network_id'",
                               "CASE
                WHEN raw_stripe_transactions.stripe_transaction->'merchant_data'->>'name' SIMILAR TO '(SQ|GOOGLE|TST|RAZ|INF|PayUp|IN|INT|\\*)%'
                  THEN TRIM(UPPER(raw_stripe_transactions.stripe_transaction->'merchant_data'->>'name'))
@@ -41,7 +43,11 @@ class Metric
                             )
                             .having("count(*) > 10") # TODO: this is a temp hack to prevent leaking transaction specific data such as an order number.
                             .order(Arel.sql("SUM(raw_stripe_transactions.amount_cents) * -1 DESC"))
-                            .each_with_object({}) { |item, hash| hash[item[:merchant_name]] = item[:amount_spent] }
+                            .each_with_object({}) do |item, hash|
+                              name = YellowPages::Merchant.lookup(network_id: item.merchant_network_id).name
+                              hash[name || item.merchant_name] ||= 0
+                              hash[name || item.merchant_name] += item[:amount_spent]
+                            end
       end
 
     end
