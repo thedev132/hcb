@@ -48,6 +48,8 @@ class Metric
 
         most_interacted_with = stats.max_by { |k, v| v }
 
+        return nil if most_interacted_with.nil?
+
         most_interacted_with_user = ::User.find(most_interacted_with.first)
 
         { name: most_interacted_with_user.name, id: most_interacted_with_user.id, comments: most_interacted_with.last }
