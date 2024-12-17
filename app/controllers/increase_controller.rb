@@ -44,14 +44,6 @@ class IncreaseController < ApplicationController
     )
   end
 
-  def handle_check_deposit_updated(event)
-    check_deposit = Increase::CheckDeposits.retrieve event["associated_object_id"]
-    CheckDeposit.find_by(increase_id: check_deposit["id"])&.update(
-      increase_status: check_deposit["status"],
-      rejection_reason: check_deposit.dig("deposit_rejection", "reason")
-    )
-  end
-
   def signing_secret
     Rails.application.credentials.dig(:increase, IncreaseService.environment, :webhook_secret)
   end

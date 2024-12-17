@@ -76,13 +76,6 @@ module EventMappingEngine
     end
 
     def map_check_deposits!
-      CanonicalTransaction.unmapped.likely_increase_check_deposit.find_each(batch_size: 100) do |ct|
-        check_deposit = ct.check_deposit
-        next unless check_deposit
-
-        CanonicalEventMapping.create!(event: check_deposit.event, canonical_transaction: ct)
-      end
-
       CanonicalTransaction.unmapped.with_column_transaction_type("check.outgoing_debit").find_each(batch_size: 100) do |ct|
         check_deposit = ct.check_deposit
         next unless check_deposit
