@@ -52,6 +52,9 @@ class UserSession < ApplicationRecord
 
   scope :impersonated, -> { where.not(impersonated_by_id: nil) }
   scope :not_impersonated, -> { where(impersonated_by_id: nil) }
+  scope :expired, -> { with_deleted.where.not(deleted_at: nil).or(with_deleted.where("expiration_at <= ?", Time.now)) }
+  scope :not_expired, -> { where(deleted_at: nil).where("expiration_at > ?", Time.now) }
+  scope :recently_expired_within, ->(date) { expired.where("coalesce(deleted_at, expiration_at) >= ?", date) }
 
   # PEACEFUL VS UNPEACEFUL EXPIRATIONS
   # This is used to help determine if a user session's data (ip, etc.) can be
