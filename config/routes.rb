@@ -114,7 +114,6 @@ Rails.application.routes.draw do
 
       # Logout
       delete "logout", to: "users#logout"
-      delete "logout_all", to: "users#logout_all"
       delete "logout_session", to: "users#logout_session"
       delete "revoke/:id", to: "users#revoke_oauth_application", as: "revoke_oauth_application"
 
@@ -132,6 +131,8 @@ Rails.application.routes.draw do
       get "security", to: "users#edit_security"
       get "notifications", to: "users#edit_notifications"
       get "admin", to: "users#edit_admin"
+
+      delete "logout_all", to: "users#logout_all"
 
       post "impersonate"
       post "unimpersonate"
