@@ -150,9 +150,9 @@ module SessionsHelper
     self.current_user = nil
   end
 
-  def sign_out_of_all_sessions
+  def sign_out_of_all_sessions(user = current_user)
     # Destroy all the sessions except the current session
-    current_user
+    user
       &.user_sessions
       &.where&.not(id: current_session.id)
       &.destroy_all
