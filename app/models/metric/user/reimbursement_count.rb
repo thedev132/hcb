@@ -22,7 +22,7 @@ class Metric
       include Subject
 
       def calculate
-        user.reimbursement_reports.count
+        user.reimbursement_reports.where(aasm_state: %i[submitted reimbursement_requested reimbursement_approved reimbursed]).count
       end
 
     end
