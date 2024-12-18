@@ -5,9 +5,18 @@ class User
     queue_as :low
 
     def perform
-      User.all.find_each(batch_size: 100) do |user|
-        user.update(teenager: !!user.birthday&.after?(19.years.ago))
+      User.in_batches do |users_relation|
+        groups = users_relation.select(:id, :birthday_ciphertext).group_by(&method(:teenager?))
+        groups.each do |value, users|
+          User.where(id: users.pluck(:id)).update_all(teenager: value)
+        end
       end
+    end
+
+    def teenager?(user)
+      # I'm allowing this method to return true, false, or nil. Allowing nil
+      # allows for more accurate stats.
+      user.birthday&.after?(19.years.ago)
     end
 
   end
