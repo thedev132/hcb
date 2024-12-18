@@ -1043,10 +1043,15 @@
   resolved "https://registry.yarnpkg.com/@github/webauthn-json/-/webauthn-json-2.1.1.tgz#648e63fc28050917d2882cc2b27817a88cb420fc"
   integrity sha512-XrftRn4z75SnaJOmZQbt7Mk+IIjqVHw+glDGOxuHwXkZBZh/MBoRS7MHjSZMDaLhT4RjN2VqiEU7EOYleuJWSQ==
 
-"@hackclub/hcb-wrapped@2023.0.0":
-  version "2023.0.0"
-  resolved "https://registry.yarnpkg.com/@hackclub/hcb-wrapped/-/hcb-wrapped-2023.0.0.tgz#60f82b925feb881770c8254fa6ec1ddaa8dbbe1f"
-  integrity sha512-9x5cmJZ+2lgXZdPYpnOwLC/cPH+mEBXtA4ev1BgTXaprGq0PW46ER0hoPE3DSSbXw6cdTV+HuoRjnEAs7ezJWA==
+"@hackclub/icons@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@hackclub/icons/-/icons-0.0.15.tgz#612b9e107d9eabb44e0eeb1f8ebfcdc6b88c2e28"
+  integrity sha512-IKJ5JQhRhlkYINv9pxzT//fn3aYwsGBeyNNBcw7eU+J0lfs0wGrq9lh7CGcXUUGXaKFxDPRlWhTxaAVaRdZVRA==
+
+"@hcb.gg/wrapped@^2024.0.0-beta.1":
+  version "2024.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@hcb.gg/wrapped/-/wrapped-2024.0.0-beta.1.tgz#d207f7c080adc3628cdc9c98aa29abc90bf6a907"
+  integrity sha512-S5VJbdtyBxLYQhRYUKnJVJNXBpCGX8EBxata8csvc1RW8Pld7xavUHqGnPKuSb0jR8c8NavnZ35X3FQ9cePdkQ==
   dependencies:
     confetti-js "^0.0.18"
     fast-shuffle "^6.0.1"
@@ -1056,11 +1061,6 @@
     react-snowfall "^1.2.1"
     seed-shuffle "^1.0.0"
     title "^3.5.3"
-
-"@hackclub/icons@^0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@hackclub/icons/-/icons-0.0.15.tgz#612b9e107d9eabb44e0eeb1f8ebfcdc6b88c2e28"
-  integrity sha512-IKJ5JQhRhlkYINv9pxzT//fn3aYwsGBeyNNBcw7eU+J0lfs0wGrq9lh7CGcXUUGXaKFxDPRlWhTxaAVaRdZVRA==
 
 "@hotwired/stimulus-webpack-helpers@^1.0.1":
   version "1.0.1"
@@ -1084,6 +1084,11 @@
   version "8.0.12"
   resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-8.0.12.tgz#50aa8345d7f62402680c6d2d9814660761837001"
   integrity sha512-l3BiQRkD7qrnQv6ms6sqPLczvwbQpXt5iAVwjDvX0iumrz6yEonQkNAzNjeDX25/OJMFDTxpHjkJZHGpM9ikWw==
+
+"@hugocxl/react-to-image@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@hugocxl/react-to-image/-/react-to-image-0.0.9.tgz#34b927c71379c603471a9c593f7f7b6924831f94"
+  integrity sha512-UzPtjPb5k0V8oPKjmDvYnWtTNCuFh+2ysXF4+dXL0tnEaFDfu2M3iSt32pzKbJsZYoFu5X12JKKd9MKa2OsR6g==
 
 "@humanfs/core@^0.19.1":
   version "0.19.1"
@@ -3568,6 +3573,11 @@ hasown@^2.0.0, hasown@^2.0.1, hasown@^2.0.2:
   integrity sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==
   dependencies:
     function-bind "^1.1.2"
+
+html-to-image@^1.11.11:
+  version "1.11.11"
+  resolved "https://registry.yarnpkg.com/html-to-image/-/html-to-image-1.11.11.tgz#c0f8a34dc9e4b97b93ff7ea286eb8562642ebbea"
+  integrity sha512-9gux8QhvjRO/erSnDPv28noDZcPZmYE7e1vFsBLKLlRlKDSqNJYebj6Qz1TGd5lsRV+X+xYyjCKjuZdABinWjA==
 
 icss-utils@^5.0.0, icss-utils@^5.1.0:
   version "5.1.0"
