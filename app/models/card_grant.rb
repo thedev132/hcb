@@ -209,7 +209,7 @@ class CardGrant < ApplicationRecord
   end
 
   def create_user
-    self.user = User.find_or_create_by!(email:)
+    self.user = User.create_with(creation_method: :card_grant).find_or_create_by!(email:)
   end
 
   def create_subledger

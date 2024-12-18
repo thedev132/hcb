@@ -9,6 +9,7 @@
 #  birthday_ciphertext           :text
 #  charge_notifications          :integer          default("email_and_sms"), not null
 #  comment_notifications         :integer          default("all_threads"), not null
+#  creation_method               :integer
 #  email                         :text
 #  full_name                     :string
 #  locked_at                     :datetime
@@ -65,6 +66,14 @@ class User < ApplicationRecord
   }, prefix: :receipt_report, default: :weekly
 
   enum :access_level, { user: 0, admin: 1, superadmin: 2 }, scopes: false, default: :user
+
+  enum :creation_method, {
+    login: 0,
+    reimbursement_report: 1,
+    organizer_position_invite: 2,
+    card_grant: 3,
+    grant: 4
+  }
 
   has_many :logins
   has_many :login_codes

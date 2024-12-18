@@ -13,7 +13,7 @@ module Reimbursement
     # POST /reimbursement_reports
     def create
       @event = Event.find(report_params[:event_id])
-      user = User.find_or_create_by!(email: report_params[:email])
+      user = User.create_with(creation_method: :reimbursement_report).find_or_create_by!(email: report_params[:email])
       @report = @event.reimbursement_reports.build(report_params.except(:email, :receipt_id, :value).merge(user:, inviter: organizer_signed_in? ? current_user : nil))
 
       authorize @report
