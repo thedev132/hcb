@@ -54,7 +54,12 @@ module DonationService
         end
 
         def row(donor)
-          [donor["latest_name"], donor["email"], donor["total_amount_cents"], donor["latest_recurring_donation_id"].present?]
+          [
+            donor["latest_name"],
+            donor["email"],
+            donor["total_amount_cents"],
+            donor["latest_recurring_donation_id"].present? && (RecurringDonation.where(email: donor["email"], event_id: @event.id).active.any? ? "ACTIVE" : "INACTIVE")
+          ]
         end
 
       end
