@@ -48,7 +48,7 @@ class UserSession < ApplicationRecord
   belongs_to :webauthn_credential, optional: true
 
   include PublicActivity::Model
-  tracked owner: proc{ |controller, record| record.user }, recipient: proc { |controller, record| record.user }, only: [:create]
+  tracked owner: proc{ |controller, record| record.impersonated_by || record.user }, recipient: proc { |controller, record| record.impersonated_by || record.user }, only: [:create]
 
   scope :impersonated, -> { where.not(impersonated_by_id: nil) }
   scope :not_impersonated, -> { where(impersonated_by_id: nil) }
