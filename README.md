@@ -7,6 +7,30 @@
 </div>
 <br>
 
+> In the spirit of the holidays, I have decided the engineering team will be
+> doing a code freeze from Dec 20th, 4pm to Jan 1st, 9am! This is largely
+> because both @sampoder and I will be offline during that period of time. All
+> HQ full time staff also have the week of Christmas off.
+>
+> **What is a code freeze?**
+> Many large companies pause merging into the main branch and creating new
+> deployments around the holidays. The goal is to ensure HCB remains stable. It
+> protect against new bugs that may take HCB offline while the team is out.
+>
+> Everyone is still welcome to continue working on code and submitting PRs.
+> However, no PRs will be merged until after the code freeze concludes. The only
+> exception are PRs that fix critical, existing bugs in production. This code
+> freeze only applies to the hackclub/hcb repo.
+>
+> **What if HCB is down or something goes wrong?**
+> I personally will still be reachable via my phone. Feel free to call/text me.
+> I’ll be enjoying the holidays, but will make myself available to handle any
+> critical situations.
+>
+> Happy Holidays,
+> @garyhtou
+
+
 Welcome to the [HCB](https://hackclub.com/fiscal-sponsorship/) codebase. We are so excited to have you. With your help, we can make HCB the best platform to run a nonprofit.
 
 ## What is HCB?
