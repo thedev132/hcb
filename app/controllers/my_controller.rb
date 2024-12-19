@@ -4,10 +4,11 @@ class MyController < ApplicationController
   skip_after_action :verify_authorized, only: [:activities, :toggle_admin_activities, :cards, :missing_receipts_list, :missing_receipts_icon, :inbox, :reimbursements, :reimbursements_icon, :tasks] # do not force pundit
 
   def activities
+    @before = params[:before] || Time.now
     if admin_signed_in? && cookies[:admin_activities] == "everyone"
-      @activities = PublicActivity::Activity.all.order(created_at: :desc).page(params[:page]).per(25)
+      @activities = PublicActivity::Activity.all.before(@before).order(created_at: :desc).page(params[:page]).per(25)
     else
-      @activities = PublicActivity::Activity.for_user(current_user).order(created_at: :desc).page(params[:page]).per(25)
+      @activities = PublicActivity::Activity.for_user(current_user).before(@before).order(created_at: :desc).page(params[:page]).per(25)
     end
   end
 
