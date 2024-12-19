@@ -22,7 +22,7 @@ class Metric
       include Subject
 
       def calculate
-        user.reimbursement_reports.sum(&:amount_cents)
+        user.reimbursement_reports.reimbursed.sum(&:amount_cents)
       end
 
     end
