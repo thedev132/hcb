@@ -32,7 +32,7 @@ module Reimbursement
           redirect_to finished_reimbursement_reports_path(@event)
         end
       else
-        redirect_to event_reimbursements_path(@event), flash: { error: @report.errors.full_messages.to_sentence }
+        redirect_back fallback_location: event_reimbursements_path(@event), flash: { error: @report.errors.full_messages.to_sentence }
       end
     end
 
