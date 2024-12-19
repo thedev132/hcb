@@ -1048,10 +1048,10 @@
   resolved "https://registry.yarnpkg.com/@hackclub/icons/-/icons-0.0.15.tgz#612b9e107d9eabb44e0eeb1f8ebfcdc6b88c2e28"
   integrity sha512-IKJ5JQhRhlkYINv9pxzT//fn3aYwsGBeyNNBcw7eU+J0lfs0wGrq9lh7CGcXUUGXaKFxDPRlWhTxaAVaRdZVRA==
 
-"@hcb.gg/wrapped@2024.0.0-beta.3":
-  version "2024.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@hcb.gg/wrapped/-/wrapped-2024.0.0-beta.3.tgz#6266bd29995e9190ea10554db4988e6237da0de2"
-  integrity sha512-XHRGeqa3p+SilPUofZh1Ia3i94U6OWydYkruwfkA1/u159d39Z0NfeD8N0tHTiq6MHNMYHdZZZiJikTHS0Wiyg==
+"@hcb.gg/wrapped@2024.0.0-beta.4":
+  version "2024.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@hcb.gg/wrapped/-/wrapped-2024.0.0-beta.4.tgz#560ffde107d444fc1ea09951d50f10a53fa42c20"
+  integrity sha512-3ysV31dO2LK+cA3yJzP9r8iQ7cz+Kb2xUsh8eP704w6ZvplcXUapHcKUi8NoMmwqV0QaVO/Q3qt89mYytLf9Tg==
   dependencies:
     confetti-js "^0.0.18"
     fast-shuffle "^6.0.1"
