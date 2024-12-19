@@ -37,6 +37,7 @@ class Metric
               comments.created_at >= '2024-01-01'
               AND CONCAT(ach_transfers.creator_id, checks.creator_id, increase_checks.user_id, disbursements.requested_by_id, stripe_cardholders.user_id, paypal_transfers.user_id) != '' AND CONCAT(ach_transfers.creator_id, checks.creator_id, increase_checks.user_id, disbursements.requested_by_id, stripe_cardholders.user_id, paypal_transfers.user_id) != CAST(comments.user_id as text)
               AND (CONCAT(ach_transfers.creator_id, checks.creator_id, increase_checks.user_id, disbursements.requested_by_id, stripe_cardholders.user_id, paypal_transfers.user_id) = '#{user.id}' OR comments.user_id = #{user.id})
+              AND comments.user_id != 2891 -- This is the HCB user for automated comments
           GROUP BY CONCAT(ach_transfers.creator_id, checks.creator_id, increase_checks.user_id, disbursements.requested_by_id, stripe_cardholders.user_id, paypal_transfers.user_id), comments.user_id
           ORDER BY COUNT(*) DESC
         SQL
