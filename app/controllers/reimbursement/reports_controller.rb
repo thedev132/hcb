@@ -8,7 +8,7 @@ module Reimbursement
     skip_before_action :signed_in_user, only: [:show, :start, :create, :finished]
     skip_after_action :verify_authorized, only: [:start, :finished]
 
-    invisible_captcha only: [:create], on_spam: :on_spam, timestamp_enabled: true, timestamp_threshold: 2
+    invisible_captcha only: [:create], on_spam: :on_spam_callback, timestamp_enabled: true, timestamp_threshold: 2
 
     # POST /reimbursement_reports
     def create
@@ -275,7 +275,7 @@ module Reimbursement
       reimbursement_report_params
     end
 
-    def on_spam
+    def on_spam_callback
       raise ActionController::RoutingError.new("Not Found") unless current_user.present?
     end
 
