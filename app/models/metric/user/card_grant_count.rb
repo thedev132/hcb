@@ -22,7 +22,7 @@ class Metric
       include Subject
 
       def calculate
-        user.card_grants.count
+        user.card_grants.where("EXTRACT(YEAR FROM created_at) = ?", 2024).count
       end
 
     end
