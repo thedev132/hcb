@@ -82,6 +82,7 @@ module Users
           spendingByLocation: Metric::Hcb::SpendingByLocation.metric,
           spendingByCategory: Metric::Hcb::SpendingByCategory.metric,
           spendingByMerchant: Metric::Hcb::SpendingByMerchant.metric,
+          merchantCount: Metric::Hcb::MerchantCount.metric,
           spendingByDate: Metric::Hcb::SpendingByDate.metric,
         },
       }
