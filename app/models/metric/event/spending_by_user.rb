@@ -27,7 +27,7 @@ class Metric
           FROM (
               SELECT raw_stripe_transactions.amount_cents * -1 AS dollars_spent, stripe_cardholders.user_id
               FROM "raw_stripe_transactions"
-              LEFT JOIN canonical_transactions ct ON raw_stripe_transactions.id = ct.transaction_source_id
+              LEFT JOIN canonical_transactions ct ON raw_stripe_transactions.id = ct.transaction_source_id AND ct.transaction_source_type = 'RawStripeTransaction'
               LEFT JOIN canonical_event_mappings event_mapping ON ct.id = event_mapping.canonical_transaction_id
               LEFT JOIN "stripe_cardholders" on stripe_cardholders.stripe_id = raw_stripe_transactions.stripe_transaction->>'cardholder'
               WHERE EXTRACT(YEAR FROM raw_stripe_transactions.date_posted) = 2024
