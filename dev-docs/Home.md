@@ -2,13 +2,21 @@
 
 HCB is a tool for hackers to hack on the real world, like GitHub, but for building with atoms and people, not bits and cycles. Thank you so much for contributing to the HCB database.
 
+## Table of Contents
+- [Home](#)
+- [Admin tasks](./Admin%20Tasks.md)
+- [Development](./Development.md)
+- [Faking transactions in development](./Faking-transactions-in-development.md)
+- [Post mortems](./Post-mortems.md)
+- [Pull requests](./Pull-Requests-Practices.md)
+
 ## Getting Started
 
-Lets get the HCB codebase set up on your computer! We have setup a easy and simple [guide](./Development) for you to get it running on your computer!
+Lets get the HCB codebase set up on your computer! We have setup a easy and simple [guide](./Development.md) for you to get it running on your computer!
 
 ## HCB's Structure
 
-We've been building HCB since 2018, navigating the codebase can be difficult at times. The codebase generally follows the [Model-View-Controller](https://developer.mozilla.org/en-US/docs/Glossary/MVC) design pattern, which Ruby on Rails is built around. If you need help, reach out to us in `#hcb-engr-help`. ["Getting Started with Rails"](https://guides.rubyonrails.org/getting_started.html) is a comprehensive guide for first-time Rails developers.
+We've been building HCB since 2018, navigating the codebase can be difficult at times. The codebase generally follows the [Model-View-Controller](https://developer.mozilla.org/en-US/docs/Glossary/MVC) design pattern, which Ruby on Rails is built around. If you need help, reach out to us in [#hcb-engr-help](https://hackclub.slack.com/archives/C068U0JMV19). ["Getting Started with Rails"](https://guides.rubyonrails.org/getting_started.html) is a comprehensive guide for first-time Rails developers.
 
 ### Organizations
 

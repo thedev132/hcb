@@ -56,7 +56,7 @@ We are so excited for you to join the codebase! We have a [guide to getting star
 
 All contributors are expected to follow the Hack Club [Code of Conduct](https://hackclub.com/conduct) and Hack Club's [contributing guidelines](https://github.com/hackclub/hackclub/blob/main/CONTRIBUTING.md).
 
-Join the `#hcb-engr-help` channel on the [Hack Club Slack](https://hackclub.com/slack) for support.
+Join the [#hcb-engr-help](https://hackclub.slack.com/archives/C068U0JMV19) channel on the [Hack Club Slack](https://hackclub.com/slack) for support.
 
 ### I found a security vulnerability! What should I do?
 
