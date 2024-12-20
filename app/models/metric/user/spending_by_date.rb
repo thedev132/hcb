@@ -33,11 +33,6 @@ class Metric
                                             .where(creator_id: user.id)
                                             .group("date(created_at)")
 
-        disbursements_subquery = Disbursement.select("date(created_at) AS transaction_date, SUM(amount) AS amount")
-                                             .where("EXTRACT(YEAR FROM created_at) = ?", 2024)
-                                             .where(requested_by_id: user.id)
-                                             .group("date(created_at)")
-
         increase_checks_subquery = IncreaseCheck.select("date(created_at) AS transaction_date, SUM(amount) AS amount")
                                                 .where("EXTRACT(YEAR FROM created_at) = ?", 2024)
                                                 .where(user_id: user.id)
@@ -48,7 +43,7 @@ class Metric
                                .where(creator_id: user.id)
                                .group("date(created_at)")
 
-        combined_result_subquery = Arel.sql("(#{stripe_transactions_subquery.to_sql} UNION ALL #{ach_transfers_subquery.to_sql} UNION ALL #{disbursements_subquery.to_sql} UNION ALL #{increase_checks_subquery.to_sql} UNION ALL #{checks_subquery.to_sql}) AS combined_table")
+        combined_result_subquery = Arel.sql("(#{stripe_transactions_subquery.to_sql} UNION ALL #{ach_transfers_subquery.to_sql} UNION ALL #{increase_checks_subquery.to_sql} UNION ALL #{checks_subquery.to_sql}) AS combined_table")
 
         final_result = Arel.sql("SELECT date(transaction_date) AS transaction_date, SUM(amount) AS amount FROM #{combined_result_subquery} GROUP BY date(transaction_date) ORDER BY date(transaction_date) ASC")
 
