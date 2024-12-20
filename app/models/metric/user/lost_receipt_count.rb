@@ -22,16 +22,7 @@ class Metric
       include Subject
 
       def calculate
-        count = 0
-
-        stripe_cards = user.stripe_cards.includes(:event)
-        emburse_cards = user.emburse_cards.includes(:event)
-
-        (stripe_cards + emburse_cards).each do |card|
-          card.hcb_codes.missing_receipt.receipt_required.count
-        end
-
-        count
+        user.transactions_missing_receipt_count
       end
 
     end
