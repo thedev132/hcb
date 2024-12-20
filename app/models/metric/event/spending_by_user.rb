@@ -35,40 +35,30 @@ class Metric
 
               UNION ALL
 
-              SELECT ach_transfers.amount AS dollars_spent, ach_transfers.creator_id as user_id
+              SELECT ct.amount_cents / 100.0 * -1 AS dollars_spent, ach_transfers.creator_id as user_id
               FROM "ach_transfers"
-              LEFT JOIN canonical_transactions ct ON ach_transfers.id = ct.transaction_source_id
+              LEFT JOIN canonical_transactions ct ON CONCAT('HCB-300-', ach_transfers.id) = ct.hcb_code
               LEFT JOIN canonical_event_mappings event_mapping ON ct.id = event_mapping.canonical_transaction_id
               WHERE EXTRACT(YEAR FROM ach_transfers.created_at) = 2024
               AND event_mapping.event_id = :event_id
 
               UNION ALL
 
-              SELECT disbursements.amount AS dollars_spent, disbursements.requested_by_id as user_id
+              SELECT ct.amount_cents / 100.0 AS dollars_spent, disbursements.requested_by_id as user_id
               FROM "disbursements"
-              LEFT JOIN canonical_transactions ct ON disbursements.id = ct.transaction_source_id
+              LEFT JOIN canonical_transactions ct ON CONCAT('HCB-500-', disbursements.id) = ct.hcb_code
               LEFT JOIN canonical_event_mappings event_mapping ON ct.id = event_mapping.canonical_transaction_id
               WHERE EXTRACT(YEAR FROM disbursements.created_at) = 2024
               AND event_mapping.event_id = :event_id
 
               UNION ALL
 
-              SELECT increase_checks.amount as dollars_spent, increase_checks.user_id
+              SELECT ct.amount_cents / 100.0 as dollars_spent, increase_checks.user_id
               FROM "increase_checks"
-              LEFT JOIN canonical_transactions ct ON increase_checks.id = ct.transaction_source_id
+              LEFT JOIN canonical_transactions ct ON CONCAT('HCB-401-', increase_checks.id) = ct.hcb_code
               LEFT JOIN canonical_event_mappings event_mapping ON ct.id = event_mapping.canonical_transaction_id
               WHERE EXTRACT(YEAR FROM increase_checks.created_at) = 2024
               AND event_mapping.event_id = :event_id
-
-              UNION ALL
-
-              SELECT checks.amount, creator_id as user_id
-              FROM "checks"
-              LEFT JOIN canonical_transactions ct ON checks.id = ct.transaction_source_id
-              LEFT JOIN canonical_event_mappings event_mapping ON ct.id = event_mapping.canonical_transaction_id
-              WHERE EXTRACT(YEAR FROM checks.created_at) = 2024
-              AND event_mapping.event_id = :event_id
-
           ) results
           group by user_id
           ORDER BY spent desc
