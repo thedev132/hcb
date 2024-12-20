@@ -25,8 +25,7 @@ class Metric
         card = RawStripeTransaction.joins("JOIN stripe_cardholders on raw_stripe_transactions.stripe_transaction->>'cardholder' = stripe_cardholders.stripe_id").where("EXTRACT(YEAR FROM date_posted) = ?", 2024).where(stripe_cardholders: { user_id: user.id }).sum(:amount_cents)
         ach = AchTransfer.where(creator_id: user.id, rejected_at: nil).where("EXTRACT(YEAR FROM created_at) = ?", 2024).sum(:amount)
         checks = Check.where(creator_id: user.id, rejected_at: nil).where("EXTRACT(YEAR FROM created_at) = ?", 2024).sum(:amount) + IncreaseCheck.where(user_id: user.id, increase_status: "deposited").where.not(approved_at: nil).where("EXTRACT(YEAR FROM created_at) = ?", 2024).sum(:amount)
-        disbursements = Disbursement.where(requested_by_id: user.id).where.not(fulfilled_by_id: nil).where("EXTRACT(YEAR FROM created_at) = ?", 2024).sum(:amount)
-        card.abs + ach.abs + checks.abs + disbursements.abs
+        card.abs + ach.abs + checks.abs
       end
 
     end
