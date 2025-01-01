@@ -11,7 +11,7 @@ Welcome to the [HCB](https://hackclub.com/fiscal-sponsorship/) codebase. We are 
 
 ## What is HCB?
 
-HCB is a powerful, safe, and easy-to-use fiscal sponsorship platform for hackathons, Hack Clubs, robotic teams and more. We use it to run our [fiscal sponsorship program](https://hackclub.com/fiscal-sponsorship/), we provide high schoolers with a 501(c)(3) status-backed restricted fund for their organization. Behind the scenes, HCB is a Ruby on Rails application (learn more on the [docs](https://github.com/hackclub/hcb/blob/main/dev-docs/Home.md)).
+HCB is a powerful, safe, and easy-to-use fiscal sponsorship platform for hackathons, Hack Clubs, robotic teams and more. We use it to run our [fiscal sponsorship program](https://hackclub.com/fiscal-sponsorship/), we provide high schoolers with a 501(c)(3) status-backed restricted fund for their organization. Behind the scenes, HCB is a Ruby on Rails application (learn more by reading [our documentation](https://github.com/hackclub/hcb/blob/main/dev-docs/)).
 
 <img width="1377" alt="Screenshot of Hack Club HQ's finances on HCB" src="https://github.com/hackclub/hcb/assets/39828164/b19a83b2-ba81-46b0-9f6f-2772f4249071">
 
@@ -24,11 +24,11 @@ HCB is a powerful, safe, and easy-to-use fiscal sponsorship platform for hackath
   - [Github Codespaces](#github-codespaces)
   - [Docker](#docker)
 - [Deployment](#deployment)
-- [Docs](https://github.com/hackclub/hcb/blob/main/dev-docs/Home.md)
+- [Docs](https://github.com/hackclub/hcb/blob/main/dev-docs/)
 
 ## Contributing
 
-We are so excited for you to join the codebase! We have a [guide to getting started](#quick-start) below and additional documentation on the [docs](https://github.com/hackclub/hcb/blob/main/dev-docs/Home.md).
+We are so excited for you to join the codebase! We have a [guide to getting started](#quick-start) below and additional documentation in the [`dev-docs` folder](https://github.com/hackclub/hcb/blob/main/dev-docs/).
 
 All contributors are expected to follow the Hack Club [Code of Conduct](https://hackclub.com/conduct) and Hack Club's [contributing guidelines](https://github.com/hackclub/hackclub/blob/main/CONTRIBUTING.md).
 
@@ -68,7 +68,7 @@ Then, to start the development server:
 ./docker_start.sh --with-solargraph
 ```
 
-If you have more questions about development check out our [docs](https://github.com/hackclub/hcb/blob/main/dev-docs/Development)
+If you have more questions about development check out our [docs](https://github.com/hackclub/hcb/blob/main/dev-docs/development.md)
 
 ### Development Account
 
@@ -82,7 +82,7 @@ Login using the email staging@bank.engineering. Visit `#hcb-staging` on the [Hac
 
 ### Production Access
 
-Please see this part of the [docs](https://github.com/hackclub/hcb/blob/main/dev-docs/Development/#production-access) for more information on Production Access
+Please see this part of the [docs](https://github.com/hackclub/hcb/blob/main/dev-docs/development.md#production-access) for more information on Production Access
 
 ## Deployment
 
