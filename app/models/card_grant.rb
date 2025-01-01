@@ -116,16 +116,21 @@ class CardGrant < ApplicationRecord
   def topup!(amount_cents:, topped_up_by: User.find(sent_by_id))
     raise ArgumentError.new("Topups must be positive.") unless amount_cents.positive?
 
+    custom_memo = "Topup of grant to #{user.name}"
+
     ActiveRecord::Base.transaction do
       update!(amount_cents: self.amount_cents + amount_cents)
-      DisbursementService::Create.new(
+      disbursement = DisbursementService::Create.new(
         source_event_id: event_id,
         destination_event_id: event_id,
-        name: "Topup of funds for grant to #{user.name}",
+        name: custom_memo,
         amount: amount_cents / 100.0,
         destination_subledger_id: subledger_id,
         requested_by_id: topped_up_by.id,
       ).run
+
+      disbursement.local_hcb_code.canonical_transactions.each { |ct| ct.update!(custom_memo:) }
+      disbursement.local_hcb_code.canonical_pending_transactions.each { |cpt| cpt.update!(custom_memo:) }
     end
   end
 
