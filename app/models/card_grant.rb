@@ -140,8 +140,8 @@ class CardGrant < ApplicationRecord
   end
 
   def zero!(custom_memo: "Return of funds from grant to #{user.name}")
-    raise ArgumentError, "card grant should have a non-zero balance" if card_grant.balance.zero?
-    raise ArgumentError, "card grant should have a positive balance" if card_grant.balance.negative?
+    raise ArgumentError, "card grant should have a non-zero balance" if balance.zero?
+    raise ArgumentError, "card grant should have a positive balance" if balance.negative?
 
     disbursement = DisbursementService::Create.new(
       source_event_id: event_id,
