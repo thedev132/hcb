@@ -22,7 +22,7 @@ HCB is a tool for hackers to hack on the real world, like GitHub, but for buildi
 
 ## Getting Started
 
-Lets get the HCB codebase set up on your computer! We have setup a easy and simple [guide](./Development.md) for you to get it running on your computer!
+Let's get the HCB codebase set up on your computer! We have setup a easy and simple [guide](./development.md) for you to get it running on your computer!
 
 ## HCB's Structure
 
