@@ -159,7 +159,7 @@ GEM
       erubi (~> 1.4)
       parser (>= 2.4)
       smart_properties
-    bigdecimal (3.1.8)
+    bigdecimal (3.1.9)
     bindata (2.5.0)
     bindex (0.8.1)
     blazer (3.1.0)
@@ -468,7 +468,7 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     local_time (3.0.2)
     lockbox (2.0.0)
-    logger (1.6.3)
+    logger (1.6.4)
     lograge (0.14.0)
       actionpack (>= 4)
       activesupport (>= 4)
@@ -530,7 +530,7 @@ GEM
       openssl (> 2.0)
     os (1.1.4)
     ostruct (0.6.0)
-    paper_trail (15.2.0)
+    paper_trail (16.0.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
     parallel (1.26.3)
@@ -660,7 +660,7 @@ GEM
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
-    request_store (1.5.1)
+    request_store (1.7.0)
       rack (>= 1.4)
     retriable (3.1.2)
     reverse_markdown (2.1.1)
@@ -908,7 +908,7 @@ DEPENDENCIES
   monetize
   money-rails
   namae
-  paper_trail (~> 15.2.0)
+  paper_trail (~> 16.0.0)
   pg (>= 0.18, < 2.0)
   pg_search
   phonelib
