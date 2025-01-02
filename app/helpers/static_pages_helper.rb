@@ -158,12 +158,6 @@ module StaticPagesHelper
         query: { filterByFormula: "Status='Awaiting Fulfillment'" },
         destination: "https://airtable.com/app1VxI7f3twOIs2g/tblKgmsperK0QHEQX"
       },
-      arcade: {
-        id: "app4kCWulfB02bV8Q",
-        table: "tblNUDETwMdUlBCSM",
-        query: { filterByFormula: "AND(Status='Awaiting Fulfillment', OR({Verification Status (from YSWS Verification User)}='Eligible L1', {Verification Status (from YSWS Verification User)}='Eligible L2'))" },
-        destination: "https://airtable.com/app4kCWulfB02bV8Q/tblNUDETwMdUlBCSM/viwipTwk0hGHW10Py"
-      },
       marketing_shipment_request: {
         id: "appK53aN0fz3sgJ4w",
         table: "tblvSJMqoXnQyN7co",
