@@ -35,9 +35,9 @@ class OrganizerPosition
 
     validate :one_non_void_contract
 
-    after_create :send_using_docuseal!
+    after_create_commit :send_using_docuseal!
 
-    after_create do
+    after_create_commit do
       organizer_position_invite.update(is_signee: true)
       organizer_position_invite.organizer_position&.update(is_signee: true)
     end
