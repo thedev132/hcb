@@ -5,7 +5,7 @@ class DocusealController < ActionController::Base
 
   def webhook
     ActiveRecord::Base.transaction do
-      if params[:event_type] == "form.completed" && params[:data][:role] == "HQ"
+      if params[:event_type] == "form.completed" && params[:data][:role] == "HCB"
         @contract = OrganizerPosition::Contract.find_by(external_id: params[:data][:submission_id])
 
         return render json: { success: true } if @contract.signed?
