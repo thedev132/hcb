@@ -19,7 +19,7 @@
         <%= inline_icon "paypal", size: 28 %>
         <strong>PayPal</strong>
         <div class="badge bg-warning m1 mt0" style="width: fit-content;">Unavailable</div>
-        <small>Due to integration issues, transfers via PayPal are currently unavailable.</small>
+        <small class="xs-hide">Due to integration issues, transfers via PayPal are currently unavailable.</small>
       <% end %>
     </div>
   </fieldset>
@@ -69,7 +69,7 @@
   </section>
   <section data-behavior="paypal_transfer_payout_method_inputs" class="<%= "display-none-not-important" unless user.payout_method.instance_of?(User::PayoutMethod::PaypalTransfer) %>">
     <%= render "callout", type: "error", title: "Due to integration issues, transfers via PayPal are currently unavailable.", footer: :questions do %>
-      Please update your payout method to either ACH Transfer or Mailed Check.
+      Please update your payout method to either an ACH transfer or a mailed check.
     <% end %>
 
     <%= render "callout",
