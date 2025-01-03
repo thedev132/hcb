@@ -1318,6 +1318,23 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_18_101200) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "organizer_position_contracts", force: :cascade do |t|
+    t.bigint "document_id"
+    t.bigint "organizer_position_invite_id", null: false
+    t.string "aasm_state"
+    t.datetime "signed_at"
+    t.datetime "void_at"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "external_service"
+    t.string "external_id"
+    t.string "cosigner_email"
+    t.integer "purpose", default: 0
+    t.index ["document_id"], name: "index_organizer_position_contracts_on_document_id"
+    t.index ["organizer_position_invite_id"], name: "idx_on_organizer_position_invite_id_ab1516f568"
+  end
+
   create_table "organizer_position_deletion_requests", force: :cascade do |t|
     t.bigint "organizer_position_id"
     t.bigint "submitted_by_id"
