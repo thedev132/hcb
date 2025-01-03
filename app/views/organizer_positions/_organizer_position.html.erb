@@ -107,7 +107,13 @@
             <% elsif organizer_position.organizer_position_invite.organizer_position_contract&.present? %>
               <%= inline_icon("clock", size: 24) %>
             <% else %>
-              <%= inline_icon("docs-negative", size: 24) %>
+              <%= link_to "#", class: "warning", data: { behavior: "modal_trigger", modal: "send_contract_#{organizer_position.organizer_position_invite.id}" } do %>
+                <%= inline_icon("docs-negative", size: 24) %>
+              <% end %>
+              <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="send_contract_<%= organizer_position.organizer_position_invite.id %>">
+                <%= modal_header "Send a contract" %>
+                <%= render "organizer_position_contract/form", organizer_position_contract: OrganizerPosition::Contract.new(organizer_position_invite_id: organizer_position.organizer_position_invite.id) %>
+              </section>
             <% end %>
           </div>
         </div>
