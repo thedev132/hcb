@@ -143,7 +143,7 @@ class OrganizerPosition
           end,
           {
             role: "HCB",
-            email: "hcb@hackclub.com",
+            email: creator&.email || "hcb@hackclub.com",
             send_email: true,
             fields: [
               {
