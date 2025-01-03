@@ -178,6 +178,13 @@ class OrganizerPosition
       end
     end
 
+    def creator
+      user_id = versions.first&.whodunnit
+      return nil unless user_id
+
+      User.find_by_id(user_id)
+    end
+
     private
 
     def docuseal_client
