@@ -110,13 +110,6 @@
         <% end %>
       </ul>
     <% end %>
-    <% if @events.empty? && @invites.empty? && !current_user.admin? %>
-      <%= blankslate "No organizations associated with your account yet." %>
-      <%= link_to apply_form_url, class: "btn bg-success" do %>
-        <%= inline_icon "plus" %>
-        New organization
-      <% end %>
-    <% end %>
   <% end %>
   <%= render partial: "static_pages/admin" %>
 </main>
