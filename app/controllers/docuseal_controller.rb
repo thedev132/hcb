@@ -20,7 +20,7 @@ class DocusealController < ActionController::Base
           filename: "#{params[:data][:documents][0][:name]}.pdf"
         )
 
-        document.user = @contract.organizer_position_invite.event.point_of_contact
+        document.user = User.find_by(email: params[:data][:email]) || @contract.organizer_position_invite.event.point_of_contact
         document.save!
         @contract.update(document:)
         @contract.mark_signed!
