@@ -5,7 +5,6 @@
 # Table name: user_sessions
 #
 #  id                       :bigint           not null, primary key
-#  deleted_at               :datetime
 #  device_info              :string
 #  expiration_at            :datetime         not null
 #  fingerprint              :string
@@ -14,7 +13,6 @@
 #  latitude                 :decimal(, )
 #  longitude                :decimal(, )
 #  os_info                  :string
-#  peacefully_expired       :boolean
 #  session_token_bidx       :string
 #  session_token_ciphertext :text
 #  signed_out_at            :datetime

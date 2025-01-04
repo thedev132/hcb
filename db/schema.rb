@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_01_01_144328) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_04_111430) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -2022,9 +2022,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_01_144328) do
     t.string "os_info"
     t.string "timezone"
     t.string "ip"
-    t.datetime "deleted_at", precision: nil
     t.bigint "impersonated_by_id"
-    t.boolean "peacefully_expired"
     t.decimal "latitude"
     t.decimal "longitude"
     t.bigint "webauthn_credential_id"
