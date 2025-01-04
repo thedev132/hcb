@@ -40,8 +40,6 @@ class UserSession < ApplicationRecord
   has_encrypted :session_token
   blind_index :session_token
 
-  self.ignored_columns = ["deleted_at", "peacefully_expired"]
-
   belongs_to :user
   belongs_to :impersonated_by, class_name: "User", optional: true
   belongs_to :webauthn_credential, optional: true
