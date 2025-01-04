@@ -2032,6 +2032,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_01_144328) do
     t.text "session_token_ciphertext"
     t.string "session_token_bidx"
     t.datetime "last_seen_at"
+    t.datetime "signed_out_at"
     t.index ["impersonated_by_id"], name: "index_user_sessions_on_impersonated_by_id"
     t.index ["session_token_bidx"], name: "index_user_sessions_on_session_token_bidx"
     t.index ["user_id"], name: "index_user_sessions_on_user_id"
