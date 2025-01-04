@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_18_101200) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_01_144328) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1286,6 +1286,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_18_101200) do
     t.datetime "updated_at", null: false
     t.string "subject_type"
     t.bigint "subject_id"
+    t.index ["subject_type", "subject_id", "type"], name: "index_metrics_on_subject_type_and_subject_id_and_type", unique: true
     t.index ["subject_type", "subject_id"], name: "index_metrics_on_subject"
   end
 
