@@ -76,6 +76,8 @@ class RawColumnTransaction < ApplicationRecord
     else
       nil
     end
+  rescue
+    nil
   end
 
 end
