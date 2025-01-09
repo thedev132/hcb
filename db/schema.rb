@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_01_04_111430) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_09_070752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -2013,6 +2013,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_04_111430) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_seen_at_histories", force: :cascade do |t|
+    t.bigint "user_id"
+    t.datetime "period_start_at", null: false
+    t.datetime "period_end_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_seen_at_histories_on_user_id"
+  end
+
   create_table "user_sessions", force: :cascade do |t|
     t.bigint "user_id"
     t.datetime "created_at", null: false
@@ -2266,6 +2275,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_04_111430) do
   add_foreign_key "transactions", "invoice_payouts"
   add_foreign_key "user_email_updates", "users"
   add_foreign_key "user_email_updates", "users", column: "updated_by_id"
+  add_foreign_key "user_seen_at_histories", "users"
   add_foreign_key "user_sessions", "users"
   add_foreign_key "user_sessions", "users", column: "impersonated_by_id"
   add_foreign_key "webauthn_credentials", "users"
