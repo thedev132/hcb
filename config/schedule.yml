@@ -165,5 +165,5 @@ stripe_service_fee_job:
   class: "StripeServiceFeeJob"
 
 user_seen_at_history_snapshot_job:
-  cron: "*/2 * * * *" # twice every hour
+  cron: "0,30 * * * *" # twice every hour
   class: "User::SeenAtHistory::SnapshotJob"
