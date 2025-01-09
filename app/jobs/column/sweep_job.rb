@@ -9,6 +9,11 @@ module Column
       balance = account["balances"]["available_amount"]
       difference = balance - FLOATING_BALANCE
 
+      if difference.abs > 200_000_00
+        Airbrake.notify("Column::SweepJob > $200,000. Requires human review / processing.")
+        return
+      end
+
       idempotency_key = "floating_transfer_#{Time.now.to_i}"
 
       return unless difference.positive? || difference.negative?
