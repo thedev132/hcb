@@ -26,6 +26,8 @@ class StatsController < ApplicationController
   end
 
   def stats
+    return render plain: "too many requests", status: :too_many_requests unless Flipper.enabled?(:stats_endpoint)
+
     json = Rails.cache.fetch("stats", expires_in: 1.hour, race_condition_ttl: 60 * 5) do
       now = params[:date].present? ? Date.parse(params[:date]) : DateTime.current
       year_ago = now - 1.year
