@@ -17,13 +17,13 @@
 
     <div class="field mb2">
       <%= form.label :name, "Your name" %>
-      <%= form.text_field :name, placeholder: "Fiona Hackworth", required: true, autofocus: true %>
+      <%= form.text_field :name, placeholder: "John Smith", required: true, autofocus: true %>
     </div>
 
     <div class="field mb2">
       <%= form.label :email, "Your email" %>
       <span class="muted block h5">We’ll send <%= @monthly ? "receipts" : "a receipt" %> here for your tax records.</span>
-      <%= form.email_field :email, placeholder: "fionah@gmail.com", required: true %>
+      <%= form.email_field :email, placeholder: "jsmith@gmail.com", required: true %>
       <% donation.errors.messages_for(:email).each do |message| %>
         <div class="primary"><%= message %></div>
       <% end %>
@@ -82,7 +82,7 @@
           <%= form.label :fee_covered, style: "display: inline; flex-grow: 1;" do %>
             <span x-text="'Add $' + additionalAmountToCoverFee + ' to cover all fees'"></span>
           <% end %>
-          <a class="tooltipped tooltipped--w link--ignore flex" aria-label="By clicking this box, you are covering fiscal sponsorship and credit card processing fees." tabindex="0">
+          <a class="tooltipped tooltipped--w link--ignore flex" aria-label="By clicking this box, you are covering credit card processing and fiscal sponsorship fees." tabindex="0">
             <%= inline_icon "info", width: 24 %>
           </a>
         </div>
