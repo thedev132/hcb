@@ -65,7 +65,7 @@ class Receipt < ApplicationRecord
     end
   end
 
-  validates :file, attached: true
+  validates :file, attached: true, content_type: /(\Aimage\/.*\z|application\/pdf)/
 
   before_create do
     if receiptable&.has_attribute?(:marked_no_or_lost_receipt_at)
