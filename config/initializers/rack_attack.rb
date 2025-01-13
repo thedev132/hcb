@@ -12,6 +12,9 @@ class Rack::Attack
 
   # Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
 
+  # Safelist Hack Club Office
+  safelist_ip(Rails.application.credentials.office_ip)
+
   ### Throttle Spammy Clients ###
 
   # If any single client IP is making tons of requests, then they're
