@@ -39,6 +39,7 @@
 #
 class CardGrant < ApplicationRecord
   include Hashid::Rails
+  has_paper_trail
 
   include PublicIdentifiable
   set_public_id_prefix :cdg
