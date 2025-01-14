@@ -632,13 +632,13 @@ class Event < ApplicationRecord
     raise ArgumentError.new("This method requires a stripe_card_logo to be attached.") unless stripe_card_logo.attached?
 
     ActiveRecord::Base.transaction do
+      stripe_card_personalization_designs.update(stale: true)
       (attachment_changes["stripe_card_logo"]&.attachable || stripe_card_logo.blob).open do |tempfile|
         converted = ImageProcessing::MiniMagick.source(tempfile.path).convert!("png")
         ::StripeCardService::PersonalizationDesign::Create.new(file: StringIO.new(converted.read), color: :black, event: self).run
         converted.rewind
         ::StripeCardService::PersonalizationDesign::Create.new(file: StringIO.new(converted.read), color: :white, event: self).run
       end
-      stripe_card_personalization_designs.update(stale: true)
     end
   rescue Stripe::InvalidRequestError => e
     stripe_card_logo.delete
