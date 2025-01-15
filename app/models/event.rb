@@ -633,7 +633,7 @@ class Event < ApplicationRecord
 
     ActiveRecord::Base.transaction do
       stripe_card_personalization_designs.update(stale: true)
-      (attachment_changes["stripe_card_logo"]&.attachable || stripe_card_logo.blob).open do |tempfile|
+      stripe_card_logo.blob.open do |tempfile|
         converted = ImageProcessing::MiniMagick.source(tempfile.path).convert!("png")
         ::StripeCardService::PersonalizationDesign::Create.new(file: StringIO.new(converted.read), color: :black, event: self).run
         converted.rewind
