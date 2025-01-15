@@ -163,7 +163,7 @@ class AchTransfer < ApplicationRecord
   before_create :create_payment_recipient, if: -> { payment_recipient_id.nil? }
 
   before_validation do
-    company_name = event.short_name if company_name.blank?
+    self.company_name = event.short_name if company_name.blank?
   end
 
   after_create :update_payment_recipient
