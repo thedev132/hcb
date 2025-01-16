@@ -204,10 +204,6 @@ class User < ApplicationRecord
     user!
   end
 
-  def preferred_first_name
-    preferred_name&.split&.first
-  end
-
   def first_name(legal: false)
     @first_name ||= (namae(legal:)&.given || namae(legal:)&.particle)&.split(" ")&.first
   end
