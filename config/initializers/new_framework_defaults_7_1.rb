@@ -17,8 +17,9 @@
 #
 # This will reduce the size of the load path, making `require` faster if you don't use bootsnap, or reduce the size
 # of the bootsnap cache if you use it.
-#++
-# Rails.application.config.add_autoload_paths_to_load_path = false
+#
+# To set this configuration, add the following line to `config/application.rb` (NOT this file):
+#   config.add_autoload_paths_to_load_path = false
 
 ###
 # Remove the default X-Download-Options headers since it is used only by Internet Explorer.
@@ -82,7 +83,7 @@ Rails.application.config.active_record.sqlite3_adapter_strict_strings_by_default
 ###
 # Disable deprecated singular associations names.
 #++
-# Rails.application.config.active_record.allow_deprecated_singular_associations_name = false
+Rails.application.config.active_record.allow_deprecated_singular_associations_name = false
 
 ###
 # Enable the Active Job `BigDecimal` argument serializer, which guarantees
@@ -139,7 +140,7 @@ Rails.application.config.active_record.query_log_tags_format = :sqlcommenter
 # servers, first deploy without changing the serializer, then set the serializer
 # in a subsequent deploy.
 #++
-# Rails.application.config.active_support.message_serializer = :json_allow_marshal
+Rails.application.config.active_support.message_serializer = :json_allow_marshal
 
 ###
 # Enable a performance optimization that serializes message data and metadata
@@ -152,7 +153,7 @@ Rails.application.config.active_record.query_log_tags_format = :sqlcommenter
 # leave this optimization off on the first deploy, then enable it on a
 # subsequent deploy.
 #++
-# Rails.application.config.active_support.use_message_serializer_for_metadata = true
+Rails.application.config.active_support.use_message_serializer_for_metadata = true
 
 ###
 # Set the maximum size for Rails log files.
@@ -160,16 +161,16 @@ Rails.application.config.active_record.query_log_tags_format = :sqlcommenter
 # `config.load_defaults 7.1` does not set this value for environments other than
 # development and test.
 #++
-# if Rails.env.local?
-#   Rails.application.config.log_file_size = 100 * 1024 * 1024
-# end
+if Rails.env.local?
+  Rails.application.config.log_file_size = 100 * 1024 * 1024
+end
 
 ###
 # Enable raising on assignment to attr_readonly attributes. The previous
 # behavior would allow assignment but silently not persist changes to the
 # database.
 #++
-# Rails.application.config.active_record.raise_on_assign_to_attr_readonly = true
+Rails.application.config.active_record.raise_on_assign_to_attr_readonly = true
 
 ###
 # Enable validating only parent-related columns for presence when the parent is mandatory.
@@ -208,7 +209,7 @@ Rails.application.config.active_record.default_column_serializer = nil
 # leave this optimization off on the first deploy, then enable it on a
 # subsequent deploy.
 #++
-# Rails.application.config.active_record.marshalling_format_version = 7.1
+Rails.application.config.active_record.marshalling_format_version = 7.1
 
 ###
 # Run `after_commit` and `after_*_commit` callbacks in the order they are defined in a model.

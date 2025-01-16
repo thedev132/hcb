@@ -45,7 +45,7 @@ module Bank
 
     config.react.camelize_props = true
 
-    config.add_autoload_paths_to_load_path
+    config.add_autoload_paths_to_load_path = false
 
     config.autoload_lib(ignore: %w(assets tasks))
     config.eager_load_paths << "#{config.root}/spec/mailers/previews"
