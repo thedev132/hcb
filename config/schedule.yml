@@ -120,6 +120,10 @@ calculate_app_wide_metrics:
   cron: "0 */12 * * *" # run twice a day
   class: "MetricJobs::CalculateAppWide"
 
+calculate_stats_metric:
+  cron: "0 * * * *" # run every hour
+  class: "MetricJobs::CalculateStats"
+
 calculate_subjects_metrics:
   cron: "0 */12 * * *" # run twice a day
   class: "MetricJobs::CalculateSubjects"
