@@ -21,8 +21,7 @@ class MyController < ApplicationController
     @stripe_cards = current_user.stripe_cards.includes(:event).order(
       Arel.sql("stripe_status = 'active' DESC"),
       Arel.sql("stripe_status = 'inactive' DESC")
-    )
-
+    ).where(event: current_user.admin? ? Event.all : current_user.events)
     @emburse_cards = current_user.emburse_cards.includes(:event)
 
     @active_stripe_cards = @stripe_cards.where.not(stripe_status: "canceled")
