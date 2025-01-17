@@ -153,6 +153,11 @@ class OrganizerPosition
                 readonly: true
               },
               {
+                name: "Signature",
+                default_value: ActionController::Base.helpers.asset_path("zach_signature.png"),
+                readonly: false
+              },
+              {
                 name: "The Project",
                 default_value: organizer_position_invite.event.airtable_record&.[]("Tell us about your event"),
                 readonly: false
