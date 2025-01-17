@@ -20,16 +20,16 @@ module Bank
     end
 
     config.action_mailer.default_url_options = {
-      host: Rails.application.credentials.default_url_host[:live]
+      host: Rails.application.credentials.dig(:default_url_host, :live)
     }
 
     # SMTP config
     config.action_mailer.smtp_settings = {
-      user_name: Rails.application.credentials.smtp[:username],
-      password: Rails.application.credentials.smtp[:password],
-      address: Rails.application.credentials.smtp[:address],
-      domain: Rails.application.credentials.smtp[:domain],
-      port: Rails.application.credentials.smtp[:port],
+      user_name: Rails.application.credentials.dig(:smtp, :username),
+      password: Rails.application.credentials.dig(:smtp, :password),
+      address: Rails.application.credentials.dig(:smtp, :address),
+      domain: Rails.application.credentials.dig(:smtp, :domain),
+      port: Rails.application.credentials.dig(:smtp, :port),
       authentication: :plain
     }
 

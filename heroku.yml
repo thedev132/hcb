@@ -1,0 +1,15 @@
+# https://devcenter.heroku.com/articles/build-docker-images-heroku-yml
+
+build:
+  docker:
+    web: Dockerfile.production
+run:
+  web: bin/rails server -p $PORT
+  worker:
+    command:
+      - RAILS_MAX_THREADS=10 bundle exec sidekiq
+    image: web
+release:
+  command:
+    - bin/release-tasks
+  image: web

@@ -118,7 +118,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_mailer.default_url_options = {
-    host: Rails.application.credentials.default_url_host[:live]
+    host: Rails.application.credentials.dig(:default_url_host, :live)
   }
-  Rails.application.routes.default_url_options[:host] = Rails.application.credentials.default_url_host[:live]
+  Rails.application.routes.default_url_options[:host] = Rails.application.credentials.dig(:default_url_host, :live)
 end
