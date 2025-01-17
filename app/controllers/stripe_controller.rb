@@ -280,7 +280,7 @@ class StripeController < ActionController::Base
   alias_method :handle_issuing_personalization_design_activated, :handle_issuing_personalization_design_updated
   alias_method :handle_issuing_personalization_design_deactivated, :handle_issuing_personalization_design_updated
 
-  def handle_issuing_dispute_funds_reinstated
+  def handle_issuing_dispute_funds_reinstated(event)
     dispute = event.data.object
     transaction = Stripe::Issuing::Transaction.retrieve(dispute["transaction"])
     hcb_code = RawPendingStripeTransaction.find_by!(stripe_transaction_id: transaction["authorization"]).canonical_pending_transaction.local_hcb_code
