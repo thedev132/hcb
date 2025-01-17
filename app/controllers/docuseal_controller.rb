@@ -5,9 +5,8 @@ class DocusealController < ActionController::Base
 
   def webhook
     ActiveRecord::Base.transaction do
+      @contract = OrganizerPosition::Contract.find_by(external_id: params[:data][:submission_id])
       if params[:event_type] == "form.completed" && params[:data][:role] == "HCB"
-        @contract = OrganizerPosition::Contract.find_by(external_id: params[:data][:submission_id])
-
         return render json: { success: true } if @contract.signed?
 
         document = Document.new(
@@ -24,6 +23,8 @@ class DocusealController < ActionController::Base
         document.save!
         @contract.update(document:)
         @contract.mark_signed!
+      elsif params[:event_type] == "form.declined"
+        @contract.mark_voided!
       end
     end
   rescue => e
