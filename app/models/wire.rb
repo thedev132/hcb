@@ -24,6 +24,7 @@
 #  recipient_email           :string           not null
 #  recipient_information     :jsonb
 #  recipient_name            :string           not null
+#  return_reason             :text
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  column_id                 :text
@@ -291,9 +292,10 @@ class Wire < ApplicationRecord
 
     event :mark_failed do
       transitions from: [:deposited, :approved], to: :failed
-      after do |reason: nil|
+      after do |reason = nil|
         WireMailer.with(wire: self, reason:).notify_failed.deliver_later
         create_activity(key: "wire.failed", owner: nil)
+        update(return_reason: reason)
       end
     end
   end
