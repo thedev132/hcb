@@ -22,7 +22,11 @@ class MyController < ApplicationController
       Arel.sql("stripe_status = 'active' DESC"),
       Arel.sql("stripe_status = 'inactive' DESC")
     )
+
     @emburse_cards = current_user.emburse_cards.includes(:event)
+
+    @active_stripe_cards = @stripe_cards.where.not(stripe_status: "canceled")
+    @canceled_stripe_cards = @stripe_cards.where(stripe_status: "canceled")
   end
 
   def tasks
