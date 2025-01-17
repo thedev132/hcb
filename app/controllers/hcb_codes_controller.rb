@@ -17,12 +17,12 @@ class HcbCodesController < ApplicationController
         model = route[:controller].classify.constantize
         object = model.find(route[:id])
         event = model == Event ? object : object.event
-        raise StandardError unless @hcb_code.events.include? event
+        raise StandardError unless @hcb_code.events.include?(event) && current_user.events.include?(event)
 
         event
       rescue
         @hcb_code.events.min_by do |e|
-          [e.users.include?(current_user), e.is_public?].map { |b| b ? 0 : 1 }
+          e.users.include?(current_user) ? 0 : 1
         end
       rescue
         @hcb_code.event
