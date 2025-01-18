@@ -1428,6 +1428,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_16_193753) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "email"
+    t.text "information_ciphertext"
+    t.string "payment_model"
     t.index ["event_id"], name: "index_payment_recipients_on_event_id"
     t.index ["name"], name: "index_payment_recipients_on_name"
   end

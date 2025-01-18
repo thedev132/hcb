@@ -8,7 +8,9 @@
 #  account_number_ciphertext :text
 #  bank_name_ciphertext      :string
 #  email                     :text
+#  information_ciphertext    :text
 #  name                      :string
+#  payment_model             :string
 #  routing_number_ciphertext :string
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
@@ -37,6 +39,21 @@ class PaymentRecipient < ApplicationRecord
 
   validates_email_format_of :email
   normalizes :email, with: ->(email) { email.strip.downcase }
+
+  has_encrypted :information, type: :json
+  store :information, accessors: [:account_number, :routing_number, :bank_name]
+
+  def account_number
+    information["account_number"] || PaymentRecipient.decrypt_account_number_ciphertext(account_number_ciphertext)
+  end
+
+  def routing_number
+    information["routing_number"] || PaymentRecipient.decrypt_routing_number_ciphertext(routing_number_ciphertext)
+  end
+
+  def bank_name
+    information["bank_name"] || PaymentRecipient.decrypt_bank_name_ciphertext(bank_name_ciphertext)
+  end
 
   def masked_account_number
     return account_number if account_number.length <= 4
