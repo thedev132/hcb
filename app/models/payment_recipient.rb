@@ -33,6 +33,8 @@ class PaymentRecipient < ApplicationRecord
   belongs_to :event
   has_many :ach_transfers
 
+  has_encrypted :account_number, :routing_number, :bank_name
+
   scope :order_by_last_used, -> { includes(:ach_transfers).order("ach_transfers.created_at DESC") }
 
   validates_email_format_of :email
@@ -41,7 +43,17 @@ class PaymentRecipient < ApplicationRecord
   has_encrypted :information, type: :json
   store :information, accessors: [:account_number, :routing_number, :bank_name]
 
-  self.ignored_columns = ["account_number_ciphertext", "bank_name_ciphertext", "routing_number_ciphertext"]
+  def account_number
+    information["account_number"] || PaymentRecipient.decrypt_account_number_ciphertext(account_number_ciphertext)
+  end
+
+  def routing_number
+    information["routing_number"] || PaymentRecipient.decrypt_routing_number_ciphertext(routing_number_ciphertext)
+  end
+
+  def bank_name
+    information["bank_name"] || PaymentRecipient.decrypt_bank_name_ciphertext(bank_name_ciphertext)
+  end
 
   def masked_account_number
     return account_number if account_number.length <= 4
