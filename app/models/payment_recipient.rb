@@ -4,17 +4,14 @@
 #
 # Table name: payment_recipients
 #
-#  id                        :bigint           not null, primary key
-#  account_number_ciphertext :text
-#  bank_name_ciphertext      :string
-#  email                     :text
-#  information_ciphertext    :text
-#  name                      :string
-#  payment_model             :string
-#  routing_number_ciphertext :string
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  event_id                  :bigint           not null
+#  id                     :bigint           not null, primary key
+#  email                  :text
+#  information_ciphertext :text
+#  name                   :string
+#  payment_model          :string
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  event_id               :bigint           not null
 #
 # Indexes
 #
