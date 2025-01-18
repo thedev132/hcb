@@ -38,8 +38,6 @@ class PaymentRecipient < ApplicationRecord
   has_encrypted :information, type: :json
   store :information, accessors: [:account_number, :routing_number, :bank_name]
 
-  self.ignored_columns = ["account_number_ciphertext", "bank_name_ciphertext", "routing_number_ciphertext"]
-
   def masked_account_number
     return account_number if account_number.length <= 4
 
