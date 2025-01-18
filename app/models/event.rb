@@ -306,9 +306,16 @@ class Event < ApplicationRecord
   has_many :grants
 
   has_one_attached :donation_header_image
+  validates :donation_header_image, content_type: [:png, :jpg, :jpeg]
+
   has_one_attached :background_image
+  validates :background_image, content_type: [:png, :jpg, :jpeg]
+
   has_one_attached :logo
+  validates :logo, content_type: [:png, :jpg, :jpeg]
+
   has_one_attached :stripe_card_logo
+  validates :stripe_card_logo, content_type: [:png, :jpg, :jpeg]
 
   include HasMetrics
 
