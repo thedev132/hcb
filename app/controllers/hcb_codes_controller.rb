@@ -87,9 +87,11 @@ class HcbCodesController < ApplicationController
 
   def pin
     @hcb_code = HcbCode.find(params[:id])
-    @event = @hcb_code.event
+    param_event = Event.friendly.find_by_friendly_id(params[:event])
+    @event = param_event ? @hcb_code.events.find_by(id: param_event.id) : @hcb_code.event
 
     authorize @hcb_code
+    authorize @event
 
     # Handle unpinning
     if (@pin = HcbCode::Pin.find_by(event: @event, hcb_code: @hcb_code))
