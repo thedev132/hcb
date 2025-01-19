@@ -58,6 +58,9 @@ class OrganizerPosition
 
       event :mark_signed do
         transitions from: [:pending, :sent], to: :signed
+        after do
+          organizer_position_invite.deliver
+        end
       end
 
       event :mark_voided do
