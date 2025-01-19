@@ -9,7 +9,7 @@
   </ul>
 
   <%= form_with(model: @monthly ? [@event, @recurring_donation] : donation, local: true, url: (make_donation_donations_path unless @monthly),
-                class: "card mx-auto max-width-1 mb3", data: { turbo: true, turbo_action: "advance" }) do |form| %>
+                class: "card mx-auto max-width-1 mb3", data: { turbo: true, turbo_action: "advance" }, html: { autocomplete: "off" }) do |form| %>
     <% donation = @recurring_donation if @monthly %>
 
     <%= form.invisible_captcha :subtitle %>
@@ -17,13 +17,13 @@
 
     <div class="field mb2">
       <%= form.label :name, "Your name" %>
-      <%= form.text_field :name, placeholder: "John Smith", required: true, autofocus: true %>
+      <%= form.text_field :name, placeholder: "John Smith", required: true, autofocus: true, autocomplete: "off" %>
     </div>
 
     <div class="field mb2">
       <%= form.label :email, "Your email" %>
       <span class="muted block h5">We’ll send <%= @monthly ? "receipts" : "a receipt" %> here for your tax records.</span>
-      <%= form.email_field :email, placeholder: "jsmith@gmail.com", required: true %>
+      <%= form.email_field :email, placeholder: "jsmith@gmail.com", required: true, autocomplete: "off" %>
       <% donation.errors.messages_for(:email).each do |message| %>
         <div class="primary"><%= message %></div>
       <% end %>
