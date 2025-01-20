@@ -604,6 +604,8 @@ Rails.application.routes.draw do
   post "docuseal/webhook", to: "docuseal#webhook"
   post "webhooks/column", to: "column/webhooks#webhook"
 
+  post "extract/invoice", to: "extraction#invoice"
+
   get "negative_events", to: "admin#negative_events"
 
   get "admin_task_size", to: "admin#task_size"
