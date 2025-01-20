@@ -303,4 +303,8 @@ class StripeController < ActionController::Base
     end
   end
 
+  def handle_refund_failed(event)
+    Airbrake.notify("Refund failed on Stripe: #{event}.")
+  end
+
 end
