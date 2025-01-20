@@ -59,7 +59,7 @@ class ExtractionController < ApplicationController
 
     ai_response = response.body.dig("choices", 0, "message", "content")
 
-    ai_response = JSON.parse(ai_response)
+    extracted = JSON.parse(ai_response)
 
     total = ApplicationController.helpers.render_money_amount(Monetize.parse(extracted["invoice_items"].sum { |i| Monetize.parse(i["amount"]).amount }))
 
