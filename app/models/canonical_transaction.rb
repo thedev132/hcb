@@ -75,6 +75,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :hcb_sweep, -> { where("memo ilike '%COLUMN*THE HACK HCB-SWEEP%'") }
   scope :to_svb_sweep_account, -> { where(memo: "TF TO ICS SWP") }
   scope :from_svb_sweep_account, -> { where(memo: "TF FRM ICS SWP") }
+  scope :svb_sweep_account, -> { where(transaction_source_type: RawIntrafiTransaction.name) }
   scope :mapped_by_human, -> { includes(:canonical_event_mapping).where("canonical_event_mappings.user_id is not null").references(:canonical_event_mapping) }
   scope :included_in_stats, -> {
     includes(

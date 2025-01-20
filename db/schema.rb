@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_01_18_072701) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_20_231755) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1493,6 +1493,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_18_072701) do
     t.datetime "updated_at", null: false
     t.jsonb "increase_transaction"
     t.index ["increase_transaction_id"], name: "index_raw_increase_transactions_on_increase_transaction_id", unique: true
+  end
+
+  create_table "raw_intrafi_transactions", force: :cascade do |t|
+    t.string "memo", null: false
+    t.integer "amount_cents", null: false
+    t.date "date_posted", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "raw_pending_bank_fee_transactions", force: :cascade do |t|
