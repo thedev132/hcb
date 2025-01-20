@@ -51,6 +51,8 @@ class IncreaseCheck < ApplicationRecord
   # handles Column check transfers.
   has_paper_trail
 
+  self.ignored_columns = ["increase_state"]
+
   include AASM
 
   include PgSearch::Model
