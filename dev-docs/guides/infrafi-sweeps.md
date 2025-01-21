@@ -43,14 +43,14 @@ Usually, we sync all of Hack Club's active bank account into HCB. However,
 InfraFi is the one exception. InfraFi unfortunately does play well with Plaid.
 Therefore, we sync InfraFi's transactions into this HCB manually. InfraFi
 provides a CSV export with the following headings: `Date`, `Account Activity`,
-`Amount`,	and `Balance`. Each row represents a transaction and should be imported
-as a `RawIntrafiTransaction`:
+`Amount`, and `Balance`. Each row represents a transaction and should be
+imported as a `RawIntrafiTransaction`:
 
 ```ruby
 RawIntrafiTransaction.create(date_posted: tx[:Date], memo: tx[:"Account Activity"], amount_cents: tx[:Amount] * 100)
 ```
 
-After a batch of transactions has imported, HCB Sweep's balance reflects the sum 
+After a batch of transactions has imported, HCB Sweep's balance reflects the sum
 of all interest capitalization transactions. That balance should increase at the
 end of each month when the Interest Capitalization transaction hits our account.
 
