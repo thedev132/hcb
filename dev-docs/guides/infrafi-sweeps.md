@@ -41,26 +41,17 @@ interest from that month and adds it to our **InfraFi Principal Balance**.
 
 Usually, we sync all of Hack Club's active bank account into HCB. However,
 InfraFi is the one exception. InfraFi unfortunately does play well with Plaid.
+Therefore, we sync InfraFi's transactions into this HCB manually. InfraFi
+provides a CSV export with the following headings: `Date`, `Account Activity`,
+`Amount`,	and `Balance`. Each row represents a transaction and should be imported
+as a `RawIntrafiTransaction`:
 
-At the moment, we do not sync InfraFi's transactions into this HCB. This means
-that the `HCB Sweeps` organization on HCB has a negative balance. That negative
-balance reflects the sum of all deposits and withdrawals to/from InfraFi. It
-excludes all interest capitalization transactions.
+```ruby
+RawIntrafiTransaction.create(date_posted: tx[:Date], memo: tx[:"Account Activity"], amount_cents: tx[:Amount] * 100)
+```
 
-In other words:
+After a batch of transactions has imported, HCB Sweep's balance reflects the sum 
+of all interest capitalization transactions. That balance should increase at the
+end of each month when the Interest Capitalization transaction hits our account.
 
-- `HCB Sweep's balance` == `Sum of InfraFi's Deposits + Withdrawals`
-- and `HCB Sweep's balance` + `Interest Capitalization transactions` ==
-  `InfraFi's Principle Balance`
-- and `HCB Sweep's balance` + `Interest Capitalization transactions` +
-  `InfraFi's Accrued interest` ==
-  `InfraFi's Principle Balance` + `InfraFi's Accrued interest`
-
-We have a goal to important all of InfraFi's
-transactions: https://github.com/hackclub/hcb/issues/9209
-
-When that happens, HCB Sweep's balance should reflect the sum of all interest
-capitalization transactions. That balance should increase at the end of each
-month when the Interest Capitalization transaction hits our account.
-
-\- [@garyhtou](https://garytou.com)
+\- [@garyhtou](https://garytou.com) & [@sampoder](https://sampoder.com)
