@@ -9,7 +9,7 @@ module Column
       balance = account["balances"]["available_amount"]
       difference = balance - FLOATING_BALANCE
 
-      if difference.abs > 200_000_00
+      if difference.abs > 200_000_00 && difference.negative? # if negative, it is a transfer from SVB (FS Main) to Column
         Airbrake.notify("Column::SweepJob > $200,000. Requires human review / processing.")
         return
       end
