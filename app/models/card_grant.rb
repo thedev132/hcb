@@ -140,9 +140,11 @@ class CardGrant < ApplicationRecord
     cancel!(hcb_user, expired: true)
   end
 
-  def zero!(custom_memo: "Return of funds from grant to #{user.name}", requested_by: User.find_by!(email: "bank@hackclub.com"))
+  def zero!(custom_memo: "Return of funds from grant to #{user.name}", requested_by: User.find_by!(email: "bank@hackclub.com"), allow_topups: false)
     raise ArgumentError, "card grant should have a non-zero balance" if balance.zero?
-    raise ArgumentError, "card grant should have a positive balance" if balance.negative?
+    raise ArgumentError, "card grant should have a positive balance" unless balance.positive? || allow_topups
+
+    return topup!(amount_cents: balance.cents.abs, topped_up_by: requested_by) if balance.negative?
 
     disbursement = DisbursementService::Create.new(
       source_event_id: event_id,
