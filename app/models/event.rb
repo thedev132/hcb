@@ -330,6 +330,8 @@ class Event < ApplicationRecord
   validate :contract_signed, unless: :demo_mode?
 
   validates :name, presence: true
+  before_validation { self.name = name.gsub(/\s/, " ").strip unless name.nil? }
+
   validates :slug, presence: true, format: { without: /\s/ }
   validates :slug, format: { without: /\A\d+\z/ }
   validates_uniqueness_of_without_deleted :slug
