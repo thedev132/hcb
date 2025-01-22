@@ -1,5 +1,13 @@
 # https://devcenter.heroku.com/articles/build-docker-images-heroku-yml
 
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+    - plan: heroku-redis
+      as: REDIS
+    - plan: heroku-redis
+      as: REDIS_CACHE
 build:
   docker:
     web: Dockerfile.production
