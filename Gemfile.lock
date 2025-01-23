@@ -416,8 +416,7 @@ GEM
     invisible_captcha (2.3.0)
       rails (>= 5.2)
     io-console (0.8.0)
-    irb (1.15.1)
-      pp (>= 0.6.0)
+    irb (1.14.3)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jaro_winkler (1.6.0)
@@ -553,8 +552,6 @@ GEM
     poppler (4.2.4)
       cairo-gobject (= 4.2.4)
       gio2 (= 4.2.4)
-    pp (0.6.2)
-      prettyprint
     premailer (1.23.0)
       addressable
       css_parser (>= 1.12.0)
@@ -563,7 +560,6 @@ GEM
       actionmailer (>= 3)
       net-smtp
       premailer (~> 1.7, >= 1.7.9)
-    prettyprint (0.2.0)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -903,6 +899,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   increase (~> 0.3.3)
   invisible_captcha
+  irb (~> 1.14.3)
   jbuilder (~> 2.13)
   jquery-rails
   jsbundling-rails (~> 1.3)
