@@ -81,5 +81,5 @@
       "url": "heroku/metrics"
     }
   ],
-  "stack": "container"
+  "stack": "heroku-22"
 }
