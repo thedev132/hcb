@@ -39,10 +39,6 @@ ENV RAILS_ENV="production" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
 
-# Load the commit slug
-ARG SOURCE_VERSION
-ENV HEROKU_SLUG_COMMIT=$SOURCE_VERSION
-
 # Throw-away build stage to reduce size of final image
 FROM base AS build
 
