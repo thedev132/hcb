@@ -15,8 +15,7 @@
           <%= local_time(datetime + duration, format: "%l:%M %P") %>.
         </strong>
         <br>
-        You will not be able to access your account and
-        <i>card transactions will decline</i> during this time.
+        You will not be able to access your account during this time.
 
         <% if local_assigns.has_key? :learn_more_url %>
           <%= link_to "Learn more", learn_more_url, target: "_blank" %>
