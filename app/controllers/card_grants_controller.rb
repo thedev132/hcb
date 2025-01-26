@@ -92,6 +92,8 @@ class CardGrantsController < ApplicationController
     @card_grant.create_stripe_card(current_session)
 
     redirect_to @card_grant
+  rescue Stripe::InvalidRequestError => e.message
+    redirect_to @card_grant, flash: { error: "This card could not be activated: #{e.message}" }
   end
 
   def cancel
