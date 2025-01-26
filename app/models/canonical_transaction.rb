@@ -66,7 +66,10 @@ class CanonicalTransaction < ApplicationRecord
   scope :likely_increase_account_number, -> { increase_transaction.joins("INNER JOIN increase_account_numbers ON increase_account_number_id = increase_route_id") }
   scope :likely_increase_check_deposit, -> { increase_transaction.where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'check_deposit_acceptance'") }
   scope :increase_interest, -> { increase_transaction.where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'interest_payment'") }
-  scope :likely_column_interest, -> { with_column_transaction_type("ach").where(memo: "COLUMN*COLUMN NA INTEREST") }
+  scope :likely_column_interest, -> {
+    column_transaction.where("raw_column_transactions.column_transaction->>'transaction_type' = 'interest.payout.completed'")
+                      .or(where(memo: "COLUMN*COLUMN NA INTEREST"))
+  }
   scope :likely_column_account_number, -> { column_transaction.joins("INNER JOIN column_account_numbers ON column_transaction->>'account_number_id' = column_account_numbers.column_id") }
   scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
   scope :old_likely_hack_club_fee, -> { where("memo ilike '% Fee TO ACCOUNT REDACTED%'") }
@@ -76,6 +79,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :to_svb_sweep_account, -> { where(memo: "TF TO ICS SWP") }
   scope :from_svb_sweep_account, -> { where(memo: "TF FRM ICS SWP") }
   scope :svb_sweep_account, -> { where(transaction_source_type: RawIntrafiTransaction.name) }
+  scope :svb_sweep_interest, -> { where(transaction_source_type: RawIntrafiTransaction.name, memo: "Interest Capitalization") }
   scope :mapped_by_human, -> { includes(:canonical_event_mapping).where("canonical_event_mappings.user_id is not null").references(:canonical_event_mapping) }
   scope :included_in_stats, -> {
     includes(
