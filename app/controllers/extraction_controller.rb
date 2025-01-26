@@ -83,13 +83,11 @@ class ExtractionController < ApplicationController
   end
 
   def tesseract_ocr_text
-    @file.blob.open do |tempfile|
-      words = ::RTesseract.new(ImageProcessing::MiniMagick.source(tempfile.path).convert!("png").path).to_box
-      words = words.select { |w| w[:confidence] > 85 }
-      words = words.map { |w| w[:word] }
-      text = words.join(" ")
-      text.length > 50 ? text : nil
-    end
+    words = ::RTesseract.new(ImageProcessing::MiniMagick.source(@file.path).convert!("png").path).to_box
+    words = words.select { |w| w[:confidence] > 85 }
+    words = words.map { |w| w[:word] }
+    text = words.join(" ")
+    text.length > 50 ? text : nil
   end
 
 end
