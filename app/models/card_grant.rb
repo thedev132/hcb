@@ -62,7 +62,8 @@ class CardGrant < ApplicationRecord
   after_create :transfer_money
   after_create_commit :send_email
 
-  before_validation { self.email = email.presence&.downcase&.strip }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }
+  normalizes :email, with: ->(email) { email.presence&.strip&.downcase }
 
   delegate :balance, to: :subledger
 

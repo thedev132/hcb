@@ -90,6 +90,7 @@ class AchTransfer < ApplicationRecord
   validates :bank_name, presence: true, on: :create, unless: :payment_recipient
 
   validates :recipient_email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }, allow_nil: true
+  normalizes :recipient_email, with: ->(recipient_email) { recipient_email.strip.downcase }
   validates_presence_of :recipient_email, on: :create
   validate :scheduled_on_must_be_in_the_future, on: :create
   validate on: :create do
