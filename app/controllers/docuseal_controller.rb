@@ -6,7 +6,8 @@ class DocusealController < ActionController::Base
   def webhook
     ActiveRecord::Base.transaction do
       @contract = OrganizerPosition::Contract.find_by(external_id: params[:data][:submission_id])
-      if params[:event_type] == "form.completed" && params[:data][:role] == "HCB"
+      Airbrake.notify(params[:data])
+      if params[:event_type] == "form.completed" && params[:data][:submission][:status] == "completed"
         return render json: { success: true } if @contract.signed?
 
         document = Document.new(
