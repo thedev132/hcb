@@ -9,55 +9,50 @@
 #
 # Configuration details:
 # https://github.com/airbrake/airbrake-ruby#configuration
+Airbrake.configure do |c|
+  # These are configured in Doppler but referenced directly
+  # because Credentials isn't available in an initializer
+  c.project_id = ENV["AIRBRAKE_PROJECT_ID"]
+  c.project_key = ENV["AIRBRAKE_PROJECT_KEY"]
 
-Rails.application.config.to_prepare do
-  Airbrake.configure do |c|
-    # You must set both project_id & project_key. To find your project_id and
-    # project_key navigate to your project's General Settings and copy the values
-    # from the right sidebar.
-    # https://github.com/airbrake/airbrake-ruby#project_id--project_key
-    c.project_id = 606743
-    c.project_key = Credentials.fetch(:AIRBRAKE_PROJECT_KEY)
+  # https://docs.airbrake.io/docs/overview/apm/#monitoring-rails-apps
+  c.performance_stats = true
 
-    # https://docs.airbrake.io/docs/overview/apm/#monitoring-rails-apps
-    c.performance_stats = true
+  # Configures the root directory of your project. Expects a String or a
+  # Pathname, which represents the path to your project. Providing this option
+  # helps us to filter out repetitive data from backtrace frames and link to
+  # GitHub files from our dashboard.
+  # https://github.com/airbrake/airbrake-ruby#root_directory
+  c.root_directory = Rails.root
 
-    # Configures the root directory of your project. Expects a String or a
-    # Pathname, which represents the path to your project. Providing this option
-    # helps us to filter out repetitive data from backtrace frames and link to
-    # GitHub files from our dashboard.
-    # https://github.com/airbrake/airbrake-ruby#root_directory
-    c.root_directory = Rails.root
+  # By default, Airbrake Ruby outputs to STDOUT. In Rails apps it makes sense to
+  # use the Rails' logger.
+  # https://github.com/airbrake/airbrake-ruby#logger
+  c.logger = nil # Airbrake::Rails.logger
 
-    # By default, Airbrake Ruby outputs to STDOUT. In Rails apps it makes sense to
-    # use the Rails' logger.
-    # https://github.com/airbrake/airbrake-ruby#logger
-    c.logger = nil # Airbrake::Rails.logger
+  # Configures the environment the application is running in. Helps the Airbrake
+  # dashboard to distinguish between exceptions occurring in different
+  # environments.
+  # NOTE: This option must be set in order to make the 'ignore_environments'
+  # option work.
+  # https://github.com/airbrake/airbrake-ruby#environment
+  c.environment = Rails.env
 
-    # Configures the environment the application is running in. Helps the Airbrake
-    # dashboard to distinguish between exceptions occurring in different
-    # environments.
-    # NOTE: This option must be set in order to make the 'ignore_environments'
-    # option work.
-    # https://github.com/airbrake/airbrake-ruby#environment
-    c.environment = Rails.env
+  # Setting this option allows Airbrake to filter exceptions occurring in
+  # unwanted environments such as :test.
+  # NOTE: This option *does not* work if you don't set the 'environment' option.
+  # https://github.com/airbrake/airbrake-ruby#ignore_environments
+  c.ignore_environments = %w[test development]
 
-    # Setting this option allows Airbrake to filter exceptions occurring in
-    # unwanted environments such as :test.
-    # NOTE: This option *does not* work if you don't set the 'environment' option.
-    # https://github.com/airbrake/airbrake-ruby#ignore_environments
-    c.ignore_environments = %w[test development]
+  # A list of parameters that should be filtered out of what is sent to
+  # Airbrake. By default, all "password" attributes will have their contents
+  # replaced.
+  # https://github.com/airbrake/airbrake-ruby#blocklist_keys
+  c.blocklist_keys = [/password/i, /authorization/i]
 
-    # A list of parameters that should be filtered out of what is sent to
-    # Airbrake. By default, all "password" attributes will have their contents
-    # replaced.
-    # https://github.com/airbrake/airbrake-ruby#blocklist_keys
-    c.blocklist_keys = [/password/i, /authorization/i]
-
-    # Alternatively, you can integrate with Rails' filter_parameters.
-    # Read more: https://goo.gl/gqQ1xS
-    # c.blocklist_keys = Rails.application.config.filter_parameters
-  end
+  # Alternatively, you can integrate with Rails' filter_parameters.
+  # Read more: https://goo.gl/gqQ1xS
+  # c.blocklist_keys = Rails.application.config.filter_parameters
 end
 
 # A filter that collects request body information. Enable it if you are sure you
