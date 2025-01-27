@@ -157,7 +157,7 @@ class OrganizerPosition
               },
               {
                 name: "Signature",
-                default_value: ActionController::Base.helpers.asset_path("zach_signature.png"),
+                default_value: ActionController::Base.helpers.asset_url("zach_signature.png", host: "https://hcb.hackclub.com"),
                 readonly: false
               },
               {
