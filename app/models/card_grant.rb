@@ -218,6 +218,10 @@ class CardGrant < ApplicationRecord
     user_id && User.find(user_id)
   end
 
+  def last_time_change_to(...)
+    versions.where_object_changes_to(...).last&.created_at
+  end
+
   private
 
   def create_card_grant_setting
