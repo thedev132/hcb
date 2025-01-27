@@ -10,13 +10,6 @@
 # Configuration details:
 # https://github.com/airbrake/airbrake-ruby#configuration
 Airbrake.configure do |c|
-  # You must set both project_id & project_key. To find your project_id and
-  # project_key navigate to your project's General Settings and copy the values
-  # from the right sidebar.
-  # https://github.com/airbrake/airbrake-ruby#project_id--project_key
-  c.project_id = 606743
-  c.project_key = Credentials.fetch(:AIRBRAKE_PROJECT_KEY)
-
   # https://docs.airbrake.io/docs/overview/apm/#monitoring-rails-apps
   c.performance_stats = true
 
