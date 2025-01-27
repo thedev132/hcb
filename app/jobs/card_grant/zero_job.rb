@@ -8,7 +8,7 @@ class CardGrant
       CardGrant.where.not(status: :active).find_each do |card_grant|
         next if card_grant.balance.zero?
 
-        card_grant.zero!
+        card_grant.zero!(allow_topups: true)
       end
 
     end
