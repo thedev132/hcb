@@ -35,7 +35,7 @@ class ReimbursementMailbox < ApplicationMailbox
       mail: inbound_email,
       reply_to: mail.to.first,
       report:,
-      receipts_count: receipts.size
+      receipts_count: report.expenses.size
     ).bounce_success.deliver_now
   end
 
