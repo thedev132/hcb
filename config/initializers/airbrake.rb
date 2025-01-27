@@ -13,7 +13,7 @@ Airbrake.configure do |c|
   # These are configured in Doppler but referenced directly
   # because Credentials isn't available in an initializer
   c.project_id = ENV["AIRBRAKE_PROJECT_ID"]
-  c.project_key = ENV["AIRBRAKE_PROJECT_KEY"]
+  c.project_key = ENV["AIRBRAKE_API_KEY"]
 
   # https://docs.airbrake.io/docs/overview/apm/#monitoring-rails-apps
   c.performance_stats = true
