@@ -205,20 +205,6 @@
   </section>
 </div>
 
-<div class="card mb3" id="sendy">
-  <div class="card__banner card__banner--top flex justify-between items-center promo-sendy">
-    <h3 class="h1 white p2 my0">Sendy</h3>
-    <%= link_to "Temporarily closed",
-      @perks_available ? fillout_form("4cJ69MSzKhus", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Your name" => current_user.name, "Login email" => current_user.email, "Domain URL" => @event.g_suites.first&.domain }, prefix: "prefill_") : root_path,
-      class: "btn mr1 disabled",
-      target: :_blank %>
-  </div>
-
-  <p class="mb0">
-    <%= link_to "Sendy", "https://sendy.co" %> is straightforward, reliable mass-emailing software for sending newsletters. We use it at Hack Club HQ & provide it to all HCB organizations.
-  </p>
-</div>
-
 <div class="card mb3" id="1password">
   <div class="card__banner card__banner--top flex justify-between items-center promo-1password">
     <%= image_tag "1password.svg", width: 210, class: "p2" %>
@@ -256,6 +242,21 @@
       out by the HCB team.
     </p>
   </div>
+
+  <div class="card mb3" id="sendy">
+    <div class="card__banner card__banner--top flex justify-between items-center promo-sendy">
+      <h3 class="h1 white p2 my0">Sendy</h3>
+      <%= link_to "Expired",
+        root_path,
+        class: "btn mr1 disabled",
+        target: :_blank %>
+    </div>
+
+    <p class="mb0">
+      <%= link_to "Sendy", "https://sendy.co" %> is straightforward, reliable mass-emailing software for sending newsletters. We use it at Hack Club HQ & provide it to all HCB organizations.
+    </p>
+  </div>
+
   <div class="card mb3" id="stickermule">
     <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#4E2817">
       <%= image_tag "stickermule.svg", width: 240 %>
