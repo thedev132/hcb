@@ -50,8 +50,14 @@ imported as a `RawIntrafiTransaction`:
 RawIntrafiTransaction.create(date_posted: tx[:Date], memo: tx[:"Account Activity"], amount_cents: tx[:Amount] * 100)
 ```
 
-After a batch of transactions has imported, HCB Sweep's balance reflects the sum
-of all interest capitalization transactions. That balance should increase at the
-end of each month when the Interest Capitalization transaction hits our account.
+All InfraFi transactions should be mapped to the HCB Sweeps organization; *
+*except** for Interest Capitalization transactions. These are auto-mapped to
+**Hack Foundation Interest Earnings**.
+
+After a batch of transactions has imported, HCB Sweep's balance should be
+exactly zero since all deposits and withdrawals are paired (and cancel each
+other out). In practice, a delay/time difference in syncing transactions between
+banks could cause the balance to be non-zero. However _in theory_, it should be
+zero.
 
 \- [@garyhtou](https://garytou.com) & [@sampoder](https://sampoder.com)
