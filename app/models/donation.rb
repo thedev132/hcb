@@ -196,7 +196,7 @@ class Donation < ApplicationRecord
   end
 
   def arrival_date
-    arrival = self&.payout&.arrival_date || 3.business_days.after(payout_creation_queued_for)
+    arrival = self.payout&.arrival_date || 3.business_days.after(payout_creation_queued_for)
 
     # Add 1 day to account for plaid and HCB processing time
     arrival + 1.day
