@@ -140,6 +140,10 @@ class CardGrant < ApplicationRecord
     Disbursement.where(destination_subledger_id: subledger.id).where.not(id: disbursement_id)
   end
 
+  def visible_hcb_codes
+    ((stripe_card&.hcb_codes || []) + topup_disbursements.map(&:local_hcb_code)).sort_by(&:created_at)
+  end
+
   def expire!
     hcb_user = User.find_by!(email: "bank@hackclub.com")
     cancel!(hcb_user, expired: true)
