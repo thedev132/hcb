@@ -93,7 +93,7 @@ class OrganizerPositionInvite < ApplicationRecord
   end
 
   def organizer_position_contract
-    organizer_position_contracts.last
+    organizer_position_contracts.where.not(aasm_state: :voided).last
   end
 
   def pending_signature?
