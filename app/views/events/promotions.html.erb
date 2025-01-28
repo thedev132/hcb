@@ -73,6 +73,34 @@
   </section>
 </div>
 
+<div class="card mb3" id="1password">
+  <div class="card__banner card__banner--top flex justify-between items-center promo-1password">
+    <%= image_tag "1password.svg", width: 210, class: "p2" %>
+    <%= link_to "Apply",
+      @perks_available ? fillout_form("7jzG7ADmuLus", { "Project_Name" => @event.name, "Bank_URL" => event_url(@event), "Your_Name" => current_user.name, "Email" => current_user.email }, prefix: "prefill_") : root_path,
+      class: "btn mr1",
+      target: :_blank %>
+  </div>
+
+  <% if @event.hackathon? %>
+    <p class="mb0">
+      <%= link_to "1Password", "https://1password.com" %> is offering hackathons running on HCB
+      a year-long 1Password plan for up to 5 people. This can handed out as a prize, however, it
+      can only be claimed once per hackathon.
+    </p>
+  <% else %>
+    <h3 class="mb0 mt0">Do you make open source software?</h3>
+    <p class="mb0">
+      <%= link_to "1Password", "https://1password.com" %> is offering a lifetime 1Password Teams
+      license (up to 10 seats) to any open source project running on HCB.
+    </p>
+    <h3 class="mb0 mt2">Does your nonprofit do something else?</h3>
+    <p class="mb0">
+      All other nonprofits can receive a 25% discount on 1Password's business plan.
+    </p>
+  <% end %>
+</div>
+
 <div class="card mb3" id="domains">
   <div
     class="card__banner card__banner--top flex justify-between items-center promo-domains">
@@ -203,24 +231,6 @@
     Only 🇺🇸 US citizens and LPRs who currently reside within the US are eligible to receive the award. You can see all the <a href="https://presidentialserviceawards.gov/eligibility#volunteers" target="_blank">volunteer eligibility details</a> if you have any questions.
   </p>
   </section>
-</div>
-
-<div class="card mb3" id="1password">
-  <div class="card__banner card__banner--top flex justify-between items-center promo-1password">
-    <%= image_tag "1password.svg", width: 210, class: "p2" %>
-    <%= link_to "Temporarily closed",
-      @perks_available ? fillout_form("1EVMTc9d1Zus", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Your Name" => current_user.name, "Email" => current_user.email }, prefix: "prefill_") : root_path,
-      class: "btn mr1 disabled",
-      target: :_blank %>
-  </div>
-
-  <p class="mb0">
-    <%= link_to "1Password", "https://1password.com" %> is providing $100 USD
-    credit to all organizations on HCB that can be claimed once per
-    organization. 1Password is a password manager that allows you to securely
-    keep and share account logins and credentials with your teammates; we use it
-    ourselves at Hack Club HQ!
-  </p>
 </div>
 
 <details class="w-100 left-align">
