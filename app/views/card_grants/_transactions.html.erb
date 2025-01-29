@@ -4,7 +4,7 @@
   <div style="overflow-x: auto;">
     <table>
       <tbody data-behavior="transactions">
-        <% local_assigns[:hcb_codes].order(created_at: :desc).each do |hcb_code| %>
+        <% local_assigns[:hcb_codes].each do |hcb_code| %>
           <% if hcb_code.canonical_transactions.any? %>
             <%= render partial: "canonical_transactions/canonical_transaction", collection: hcb_code.canonical_transactions, as: :ct, locals: { authorless: true, receipt_upload_button: !local_assigns[:public] } %>
           <% else %>
