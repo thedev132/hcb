@@ -91,11 +91,6 @@
                         options: @tour&.tourable&.try(:tourable_options) || {},
                         back_to_tour: @back_to_tour %>
 
-    <%= render "application/maintenance_banner",
-               datetime: "2025-01-29T23:00:00-08:00",
-               duration: 1.hour,
-               learn_more_url: "https://blog.hcb.hackclub.com/posts/2025-01-29-maintenance" %>
-
     <% if current_session&.impersonated? %>
       <div class="w-100 px4 bg-white transparency-banner">
         <p class="h5 medium center mt1 mb1">
