@@ -160,6 +160,12 @@ class User < ApplicationRecord
 
   validate :profile_picture_format
 
+  validate on: :update do
+    if admin_override_pretend? && !use_two_factor_authentication?
+      errors.add(:access_level, "two factor authentication is required for this access level")
+    end
+  end
+
   enum :comment_notifications, { all_threads: 0, my_threads: 1, no_threads: 2 }
 
   enum :charge_notifications, { email_and_sms: 0, email: 1, sms: 2, nothing: 3 }, prefix: :charge_notifications
