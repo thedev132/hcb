@@ -18,7 +18,6 @@
 #  column_object           :jsonb
 #  column_status           :string
 #  increase_object         :jsonb
-#  increase_state          :string
 #  increase_status         :string
 #  memo                    :string
 #  payment_for             :string
