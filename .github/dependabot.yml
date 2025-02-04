@@ -12,6 +12,13 @@ updates:
       day: "wednesday"
       time: "10:00"
       timezone: "America/New_York"
+  # Update Yellow Pages daily
+  - package-ecosystem: "bundler"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-name: "yellow_pages"
+    open-pull-requests-limit: 15
   - package-ecosystem: npm
     directory: "/"
     schedule:
