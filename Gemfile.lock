@@ -113,7 +113,7 @@ GEM
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
     api-pagination (6.0.0)
-    appsignal (4.2.1)
+    appsignal (4.3.3)
       logger
       rack
     argon2-kdf (0.2.0)
