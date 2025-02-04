@@ -262,8 +262,8 @@ class Wire < ApplicationRecord
   end
 
   validate on: :create do
-    if !user.admin? && usd_amount_cents < (Event.find(event.id).minimumn_wire_amount_cents)
-      errors.add(:amount, " must be more than or equal to #{ApplicationController.helpers.render_money event.minimumn_wire_amount_cents} (USD).")
+    if !user.admin? && usd_amount_cents < (Event.find(event.id).minimum_wire_amount_cents)
+      errors.add(:amount, " must be more than or equal to #{ApplicationController.helpers.render_money event.minimum_wire_amount_cents} (USD).")
     end
   end
 
