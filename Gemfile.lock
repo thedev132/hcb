@@ -839,7 +839,7 @@ GEM
       activesupport
       ostruct
     wkhtmltopdf-binary (0.12.6.8)
-    xxhash (0.5.0)
+    xxhash (0.6.0)
     yard (0.9.37)
     zeitwerk (2.7.1)
 
