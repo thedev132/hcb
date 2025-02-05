@@ -80,19 +80,19 @@ class InvoicePayout < ApplicationRecord
     "##{self.id} (#{render_money self.amount}, #{self.invoice&.sponsor&.event&.name}, inv ##{self.invoice&.id} for #{self.invoice&.sponsor&.name})"
   end
 
+  def create_stripe_payout
+    payout = StripeService::Payout.create(stripe_payout_params)
+    self.stripe_payout_id = payout.id
+
+    self.set_fields_from_stripe_payout(payout)
+  end
+
   private
 
   def default_values
     return unless invoice
 
     self.statement_descriptor ||= "HCB-#{local_hcb_code.short_code}"
-  end
-
-  def create_stripe_payout
-    payout = StripeService::Payout.create(stripe_payout_params)
-    self.stripe_payout_id = payout.id
-
-    self.set_fields_from_stripe_payout(payout)
   end
 
   def stripe_payout_params
