@@ -109,7 +109,7 @@ gem "xxhash" # fast hashing
 
 gem "diffy" # rendering diffs (comments)
 
-gem "webauthn", "~> 3.1"
+gem "webauthn", "~> 3.2"
 
 gem "ahoy_matey" # analytics
 gem "airbrake" # exception tracking
