@@ -59,20 +59,7 @@ class EventsController < ApplicationController
 
     if !Flipper.enabled?(:event_home_page_redesign_2024_09_21, @event) && !(params[:event_home_page_redesign_2024_09_21] && admin_signed_in?) || @event.demo_mode?
       redirect_to event_transactions_path(@event.slug)
-      return
     end
-
-    pending_transactions = _show_pending_transactions
-    canonical_transactions = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).run
-    all_transactions = [*pending_transactions, *canonical_transactions]
-
-    @recent_transactions = all_transactions.first(5)
-    @money_in = all_transactions.reject { |t| t.amount_cents <= 0 }.first(3)
-    @money_out = all_transactions.reject { |t| t.amount_cents >= 0 }.first(3)
-
-    @activities = PublicActivity::Activity.for_event(@event).order(created_at: :desc).first(5)
-    @organizers = @event.organizer_positions.joins(:user).order(Arel.sql("CONCAT(preferred_name, full_name) ASC"))
-    @cards = all_stripe_cards = @event.stripe_cards.order(created_at: :desc).where(stripe_cardholder: current_user&.stripe_cardholder).first(10)
   end
 
   def transaction_heatmap
@@ -84,9 +71,7 @@ class EventsController < ApplicationController
     @maximum_negative_change = heatmap_engine_response[:maximum_negative_change]
     @past_year_transactions_count = heatmap_engine_response[:transactions_count]
 
-    respond_to do |format|
-      format.html { render partial: "events/home/heatmap", locals: { heatmap: @heatmap, event: @event } }
-    end
+    render partial: "events/home/heatmap", locals: { heatmap: @heatmap, event: @event }
   end
 
   def merchants_categories
@@ -94,9 +79,48 @@ class EventsController < ApplicationController
     @merchants = BreakdownEngine::Merchants.new(@event).run
     @categories = BreakdownEngine::Categories.new(@event).run
 
-    respond_to do |format|
-      format.html { render partial: "events/home/merchants_categories", locals: { merchants: @merchants, categories: @categories, event: @event } }
-    end
+    render partial: "events/home/merchants_categories", locals: { merchants: @merchants, categories: @categories, event: @event }
+  end
+
+  def balance_transactions
+    authorize @event
+
+    pending_transactions = _show_pending_transactions
+    canonical_transactions = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).run
+    all_transactions = [*pending_transactions, *canonical_transactions]
+
+    @recent_transactions = all_transactions.first(5)
+
+    render partial: "events/home/balance_transactions", locals: { heatmap: @heatmap, event: @event }
+  end
+
+  def money_movement
+    authorize @event
+
+    pending_transactions = _show_pending_transactions
+    canonical_transactions = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).run
+    all_transactions = [*pending_transactions, *canonical_transactions]
+
+    @money_in = all_transactions.reject { |t| t.amount_cents <= 0 }.first(3)
+    @money_out = all_transactions.reject { |t| t.amount_cents >= 0 }.first(3)
+
+    render partial: "events/home/money_movement", locals: { heatmap: @heatmap, event: @event }
+  end
+
+  def team_stats
+    authorize @event
+
+    @organizers = @event.organizer_positions.joins(:user).order(Arel.sql("CONCAT(preferred_name, full_name) ASC"))
+
+    render partial: "events/home/team_stats", locals: { merchants: @merchants, categories: @categories, event: @event }
+  end
+
+  def recent_activity
+    authorize @event
+
+    @activities = PublicActivity::Activity.for_event(@event).order(created_at: :desc).first(5)
+
+    render partial: "events/home/recent_activity", locals: { merchants: @merchants, categories: @categories, event: @event }
   end
 
   def tags_users
