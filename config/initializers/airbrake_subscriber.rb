@@ -3,8 +3,10 @@
 class AirbrakeSubscriber
   def report(error, handled:, severity:, context:, source: nil)
     Airbrake.notify(error, { context:, handled:, severity:, source: })
+  rescue
+    nil
   end
 
 end
 
-Rails.error.subscribe(AirbrakeSubscriber.new)
+# Rails.error.subscribe(AirbrakeSubscriber.new)
