@@ -36,6 +36,7 @@ gem "increase", "~> 0.3.3"
 gem "stripe", "11.7.0"
 gem "plaid", "~> 34.0"
 gem "yellow_pages", github: "hackclub/yellow_pages"
+gem "recursive-open-struct" # for stubbing stripe api objects
 
 gem "aws-sdk-s3", require: false
 
