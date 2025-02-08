@@ -81,7 +81,6 @@ module EventMappingEngine
         next unless check_deposit
 
         CanonicalEventMapping.create!(event: check_deposit.event, canonical_transaction: ct)
-        check_deposit.update!(status: :deposited)
       end
     end
 
