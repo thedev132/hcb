@@ -65,13 +65,13 @@ class GrantsController < ApplicationController
     return not_found unless @grant.waiting_on_recipient? || @grant.verifying? || @grant.fulfilled?
 
     if !signed_in?
-      return redirect_to auth_users_path(email: @grant.recipient.email, return_to: grant_path(@grant)), flash: { info: "Please sign in to continue." }
+      return redirect_to auth_users_path(return_to: grant_path(@grant)), flash: { info: "Please sign in to continue." }
     end
 
     authorize @grant
 
   rescue Pundit::NotAuthorizedError
-    redirect_to auth_users_path(email: @grant.recipient.email, return_to: grant_path(@grant)), flash: { info: "Please sign in with the same email you received the invitation at." }
+    redirect_to auth_users_path(return_to: grant_path(@grant)), flash: { info: "Please sign in with the same email you received the invitation at." }
   end
 
   def activate
