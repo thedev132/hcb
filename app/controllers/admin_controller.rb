@@ -477,7 +477,7 @@ class AdminController < ApplicationController
 
     redirect_to disbursement_process_admin_path(disbursement), flash: { success: "Success" }
   rescue => e
-    notify_airbrake e
+    Rails.error.report(e)
     redirect_to disbursement_process_admin_path(params[:id]), flash: { error: e.message }
   end
 
@@ -490,7 +490,7 @@ class AdminController < ApplicationController
 
     redirect_to disbursement_process_admin_path(disbursement), flash: { success: "Success" }
   rescue => e
-    notify_airbrake e
+    Rails.error.report(e)
     redirect_to disbursement_process_admin_path(params[:id]), flash: { error: e.message }
   end
 
@@ -1267,7 +1267,7 @@ class AdminController < ApplicationController
 
     task.size
   rescue => e
-    Airbrake.notify(e)
+    Rails.error.report(e)
     9999 # return something invalidly high to get the ops team to report it
   end
 
