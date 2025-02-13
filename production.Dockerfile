@@ -95,6 +95,9 @@ RUN rm -rf node_modules
 # Final stage for app image
 FROM base
 
+# Add build timestamp
+RUN date +%s > .build-timestamp
+
 # Run and own only the runtime files as a non-root user for security
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash
@@ -103,8 +106,6 @@ USER 1000:1000
 # Copy built artifacts: gems, application
 COPY --chown=rails:rails --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --chown=rails:rails --from=build /app /app
-
-RUN date +%s > .build-timestamp
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["./bin/docker-entrypoint"]
