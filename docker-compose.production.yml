@@ -5,9 +5,13 @@ services:
     build:
       context: .
       dockerfile: production.Dockerfile
+    expose:
+      - "3000"
+    ports:
+      - "80:3000"
   jobs:
     image: ghcr.io/hackclub/hcb
     depends_on: [ web ] # Wait for web to build docker image
-    command: bundle exec sidekiq
     environment:
       RAILS_MAX_THREADS: 4 # 4 threads x 3 workers = 12 threads
+    command: bundle exec sidekiq
