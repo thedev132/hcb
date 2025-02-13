@@ -104,6 +104,8 @@ USER 1000:1000
 COPY --chown=rails:rails --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --chown=rails:rails --from=build /app /app
 
+RUN date +%s > .build-timestamp
+
 # Entrypoint prepares the database.
 ENTRYPOINT ["./bin/docker-entrypoint"]
 
