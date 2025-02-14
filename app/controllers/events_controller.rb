@@ -773,18 +773,6 @@ class EventsController < ApplicationController
     render :reimbursements_pending_review_icon, layout: false
   end
 
-  def employees
-    authorize @event
-    @employees = @event.employees.order(
-      Arel.sql("aasm_state = 'onboarded' DESC"),
-      Arel.sql("aasm_state = 'onboarding' DESC"),
-      "employees.created_at desc"
-    )
-    @employees = @employees.onboarding if params[:filter] == "onboarding"
-    @employees = @employees.terminated if params[:filter] == "terminated"
-    @employees = @employees.search(params[:q]) if params[:q].present?
-  end
-
   def toggle_hidden
     authorize @event
 

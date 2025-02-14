@@ -107,8 +107,7 @@ class Receipt < ApplicationRecord
     transaction_popover: 16,
     transaction_popover_drag_and_drop: 17,
     email_reimbursement: 18,
-    sms_reimbursement: 19,
-    employee_payment: 20
+    sms_reimbursement: 19
   }
 
   enum :textual_content_source, {

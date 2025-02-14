@@ -1166,21 +1166,6 @@ class AdminController < ApplicationController
     end
   end
 
-  def employees
-    @page = params[:page] || 1
-    @per = params[:per] || 20
-    @employees = Employee.all.page(@page).per(@per).order(
-      Arel.sql("aasm_state = 'onboarding' DESC"),
-      "employees.created_at desc"
-    )
-  end
-
-  def employee_payments
-    @page = params[:page] || 1
-    @per = params[:per] || 20
-    @payments = Employee::Payment.all.page(@page).per(@per)
-  end
-
   private
 
   def stream_data(content_type, filename, data, download = true)
