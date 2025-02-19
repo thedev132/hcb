@@ -82,7 +82,7 @@ class CardGrant < ApplicationRecord
   monetize :amount_cents
 
   def name
-    "#{user.name} (#{user.email})"
+    user.name
   end
 
   def state
