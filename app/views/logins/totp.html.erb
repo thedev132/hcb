@@ -25,7 +25,6 @@
                autocomplete: i != 0 ? "off" : "one-time-code",
                data: { "login-code-target": "input" },
                class: "text-center mb-0 text-lg font-bold dark:!border-gray-600 !rounded-none focus:z-10 -mr-[1px] first:!rounded-l-lg #{ [2, 5].include?(i) && "!rounded-r-lg"}  #{ (i == 3) && "!rounded-l-lg"}",
-               style: i != 0 ? "transform: translateX(-20px); width: 60px; z-index: 2" : "width: 80px; z-index: 1; padding-right: 28px;",
                required: true %>
             <% if i == 2 %>
               <span style="transform: translateX(-20px); z-index: 2; opacity: 0;">&mdash;</span>
