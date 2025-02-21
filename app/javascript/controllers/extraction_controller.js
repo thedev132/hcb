@@ -1,3 +1,5 @@
+/* global Turbo */
+
 import { Controller } from '@hotwired/stimulus'
 import csrf from '../common/csrf'
 
@@ -11,11 +13,17 @@ export default class extends Controller {
     const formData = new FormData()
     formData.append('file', file)
 
+    document.querySelector('html').setAttribute('data-ai-loading', true)
+    Turbo.navigator.delegate.adapter.showProgressBar()
+
     const response = await fetch('/extract/invoice', {
       method: 'POST',
       body: formData,
       headers: { 'X-CSRF-Token': csrf() },
     }).then(res => res.json())
+
+    Turbo.navigator.delegate.adapter.progressBar.hide()
+    document.querySelector('html').setAttribute('data-ai-loading', false)
 
     let empty = true
 
