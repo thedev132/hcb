@@ -37,6 +37,7 @@ export default class extends Controller {
           Object.keys(response).includes(element.dataset.extractionField)
         ) {
           element.value = response[element.dataset.extractionField]
+          element.dispatchEvent(new Event('paste'))
         }
       })
     }
