@@ -643,10 +643,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :card_grants, only: [:show], path: "grants" do
+  resources :card_grants, only: [:show, :edit, :update], path: "grants" do
     member do
       post "activate"
       get "spending"
+      post "clear_purpose"
     end
   end
 

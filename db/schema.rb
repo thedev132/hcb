@@ -430,6 +430,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_03_075719) do
     t.string "category_lock"
     t.integer "status", default: 0, null: false
     t.string "keyword_lock"
+    t.string "purpose"
     t.index ["disbursement_id"], name: "index_card_grants_on_disbursement_id"
     t.index ["event_id"], name: "index_card_grants_on_event_id"
     t.index ["sent_by_id"], name: "index_card_grants_on_sent_by_id"

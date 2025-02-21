@@ -24,7 +24,7 @@
 
 <% if @active_stripe_cards.any? %>
   <article class="grid grid--wide">
-    <%= render @active_stripe_cards, headless: true %>
+    <%= render @active_stripe_cards, headless: true, show_purpose: true %>
   </article>
 <% else %>
   <%= blankslate "No active cards found!" %>

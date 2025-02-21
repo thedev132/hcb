@@ -10,6 +10,7 @@
 #  email           :string           not null
 #  keyword_lock    :string
 #  merchant_lock   :string
+#  purpose         :string
 #  status          :integer          default("active"), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -72,6 +73,7 @@ class CardGrant < ApplicationRecord
 
   validates_presence_of :amount_cents, :email
   validates :amount_cents, numericality: { greater_than: 0, message: "can't be zero!" }
+  validates :purpose, length: { maximum: 30 }
 
   scope :not_activated, -> { active.where(stripe_card_id: nil) }
   scope :activated, -> { active.where.not(stripe_card_id: nil) }

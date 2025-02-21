@@ -44,8 +44,15 @@
     </p>
     <div class="stripe-card__overlay"></div>
   </div>
-  <div class="mt2 muted center"><%= stripe_card.name %></div>
-
+  <div class="mt2 muted center">
+    <% if defined? card_label %>
+      <%= card_label %>
+    <% elsif defined? show_purpose %>
+      <%= stripe_card.card_grant&.purpose %>
+    <% else %>
+      <%= stripe_card.name %>
+    <% end %>
+  </div>
 </a>
 
 <% if @show_card_popovers && !show_mock_data? %>
