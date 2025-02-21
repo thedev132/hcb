@@ -81,9 +81,7 @@ class CardGrant < ApplicationRecord
 
   monetize :amount_cents
 
-  def name
-    user.name
-  end
+  delegate :name, to: :user
 
   def state
     if canceled? || expired?
