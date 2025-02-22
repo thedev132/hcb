@@ -72,7 +72,10 @@ export default class extends Controller {
         .addConfetti({
           emojis: '✨',
         })
-        .then(() => dropzone.remove())
+        .then(() => {
+          dropzone.remove()
+          document.body.style.overflow = 'auto'
+        })
     }
   }
 }
