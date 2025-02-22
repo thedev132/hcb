@@ -15,6 +15,11 @@ function setupOTP() {
     if(e.target.value.length == 6){
       $(e.target).closest('form').submit();
     }
+    if(isNaN(e.target.value)){
+      e.target.style.animation = e.target.style.animation 
+      ? e.target.style.animation + ',0.5s linear shake' // shake multiple times!
+      : '0.5s linear shake'
+    }
   })
   
   $('[data-behavior=otp_input]').on('click', (e) => 
