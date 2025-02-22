@@ -51,7 +51,7 @@ class CardGrant < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :sent_by, class_name: "User"
   belongs_to :disbursement, optional: true
-  has_many :disbursements, ->(record) { where(destination_subledger_id: record.subledger_id) }, through: :event
+  has_many :disbursements, ->(record) { where(destination_subledger_id: record.subledger_id).or(where(source_subledger_id: record.subledger_id)) }, through: :event
   has_one :card_grant_setting, through: :event, required: true
   alias_method :setting, :card_grant_setting
 
