@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_03_075719) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_17_050700) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -945,13 +945,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_03_075719) do
   end
 
   create_table "fees", force: :cascade do |t|
-    t.bigint "canonical_event_mapping_id", null: false
+    t.bigint "canonical_event_mapping_id"
     t.decimal "amount_cents_as_decimal"
     t.decimal "event_sponsorship_fee"
     t.text "reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "event_id"
+    t.string "memo"
     t.index ["canonical_event_mapping_id"], name: "index_fees_on_canonical_event_mapping_id"
+    t.index ["event_id"], name: "index_fees_on_event_id"
   end
 
   create_table "flipper_features", force: :cascade do |t|
