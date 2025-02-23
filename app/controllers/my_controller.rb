@@ -18,14 +18,20 @@ class MyController < ApplicationController
   end
 
   def cards
-    @stripe_cards = current_user.stripe_cards.includes(:event).order(
+    @stripe_cards = current_user.stripe_cards.includes(:event)
+    @emburse_cards = current_user.emburse_cards.includes(:event)
+
+    @status = %w[active inactive canceled].include?(params[:status]) ? params[:status] : nil
+    @type = %w[virtual physical].include?(params[:type]) ? params[:type] : nil
+    @filter_applied = @status || @type
+
+    @stripe_cards = @stripe_cards.where(stripe_status: @status) if @status
+    @stripe_cards = @stripe_cards.where(card_type: @type) if @type
+
+    @stripe_cards = @stripe_cards.order(
       Arel.sql("stripe_status = 'active' DESC"),
       Arel.sql("stripe_status = 'inactive' DESC")
     )
-    @emburse_cards = current_user.emburse_cards.includes(:event)
-
-    @active_stripe_cards = @stripe_cards.where.not(stripe_status: "canceled")
-    @canceled_stripe_cards = @stripe_cards.where(stripe_status: "canceled")
   end
 
   def tasks
