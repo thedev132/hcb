@@ -337,11 +337,13 @@ legend {
     margin-bottom: 0.25rem;
   }
 
-  input {
+  input,
+  .field_with_errors:has(> input) {
     display: none;
   }
 
-  label {
+  label,
+  .field_with_errors > label {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -354,12 +356,16 @@ legend {
     background-color: rgba(map-get($palette, accent), 0.25);
   }
 
-  input:disabled + label {
+  input:disabled + label,
+  .field_with_errors:has(> input:disabled) + .field_with_errors:has(> label) {
     opacity: 0.5;
     cursor: default;
   }
 
-  input:checked + label {
+  input:checked + label,
+  .field_with_errors:has(> input:checked)
+    + .field_with_errors:has(> label)
+    > label {
     box-shadow:
       0 0 0 1px white,
       0 0 0 3px map-get($palette, info);
