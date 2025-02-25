@@ -19,16 +19,10 @@ module EventMappingEngine
       map_check_deposits!
       map_achs!
       map_disbursements!
-      map_hack_club_bank_issued_cards!
       map_stripe_top_ups!
       map_outgoing_fee_reimbursements!
       map_interest_payments!
       map_svb_sweep_transactions!
-
-      map_bank_fees! # TODO: move to using hcb short codes
-
-      map_hcb_codes_invoice!
-      map_hcb_codes_donation!
 
       map_hcb_codes_short!
 
@@ -92,16 +86,8 @@ module EventMappingEngine
       ::EventMappingEngine::Map::Achs.new.run
     end
 
-    def map_bank_fees!
-      ::EventMappingEngine::Map::BankFees.new.run
-    end
-
     def map_disbursements!
       ::EventMappingEngine::Map::Disbursements.new.run
-    end
-
-    def map_hack_club_bank_issued_cards!
-      ::EventMappingEngine::Map::HackClubBankIssuedCards.new.run
     end
 
     def map_stripe_top_ups!
@@ -134,14 +120,6 @@ module EventMappingEngine
       CanonicalTransaction.unmapped.svb_sweep_interest.find_each(batch_size: 100) do |ct|
         CanonicalEventMapping.create!(canonical_transaction: ct, event_id: EventMappingEngine::EventIds::HACK_FOUNDATION_INTEREST)
       end
-    end
-
-    def map_hcb_codes_invoice!
-      ::EventMappingEngine::Map::HcbCodes::Invoice.new.run
-    end
-
-    def map_hcb_codes_donation!
-      ::EventMappingEngine::Map::HcbCodes::Donation.new.run
     end
 
     def map_hcb_codes_short!
