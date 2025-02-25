@@ -6,7 +6,7 @@
   <span class="flex-grow">Payroll</span>
   <%= link_to "#", class: "btn bg-success", data: { behavior: "modal_trigger", modal: "invite" } do %>
     <%= inline_icon "plus" %>
-    Invite an employee
+    Invite a contractor
   <% end %>
 </h1>
 
@@ -49,7 +49,7 @@
   </article>
 <% end %>
 
-<h2 class="w-full text-left mt-8 pb-0 border-none">Employees</h2>
+<h2 class="w-full text-left mt-8 pb-0 border-none">Contractors</h2>
 
 <div class="flex items-center gap-4 flex-col-reverse sm:flex-row">
   <%= form_with(model: nil, local: true, method: :get, class: "flex-1 w-full sm:w-auto") do |form| %>
@@ -65,7 +65,7 @@
 </div>
 
 <% if @employees.blank? %>
-  <%= blankslate "No employees created." %>
+  <%= blankslate "No contractors created." %>
 <% else %>
   <div class="grid grid-cols-1 lg:grid-cols-2">
     <% @employees.each do |employee| %>
@@ -87,14 +87,14 @@
 
 <section data-behavior="modal" role="dialog" id="invite" class="modal modal--scroll bg-snow">
   <%= form_with(model: Employee, method: :post, html: { class: "[&_input]:max-w-full [&_textarea]:!max-w-full" }) do |form| %>
-    <%= modal_header "Invite an employee" %>
+    <%= modal_header "Invite a contractor" %>
     <div class="card border b--info mt2 mb2 container--sm mx-auto">
       <p class="mt0 mb0">
-        After being onboarded, this employee will be able to submit invoices to
+        After being onboarded, this contractor will be able to submit invoices to
         you for approval and payment. HCB will handle yearly tax filings.
       </p>
     </div>
-    <%= form.text_field :email, class: "mt1", placeholder: "Enter this employee's email", required: true %>
+    <%= form.text_field :email, class: "mt1", placeholder: "Enter this contractor's email", required: true %>
     <%= form.hidden_field :event_id, value: @event.id %>
     <div class="inline-block">
       <%= form.submit "Send invitation", class: "mt2", disabled: @event&.demo_mode? %>
