@@ -47,6 +47,7 @@
           <%= render partial: "spending_instructions", locals: { card_grant: @card_grant } %>
         <% end %>
       <% end %>
+      <%= render partial: "canceled_warning", locals: { card_grant: @card_grant } unless @card_grant.stripe_card %>
     </div>
   <% end %>
 </div>
