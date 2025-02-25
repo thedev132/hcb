@@ -13,9 +13,7 @@ module EventMappingEngine
       map_column_account_number_transactions!
 
       map_stripe_transactions!
-      map_checks!
       map_increase_checks!
-      map_clearing_checks!
       map_check_deposits!
       map_achs!
       map_disbursements!
@@ -51,22 +49,6 @@ module EventMappingEngine
 
     def map_stripe_transactions!
       ::EventMappingEngine::Map::StripeTransactions.new(start_date: @start_date).run
-    end
-
-    def map_checks!
-      begin
-        ::EventMappingEngine::Map::Checks.new.run
-      rescue => e
-        Rails.error.report(e)
-      end
-    end
-
-    def map_clearing_checks!
-      begin
-        ::EventMappingEngine::Map::ClearingChecks.new.run
-      rescue => e
-        Rails.error.report(e)
-      end
     end
 
     def map_check_deposits!
