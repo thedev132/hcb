@@ -77,7 +77,7 @@
         <span class="block flex">
           <span class="flex-grow"><%= employee.user.email %></span>
           <% unless employee.onboarding? %>
-            <strong><%= render_money employee.payments.admin_approved.or(employee.payments.organizer_approved).or(employee.payments.paid).sum(:amount_cents) %> earned</strong>
+            <strong><%= render_money employee.payments.paid.or(employee.payments.approved).sum(:amount_cents) %> earned</strong>
           <% end %>
         </span>
       <% end %>
