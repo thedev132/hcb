@@ -87,7 +87,7 @@
     <%= dock_item "Payroll",
       event_employees_path(event_id: @event.slug),
       tooltip: "Manage contractors",
-      icon: "bag",
+      icon: "person-badge",
       selected: local_assigns[:selected] == :payroll if Flipper.enabled?(:payroll_2025_02_13, @event) %>
     <hr>
     <%= dock_item "Team",

@@ -45,7 +45,7 @@
     <%= dock_item "Payroll",
       my_payroll_path,
       tooltip: "Get paid through HCB",
-      icon: "bag",
+      icon: "person-badge",
       selected: local_assigns[:selected] == :payroll if current_user.jobs.any? %>
     <%= dock_item "Settings",
       my_settings_path,
