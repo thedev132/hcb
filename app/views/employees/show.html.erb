@@ -4,6 +4,12 @@
 
 <h1 class="heading flex">
   <span class="flex-grow"><%= @employee.user.name %>'s payroll</span>
+  <% if @employee.onboarded? %>
+    <%= link_to "#", class: "btn bg-success", data: { behavior: "modal_trigger", modal: "create_employee_payment" } do %>
+      <%= inline_icon "plus" %>
+      Submit invoice
+    <% end %>
+  <% end %>
   <% if policy(@employee).destroy? %>
     <%= link_to @employee, class: "btn bg-error", method: :DELETE do %>
       <%= inline_icon "delete" %>
@@ -26,3 +32,5 @@
 <% end %>
 
 <%= render "employees/payments", payments: @employee.payments, show_stats: true %>
+
+<%= render "employee/payments/new", employee: @employee %>
