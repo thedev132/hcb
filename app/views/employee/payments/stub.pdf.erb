@@ -44,7 +44,7 @@
       <%= render_money @payment.amount  %>
     </td>
     <td>
-      <%= number_to_currency @payment.employee.payments.where(created_at: @payment.created_at.beginning_of_year.to_time..@payment.created_at)  %>
+      <%= render_money @payment.employee.payments.paid.where(created_at: @payment.created_at.beginning_of_year.to_time..@payment.created_at).sum(:amount_cents)  %>
     </td>
   </tr>
 </table>
