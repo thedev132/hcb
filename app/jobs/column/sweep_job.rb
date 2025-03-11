@@ -47,8 +47,8 @@ module Column
         type:,
         entry_class_code: "CCD",
         counterparty: {
-          account_number: Rails.application.credentials.svb[:account_number],
-          routing_number: Rails.application.credentials.svb[:routing_number],
+          account_number: Credentials.fetch(:SVB_ACCOUNT_NUMBER),
+          routing_number: Credentials.fetch(:SVB_ACCOUNT_NUMBER),
         },
         description:,
         company_entry_description: "HCB-SWEEP",
