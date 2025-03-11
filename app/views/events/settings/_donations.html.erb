@@ -95,7 +95,7 @@
               <%= form.number_field :amount_cents, placeholder: "1000",
                                                    class: "w-100 fit !border-none !bg-transparent !text-black dark:!text-white !pl-0",
                                                    step: "1",
-                                                   value: (@event.donation_goal.amount_cents if @event.donation_goal.present?),
+                                                   value: (@event.donation_goal.amount_cents / 100 if @event.donation_goal.present?),
                                                    disabled: !policy(event).update?,
                                                    data: {
                                                      action: "input->donation#update",
