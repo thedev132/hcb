@@ -2,7 +2,7 @@
 
 # See https://github.com/hackclub/hcb/pull/8073.
 # For production & GitHub actions, credentials are synced using https://docs.doppler.com/docs/github-actions and https://docs.doppler.com/docs/heroku.
-# Locally, use a `DOPPLER_TOKEN` (https://docs.doppler.com/docs/service-tokens) to load in environment variables.
+# Locally, use a `DOPPLER_TOKEN` (https://docs.doppler.com/docs/service-tokens) to load in enviroment variables.
 # A `DOPPLER_TOKEN` is also configured for every Heroku staging deploy at the moment.
 
 module Credentials
