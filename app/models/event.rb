@@ -347,7 +347,7 @@ class Event < ApplicationRecord
 
   validates :postal_code, zipcode: { country_code_attribute: :country, message: "is not valid" }, allow_blank: true
 
-  before_create { self.increase_account_id ||= IncreaseService::AccountIds::FS_MAIN }
+  before_create { self.increase_account_id ||= "account_phqksuhybmwhepzeyjcb" }
 
   before_update if: -> { demo_mode_changed?(to: false) } do
     self.activated_at = Time.now

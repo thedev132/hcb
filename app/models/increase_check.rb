@@ -219,11 +219,7 @@ class IncreaseCheck < ApplicationRecord
   def send_check!
     return unless may_mark_approved?
 
-    if Flipper.enabled?(:column_check_transfers, event)
-      send_column!
-    else
-      send_increase!
-    end
+    send_column!
 
     mark_approved!
 
@@ -233,31 +229,6 @@ class IncreaseCheck < ApplicationRecord
   end
 
   private
-
-  def send_increase!
-    increase_check = Increase::CheckTransfers.create(
-      account_id: IncreaseService::AccountIds::FS_MAIN,
-      source_account_number_id: event.increase_account_number_id,
-      # Increase will print and mail the physical check for us
-      fulfillment_method: "physical_check",
-      physical_check: {
-        memo:,
-        note: "Check from #{event.name}",
-        recipient_name:,
-        mailing_address: {
-          line1: address_line1,
-          line2: address_line2.presence,
-          city: address_city,
-          state: address_state,
-          postal_code: address_zip,
-        }
-      },
-      unique_identifier: self.id.to_s,
-      amount:,
-    )
-
-    update!(increase_id: increase_check["id"], increase_status: increase_check["status"])
-  end
 
   def send_column!
     account_number_id = event.column_account_number&.column_id ||

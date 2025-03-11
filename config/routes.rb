@@ -619,7 +619,6 @@ Rails.application.routes.draw do
 
   post "twilio/webhook", to: "twilio#webhook"
   post "stripe/webhook", to: "stripe#webhook"
-  post "increase/webhook", to: "increase#webhook"
   post "docuseal/webhook", to: "docuseal#webhook"
   post "webhooks/column", to: "column/webhooks#webhook"
 
