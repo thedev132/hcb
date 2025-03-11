@@ -730,6 +730,10 @@ Rails.application.routes.draw do
     resources :tags, only: [:create, :destroy]
     resources :event_tags, only: [:create, :destroy]
 
+    namespace :donation do
+      resource :goals, only: [:create, :update]
+    end
+
     resources :recurring_donations, only: [:create], path: "recurring" do
       member do
         get "pay"
