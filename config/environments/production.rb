@@ -124,8 +124,5 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {
     host: Rails.application.credentials.dig(:default_url_host, :live)
   }
-
   Rails.application.routes.default_url_options[:host] = Rails.application.credentials.dig(:default_url_host, :live)
-
-  Credentials::Doppler.load if ENV["DOPPLER_TOKEN"]
 end
