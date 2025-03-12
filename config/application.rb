@@ -23,7 +23,7 @@ module Bank
     end
 
     config.action_mailer.default_url_options = {
-      host: Rails.application.credentials.dig(:default_url_host, :live)
+      host: Credentials.fetch(:LIVE_URL_HOST)
     }
 
     # SMTP config
