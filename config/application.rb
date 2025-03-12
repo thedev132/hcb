@@ -28,11 +28,11 @@ module Bank
 
     # SMTP config
     config.action_mailer.smtp_settings = {
-      user_name: Rails.application.credentials.dig(:smtp, :username),
-      password: Rails.application.credentials.dig(:smtp, :password),
-      address: Rails.application.credentials.dig(:smtp, :address),
-      domain: Rails.application.credentials.dig(:smtp, :domain),
-      port: Rails.application.credentials.dig(:smtp, :port),
+      user_name: Credentials.fetch(:SMTP, :USERNAME),
+      password: Credentials.fetch(:SMTP, :PASSWORD),
+      address: Credentials.fetch(:SMTP, :ADDRESS),
+      domain: Credentials.fetch(:SMTP, :DOMAIN),
+      port: Credentials.fetch(:SMTP, :PORT),
       authentication: :plain
     }
 
