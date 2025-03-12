@@ -92,5 +92,10 @@ module Bank
     # See https://jordanhollinger.com/2023/11/11/rails-strict-loading/ for context
     config.active_record.action_on_strict_loading_violation = :log
 
+    # setting up ActiveRecord's encryption: https://guides.rubyonrails.org/active_record_encryption.html#setup
+    config.active_record.encryption.primary_key = Credentials.fetch(:ACTIVE_RECORD, :ENCRYPTION, :PRIMARY_KEY)
+    config.active_record.encryption.deterministic_key = Credentials.fetch(:ACTIVE_RECORD, :ENCRYPTION, :DETERMINISTIC_KEY)
+    config.active_record.encryption.key_derivation_salt = Credentials.fetch(:ACTIVE_RECORD, :ENCRYPTION, :KEY_DERIVATION_SALT)
+
   end
 end
