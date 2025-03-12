@@ -3,6 +3,7 @@
 require_relative "boot"
 
 require "rails/all"
+require_relative "../app/lib/credentials"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -12,6 +13,8 @@ module Bank
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.2
+
+    Credentials.load if ENV["DOPPLER_TOKEN"]
 
     if ENV["USE_PROD_CREDENTIALS"]&.downcase == "true"
       config.credentials.content_path = Rails.root.join("config/credentials/production.yml.enc")

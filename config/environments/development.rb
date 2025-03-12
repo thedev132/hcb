@@ -108,5 +108,4 @@ Rails.application.configure do
     Bullet.rails_logger  = true
   end
 
-  Credentials::Doppler.load if ENV["DOPPLER_TOKEN"]
 end
