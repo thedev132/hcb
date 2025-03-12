@@ -81,7 +81,7 @@ module Column
       signature_valid = ActiveSupport::SecurityUtils.secure_compare(
         OpenSSL::HMAC.hexdigest(
           "SHA256",
-          Rails.application.credentials.column.dig(ColumnService::ENVIRONMENT, :webhook_secret),
+          Credentials.fetch(:COLUMN, ColumnService::ENVIRONMENT, :WEBHOOK_SECRET),
           request.body.read
         ),
         request.headers["Column-Signature"]

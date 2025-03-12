@@ -38,7 +38,7 @@ module Column
 
       event = Event.find(EventMappingEngine::EventIds::SVB_SWEEPS)
 
-      account_number_id = event.column_account_number&.column_id || Rails.application.credentials.dig(:column, ColumnService::ENVIRONMENT, :default_account_number)
+      account_number_id = event.column_account_number&.column_id || Credentials.fetch(:COLUMN, ColumnService::ENVIRONMENT, :DEFAULT_ACCOUNT_NUMBER)
 
       ColumnService.post("/transfers/ach", {
         idempotency_key:,

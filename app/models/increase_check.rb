@@ -232,7 +232,7 @@ class IncreaseCheck < ApplicationRecord
 
   def send_column!
     account_number_id = event.column_account_number&.column_id ||
-                        Rails.application.credentials.dig(:column, ColumnService::ENVIRONMENT, :default_account_number)
+                        Credentials.fetch(:COLUMN, ColumnService::ENVIRONMENT, :DEFAULT_ACCOUNT_NUMBER)
 
     column_check = ColumnService.post "/transfers/checks/issue",
                                       idempotency_key: self.id.to_s,
