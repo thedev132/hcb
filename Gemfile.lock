@@ -113,9 +113,9 @@ GEM
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
     api-pagination (6.0.0)
-    appsignal (4.3.3)
+    appsignal (4.5.4)
       logger
-      rack
+      rack (>= 2.0.0)
     argon2-kdf (0.3.0)
       fiddle
     ast (2.4.2)
