@@ -71,6 +71,11 @@
       </div>
 
       <div class="field">
+        <%= form.label :risk_level %>
+        <%= form.collection_select :risk_level, Event.risk_levels.map { |k, _v| [k.humanize.capitalize, k] }, :last, :first, { include_blank: "Select a risk level" } %>
+      </div>
+
+      <div class="field">
         <%= form.label :point_of_contact_id, capture { %>
           Point of Contact <%= link_to "(Me!)", event_claim_point_of_contact_path(@event), method: :post %>
         <% } %>
