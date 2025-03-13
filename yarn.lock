@@ -1303,10 +1303,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/merge-streams/-/merge-streams-2.3.0.tgz#719df7fb41766bc143369eaa0dd56d8dc87c9958"
   integrity sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==
 
-"@stripe/stripe-js@^5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-5.6.0.tgz#cbb5b5f6110f870ca7de7e8ea3d189e9525a1019"
-  integrity sha512-w8CEY73X/7tw2KKlL3iOk679V9bWseE4GzNz3zlaYxcTjmcmWOathRb0emgo/QQ3eoNzmq68+2Y2gxluAv3xGw==
+"@stripe/stripe-js@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-6.0.0.tgz#7a2a244c133885f1694059f1f7b34536846517e7"
+  integrity sha512-Q8dbgLhXqtSCGflO8KaEQxM6/b3nHyPnX45300jxjUxS1acnBV5x7VRpWw0GDYgxAElIhlarPw0txXdeMzMC7Q==
 
 "@trysound/sax@0.2.0":
   version "0.2.0"
