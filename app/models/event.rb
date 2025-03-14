@@ -698,6 +698,7 @@ class Event < ApplicationRecord
   def minimum_wire_amount_cents
     return 100 if canonical_transactions.where("amount_cents > 0").where("date >= ?", 1.year.ago).sum(:amount_cents) > 50_000_00
     return 100 if plan.exempt_from_wire_minimum?
+    return 100 if Flipper.enabled?(:exempt_from_wire_minimum, self)
 
     return 500_00
   end
