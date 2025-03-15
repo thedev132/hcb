@@ -717,7 +717,7 @@ class AdminController < ApplicationController
 
     relation = HcbCode
 
-    relation = relation.where("hcb_codes.hcb_code ilike '%#{@q}%'") if @q
+    relation = relation.where("hcb_codes.hcb_code ILIKE ?", "%#{@q}%") if @q
     relation = relation.receipt_required.missing_receipt if @has_receipt == "no"
     relation = relation.has_receipt_or_marked_no_or_lost if @has_receipt == "yes"
     relation = relation.lost_receipt if @has_receipt == "lost"
@@ -1132,7 +1132,7 @@ class AdminController < ApplicationController
     @message_id = params[:message_id]
 
     respond_to do |format|
-      format.html { render inline: "<%== Ahoy::Message.find(@message_id).html_content %>" }
+      format.html { render html: Ahoy::Message.find(@message_id).html_content.html_safe } # rubocop:disable Rails/OutputSafety
     end
   end
 
@@ -1160,7 +1160,7 @@ class AdminController < ApplicationController
         yp_name: merchant[:name],
         yp_network_id: network_id,
         memos: RawStripeTransaction
-          .where("stripe_transaction->'merchant_data'->>'network_id' = '#{network_id}'")
+          .where("stripe_transaction->'merchant_data'->>'network_id' = ?", network_id)
           .pluck(Arel.sql("distinct(stripe_transaction->'merchant_data'->'name')"))
       }
     end
