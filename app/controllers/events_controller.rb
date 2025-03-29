@@ -1073,6 +1073,8 @@ class EventsController < ApplicationController
 
   def set_cacheable
     return false unless params[:q].blank? &&
+                        params[:page].blank? &&
+                        params[:per].blank? &&
                         @user.nil? &&
                         @tag.blank? &&
                         @type.blank? &&
@@ -1082,7 +1084,6 @@ class EventsController < ApplicationController
                         @maximum_amount.nil? &&
                         !@missing_receipts
     return false if organizer_signed_in?
-    return false unless @event.id == 183
 
     true
   end
