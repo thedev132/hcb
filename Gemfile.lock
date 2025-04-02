@@ -226,7 +226,7 @@ GEM
       unicode (>= 0.4.4.5)
     css_parser (1.17.1)
       addressable
-    cssbundling-rails (1.4.1)
+    cssbundling-rails (1.4.3)
       railties (>= 6.0.0)
     csv (3.3.2)
     date (3.4.1)
@@ -641,7 +641,7 @@ GEM
     rbs (3.8.1)
       logger
     rbtree3 (0.7.1)
-    rdoc (6.12.0)
+    rdoc (6.13.1)
       psych (>= 4.0.0)
     react-rails (3.2.1)
       babel-transpiler (>= 0.7.0)
@@ -784,7 +784,7 @@ GEM
     stackprof (0.2.26)
     statsd-instrument (3.9.9)
     statsd-ruby (1.5.0)
-    stringio (3.1.5)
+    stringio (3.1.6)
     stripe (11.7.0)
     strong_migrations (1.8.0)
       activerecord (>= 5.2)
