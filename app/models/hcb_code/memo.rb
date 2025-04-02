@@ -88,10 +88,6 @@ class HcbCode
         "Fee revenue from #{fee_revenue.start.strftime("%b %e")} to #{fee_revenue.end.strftime("%b %e")}"
       end
 
-      def grant_memo
-        "Grant to #{canonical_pending_transactions.first.grant.recipient_organization}"
-      end
-
       def outgoing_fee_reimbursement_memo
         "🗂️ Stripe fee reimbursements for week of #{ct.date.beginning_of_week.strftime("%-m/%-d")}"
       end
