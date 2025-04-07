@@ -18,6 +18,7 @@
 #  donation_page_message                        :text
 #  donation_reply_to_email                      :text
 #  donation_thank_you_message                   :text
+#  financially_frozen                           :boolean          default(FALSE), not null
 #  finanically_frozen                           :boolean          default(FALSE), not null
 #  hidden_at                                    :datetime
 #  holiday_features                             :boolean          default(TRUE), not null
@@ -51,6 +52,8 @@
 #
 class Event < ApplicationRecord
   MIN_WAITING_TIME_BETWEEN_FEES = 5.days
+
+  self.ignored_columns = ["finanically_frozen"]
 
   include Hashid::Rails
   extend FriendlyId
@@ -687,11 +690,11 @@ class Event < ApplicationRecord
   end
 
   def donation_page_available?
-    donation_page_enabled && plan.donations_enabled? && !finanically_frozen?
+    donation_page_enabled && plan.donations_enabled? && !financially_frozen?
   end
 
   def public_reimbursement_page_available?
-    public_reimbursement_page_enabled && plan.reimbursements_enabled? && !finanically_frozen?
+    public_reimbursement_page_enabled && plan.reimbursements_enabled? && !financially_frozen?
   end
 
   def short_name(length: MAX_SHORT_NAME_LENGTH)
