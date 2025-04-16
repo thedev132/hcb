@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Statsd
-  class GaugeOnlineUserCountJob < ApplicationJob
+class User
+  class StatsdGaugeOnlineUserCountJob < ApplicationJob
     queue_as :default
 
     def perform
@@ -9,8 +9,9 @@ module Statsd
     end
 
   end
+
 end
 
-module StatsdJob
-  GaugeOnlineUserCount = Statsd::GaugeOnlineUserCountJob
+module Statsd
+  GaugeOnlineUserCountJob = User::StatsdGaugeOnlineUserCountJob
 end
