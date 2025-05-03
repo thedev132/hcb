@@ -2,7 +2,7 @@
 
 class HcbCodePolicy < ApplicationPolicy
   def show?
-    user&.auditor? || present_in_events? || (record.stripe_cardholder.present? && record.stripe_cardholder.user == user)
+    user&.auditor? || present_in_events? || cardholder?
   end
 
   def memo_frame?
