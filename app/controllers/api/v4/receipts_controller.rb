@@ -19,13 +19,10 @@ module Api
 
       def destroy
         @receipt = Receipt.find(params[:id])
+        authorize @receipt
 
-        if policy(@receipt).destroy?
-          @receipt.destroy!
-          render json: { message: "Receipt successfully deleted" }, status: :ok
-        else
-          render json: { error: "You are not authorized to delete this receipt" }, status: :forbidden
-        end
+        @receipt.destroy!
+        render json: { message: "Receipt successfully deleted" }, status: :ok
       end
 
 
