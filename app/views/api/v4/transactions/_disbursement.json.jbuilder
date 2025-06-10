@@ -23,5 +23,5 @@ json.sender do
 end
 
 if disbursement.card_grant.present?
-  json.grant_id disbursement.card_grant&.public_id
+  json.card_grant_id disbursement.card_grant&.public_id
 end
