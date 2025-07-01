@@ -9,7 +9,7 @@ module Api
       end
 
       def create
-        @hcb_code = authorize HcbCode.find_by_public_id!(params[:transaction_id]), :show?
+        @hcb_code = HcbCode.find_by_public_id!(params[:transaction_id])
 
         admin_only = params[:admin_only] || false
         if admin_only && !current_user.admin?
