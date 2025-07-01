@@ -4,6 +4,26 @@ GIT
   specs:
     yellow_pages (0.4.0)
 
+GIT
+  remote: https://github.com/rails/rails.git
+  revision: 21ef9d1554eb1fa8f3ecf997fdf165add8df0917
+  branch: 7-2-stable
+  specs:
+    rails (7.2.2.1)
+      actioncable (= 7.2.2.1)
+      actionmailbox (= 7.2.2.1)
+      actionmailer (= 7.2.2.1)
+      actionpack (= 7.2.2.1)
+      actiontext (= 7.2.2.1)
+      actionview (= 7.2.2.1)
+      activejob (= 7.2.2.1)
+      activemodel (= 7.2.2.1)
+      activerecord (= 7.2.2.1)
+      activestorage (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
+      bundler (>= 1.15.0)
+      railties (= 7.2.2.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -156,8 +176,8 @@ GEM
     barnes (0.0.9)
       multi_json (~> 1)
       statsd-ruby (~> 1.1)
-    base64 (0.2.0)
-    benchmark (0.4.0)
+    base64 (0.3.0)
+    benchmark (0.4.1)
     better_html (2.1.1)
       actionview (>= 6.0)
       activesupport (>= 6.0)
@@ -165,7 +185,7 @@ GEM
       erubi (~> 1.4)
       parser (>= 2.4)
       smart_properties
-    bigdecimal (3.1.9)
+    bigdecimal (3.2.2)
     bindata (2.5.0)
     bindex (0.8.1)
     blazer (3.3.0)
@@ -177,26 +197,26 @@ GEM
     blind_index (2.6.2)
       activesupport (>= 7)
       argon2-kdf (>= 0.2)
-    bootsnap (1.18.4)
+    bootsnap (1.18.6)
       msgpack (~> 1.2)
     brakeman (6.2.2)
       racc
     browser (6.2.0)
     builder (3.3.0)
-    bullet (8.0.0)
+    bullet (8.0.8)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     business_time (0.13.0)
       activesupport (>= 3.2.0)
       tzinfo
     byebug (11.1.3)
-    cairo (1.17.13)
+    cairo (1.18.4)
       native-package-installer (>= 1.0.3)
       pkg-config (>= 1.2.2)
       red-colors
-    cairo-gobject (4.2.4)
+    cairo-gobject (4.2.9)
       cairo (>= 1.16.2)
-      glib2 (= 4.2.4)
+      glib2 (= 4.2.9)
     cbor (0.5.9.8)
     chartkick (5.1.5)
     childprocess (5.1.0)
@@ -243,40 +263,41 @@ GEM
       dotenv (= 3.1.7)
       railties (>= 6.1)
     drb (2.2.3)
-    dry-configurable (0.16.1)
-      dry-core (~> 0.6)
+    dry-configurable (1.3.0)
+      dry-core (~> 1.1)
       zeitwerk (~> 2.6)
-    dry-container (0.11.0)
+    dry-core (1.1.0)
       concurrent-ruby (~> 1.0)
-    dry-core (0.9.1)
-      concurrent-ruby (~> 1.0)
+      logger
       zeitwerk (~> 2.6)
-    dry-inflector (0.3.0)
-    dry-initializer (3.1.1)
-    dry-logic (1.3.0)
+    dry-inflector (1.2.0)
+    dry-initializer (3.2.0)
+    dry-logic (1.6.0)
+      bigdecimal
       concurrent-ruby (~> 1.0)
-      dry-core (~> 0.9, >= 0.9)
+      dry-core (~> 1.1)
       zeitwerk (~> 2.6)
-    dry-schema (1.9.1)
+    dry-schema (1.14.1)
       concurrent-ruby (~> 1.0)
-      dry-configurable (~> 0.13, >= 0.13.0)
-      dry-core (~> 0.5, >= 0.5)
-      dry-initializer (~> 3.0)
-      dry-logic (~> 1.0)
-      dry-types (~> 1.5)
-    dry-types (1.6.1)
-      concurrent-ruby (~> 1.0)
-      dry-container (~> 0.3)
-      dry-core (~> 0.9, >= 0.9)
-      dry-inflector (~> 0.1, >= 0.1.2)
-      dry-logic (~> 1.3, >= 1.3)
+      dry-configurable (~> 1.0, >= 1.0.1)
+      dry-core (~> 1.1)
+      dry-initializer (~> 3.2)
+      dry-logic (~> 1.5)
+      dry-types (~> 1.8)
       zeitwerk (~> 2.6)
-    dry-validation (1.8.0)
+    dry-types (1.8.3)
+      bigdecimal (~> 3.0)
       concurrent-ruby (~> 1.0)
-      dry-container (~> 0.7, >= 0.7.1)
-      dry-core (~> 0.5, >= 0.5)
-      dry-initializer (~> 3.0)
-      dry-schema (~> 1.9, >= 1.9.1)
+      dry-core (~> 1.0)
+      dry-inflector (~> 1.0)
+      dry-logic (~> 1.4)
+      zeitwerk (~> 2.6)
+    dry-validation (1.11.1)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.1)
+      dry-initializer (~> 3.2)
+      dry-schema (~> 1.14)
+      zeitwerk (~> 2.6)
     email_reply_parser (0.5.11)
     erb (5.0.1)
     erb_lint (0.9.0)
@@ -324,7 +345,7 @@ GEM
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
     ffi (1.17.0)
-    fiddle (1.1.5)
+    fiddle (1.1.8)
     flipper (0.28.3)
       concurrent-ruby (< 2)
     flipper-active_record (0.28.0)
@@ -347,19 +368,19 @@ GEM
     geocoder (1.8.3)
       base64 (>= 0.1.0)
       csv (>= 3.0.0)
-    gio2 (4.2.4)
+    gio2 (4.2.9)
       fiddle
-      gobject-introspection (= 4.2.4)
-    glib2 (4.2.4)
+      gobject-introspection (= 4.2.9)
+    glib2 (4.2.9)
       native-package-installer (>= 1.0.3)
       pkg-config (>= 1.3.5)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    gobject-introspection (4.2.4)
-      glib2 (= 4.2.4)
-    google-apis-admin_directory_v1 (0.60.0)
+    gobject-introspection (4.2.9)
+      glib2 (= 4.2.9)
+    google-apis-admin_directory_v1 (0.66.0)
       google-apis-core (>= 0.15.0, < 2.a)
-    google-apis-core (0.15.1)
+    google-apis-core (0.18.0)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (~> 1.9)
       httpclient (>= 2.8.3, < 3.a)
@@ -367,10 +388,11 @@ GEM
       mutex_m
       representable (~> 3.0)
       retriable (>= 2.0, < 4.a)
-    google-cloud-env (2.2.1)
+    google-cloud-env (2.3.1)
+      base64 (~> 0.2)
       faraday (>= 1.0, < 3.a)
-    google-logging-utils (0.1.0)
-    googleauth (1.12.0)
+    google-logging-utils (0.2.0)
+    googleauth (1.14.0)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.2)
       google-logging-utils (~> 0.1)
@@ -406,7 +428,8 @@ GEM
     hashids (1.0.6)
     htmlbeautifier (1.4.3)
     htmlentities (4.3.4)
-    httpclient (2.8.3)
+    httpclient (2.9.0)
+      mutex_m
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     image_processing (1.14.0)
@@ -429,7 +452,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
-    json (2.11.3)
+    json (2.12.2)
     jwt (2.10.1)
       base64
     kaminari (1.2.2)
@@ -486,7 +509,8 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.4)
-    matrix (0.4.2)
+    matrix (0.4.3)
+    memo_wise (1.13.0)
     method_source (1.1.0)
     mini_magick (5.2.0)
       benchmark
@@ -503,7 +527,7 @@ GEM
       monetize (~> 1.9)
       money (~> 6.13)
       railties (>= 3.0)
-    msgpack (1.7.2)
+    msgpack (1.8.0)
     multi_json (1.15.0)
     multipart-post (2.4.1)
     mustermann (3.0.3)
@@ -548,13 +572,13 @@ GEM
       activerecord (>= 6.1)
       activesupport (>= 6.1)
     phonelib (0.10.6)
-    pkg-config (1.5.8)
+    pkg-config (1.6.2)
     plaid (34.0.0)
       faraday (>= 1.0.1, < 3.0)
       faraday-multipart (>= 1.0.1, < 2.0)
-    poppler (4.2.4)
-      cairo-gobject (= 4.2.4)
-      gio2 (= 4.2.4)
+    poppler (4.2.9)
+      cairo-gobject (= 4.2.9)
+      gio2 (= 4.2.9)
     premailer (1.23.0)
       addressable
       css_parser (>= 1.12.0)
@@ -572,6 +596,7 @@ GEM
       pry (>= 0.13, < 0.15)
     pry-rails (0.3.11)
       pry (>= 0.13.0)
+    pstore (0.1.4)
     psych (5.2.6)
       date
       stringio
@@ -580,7 +605,7 @@ GEM
       activerecord (>= 6.1)
       i18n (>= 0.5.0)
       railties (>= 6.1.0)
-    public_suffix (6.0.1)
+    public_suffix (6.0.2)
     puma (6.6.0)
       nio4r (~> 2.0)
     pundit (2.4.0)
@@ -607,20 +632,6 @@ GEM
     rackup (1.0.1)
       rack (< 3)
       webrick
-    rails (7.2.2.1)
-      actioncable (= 7.2.2.1)
-      actionmailbox (= 7.2.2.1)
-      actionmailer (= 7.2.2.1)
-      actionpack (= 7.2.2.1)
-      actiontext (= 7.2.2.1)
-      actionview (= 7.2.2.1)
-      activejob (= 7.2.2.1)
-      activemodel (= 7.2.2.1)
-      activerecord (= 7.2.2.1)
-      activestorage (= 7.2.2.1)
-      activesupport (= 7.2.2.1)
-      bundler (>= 1.15.0)
-      railties (= 7.2.2.1)
     rails-dom-testing (2.3.0)
       activesupport (>= 5.0.0)
       minitest
@@ -746,7 +757,7 @@ GEM
       fugit (~> 1.8, >= 1.11.1)
       globalid (>= 1.0.1)
       sidekiq (>= 6.5.0)
-    signet (0.19.0)
+    signet (0.20.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
       jwt (>= 1.5, < 3.0)
@@ -787,7 +798,7 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    stackprof (0.2.26)
+    stackprof (0.2.27)
     statsd-instrument (3.9.9)
     statsd-ruby (1.5.0)
     stringio (3.1.7)
@@ -821,7 +832,7 @@ GEM
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
-    uniform_notifier (1.16.0)
+    uniform_notifier (1.17.0)
     useragent (0.16.11)
     validates_email_format_of (1.8.2)
       i18n (>= 0.8.0)
@@ -907,7 +918,7 @@ DEPENDENCIES
   friendly_id (~> 5.5.1)
   geo_pattern
   geocoder
-  google-apis-admin_directory_v1 (~> 0.60.0)
+  google-apis-admin_directory_v1 (~> 0.66.0)
   grape
   grape-entity
   grape-kaminari
@@ -918,7 +929,7 @@ DEPENDENCIES
   htmlbeautifier
   image_processing (~> 1.2)
   invisible_captcha
-  irb (~> 1.14.3)
+  irb
   jbuilder (~> 2.13)
   jquery-rails
   jsbundling-rails (~> 1.3)
@@ -930,6 +941,7 @@ DEPENDENCIES
   lockbox
   lograge
   loofah
+  memo_wise
   mini_magick
   monetize
   money-rails
@@ -943,6 +955,7 @@ DEPENDENCIES
   premailer-rails
   pry-byebug
   pry-rails
+  pstore
   public_activity
   puma (~> 6.6)
   pundit
@@ -951,7 +964,7 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler (~> 3.3)
   rack-timeout
-  rails (~> 7.2)
+  rails!
   react-rails
   recursive-open-struct
   redcarpet
@@ -991,7 +1004,7 @@ DEPENDENCIES
   yellow_pages!
 
 RUBY VERSION
-   ruby 3.4.3p32
+   ruby 3.4.4p34
 
 BUNDLED WITH
    2.5.22

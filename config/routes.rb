@@ -571,6 +571,7 @@ Rails.application.routes.draw do
           end
 
           get "transactions/missing_receipt", to: "transactions#missing_receipt"
+          get "receipt_bin", to: "receipts#receipt_bin"
           get :available_icons
         end
 
@@ -578,7 +579,7 @@ Rails.application.routes.draw do
           resources :stripe_cards, path: "cards", only: [:index]
           resources :card_grants, only: [:index, :create]
           resources :transactions, only: [:show, :update] do
-            resources :receipts, only: [:create, :index]
+            resources :receipts, only: [:create, :index, :destroy]
             resources :comments, only: [:index, :create]
 
             member do
@@ -601,6 +602,7 @@ Rails.application.routes.draw do
           member do
             get "transactions"
             get "ephemeral_keys"
+            post "cancel"
           end
         end
 
@@ -679,7 +681,6 @@ Rails.application.routes.draw do
     get :balance_transactions
     get :money_movement
     get :merchants_categories
-    get :top_categories
     get :tags_users
     get :transaction_heatmap
 
@@ -756,6 +757,7 @@ Rails.application.routes.draw do
         post "withdraw"
         post "cancel"
         post "convert_to_reimbursement_report"
+        post "toggle_one_time_use"
       end
     end
 

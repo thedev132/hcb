@@ -265,6 +265,8 @@ class EventsController < ApplicationController
       @filter = "manager"
     when "readers"
       @filter = "reader"
+    when "active_teens"
+      @filter = "active_teens" if auditor_signed_in?
     end
 
     @q = params[:q] || ""
@@ -274,10 +276,13 @@ class EventsController < ApplicationController
 
     @all_positions = @event.organizer_positions
                            .joins(:user)
-    @all_positions = @all_positions.where(role: @filter) if @filter
     @all_positions = @all_positions.where(organizer_signed_in? ? "users.full_name ILIKE :query OR users.email ILIKE :query" : "users.full_name ILIKE :query", query: "%#{User.sanitize_sql_like(@q)}%")
                                    .order(created_at: :desc)
-
+    if @filter == "active_teens"
+      @all_positions = @all_positions.select { |op| op.user.teenager? && op.user.active? } # select if user is a teenager and active (stole from the other code ;))
+    elsif @filter
+      @all_positions = @all_positions.where(role: @filter)
+    end
     @positions = Kaminari.paginate_array(@all_positions).page(params[:page]).per(params[:per] || @view == "list" ? 20 : 10)
 
     @pending = @event.organizer_position_invites.pending.includes(:sender)
@@ -363,7 +368,7 @@ class EventsController < ApplicationController
     cookies[:card_overview_view] = params[:view] if params[:view]
     @view = cookies[:card_overview_view] || "grid"
 
-    @user = User.friendly.find_by_friendly_id(params[:user]) if params[:user]
+    @user = User.friendly.find(params[:user], allow_nil: true) if params[:user]
 
     @has_filter = @status.present? || @type.present? || @user.present?
 
@@ -486,7 +491,7 @@ class EventsController < ApplicationController
     authorize @event
 
     @g_suite = @event.g_suites.first
-    @waitlist_form_submitted = GWaitlistTable.all(filter: "{OrgID} = '#{@event.id}'").any? unless Flipper.enabled?(:google_workspace, @event)
+    @waitlist_form_submitted = GWaitlistTable.all(filter: "{OrgID} = '#{@event.id}'").any? unless Flipper.enabled?(:google_workspace, @event) || Rails.env.development?
 
     if @g_suite.present?
       @results = GSuiteService::Verify.new(g_suite_id: @g_suite.id).results(skip_g_verify: true)
@@ -613,7 +618,7 @@ class EventsController < ApplicationController
     @disbursements = @disbursements.not_card_grant_related if @event.plan.card_grants_enabled?
 
     @stats = {
-      deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount) + @increase_checks.increase_deposited.or(@increase_checks.in_transit).sum(:amount) + @disbursements.fulfilled.pluck(:amount).sum + @paypal_transfers.deposited.sum(:amount_cents) + @wires.deposited.sum(&:usd_amount_cents),
+      deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount) + @increase_checks.increase_deposited.or(@increase_checks.in_transit).sum(:amount) + @disbursements.fulfilled.pluck(:amount).sum + @paypal_transfers.deposited.sum(:amount_cents) + @wires.deposited.sum(&:usd_amount_cents) + @card_grants.sum(:amount_cents),
       in_transit: @ach_transfers.in_transit.sum(:amount) + @checks.in_transit_or_in_transit_and_processed.sum(:amount) + @increase_checks.in_transit.sum(:amount) + @disbursements.reviewing_or_processing.sum(:amount) + @paypal_transfers.approved.or(@paypal_transfers.pending).sum(:amount_cents) + @wires.approved.or(@wires.pending).sum(&:usd_amount_cents),
       canceled: @ach_transfers.rejected.sum(:amount) + @checks.canceled.sum(:amount) + @increase_checks.canceled.sum(:amount) + @disbursements.rejected.sum(:amount) + @paypal_transfers.rejected.sum(:amount_cents) + @wires.rejected.sum(&:usd_amount_cents)
     }
@@ -694,11 +699,19 @@ class EventsController < ApplicationController
   def reimbursements
     authorize @event
     @reports = @event.reimbursement_reports.visible
-    @reports = @reports.pending if params[:filter] == "pending"
-    @reports = @reports.where(aasm_state: ["reimbursement_approved", "reimbursed"]) if params[:filter] == "reimbursed"
-    @reports = @reports.rejected if params[:filter] == "rejected"
+    @reports = @reports.pending if params[:status] == "pending"
+    @reports = @reports.where(aasm_state: ["reimbursement_approved", "reimbursed"]) if params[:status] == "reimbursed"
+    @reports = @reports.rejected if params[:status] == "rejected"
     @reports = @reports.search(params[:q]) if params[:q].present?
+    @reports = @reports.where("reimbursement_reports.created_at <= ?", params[:created_before]) if params[:created_before].present?
+    @reports = @reports.where("reimbursement_reports.created_at >= ?", params[:created_after]) if params[:created_after].present?
     @reports = @reports.order(created_at: :desc).page(params[:page] || 1).per(params[:per] || 25)
+
+    @filter_options = [
+      { key: "status", label: "Status", type: "select", options: %w[pending reimbursed rejected] },
+      { key: "created_*", label: "Date created", type: "date_range" }
+    ]
+    @has_filter = helpers.check_filters?(@filter_options, params)
   end
 
   def reimbursements_pending_review_icon
@@ -1038,7 +1051,7 @@ class EventsController < ApplicationController
       @tag = Tag.find_by(event_id: @event.id, label: params[:tag])
     end
 
-    @user = @event.users.friendly.find_by_friendly_id(params[:user]) if params[:user]
+    @user = @event.users.friendly.find(params[:user], allow_nil: true) if params[:user]
 
     @type = params[:type]
     @start_date = params[:start].presence

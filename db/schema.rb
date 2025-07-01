@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_01_121459) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_24_191949) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -47,6 +47,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_01_121459) do
     t.text "routing_number_ciphertext"
     t.string "account_number_bidx"
     t.string "routing_number_bidx"
+    t.date "invoiced_at"
     t.index ["account_number_bidx"], name: "index_ach_transfers_on_account_number_bidx"
     t.index ["column_id"], name: "index_ach_transfers_on_column_id", unique: true
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
@@ -430,31 +431,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_01_121459) do
     t.integer "status", default: 0, null: false
     t.string "keyword_lock"
     t.string "purpose"
+    t.boolean "one_time_use"
     t.index ["disbursement_id"], name: "index_card_grants_on_disbursement_id"
     t.index ["event_id"], name: "index_card_grants_on_event_id"
     t.index ["sent_by_id"], name: "index_card_grants_on_sent_by_id"
     t.index ["stripe_card_id"], name: "index_card_grants_on_stripe_card_id"
     t.index ["subledger_id"], name: "index_card_grants_on_subledger_id"
     t.index ["user_id"], name: "index_card_grants_on_user_id"
-  end
-
-  create_table "changelog_posts", force: :cascade do |t|
-    t.string "title"
-    t.integer "headway_id"
-    t.string "markdown"
-    t.datetime "published_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "changelog_posts_users", force: :cascade do |t|
-    t.bigint "changelog_post_id", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["changelog_post_id", "user_id"], name: "index_changelog_posts_users_on_changelog_post_id_and_user_id", unique: true
-    t.index ["changelog_post_id"], name: "index_changelog_posts_users_on_changelog_post_id"
-    t.index ["user_id"], name: "index_changelog_posts_users_on_user_id"
   end
 
   create_table "check_deposits", force: :cascade do |t|
@@ -1499,7 +1482,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_01_121459) do
     t.string "program", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_raffles_on_user_id"
+    t.index ["program", "user_id"], name: "index_raffles_on_program_and_user_id", unique: true
   end
 
   create_table "raw_column_transactions", force: :cascade do |t|
@@ -2065,8 +2048,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_01_121459) do
     t.datetime "updated_at", null: false
     t.text "authorization_token_ciphertext"
     t.text "verification_token_ciphertext"
+    t.string "authorization_token_bidx"
+    t.string "verification_token_bidx"
+    t.index ["authorization_token_bidx"], name: "index_user_email_updates_on_authorization_token_bidx"
     t.index ["updated_by_id"], name: "index_user_email_updates_on_updated_by_id"
     t.index ["user_id"], name: "index_user_email_updates_on_user_id"
+    t.index ["verification_token_bidx"], name: "index_user_email_updates_on_verification_token_bidx"
   end
 
   create_table "user_payout_method_ach_transfers", force: :cascade do |t|
@@ -2180,6 +2167,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_01_121459) do
     t.boolean "use_two_factor_authentication", default: false
     t.boolean "teenager"
     t.integer "creation_method"
+    t.boolean "cards_locked", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
@@ -2274,8 +2262,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_01_121459) do
   add_foreign_key "card_grants", "subledgers"
   add_foreign_key "card_grants", "users"
   add_foreign_key "card_grants", "users", column: "sent_by_id"
-  add_foreign_key "changelog_posts_users", "changelog_posts"
-  add_foreign_key "changelog_posts_users", "users"
   add_foreign_key "check_deposits", "events"
   add_foreign_key "checks", "lob_addresses"
   add_foreign_key "checks", "users", column: "creator_id"
