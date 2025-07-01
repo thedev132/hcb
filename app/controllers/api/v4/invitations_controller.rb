@@ -4,7 +4,7 @@ module Api
   module V4
     class InvitationsController < ApplicationController
       skip_after_action :verify_authorized, only: [:index]
-      before_action :set_invitation, except: [:index, :create]
+      before_action :set_invitation, except: [:index]
 
       def index
         @invitations = current_user.organizer_position_invites.pending
