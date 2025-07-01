@@ -10,7 +10,7 @@ module Api
 
       def receipt_bin
         skip_authorization
-        @receipts = Receipt.in_receipt_bin.includes(:user)
+        @receipts = Receipt.in_receipt_bin.includes(:user).where(user: current_user)
         render "index"
       end
 
