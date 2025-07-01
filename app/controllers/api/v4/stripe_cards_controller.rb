@@ -122,7 +122,7 @@ module Api
       def cancel
         @stripe_card = authorize StripeCard.find_by_public_id!(params[:id])
 
-        if @stripe_card.canceled? || !policy(@stripe_card).cancel?
+        if @stripe_card.canceled?
           return render json: { error: "Card is already cancelled" }, status: :unprocessable_entity
         end
 
