@@ -15,8 +15,12 @@ module Api
       end
 
       def create
-        @hcb_code = HcbCode.find_by_public_id(params[:transaction_id])
-        authorize @hcb_code, :upload?, policy_class: ReceiptablePolicy
+        if params[:transaction_id].present?
+          @hcb_code = HcbCode.find_by_public_id(params[:transaction_id])
+          authorize @hcb_code, :upload?, policy_class: ReceiptablePolicy
+        else
+          skip_authorization
+        end
 
         @receipt = Receipt.create!(file: params[:file], receiptable: @hcb_code, user: current_user, upload_method: :api)
 
