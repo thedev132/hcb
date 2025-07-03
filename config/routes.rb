@@ -578,7 +578,7 @@ Rails.application.routes.draw do
           resources :stripe_cards, path: "cards", only: [:index]
           resources :card_grants, only: [:index, :create]
           resources :transactions, only: [:show, :update] do
-            resources :receipts, only: [:create, :index, :destroy]
+            resources :receipts, only: [:index]
             resources :comments, only: [:index]
 
             member do
@@ -596,6 +596,7 @@ Rails.application.routes.draw do
         end
 
         resources :transactions, only: [:show]
+        resources :receipts, only: [:create, :destroy]
 
         resources :stripe_cards, path: "cards", only: [:show, :update, :create] do
           member do
