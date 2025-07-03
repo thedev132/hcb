@@ -4,14 +4,14 @@ module Api
   module V4
     class ReceiptsController < ApplicationController
       def index
-        @hcb_code = authorize HcbCode.find_by_public_id(params[:transaction_id]), :show?
-        @receipts = @hcb_code.receipts.includes(:user)
-      end
-
-      def receipt_bin
-        skip_authorization
-        @receipts = Receipt.in_receipt_bin.includes(:user).where(user: current_user)
-        render "index"
+        if params[:transaction_id].present?
+          @hcb_code = HcbCode.find_by_public_id(params[:transaction_id])
+          authorize @hcb_code, :show?
+          @receipts = @hcb_code.receipts.includes(:user)
+        else
+          skip_authorization
+          @receipts = Receipt.includes(:user)
+        end
       end
 
       def create
