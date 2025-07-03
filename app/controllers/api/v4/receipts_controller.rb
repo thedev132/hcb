@@ -8,6 +8,12 @@ module Api
         @receipts = @hcb_code.receipts.includes(:user)
       end
 
+      def receipt_bin
+        skip_authorization
+        @receipts = Receipt.in_receipt_bin.includes(:user).where(user: current_user)
+        render "index"
+      end
+
       def create
         if params[:transaction_id].present?
           @hcb_code = HcbCode.find_by_public_id(params[:transaction_id])
