@@ -583,7 +583,7 @@ Rails.application.routes.draw do
           resources :card_grants, only: [:index, :create]
           resources :transactions, only: [:show, :update] do
             resources :receipts, only: [:index]
-            resources :comments, only: [:index]
+            resources :comments, only: [:index, :create]
 
             member do
               get "memo_suggestions"
