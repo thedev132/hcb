@@ -10,7 +10,7 @@ module Api
           @receipts = @hcb_code.receipts.includes(:user)
         else
           skip_authorization
-          @receipts = Receipt.includes(:user)
+          @receipts = Receipt.in_receipt_bin.includes(:user).where(user: current_user)
         end
       end
 
