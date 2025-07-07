@@ -91,7 +91,7 @@ class Event
         errors.add(:type, "is invalid")
       end
     end
-    
+
     after_create :create_card_grant_setting_if_affiliate
 
     def create_card_grant_setting_if_affiliate
