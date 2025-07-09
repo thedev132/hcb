@@ -73,6 +73,7 @@ Rails.application.routes.draw do
     get "inbox", to: "my#inbox", as: :my_inbox
     get "activities", to: "my#activities", as: :my_activities
     post "toggle_admin_activities", to: "my#toggle_admin_activities", as: :toggle_admin_activities
+    post "toggle_three_teens_banner", to: "my#toggle_three_teens_banner", as: :toggle_three_teens_banner
     get "tasks", to: "my#tasks", as: :my_tasks
     get "reimbursements", to: "my#reimbursements", as: :my_reimbursements
     get "reimbursements_icon", to: "my#reimbursements_icon", as: :my_reimbursements_icon
@@ -666,6 +667,8 @@ Rails.application.routes.draw do
       resource :pre_authorizations, only: [:show, :update] do
         member do
           post "clear_screenshots"
+          post "organizer_approve"
+          post "organizer_reject"
         end
       end
     end
@@ -772,6 +775,16 @@ Rails.application.routes.draw do
         post "cancel"
         post "convert_to_reimbursement_report"
         post "toggle_one_time_use"
+
+        get "edit/overview", to: "card_grants#edit_overview"
+        get "edit/usage_restrictions", to: "card_grants#edit_usage_restrictions"
+        get "edit/purpose", to: "card_grants#edit_purpose"
+        get "edit/actions", to: "card_grants#edit_actions"
+        get "edit/balance", to: "card_grants#edit_balance"
+        get "edit/topup", to: "card_grants#edit_topup"
+        get "edit/withdraw", to: "card_grants#edit_withdraw"
+
+
       end
     end
 
