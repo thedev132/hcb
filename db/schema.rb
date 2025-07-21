@@ -213,6 +213,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_21_124328) do
     t.text "rendered_email_html"
     t.text "rendered_html"
     t.string "aasm_state"
+    t.string "template_type"
     t.index ["author_id"], name: "index_announcements_on_author_id"
     t.index ["event_id"], name: "index_announcements_on_event_id"
   end
@@ -905,6 +906,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_21_124328) do
     t.datetime "updated_at", null: false
     t.boolean "cover_donation_fees", default: false
     t.string "contact_email"
+    t.boolean "generate_monthly_announcement", default: false, null: false
     t.index ["event_id"], name: "index_event_configurations_on_event_id"
   end
 
