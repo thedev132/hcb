@@ -13,6 +13,10 @@ module StripeAuthorizationService
         approve?
       end
 
+      def card
+        @card ||= StripeCard.includes(:card_grant).find_by(stripe_id: stripe_card_id)
+      end
+
       private
 
       def auth
@@ -29,10 +33,6 @@ module StripeAuthorizationService
 
       def stripe_card_id
         auth[:card][:id]
-      end
-
-      def card
-        @card ||= StripeCard.includes(:card_grant).find_by(stripe_id: stripe_card_id)
       end
 
       def card_balance_available
@@ -63,6 +63,8 @@ module StripeAuthorizationService
 
         return decline_with_reason!("cash_withdrawals_not_allowed") if cash_withdrawal? && !card.cash_withdrawal_enabled?
 
+        return decline_with_reason!("user_cards_locked") if card.user.cards_locked? && event.plan.card_lockable?
+
         set_metadata!
 
         true
@@ -82,6 +84,12 @@ module StripeAuthorizationService
       end
 
       def merchant_allowed?
+        disallowed_categories = card&.card_grant&.disallowed_categories
+        disallowed_merchants = card&.card_grant&.disallowed_merchants
+
+        return false if disallowed_categories&.include?(auth[:merchant_data][:category])
+        return false if disallowed_merchants&.include?(auth[:merchant_data][:network_id])
+
         allowed_categories = card&.card_grant&.allowed_categories
         allowed_merchants = card&.card_grant&.allowed_merchants
         keyword_lock = card&.card_grant&.keyword_lock
