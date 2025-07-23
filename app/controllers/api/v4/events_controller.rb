@@ -31,10 +31,17 @@ module Api
         @transactions = paginate_transactions(@pending_transactions + @settled_transactions)
       end
 
+      def followers
+        authorize @event, :show_in_v4?
+        @followers = @event.followers
+      end
+
+      require_oauth2_scope "event_followers", :followers
+
       private
 
       def set_event
-        @event = Event.find_by_public_id(params[:id]) || Event.find_by!(slug: params[:event_id])
+        @event = Event.find_by_public_id(params[:id]) || Event.find_by!(slug: params[:id])
       end
 
       def paginate_transactions(transactions)
