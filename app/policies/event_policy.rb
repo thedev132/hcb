@@ -160,6 +160,14 @@ class EventPolicy < ApplicationPolicy
     auditor_or_reader?
   end
 
+  def sub_organizations?
+    admin_or_reader? && (record.subevents_enabled? || record.subevents.any?)
+  end
+
+  def create_sub_organization?
+    admin_or_manager? && record.subevents_enabled?
+  end
+
   def donation_overview?
     show? && record.approved? && record.plan.donations_enabled?
   end

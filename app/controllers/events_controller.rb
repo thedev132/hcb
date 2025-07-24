@@ -286,6 +286,20 @@ class EventsController < ApplicationController
     end
     @positions = Kaminari.paginate_array(@all_positions).page(params[:page]).per(params[:per] || @view == "list" ? 20 : 10)
 
+    if @event.parent
+      ops = @event.ancestor_organizer_positions.includes(:user)
+      users = ops.map(&:user).uniq
+
+      access_levels = users.filter_map do |user|
+        access_level = user.access_level_for(@event, ops)
+        next if access_level[:access_level] == :direct
+
+        [user, access_level[:role]]
+      end.sort_by { |_, role| role }.to_h
+
+      @indirect_access = access_levels
+    end
+
     @pending = @event.organizer_position_invites.pending.includes(:sender)
   end
 
@@ -774,6 +788,42 @@ class EventsController < ApplicationController
     @employees = @employees.search(params[:q]) if params[:q].present?
   end
 
+  def sub_organizations
+    authorize @event
+
+    search = params[:q] || params[:search]
+
+    relation = @event.subevents
+    relation = relation.where("name ILIKE ?", "%#{search}%") if search.present?
+    relation = relation.order(created_at: :desc)
+
+    @sub_organizations = relation
+  end
+
+  def create_sub_organization
+    authorize @event
+
+    if params[:email].blank?
+      flash[:error] = "Organizer email is required"
+      return redirect_back fallback_location: event_sub_organizations_path(@event)
+    end
+
+    subevent = ::EventService::Create.new(
+      name: params[:name],
+      emails: [params[:email]],
+      is_signee: true,
+      country: params[:country],
+      point_of_contact_id: @event.point_of_contact_id,
+      invited_by: current_user,
+      is_public: @event.is_public,
+      plan: @event.config.subevent_plan,
+      risk_level: @event.risk_level,
+      parent_event: @event
+    ).run
+
+    redirect_to subevent
+  end
+
   def toggle_hidden
     authorize @event
 
@@ -1032,7 +1082,8 @@ class EventsController < ApplicationController
         :anonymous_donations,
         :cover_donation_fees,
         :contact_email,
-        :generate_monthly_announcement
+        :generate_monthly_announcement,
+        :subevent_plan
       ]
     )
 
