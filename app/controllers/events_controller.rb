@@ -418,8 +418,6 @@ class EventsController < ApplicationController
       @all_announcements = Announcement.published.where(event: @event).order(published_at: :desc, created_at: :desc)
     end
     @announcements = @all_announcements.page(params[:page]).per(10)
-
-    raise ActionController::RoutingError.new("Not Found") if !@event.is_public && @all_announcements.empty? && !organizer_signed_in?
   end
 
   before_action(only: :feed) { request.format = :atom }
