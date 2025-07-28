@@ -1,11 +1,22 @@
 # frozen_string_literal: true
 
+# this is a custom version of https://github.com/basecamp/activestorage-office-previewer
+# that also supports CSV files.
+
 require "active_storage/previewer"
 
 module ActiveStorage
   class Previewer
-    class CsvPreviewer < ActiveStorage::Previewer
+    class DocumentPreviewer < ActiveStorage::Previewer
       ACCEPTABLE_CONTENT_TYPES = [
+        "application/msword", # .doc
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document", # .docx
+
+        "application/vnd.ms-powerpoint", # .ppt
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation", # .pptx
+
+        "application/vnd.ms-excel", # .xls
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", # .xlsx
         "text/csv", # .csv
       ].freeze
 
