@@ -12,6 +12,8 @@ class SudoModeHandler
     email: 4,
   }.freeze
 
+  THRESHOLD_CENTS = 500_00
+
   Params = Struct.new(
     # When the form is submitted, `submit_method` determines which
     # authentication method the user selected, which in turn determines whether
