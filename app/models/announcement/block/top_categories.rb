@@ -23,27 +23,27 @@
 #
 class Announcement
   class Block
-    class DonationGoal < ::Announcement::Block
-      before_create :goal_param
+    class TopCategories < ::Announcement::Block
+      include HasFlexibleStartDate
+      include HasEndDate
+
+      delegate :empty?, to: :categories
 
       def render_html(is_email: false)
-        percentage = (goal.progress_amount_cents.to_f / goal.amount_cents) if goal.present?
+        start_date = start_date_param
+        end_date = end_date_param
 
-        Announcements::BlocksController.renderer.render partial: "announcements/blocks/donation_goal", locals: { goal:, percentage:, is_email:, block: self }
-      end
-
-      def empty?
-        goal.nil?
+        Announcements::BlocksController.renderer.render partial: "announcements/blocks/top_categories", locals: { is_email:, block: self, categories:, start_date:, end_date: }
       end
 
       private
 
-      def goal
-        @goal ||= Donation::Goal.find_by(event: announcement.event, id: goal_param) || announcement.event.donation_goal
-      end
+      def categories
+        start_date = start_date_param
+        end_date = end_date_param
+        event = announcement.event
 
-      def goal_param
-        self.parameters["goal"] ||= announcement.event.donation_goal&.id
+        @categories ||= BreakdownEngine::Categories.new(event, start_date:, end_date:).run
       end
 
     end
