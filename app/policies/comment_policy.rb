@@ -17,7 +17,9 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def create?
-    (user.auditor? || users.include?(user)) || (record.admin_only && user.auditor?)
+    return false if record.admin_only && !user.auditor?
+
+    user.auditor? || users.include?(user)
   end
 
   def edit?
