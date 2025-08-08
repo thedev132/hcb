@@ -22,8 +22,6 @@
 #  index_logins_on_user_session_id      (user_session_id)
 #
 class Login < ApplicationRecord
-  self.ignored_columns = %w[initial_login_id]
-
   include AASM
   include Hashid::Rails
 
