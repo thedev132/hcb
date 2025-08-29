@@ -67,7 +67,7 @@ module Api
         )
       end
 
-      require_oauth2_scope "write:card_grants", :create
+      require_oauth2_scope "card_grants:write", :create
 
       def show
         @card_grant = CardGrant.find_by_public_id!(params[:id])
