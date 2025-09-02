@@ -41,6 +41,14 @@ class Event
     end
 
     memo_wise def transactions_by_category
+      transactions.includes(:category, :local_hcb_code, :event).group_by(&:category).sort_by do |category, _transactions|
+        next Float::INFINITY if category.nil? # Put the "Uncategorized" category at the end
+
+        category_totals[category.slug] # I'm using SQL calculated totals since it is faster than Array's sum(&:amount_cents)
+      end.to_h
+    end
+
+    memo_wise def category_totals
       transactions.includes(:category).group("category.slug").sum(:amount_cents)
     end
 
@@ -54,6 +62,69 @@ class Event
 
     memo_wise def total_expense
       transactions.where("amount_cents < 0").sum(:amount_cents)
+    end
+
+    memo_wise def xlsx
+      io = StringIO.new
+      workbook = WriteXLSX.new(io)
+
+      bold = workbook.add_format(bold: 1)
+
+      worksheet = workbook.add_worksheet("Statement of Activity")
+      subject_name = @event_group&.name || @event.name
+      worksheet.write("A1", "#{subject_name}'s Statement of Activity", bold)
+
+      worksheet.set_column("A:A", 40) # Set first column width to 40
+
+      current_row = 2
+      write_row = ->(*column_values, level: nil, format: nil) do
+        worksheet.write_row(current_row, 0, column_values, format)
+
+        if level
+          # Syntax: set_row(row, height, format, hidden, level, collapsed)
+          worksheet.set_row(current_row, nil, nil, 0, level)
+        end
+
+        current_row += 1
+      end
+
+      if @event_group.present?
+        write_row.call("Included organizations:", format: bold)
+        @event_group.events.each do |event|
+          write_row.call(event.name, level: 1)
+        end
+        write_row.call("Total organization count:", @event_group.events.count)
+
+        current_row += 2 # Give some space before the transaction list
+      end
+
+      # Header row for transaction list
+      if @event_group.present?
+        write_row.call("Transaction Memo", "Amount", "Organization", "URL", format: bold)
+      else
+        write_row.call("Transaction Memo", "Amount", "URL", format: bold)
+      end
+
+      transactions_by_category.to_a.each do |category, transactions|
+        category_name = category&.label || "Uncategorized"
+        category_total = category_totals[category&.slug] / 100.0
+
+        transactions.each do |transaction|
+          memo = transaction.memo
+          amount_cents = transaction.amount_cents / 100.0
+          url = Rails.application.routes.url_helpers.url_for(transaction.local_hcb_code)
+          if @event_group.present?
+            write_row.call(memo, amount_cents, transaction.event.name, url, level: 1)
+          else
+            write_row.call(memo, amount_cents, url, level: 1)
+          end
+        end
+
+        write_row.call(category_name, category_total, format: bold)
+      end
+
+      workbook.close
+      io.string
     end
 
     private
