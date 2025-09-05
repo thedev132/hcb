@@ -866,6 +866,7 @@ Rails.application.routes.draw do
         post "cancel"
         post "convert_to_reimbursement_report"
         post "toggle_one_time_use"
+        post "disable_pre_authorization"
 
         get "edit/overview", to: "card_grants#edit_overview"
         get "edit/usage_restrictions", to: "card_grants#edit_usage_restrictions"
