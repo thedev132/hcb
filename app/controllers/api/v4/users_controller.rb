@@ -43,6 +43,12 @@ module Api
         render json: icons.compact_blank
       end
 
+      def beacon_config
+        render json: {
+          beacon_secret_key: Credentials.fetch(:HELPSCOUT, :BEACON_SECRET_KEY)
+        }
+      end
+
     end
   end
 end
